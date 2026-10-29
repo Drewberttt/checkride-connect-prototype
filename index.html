@@ -1,7 +1,7 @@
-<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#2b59ff"></head><body>
+<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><link rel="preload" href="fonts/BricolageGrotesque-Variable-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin><meta name="theme-color" content="#2b59ff"></head><body>
   <title>Checkride Connect (prototype)</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<!-- Fully static: no external fonts, scripts or network calls. -->
+<!-- Fully static: no external fonts, scripts or network calls. Fonts are self-hosted in fonts/. -->
 <link rel="stylesheet" href="styles.css">
 
 <header class="topbar">
@@ -44,5 +44,11 @@
 <script src="data.js"></script>
 <script src="sample-fl-examiners.js"></script>
 <script src="app.js"></script>
+<script>
+// Offline support: a small service worker caches the app shell and sample data (relative paths, works under a subpath).
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js", { scope: "./" }).catch(function () {}); });
+}
+</script>
 
 </body></html>

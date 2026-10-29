@@ -48,6 +48,9 @@
   const apt = (id) => D.airports.find((a) => a.id === id);
   const allDpes = () => [...D.dpes, ...S.approvedDpes];
   const dpeById = (id) => allDpes().find((d) => d.id === id);
+  // Deposit and booking-fee policy (Proposed, pending legal review). Single source so every screen says the same thing.
+  const DEPOSIT_POLICY = "Deposits are paid directly to the examiner and follow the examiner\u2019s cancellation terms; Checkride Connect never holds deposit money. If the examiner, weather, or maintenance cancels, our $15 booking fee is credited or refunded on request. If the student cancels at least 48 hours ahead, the $15 fee is credited; later cancellations or no-shows forfeit it.";
+  const POLICY_SHORT = `Deposit paid to the examiner (mock); Checkride Connect never holds it. <span class="pill warn">Proposed, pending legal review</span>`;
   // Sample deposit: about 20% of the examiner fee, rounded to $25. Credited toward the fee. Mock only.
   const depositFor = (dp, cert) => Math.min(dp.fees[cert], Math.max(100, Math.round((dp.fees[cert] * 0.2) / 25) * 25));
 
@@ -86,7 +89,7 @@
         <div class="line muted"><span>Not added to the total, if needed: retest / discontinuance (sample)</span><b>+${money(x.retest)}</b></div>
         <div class="line muted"><span>Not added to the total, if needed: no-show / late-cancel fee, up to (sample)</span><b>+${money(x.noShow)}</b></div>
       </div>
-      <p class="warn-note small" style="margin:.75rem 0 0"><b>ASSUMPTION:</b> the examiner deposit (${money(x.dep)}, about 20% of the fee, rounded to $25, minimum $100) is <b>part of</b> the examiner fee, not an extra. It is due at approval together with the ${money(BOOKING_FEE)} student fee (${money(x.dep + BOOKING_FEE)}), and the rest (${money(x.fee - x.dep)}) is paid at the test. Real deposit rules are set by each examiner. Prototype, not legal or FAA advice, and no real payments.</p>
+      <p class="warn-note small" style="margin:.75rem 0 0"><b>ASSUMPTION:</b> the examiner deposit (${money(x.dep)}, about 20% of the fee, rounded to $25, minimum $100) is <b>part of</b> the examiner fee, not an extra, and is paid to the examiner (mock); Checkride Connect never holds it. It is due at approval together with the ${money(BOOKING_FEE)} student fee (${money(x.dep + BOOKING_FEE)}), and the rest (${money(x.fee - x.dep)}) is paid at the test. Real deposit rules are set by each examiner. Prototype, not legal or FAA advice, and no real payments.</p>
     </section>`;
   };
   const stars = (n) => "★".repeat(n) + "☆".repeat(5 - n);
@@ -125,6 +128,24 @@
     return () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   }
 
+  // Busy examiners with realistic multi-checkride days (capacity 3: morning, midday, afternoon), so a small cohort can stay
+  // together with one examiner on one day. Sample data only. Used by seed() and by the Phase 4 migration of older saved demos.
+  const TRIPLE_DPES = ["d1", "d5", "d9"];
+  function addTripleDays(slots, n, mkId = (k) => "s" + k) {
+    TRIPLE_DPES.forEach((id) => {
+      const days = [...new Set(slots.filter((x) => x.dpeId === id && x.status === "open").map((x) => x.date))].sort();
+      days.forEach((date, k) => {
+        if (k % 3 !== 1) return; // every third open day
+        const cur = slots.filter((x) => x.dpeId === id && x.date === date);
+        const base = cur[0];
+        ["08:00", "11:30", "14:30"].filter((tm) => !cur.some((x) => x.time === tm)).slice(0, Math.max(0, 3 - cur.length)).forEach((tm) => {
+          slots.push({ id: mkId(++n), dpeId: id, date, time: tm, airport: base.airport, certs: base.certs, status: "open", bookingId: null, note: "Up to three checkrides that day (sample)" });
+        });
+      });
+    });
+    return n;
+  }
+
   function seed() {
     const slots = [];
     let n = 0;
@@ -153,6 +174,7 @@
         if (k % 2 === 0) slots.push({ id: "s" + ++n, dpeId: id, date: x.date, time: x.time < "11:00" ? "10:30" : "08:30", airport: x.airport, certs: x.certs, status: "open", bookingId: null, note: "Two checkrides that day (sample)" });
       });
     });
+    n = addTripleDays(slots, n);
     const avail = {};
     D.dpes.forEach((dp, i) => { const ts = Date.now() - ((i % 4) * 24 + i + 2) * 3600e3; avail[dp.id] = { confirmedAt: ts, updatedAt: ts, reminderDay: 0, pauseReminders: false }; });
     return {
@@ -161,7 +183,7 @@
       notifications: [{ id: "n1", ts: Date.now(), title: "Your first sample alert is active", body: "Mock alert, nothing is emailed. In a real version we would tell you when a Private Pilot checkride opens within 75 nm of KORL in the next 45 days for $1,300 or less.", read: false }],
       checklist: {}, curated: {}, ticks: {}, tier: "free",
       pending: D.pendingDpes.map((p) => ({ ...p, status: "pending" })),
-      approvedDpes: [], actingDpe: "d1",
+      approvedDpes: [], actingDpe: "d1", p4: 1,
     };
   }
   // Older v3 state (before the Florida sample set and the proposed tiers) is upgraded in place, keeping the user's bookings.
@@ -172,6 +194,14 @@
       s.avail = s.avail || {};
       Object.entries(fresh.avail).forEach(([k, v]) => { if (!s.avail[k]) s.avail[k] = v; });
       s.fl = 1;
+    }
+    if (!s.p4) {
+      // Phase 4: add the sample capacity-3 days to saved demos without touching existing slots or bookings.
+      const have = new Set(s.slots.map((x) => x.dpeId + "_" + x.date + "_" + x.time));
+      const tmp = s.slots.map((x) => ({ ...x }));
+      addTripleDays(tmp, 0, (k) => "p4s" + k);
+      tmp.filter((x) => x.id.startsWith("p4s") && !have.has(x.dpeId + "_" + x.date + "_" + x.time)).forEach((x) => s.slots.push(x));
+      s.p4 = 1;
     }
     const oldTier = { starter: "free", enterprise: "academy" };
     if (oldTier[s.tier]) s.tier = oldTier[s.tier];
@@ -289,6 +319,52 @@
     return reachable(dp, a.near, a.radius);
   }
 
+  // Link from a notification to the examiner profile with that slot preselected (the request form opens automatically).
+  const notifLink = (n, slot) => `#/dpe/${n.dpeId}?cert=${n.cert}&date=${slot.date}&slot=${n.slotId}`;
+  // Optional OS-level notification, only if the user already granted permission from the Alerts page button. Shown by this
+  // page only: no push server, no email, no SMS. Never asks for permission by itself.
+  function browserNotify(n) {
+    try {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      const slot = S.slots.find((x) => x.id === n.slotId);
+      const opts = { body: `${n.body}\nSimulated in this prototype. Nothing was emailed or texted.`, tag: n.id, icon: "icons/icon-192.png", data: { hash: slot ? notifLink(n, slot) : "#/alerts" } };
+      try {
+        const bn = new Notification(n.title, opts);
+        bn.onclick = () => { window.focus(); location.hash = opts.data.hash; bn.close(); };
+      } catch (e) {
+        // Some mobile browsers only allow notifications through the service worker.
+        if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.ready.then((r) => r.showNotification(n.title, opts)).catch(() => {});
+      }
+      ui.browserNotified = (ui.browserNotified || 0) + 1;
+    } catch (e) { /* optional feature */ }
+  }
+
+  // Demo control: creates a clearly labelled simulated opening that matches an alert (or for one examiner), then runs the
+  // normal alert matching. Example data only; nothing is sent.
+  function simulateOpening({ alertId, dpeId }) {
+    const a = alertId ? S.alerts.find((x) => x.id === alertId) : null;
+    let dp = null, cert = null;
+    if (a) {
+      cert = a.cert;
+      const cands = (a.dpeId ? [dpeById(a.dpeId)] : allDpes()).filter((d) => d && d.fees[cert] && (!a.maxFee || d.fees[cert] <= a.maxFee) && reachable(d, a.near, a.radius));
+      dp = cands.find((d) => !isStale(d.id)) || cands[0];
+      if (!dp) { toast("No sample examiner fits this alert (fee or distance), so nothing was simulated. Try a wider radius or higher fee limit."); return; }
+    } else {
+      dp = dpeById(dpeId) || D.dpes[0];
+      cert = Object.keys(dp.fees)[0];
+    }
+    const last = a && a.before ? a.before : addDays(60);
+    let date = null;
+    for (let i = 2; i <= 60 && addDays(i) <= last; i++) { const d = addDays(i); if (!S.slots.some((x) => x.dpeId === dp.id && x.date === d && x.status !== "removed")) { date = d; break; } }
+    date = date || addDays(1);
+    S.simSeq = (S.simSeq || 0) + 1;
+    const slot = { id: "sim" + S.simSeq + "x" + (S.nextId++), dpeId: dp.id, date, time: "09:30", airport: dp.home, certs: Object.keys(dp.fees), status: "open", bookingId: null, note: "Simulated opening (demo, not a real examiner)", simulated: true };
+    S.slots.push(slot);
+    fireAlerts(slot, "open");
+    rerender();
+    return slot;
+  }
+
   // Runs when a slot opens up (new opening, cancellation, released request).
   function fireAlerts(slot, kind, { skipMine = false } = {}) {
     const dp = dpeById(slot.dpeId);
@@ -297,12 +373,14 @@
     const others = 1 + (parseInt(slot.id.replace(/\D/g, ""), 10) % 6);
     matched.forEach((a) => {
       const c = certById(a.cert);
-      S.notifications.unshift({
-        id: uid("n"), ts: Date.now(), read: false, slotId: slot.id, dpeId: dp.id, cert: a.cert,
-        title: kind === "cancel" ? `Cancellation: earlier ${c.short} checkride` : `New ${c.short} opening`,
+      const n = {
+        id: uid("n"), ts: Date.now(), read: false, slotId: slot.id, dpeId: dp.id, cert: a.cert, simulated: !!slot.simulated,
+        title: (slot.simulated ? "Simulated: " : "") + (kind === "cancel" ? `Cancellation: earlier ${c.short} checkride` : `New ${c.short} opening`),
         body: `${dp.name} · ${fmtDate(slot.date)} at ${fmtTime(slot.time)} · ${slot.airport} (${relDays(slot.date)}) · ${money(dp.fees[a.cert])}`,
-        channel: "Mock alert · nothing was sent",
-      });
+        channel: slot.simulated ? "Simulated mock alert · nothing was sent" : "Mock alert · nothing was sent",
+      };
+      S.notifications.unshift(n);
+      browserNotify(n);
     });
     const total = matched.length + others;
     toast(`${kind === "cancel" ? "Cancellation" : "Opening"} published (mock). ${matched.length ? `${plural(matched.length, "of your saved alerts")} matched, added to your Student-view inbox. ` : ""}No email, SMS or push is sent; a real version would also notify about ${plural(others, "other sample pilot")}.`);
@@ -507,6 +585,9 @@ const closeModal = () => {
     else if (!ui.sel && slots.length) { ui.sel = slots[0].date; ui.month = ui.sel.slice(0, 7); }
     else if (ui.sel && !q.date && !slots.some((s) => s.date === ui.sel) && !S.slots.some((s) => s.dpeId === dp.id && s.date === ui.sel && s.status === "held" && s.bookingId && S.bookings.some((b) => b.id === s.bookingId && b.mine))) { ui.sel = slots[0]?.date || null; if (ui.sel) ui.month = ui.sel.slice(0, 7); }
     const own = S.role === "dpe" && S.actingDpe === dp.id;
+    // Arriving from an alert: highlight that slot and open the request form once for this link.
+    const pick = q.slot ? S.slots.find((s) => s.id === q.slot && s.dpeId === dp.id && s.status === "open" && !isStale(dp.id)) : null;
+    if (pick) { ui.sel = pick.date; ui.month = pick.date.slice(0, 7); if (ui.autoReqKey !== location.hash) { ui.autoReqKey = location.hash; ui.pendingReq = [pick.id, q.cert]; } }
     const daySlots = ui.sel ? S.slots.filter((s) => s.dpeId === dp.id && s.date === ui.sel && s.status !== "removed").sort((a, b) => a.time.localeCompare(b.time)) : [];
     return `<div class="page">
       ${own ? `<div class="cta-banner" style="margin-bottom:1rem"><b>This is your public profile as pilots see it.</b> <a href="#/dpe-dashboard">Back to dashboard</a></div>` : `<p><a href="#/search?cert=${cert}">← Back to search</a></p>`}
@@ -517,7 +598,7 @@ const closeModal = () => {
               <div style="flex:1;min-width:200px">
                 <h1 style="margin-bottom:.2rem">${esc(dp.name)}</h1>
                 <div class="row" style="gap:.6rem">${sampleBadge()}<span class="muted small">Sample DPE since ${dp.since} · ${esc(dp.fsdo)} (fictional)</span></div>
-                <div class="muted small" style="margin-top:.3rem">${dp.home} · ${esc(apt(dp.home).name)}, ${esc(apt(dp.home).city)} · travels up to ${dp.travelNm} nm · ${ratingText(dp)} · ${dp.languages.map(esc).join(", ")}</div>
+                <div class="muted small" style="margin-top:.3rem">${dp.home} · ${esc(apt(dp.home).name)}, ${esc(apt(dp.home).city)} · travels up to ${dp.travelNm} nm · ${ratingText(dp)} · Speaks ${dp.languages.map(esc).join(", ")}${dp.languages.length > 1 ? " (practical tests are conducted in English)" : ""}</div>
               </div>
             </div>
             <p style="margin-top:1rem">${esc(dp.bio)}</p>
@@ -553,7 +634,8 @@ const closeModal = () => {
           ${calendar(dp)}
           <div class="day-panel" style="margin-top:1rem">
             ${ui.sel ? `<h3>${fmtDate(ui.sel, { weekday: "long", month: "long", day: "numeric" })}</h3>` : `<p class="muted small">${isStale(dp.id) ? "No dates shown." : "No open dates right now."}</p>`}
-            ${daySlots.map((s) => `<div class="slot-row">
+            ${pick ? `<div class="cta-banner small" id="alert-pick" style="margin-bottom:.6rem"><b>From your alert:</b> ${fmtTime(pick.time)} is preselected.${pick.simulated ? ` <span class="pill warn">Simulated opening</span>` : ""}</div>` : q.slot ? `<p class="small" id="alert-pick-gone"><b>That opening is no longer available.</b> Pick another time below.</p>` : ""}
+            ${daySlots.map((s) => `<div class="slot-row${pick && pick.id === s.id ? " picked" : ""}"${pick && pick.id === s.id ? ' aria-current="true"' : ""}>
                 <div><b>${fmtTime(s.time)}</b> · ${s.airport}<div class="muted small">${s.certs.map((c) => certById(c).short).join(", ")}</div>${s.note ? `<div class="small slot-note">Note: ${esc(s.note)}</div>` : ""}</div>
                 ${s.status === "open" && !isStale(dp.id) ? `<button class="btn sm" data-action="request" data-slot="${s.id}" data-cert="${cert}">Request</button>` : statusPill(s.status)}
               </div>`).join("")}
@@ -644,6 +726,7 @@ const closeModal = () => {
         <p class="muted small" style="margin:.3rem 0">Within ${a.radius} nm of ${a.near}${a.before ? ` · before ${fmtDate(a.before)}` : ""}${a.maxFee ? ` · up to ${money(a.maxFee)}` : ""}${dp ? ` · only ${esc(dp.name)}` : ""}</p>
         <div class="row small"><span class="pill">Mock: email only (not sent)</span>
         <a href="#/search?${toQuery({ cert: a.cert, near: a.near, radius: a.radius, before: a.before, maxFee: a.maxFee })}">${plural(matches, "matching opening")} now →</a></div>
+        <div class="row small" style="margin-top:.6rem"><button class="btn ghost sm" data-action="sim-open" data-alert="${a.id}">Simulate a matching opening</button><span class="muted">Demo only: adds a labelled simulated slot and runs this alert.</span></div>
       </div>`;
     };
     return `<div class="page">
@@ -668,14 +751,15 @@ const closeModal = () => {
         </div>
         <aside class="card sticky" id="inbox">
           <div class="row spread"><h2 style="margin:0">Inbox</h2>${unread ? `<button class="btn ghost sm" data-action="read-all">Mark all read</button>` : ""}</div>
-          <p class="muted small">Mock inbox. Tip: switch to <b>DPE view</b> and publish an opening or mark a cancellation near KORL to see a mock alert arrive here.</p>
+          <p class="muted small">Mock inbox. Tip: tap <b>Simulate a matching opening</b> on an alert, or switch to <b>DPE view</b> and publish an opening or mark a cancellation near KORL, to see a mock alert arrive here.</p>
+          ${"Notification" in window ? `<div class="small" id="notif-perm" style="margin-bottom:.75rem">${Notification.permission === "granted" ? `<span class="pill good">Browser notifications on</span> <span class="muted">Shown by this page only. Nothing is emailed or texted.</span>` : Notification.permission === "denied" ? `<span class="muted">Browser notifications are blocked in this browser. The inbox still works.</span>` : `<button class="btn ghost sm" data-action="notif-perm">Also show browser notifications (optional)</button> <span class="muted">Shown by this page only, never email or SMS.</span>`}</div>` : ""}
           ${S.notifications.length ? S.notifications.slice(0, 25).map((n) => {
             const slot = n.slotId ? S.slots.find((s) => s.id === n.slotId) : null;
             const live = slot && slot.status === "open";
             return `<div class="notif ${n.read ? "read" : ""}"><span class="dot"></span><div style="flex:1">
               <b>${esc(n.title)}</b><div class="small">${esc(n.body)}</div>
               <div class="muted small">${fmtTs(n.ts)}${n.channel ? " · " + esc(n.channel) : ""}</div>
-              ${slot ? (live ? `<a class="btn sm" style="margin-top:.4rem" href="#/dpe/${n.dpeId}?cert=${n.cert}&date=${slot.date}" data-action="read-notif" data-id="${n.id}">View opening</a>` : `<span class="pill" style="margin-top:.4rem">Already taken</span>`) : ""}
+              ${n.simulated ? `<span class="pill warn" style="margin-top:.3rem">Simulated</span> ` : ""}${slot ? (live ? `<a class="btn sm" style="margin-top:.4rem" href="${notifLink(n, slot)}" data-action="read-notif" data-id="${n.id}">Book this opening</a>` : `<span class="pill" style="margin-top:.4rem">Already taken</span>`) : ""}
             </div></div>`;
           }).join("") : `<div class="empty">Nothing yet.</div>`}
         </aside>
@@ -697,7 +781,7 @@ const closeModal = () => {
               <input type="checkbox" data-check="${cert}" data-item="${it.id}" ${done ? "checked" : ""} />
               <div><div class="t">${esc(it.t)}</div>${it.n ? `<div class="muted small">${esc(it.n)}</div>` : ""}</div></label>`; }).join("")}
           </section>`).join("")}
-          <p class="muted small">Unverified draft, reference only. The regulation cites have not been checked. Always verify against current 14 CFR, the Airman Certification Standards and AC 61-65, and confirm specifics with your instructor and examiner.</p>
+          <p class="muted small">Unverified draft, reference only. The regulation cites have not been checked. Always verify against current 14 CFR, the applicable ACS or PTS (CFII and Sport still use a PTS: FAA-S-8081-9E and FAA-S-8081-29B) and AC 61-65K, and confirm specifics with your instructor and examiner.</p>
         </div>
         <aside class="card sticky">
           <h2>${esc(certById(cert).name)}</h2>
@@ -722,7 +806,7 @@ const closeModal = () => {
         return `<div class="card">
           <div class="row spread">
             <div class="row" style="gap:1rem"><div class="avatar">${initials(dp.name)}</div><div>
-              <div class="row" style="gap:.5rem"><b>${esc(certById(b.cert).name)}</b>${statusPill(b.status)}</div>
+              <div class="row" style="gap:.5rem"><b>${esc(certById(b.cert).name)}</b>${statusPill(b.status)}${b.simulated ? `<span class="pill warn">Simulated opening</span>` : ""}${b.fromAlert ? `<span class="pill">From a mock alert</span>` : ""}</div>
               <div class="small">${fmtDate(s.date, { weekday: "long", month: "long", day: "numeric" })} · ${fmtTime(s.time)} · ${s.airport} · with <a href="#/dpe/${dp.id}">${esc(dp.name)}</a> <span class="muted">(sample examiner)</span></div>
               <div class="muted small">Requested ${fmtTs(b.createdAt)}</div>
             </div></div>
@@ -732,13 +816,14 @@ const closeModal = () => {
             </div>
           </div>
           <div class="summary small" style="margin-top:.8rem">
-            <div class="line"><span>Examiner deposit (ASSUMPTION, credited toward the fee)</span><b>${money(dep)}</b></div>
+            <div class="line"><span>Examiner deposit (ASSUMPTION, paid to the examiner (mock), credited toward the fee)</span><b>${money(dep)}</b></div>
             <div class="line"><span>Student booking fee</span><b>${money(BOOKING_FEE)}</b></div>
             <div class="line"><span><b>Total due if approved</b></span><b>${money(dep + BOOKING_FEE)}</b></div>
             <div class="line muted"><span>Remaining examiner fee at the test (${money(fee)} less deposit)</span><b>${money(fee - dep)}</b></div>
             <div class="line muted"><span>Actually charged (prototype)</span><b>$0</b></div>
           </div>
-          <div class="muted small" style="margin-top:.5rem">${b.status === "requested" ? "The slot is held while the sample examiner reviews it. Nothing charged." : b.status === "confirmed" ? "Approved. A real version would charge the deposit and fee now; this prototype charged nothing." : b.status === "declined" ? "Declined. Nothing charged. The slot was released." : "Cancelled. Nothing was charged."}</div>
+          <div class="muted small" style="margin-top:.5rem">${b.status === "requested" ? "The slot is held while the sample examiner reviews it. Nothing charged." : b.status === "confirmed" ? "Approved. In a real version the deposit would be paid to the examiner (mock) and the booking fee charged now; this prototype charged nothing." : b.status === "declined" ? "Declined. Nothing charged. The slot was released." : "Cancelled. Nothing was charged."}</div>
+          <div class="muted small" style="margin-top:.35rem" data-policy>${POLICY_SHORT} <a href="#/pricing">Cancellation terms</a></div>
         </div>`; }).join("")}</div>`
         : `<div class="card empty"><h3>No bookings yet</h3><p>Find a sample examiner and submit a mock request. Nothing is charged.</p><a class="btn" href="#/search">Search examiners</a></div>`}
     </div>`;
@@ -958,6 +1043,10 @@ const closeModal = () => {
         </div>
         <p class="muted small" style="margin:.6rem 0 0">One tap on <b>Yes, nothing changed</b> re-confirms your current openings. Saving any edit below also refreshes the stamp. Students always see a \u201cconfirm with the examiner\u201d line.</p>
       </section>
+      <section class="card" id="sim-card" style="margin-bottom:1rem">
+        <div class="row spread"><h2 style="margin:0">Simulate an opening <span class="pill warn" style="vertical-align:middle">Demo · simulated</span></h2><button class="btn ghost sm" data-action="sim-open" data-dpe="${dp.id}" id="sim-open-dpe">Simulate opening</button></div>
+        <p class="muted small" style="margin:.4rem 0 0">Adds one labelled simulated slot for ${esc(dp.name)} on the next free day and runs saved student alerts against it. Matching students see it in their in-app inbox. Nothing is emailed, texted or pushed.</p>
+      </section>
       <form data-form="avail" class="stack avail-form">
         ${weeks.map(wk).join("")}
         <div class="avail-save"><div class="small muted">Changes apply to the next 3 weeks. Requested or approved days are never removed.</div><button class="btn" type="submit" id="avail-save">Save my openings</button></div>
@@ -998,10 +1087,13 @@ const closeModal = () => {
   const monthsAgo = (n, day) => { const t = today0(); return iso(new Date(t.getFullYear(), t.getMonth() - n, day)); };
   const COHORT_SAMPLE = {
     "Ava Thompson": { h: { total: 52, dual: 21, solo: 12 }, kt: [23, 4] },
-    "Liam Chen": { h: { xcpic: 52, inst: 44 }, kt: [14, 9] },
+    "Liam Chen": { h: { xcpic: 61, inst: 49 }, kt: [14, 9] },
     "Mateo Silva": { h: { total: 47, dual: 24, solo: 12 }, kt: [9, 15] },
-    "Noah Patel": { h: { total: 262, pic: 98 }, kt: [5, 20], iacra: false },
+    "Noah Patel": { h: { total: 262, pic: 104 }, kt: [5, 20], iacra: false },
     "Emma Rossi": { h: {}, kt: [3, 1] },
+    "Olivia Grant": { h: { total: 58, dual: 26, solo: 14 }, kt: [6, 12] },
+    "Ethan Brooks": { h: { total: 64, dual: 30, solo: 15 }, kt: [4, 8] },
+    "Zoe Carter": { h: { xcpic: 57, inst: 42 }, kt: [8, 3] },
   };
   function cohortAnswers(st) {
     S.cohortReady = S.cohortReady || {};
@@ -1026,14 +1118,24 @@ const closeModal = () => {
   }
   // A slot fits a student if the examiner lists the rating, the slot offers it, and it is on or before their knowledge-test expiry.
   const slotFits = (st, sl) => sl.certs.includes(st.cert) && !!(dpeById(sl.dpeId).fees[st.cert]) && sl.date <= ktLimit(st);
-  // Matching inside one examiner-day: students with the fewest compatible slots go first.
+  // Matching inside one examiner-day: a maximum bipartite matching (augmenting paths), so a cohort that can share a day
+  // is never rejected because an earlier student took the "wrong" slot. Students with the fewest compatible slots go first,
+  // each prefers the earliest time.
   function matchDay(list, daySlots) {
-    const used = new Set(), out = [];
-    [...list].sort((x, y) => daySlots.filter((sl) => slotFits(x, sl)).length - daySlots.filter((sl) => slotFits(y, sl)).length || x.name.localeCompare(y.name)).forEach((st) => {
-      const sl = daySlots.find((z) => !used.has(z.id) && slotFits(st, z));
-      if (sl) { used.add(sl.id); out.push({ st, slot: sl }); }
-    });
-    return out;
+    const slotsByTime = [...daySlots].sort((a, b) => a.time.localeCompare(b.time));
+    const fits = new Map(list.map((st) => [st, slotsByTime.filter((sl) => slotFits(st, sl))]));
+    const order = [...list].sort((x, y) => fits.get(x).length - fits.get(y).length || x.name.localeCompare(y.name));
+    const owner = new Map(); // slot id -> student
+    const tryAssign = (st, seen) => {
+      for (const sl of fits.get(st)) {
+        if (seen.has(sl.id)) continue;
+        seen.add(sl.id);
+        if (!owner.has(sl.id) || tryAssign(owner.get(sl.id), seen)) { owner.set(sl.id, st); return true; }
+      }
+      return false;
+    };
+    order.forEach((st) => tryAssign(st, new Set()));
+    return slotsByTime.filter((sl) => owner.has(sl.id)).map((sl) => ({ st: owner.get(sl.id), slot: sl }));
   }
   const stAllIn = (st, dpId) => allIn(dpeById(dpId), st.cert, D.school.airport).total;
   const optKey = (o) => o.split ? "split" : `${o.dp.id}_${o.date}`;
@@ -1179,7 +1281,7 @@ const closeModal = () => {
           <tfoot><tr><td colspan="2"><b>Totals for ${plural(rows.length, "student")}</b></td><td class="num">${money(tot.fee)}</td><td class="num">${money(tot.dep)}</td><td class="num">${money(BOOKING_FEE * rows.length)} <span class="small muted">(${money(BOOKING_FEE)} × ${rows.length})</span></td><td class="num"><b id="cohort-total">${money(tot.due)}</b></td><td class="num" id="cohort-allin">${money(tot.allIn)}</td></tr></tfoot></table></div>
           <div class="summary small" style="margin-top:.75rem">
             <div class="line"><span>Examiner fees, due at the test (deposits are credited toward these)</span><b>${money(tot.fee)}</b></div>
-            <div class="line"><span>Deposits, <b>ASSUMPTION</b>, due if each request is approved</span><b>${money(tot.dep)}</b></div>
+            <div class="line"><span>Deposits, <b>ASSUMPTION</b>, paid to each examiner (mock) if the request is approved</span><b>${money(tot.dep)}</b></div>
             <div class="line"><span>Student booking fees, ${money(BOOKING_FEE)} per student</span><b>${money(BOOKING_FEE * rows.length)}</b></div>
             <div class="line" style="border-top:1px solid var(--border-strong);margin-top:.3rem;padding-top:.5rem"><span><b>Total due if all are approved</b></span><b>${money(tot.due)}</b></div>
             <div class="line muted"><span>Actually charged in this prototype</span><b id="cohort-charged">$0</b></div>
@@ -1319,7 +1421,7 @@ const closeModal = () => {
           <li>Sample profile and calendar</li><li>Booking requests: approve or decline</li><li>Curated checklists for approved students</li></ul>
           <a class="btn secondary" href="#" data-action="set-role" data-role="dpe">See the DPE view</a></div>
         <div class="card plan"><h3>Students · booking fee</h3><div class="p">${money(BOOKING_FEE)}<span class="muted small" style="font-weight:400"> / booking</span></div><ul class="small">
-          <li>Search, fee comparison and checklists are free</li><li>Plus the examiner deposit, credited toward the examiner's fee</li><li>Shown in the mock booking flow, never charged</li></ul>
+          <li>Search, fee comparison and checklists are free</li><li>Plus the examiner deposit, paid to the examiner (mock) and credited toward their fee</li><li>Shown in the mock booking flow, never charged</li></ul>
           <a class="btn secondary" href="#/search">Try a mock request</a></div>
         <div class="card plan"><h3>Flight schools · proposed plans</h3><div class="p">$0 <span class="muted small" style="font-weight:400">to</span> $299<span class="muted small" style="font-weight:400"> / mo</span></div><ul class="small" id="pricing-tiers">
           ${TIERS.map((t) => `<li><b>${esc(t.name)}</b> ${t.price}${t.unit ? " " + esc(t.unit) : ""}</li>`).join("")}<li>Proposed pricing, not final. Selecting one is a mock.</li></ul>
@@ -1327,7 +1429,7 @@ const closeModal = () => {
       </section>
       <section class="grid g2" style="margin-top:1rem">
         <div class="card"><h3>Why a flat student fee?</h3><p class="muted small" style="margin:0">It stays the same whichever examiner you choose and is not a percentage of the examiner's fee. Whether any booking fee is permitted alongside designee rules still needs confirming with the FAA or FSDO before launch.</p></div>
-        <div class="card"><h3>Open questions</h3><p class="muted small" style="margin:0">Real examiner data sources, payment handling, deposit refund rules and checklist review by a CFI or DPE are all undecided and listed in the project plan.</p></div>
+        <div class="card" id="deposit-policy"><h3>Deposits and cancellations <span class="pill warn" style="vertical-align:middle">Proposed, pending legal review</span></h3><p class="small" style="margin:0">${DEPOSIT_POLICY}</p><p class="muted small" style="margin:.5rem 0 0">Nothing is charged or refunded in this prototype. Still open: real examiner data sources, payment handling and checklist review by a CFI or DPE (see the project plan).</p></div>
       </section>
     </div>`;
   }
@@ -1375,6 +1477,8 @@ const closeModal = () => {
     $("#bell-count").textContent = unread; $("#bell").setAttribute("aria-label", unread ? `Notifications, ${unread} unread` : "Notifications");
 if (unread > (ui.lastUnread ?? unread)) { const b = $("#bell"); b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
 ui.lastUnread = unread;
+    try { if (navigator.setAppBadge) { unread && S.role === "pilot" ? navigator.setAppBadge(unread) : navigator.clearAppBadge(); } } catch (e) { /* optional */ }
+    if (ui.pendingReq) { const [sid, c] = ui.pendingReq; ui.pendingReq = null; setTimeout(() => { if ($("#modal-root form[data-form=request]")) return; const s = S.slots.find((x) => x.id === sid); if (s && s.status === "open") openRequest(sid, c); }, 60); }
 if (ui.lastPath !== path) { window.scrollTo(0, 0); ui.lastPath = path; animateEnter(); }
   }
 const rerender = () => { save(); render(); };
@@ -1435,14 +1539,14 @@ function countUp(root) {
   const END_KT = "Knowledge-test endorsement (draft cite 61.35)";
   const END_PT = "Practical-test endorsement, training within the preceding 2 calendar months (draft cite 61.39)";
   const READY = {
-    ppl: { hours: [["total", "Total flight time", 40, "61.109(a)"], ["dual", "Dual instruction received", 20, "61.109(a)(1)"], ["solo", "Solo flight time", 10, "61.109(a)(2)"]], test: true, end: [END_KT, END_PT] },
-    sport: { hours: [["total", "Total flight time", 20, "61.313(a)"], ["dual", "Dual instruction received", 15, "61.313(a)(1)"], ["solo", "Solo flight time", 5, "61.313(a)(2)"]], test: true, end: [END_KT, END_PT] },
+    ppl: { hours: [["total", "Total flight time", 40, "61.109(a)"], ["dual", "Dual instruction received", 20, "61.109(a)"], ["solo", "Solo flight time", 10, "61.109(a)(5)"]], test: true, end: [END_KT, END_PT] },
+    sport: { hours: [["total", "Total flight time", 20, "61.313(a)"], ["dual", "Dual instruction received", 15, "61.313(a)(1)"], ["solo", "Solo flight time", 5, "61.313(a)(1)"]], test: true, end: [END_KT, END_PT] },
     ir: { hours: [["xcpic", "Cross-country time as PIC", 50, "61.65(d)(1)"], ["inst", "Actual or simulated instrument time", 40, "61.65(d)(2)"]], test: true, end: [END_KT, END_PT] },
     cpl: { hours: [["total", "Total flight time", 250, "61.129(a)"], ["pic", "Pilot-in-command time", 100, "61.129(a)(2)"]], test: true, end: [END_KT, END_PT] },
     me: { hours: [], test: false, end: ["Multi-engine training and practical-test endorsement (draft cite 61.63(c))"] },
     cfi: { hours: [], test: true, end: ["Fundamentals of instructing and knowledge endorsements (draft cite 61.183)", "Flight-proficiency endorsement (draft cite 61.187)", "Spin-training endorsement (draft cite 61.183(i))"] },
     cfii: { hours: [], test: true, end: ["Instrument instructor practical-test endorsement (draft cite 61.183, 61.187)"] },
-    mei: { hours: [["mepic", "Multi-engine pilot-in-command time", 15, "61.195(b)"]], test: false, end: ["Multi-engine instructor practical-test endorsement (draft cite 61.187)"] },
+    mei: { hours: [["mepic", "Multi-engine pilot-in-command time", 15, "61.183(j)"]], test: false, end: ["Multi-engine instructor practical-test endorsement (draft cite 61.187)"] },
   };
   const readyOf = (cert) => READY[cert] || { hours: [], test: true, end: [END_PT] };
   // Knowledge test results: draft rule of 24 calendar months (expires at the end of the 24th month after the test month).
@@ -1451,7 +1555,7 @@ function countUp(root) {
     const r = readyOf(cert);
     return `<fieldset class="ready-check" id="req-check">
       <legend>Readiness check <span class="pill warn">Self-attested</span></legend>
-      <p class="small muted" style="margin:0 0 .5rem">Unverified draft, not legal or FAA advice. Minimums below are draft Part 61 figures that have not been checked. Your instructor and the examiner decide eligibility; this prototype verifies nothing.</p>
+      <p class="small muted" style="margin:0 0 .5rem">Unverified draft, not legal or FAA advice. Minimums below are draft Part 61 figures; verify against current 14 CFR, the applicable ACS or PTS (CFII and Sport still use a PTS) and AC 61-65K. Your instructor and the examiner decide eligibility; this prototype verifies nothing.</p>
       <div class="small" style="font-weight:700">Endorsements in your logbook</div>
       ${r.end.map((e, i) => `<label class="check-row small"><input type="checkbox" name="end-${i}" /> <span>${esc(e)}</span></label>`).join("")}
       ${r.hours.length ? `<div class="small" style="font-weight:700;margin-top:.4rem">Logbook hours</div><div class="grid g2 ready-hours">${r.hours.map(([k, l, min, cite]) => `<label class="field"><span>${esc(l)} <span class="muted">(draft min ${min} h, ${cite})</span></span><input type="number" name="h-${k}" min="0" max="20000" step="0.1" inputmode="decimal" /></label>`).join("")}</div>` : `<p class="small muted" style="margin:.4rem 0 0">No hour minimum in this draft for ${esc(certById(cert).short)}; check with your instructor.</p>`}
@@ -1533,12 +1637,13 @@ function countUp(root) {
     const fee = dp.fees[cert], dep = depositFor(dp, cert);
     return `
     <div class="line"><span>Examiner fee, ${esc(certById(cert).short)} (sample)</span><b>${money(fee)}</b></div>
-    <div class="line"><span>Examiner deposit, <b>ASSUMPTION</b> (credited toward the fee)</span><b>${money(dep)}</b></div>
+    <div class="line"><span>Examiner deposit, <b>ASSUMPTION</b>, paid to the examiner (mock), credited toward the fee</span><b>${money(dep)}</b></div>
     <div class="line"><span>Student booking fee</span><b>${money(BOOKING_FEE)}</b></div>
     <div class="line" style="border-top:1px solid var(--border-strong);margin-top:.3rem;padding-top:.5rem"><span><b>Total due if the examiner approves</b></span><b>${money(dep + BOOKING_FEE)}</b></div>
     <div class="line muted"><span>Remaining examiner fee at the test</span><b>${money(fee - dep)}</b></div>
     <div class="line muted"><span>Actually charged in this prototype</span><b>$0</b></div>
-    <div class="warn-note small" style="margin-top:.5rem"><b>ASSUMPTION, not a policy:</b> the deposit is about 20% of the examiner fee, rounded to $25, minimum $100, and is part of the fee, not an extra. Real deposit rules are set by each examiner.</div>`;
+    <div class="warn-note small" style="margin-top:.5rem"><b>ASSUMPTION, not a policy:</b> the deposit is about 20% of the examiner fee, rounded to $25, minimum $100, and is part of the fee, not an extra. Real deposit rules are set by each examiner.</div>
+    <div class="small" style="margin-top:.5rem" data-policy><b>Deposit paid to the examiner (mock).</b> ${DEPOSIT_POLICY} <span class="pill warn">Proposed, pending legal review</span></div>`;
   };
 
   function setBookingState(b, status) {
@@ -1559,6 +1664,8 @@ function countUp(root) {
       addAlert({ cert: f.cert, near: f.near, radius: f.radius, before: f.before || addDays(60), maxFee: f.maxFee, dpeId: el.dataset.dpe || "" });
     },
     "alert-dpe": (el) => addAlert({ cert: el.dataset.cert, near: dpeById(el.dataset.dpe).home, radius: 100, before: addDays(90), maxFee: 0, dpeId: el.dataset.dpe }),
+    "sim-open": (el) => { simulateOpening({ alertId: el.dataset.alert, dpeId: el.dataset.dpe }); },
+    "notif-perm": () => { try { Promise.resolve(Notification.requestPermission()).then(() => rerender()); } catch (e) { /* unsupported */ } },
     "del-alert": (el) => { S.alerts = S.alerts.filter((a) => a.id !== el.dataset.id); toast("Alert deleted."); rerender(); },
     "read-all": () => { S.notifications.forEach((n) => { n.read = true; }); rerender(); },
     "read-notif": (el) => { const n = S.notifications.find((x) => x.id === el.dataset.id); if (n) n.read = true; save(); return true; },
@@ -1572,7 +1679,7 @@ function countUp(root) {
       const b = S.bookings.find((x) => x.id === el.dataset.id);
       const wasConfirmed = b.status === "confirmed";
       const s = setBookingState(b, "cancelled");
-      toast(wasConfirmed ? "Booking cancelled (mock). Nothing was charged, so nothing to refund." : "Request cancelled.");
+      toast(wasConfirmed ? "Booking cancelled (mock). Nothing was charged. Under the proposed policy, the $15 fee is credited if you cancel at least 48 hours ahead; the deposit follows the examiner's terms." : "Request cancelled.");
       fireAlerts(s, "cancel", { skipMine: true });
       rerender();
     },
@@ -1698,8 +1805,11 @@ function countUp(root) {
       const cert = fd.get("cert");
       const dpx = dpeById(s.dpeId);
       const b = { id: uid("b"), slotId: s.id, dpeId: s.dpeId, applicant: fd.get("name").trim() || "Alex Pilot", mine: true, cert, aircraft: fd.get("aircraft").trim(), cfi: fd.get("cfi").trim(), readiness: checklistPct(cert), selfCheck: { attested: true, by: "student", warnings: gate.warn.length, warn: gate.warn, answers: { ...answersFromForm(f), iacra: true }, ktDate: fd.get("kt-date") || "", hours: Object.fromEntries([...fd.entries()].filter(([k]) => k.startsWith("h-")).map(([k, v]) => [k.slice(2), +v])) }, status: "requested", createdAt: Date.now(), feeUsd: dpx.fees[cert], depositUsd: depositFor(dpx, cert), bookingFeeUsd: BOOKING_FEE };
+      if (s.simulated) b.simulated = true;
+      if (parseHash().q.slot === s.id) b.fromAlert = true;
       S.bookings.push(b);
       s.status = "held"; s.bookingId = b.id;
+      S.notifications.forEach((n) => { if (n.slotId === s.id) n.read = true; });
       closeModal();
       toast(`Mock request saved (status: Requested). Nothing was sent or charged. The slot is held while the sample examiner reviews it.`);
       go("#/bookings");

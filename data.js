@@ -63,7 +63,7 @@ window.CC_DATA = (() => {
       aircraft: "Applicant provides the aircraft. Bring all maintenance logbooks, not summaries." },
     { id: "d6", name: "Carlos Mendez", home: "KTMB", travelNm: 50, travelFee: 150, retestFee: 550, fsdo: "South Florida FSDO", since: 2016, languages: ["English", "Spanish", "Portuguese"], rating: 4.9, reviews: 156, responseHours: 6,
       fees: { ppl: 1100, ir: 1050, cpl: 1200 }, soonest: 30, gap: 2, count: 12,
-      bio: "Popular with international students. Can do the oral in Spanish or Portuguese where permitted.",
+      bio: "Popular with international students. Can explain logistics in Spanish or Portuguese before the test day; the practical test itself is conducted in English per FAA standards.",
       cancellation: "Free reschedule with 72 hours notice.",
       aircraft: "Applicant provides the aircraft." },
     { id: "d7", name: "Ethan Park", home: "KFXE", travelNm: 60, travelFee: 150, retestFee: 650, fsdo: "South Florida FSDO", since: 2018, languages: ["English", "Korean"], rating: 4.6, reviews: 71, responseHours: 18,
@@ -119,7 +119,7 @@ window.CC_DATA = (() => {
     d3: { rental: 150, lodging: 130, noShow: 250, avgDaysToNext: 9, leadDays: 14, reviewList: [R("cfi", 5, "Deep dive on fundamentals of instructing. Prepare your lesson plans."), R("ppl", 5, "Friendly, put me at ease. Quick to answer questions before the test."), R("cfii", 4, "Thorough oral, fair flight.")] },
     d4: { rental: 130, lodging: 110, noShow: 150, avgDaysToNext: 16, leadDays: 21, reviewList: [R("sport", 5, "Happy to fly out to our small field, which saved us a trip."), R("ppl", 4, "Relaxed but exact standards."), R("ir", 4, "Good use of the whole day.")] },
     d5: { rental: 165, lodging: 145, noShow: 650, avgDaysToNext: 7, leadDays: 28, reviewList: [R("ppl", 5, "Very experienced, explained every task. Bring all your logbooks."), R("mei", 5, "Weekday and Saturday options helped our schedule."), R("cfi", 4, "Late-cancel fee is steep, so plan ahead.")] },
-    d6: { rental: 150, lodging: 150, noShow: 275, avgDaysToNext: 33, leadDays: 42, reviewList: [R("ppl", 5, "Did the oral in Spanish with me, which made it far less stressful."), R("cpl", 5, "Clear expectations, relaxed pace."), R("ir", 4, "Popular examiner, so book early.")] },
+    d6: { rental: 150, lodging: 150, noShow: 275, avgDaysToNext: 33, leadDays: 42, reviewList: [R("ppl", 5, "Went over the logistics in Spanish beforehand, which made the day far less stressful."), R("cpl", 5, "Clear expectations, relaxed pace."), R("ir", 4, "Popular examiner, so book early.")] },
     d7: { rental: 170, lodging: 155, noShow: 250, avgDaysToNext: 14, leadDays: 24, reviewList: [R("cpl", 5, "Focused on what airlines care about. Challenging but fair."), R("me", 4, "Strict on weight and balance paperwork."), R("ppl", 4, "Good checkride, slow to reply to messages.")] },
     d8: { rental: 145, lodging: 125, noShow: 200, avgDaysToNext: 20, leadDays: 21, reviewList: [R("ir", 5, "Replied within hours and kept the day well organized."), R("cfii", 5, "Gave useful tips on teaching instrument approaches."), R("ppl", 5, "Calm, clear and on time.")] },
     d9: { rental: 140, lodging: 120, noShow: 200, avgDaysToNext: 10, leadDays: 28, reviewList: [R("ppl", 5, "Weekend date was perfect for my work schedule."), R("me", 4, "A bit slow to reply, great on the day."), R("ir", 4, "Fair and consistent.")] },
@@ -146,23 +146,28 @@ window.CC_DATA = (() => {
   const school = {
     name: "Demo Flight Academy",
     airport: "KORL",
-        students: [
+    // Sample roster: a realistic mix so the cohort demo works out of the box (6 of 8 schedulable students ready,
+    // 3 of those with warnings, 2 blocked for different reasons, 2 already scheduled). All fictional.
+    students: [
       { name: "Ava Thompson", cert: "ppl", cfi: "Jake Morales", readiness: 92, endorsed: true, status: "none" },
       { name: "Sofia Martinez", cert: "ppl", cfi: "Jake Morales", readiness: 100, endorsed: true, status: "confirmed", dpe: "d2", daysOut: 22 },
-      { name: "Liam Chen", cert: "ir", cfi: "Dana Wells", readiness: 75, endorsed: false, status: "none" },
-      { name: "Mateo Silva", cert: "ppl", cfi: "Dana Wells", readiness: 85, endorsed: false, status: "alert" },
-      { name: "Noah Patel", cert: "cpl", cfi: "Jake Morales", readiness: 60, endorsed: false, status: "none" },
+      { name: "Liam Chen", cert: "ir", cfi: "Dana Wells", readiness: 95, endorsed: true, status: "none" },
+      { name: "Mateo Silva", cert: "ppl", cfi: "Dana Wells", readiness: 85, endorsed: true, status: "alert" },
+      { name: "Noah Patel", cert: "cpl", cfi: "Jake Morales", readiness: 94, endorsed: true, status: "none" },
       { name: "Emma Rossi", cert: "cfi", cfi: "Dana Wells", readiness: 40, endorsed: false, status: "none" },
       { name: "Harper Nguyen", cert: "ir", cfi: "Dana Wells", readiness: 97, endorsed: true, status: "requested", dpe: "d9", daysOut: 9 },
+      { name: "Olivia Grant", cert: "ppl", cfi: "Jake Morales", readiness: 96, endorsed: true, status: "none" },
+      { name: "Ethan Brooks", cert: "ppl", cfi: "Dana Wells", readiness: 100, endorsed: true, status: "none" },
+      { name: "Zoe Carter", cert: "ir", cfi: "Jake Morales", readiness: 91, endorsed: true, status: "none" },
     ],
   };
 
-  // Readiness checklists. UNVERIFIED DRAFT: written from memory, cites not yet checked by a CFI/DPE. Always verify against current 14 CFR, the ACS and AC 61-65.
+  // Readiness checklists. UNVERIFIED DRAFT: written from memory, cites not yet checked by a CFI/DPE. Always verify against current 14 CFR, the applicable ACS or PTS (CFII and Sport still use a PTS) and AC 61-65K.
   const D = (id, t, n) => ({ id, t, n });
   const commonDocs = [
     D("id", "Government-issued photo ID", "Must match the name in IACRA."),
     D("iacra", "IACRA application (FAA Form 8710-1) complete", "Your instructor signs the recommendation, and you sign in IACRA before the checkride."),
-    D("ktr", "Airman Knowledge Test Report", "Passed within the preceding 24 calendar months. Bring the original."),
+    D("ktr", "Airman Knowledge Test Report", "Passed within the 24 calendar months before the month you take the practical test (§61.39(a)(1)). Bring the report to the checkride (§61.39(a)(2))."),
     D("log", "Pilot logbook", "Tab the entries that show required experience and endorsements."),
     D("fee", "Examiner fee, in the payment method your DPE accepts", "Paid directly to the examiner."),
   ];
@@ -170,7 +175,7 @@ window.CC_DATA = (() => {
     D("aw", "Airworthiness certificate on board", ""),
     D("reg", "Registration certificate on board (current)", ""),
     D("poh", "POH/AFM with current weight & balance", ""),
-    D("annual", "Annual inspection within 12 calendar months", "Plus a 100-hour inspection if the aircraft is used for hire or flight instruction."),
+    D("annual", "Annual inspection within 12 calendar months", "Plus a 100-hour inspection if the aircraft carries people for hire or is provided by the instructor for flight instruction for hire (§91.409(b))."),
     D("elt", "ELT inspection within 12 calendar months, battery not expired", ""),
     D("xpdr", "Transponder check within 24 calendar months", ""),
     D("ad", "AD compliance documented", "Bring the actual maintenance logbooks."),
@@ -185,69 +190,70 @@ window.CC_DATA = (() => {
   const checklists = {
     ppl: [
       { cat: "Documents", items: [D("stu", "Student pilot certificate", ""), D("med", "Current FAA medical certificate", "Confirm BasicMed eligibility with your DPE if applicable."), ...commonDocs] },
-      { cat: "Endorsements (AC 61-65)", items: [
+      { cat: "Endorsements (AC 61-65K)", items: [
         D("e-solo", "Pre-solo knowledge test and flight training (§61.87(b), (c))", ""),
         D("e-solo90", "Solo flight endorsement, current within 90 days (§61.87(n))", ""),
         D("e-xc", "Solo cross-country endorsements (§61.93)", ""),
         D("e-kt", "Knowledge test endorsement (§61.35(a)(1))", ""),
-        D("e-pt", "Practical test: 3 hrs training in prior 2 calendar months and ready (§61.39(a)(6)(i)–(ii))", ""),
+        D("e-pt", "Practical test endorsement: trained within the 2 calendar months before the month of application and ready (§61.39(a)(6)(i)–(ii))", ""),
         D("e-kd", "Knowledge test deficiencies reviewed (§61.39(a)(6)(iii))", ""),
         D("e-prof", "Flight proficiency / aeronautical knowledge (§61.103(f), §61.107(b))", ""),
       ] },
       { cat: "Experience (§61.109(a))", items: [
         D("x40", "40 hours total flight time", ""),
-        D("x20", "20 hours dual instruction", "Including 3 hrs XC, 3 hrs night (one 100 nm XC, 10 takeoffs/landings), 3 hrs instrument, 3 hrs test prep in prior 2 calendar months."),
+        D("x20", "20 hours dual instruction", "Including 3 hrs XC, 3 hrs night (one XC over 100 nm total distance, 10 full-stop takeoffs and landings), 3 hrs instrument, 3 hrs test prep within the 2 calendar months before the test month."),
         D("x10", "10 hours solo", "Including 5 hrs solo XC, one 150 nm solo XC with full-stop landings at 3 points (one leg > 50 nm), 3 takeoffs/landings at a towered airport."),
       ] },
       { cat: "Aircraft", items: aircraftDocs },
     ],
     ir: [
       { cat: "Documents", items: [D("cert", "Pilot certificate", ""), D("med", "Current FAA medical certificate", ""), ...commonDocs] },
-      { cat: "Endorsements (AC 61-65)", items: [
+      { cat: "Endorsements (AC 61-65K)", items: [
         D("e-kt", "Knowledge test endorsement (§61.35(a)(1))", ""),
         D("e-prep", "Instrument practical test readiness (§61.65(a)(6))", ""),
-        D("e-pt", "Practical test: 3 hrs training in prior 2 calendar months and ready (§61.39(a)(6)(i)–(ii))", ""),
+        D("e-pt", "Practical test endorsement: trained within the 2 calendar months before the month of application and ready (§61.39(a)(6)(i)–(ii))", ""),
         D("e-kd", "Knowledge test deficiencies reviewed (§61.39(a)(6)(iii))", ""),
       ] },
       { cat: "Experience (§61.65(d))", items: [
         D("x50", "50 hours cross-country PIC (10 in airplanes)", ""),
         D("x40", "40 hours actual or simulated instrument", "Including 15 hrs from a CFII and 3 hrs test prep in prior 2 calendar months."),
-        D("x250", "250 nm IFR cross-country with 3 different kinds of approaches", "Flown on an IFR flight plan, with an approach at each airport."),
+        D("x250", "250 nm IFR cross-country with an authorized instructor and 3 different kinds of approaches", "Along airways or ATC-directed routing, on an IFR flight plan, with an instrument approach at each airport (§61.65(d)(2)(ii))."),
       ] },
       { cat: "Aircraft", items: [...aircraftDocs, ...ifrAircraft] },
     ],
     cpl: [
-      { cat: "Documents", items: [D("cert", "Private pilot certificate", ""), D("med", "Current FAA medical certificate (2nd class to exercise commercial privileges)", ""), ...commonDocs] },
-      { cat: "Endorsements (AC 61-65)", items: [
+      { cat: "Documents", items: [D("cert", "Private pilot certificate", ""), D("med", "FAA medical certificate (third class is enough for the checkride, §61.23(a)(3)(iii); second class needed to exercise commercial privileges, §61.23(a)(2)(ii))", ""), ...commonDocs] },
+      { cat: "Endorsements (AC 61-65K)", items: [
         D("e-kt", "Knowledge test endorsement (§61.35(a)(1))", ""),
-        D("e-pt", "Practical test: 3 hrs training in prior 2 calendar months and ready (§61.39(a)(6)(i)–(ii))", ""),
+        D("e-pt", "Practical test endorsement: trained within the 2 calendar months before the month of application and ready (§61.39(a)(6)(i)–(ii))", ""),
         D("e-kd", "Knowledge test deficiencies reviewed (§61.39(a)(6)(iii))", ""),
         D("e-cx", "Complex / high-performance endorsements, if the checkride aircraft needs them (§61.31)", ""),
       ] },
       { cat: "Experience (§61.129(a))", items: [
         D("x250", "250 hours total time", "100 in powered aircraft (50 in airplanes)."),
         D("x100", "100 hours PIC", "Including 50 hrs in airplanes and 50 hrs cross-country (10 in airplanes)."),
-        D("x20", "20 hours training", "Includes 10 hrs instrument, 10 hrs complex/turbine/TAA, a 2-hr day XC and a 2-hr night XC (each > 100 nm), and 3 hrs prep."),
-        D("x10", "10 hours solo / PIC with instructor on board", "Includes a 300 nm XC with 3 points (one leg ≥ 250 nm) and 5 hrs night VFR with 10 takeoffs/landings at a towered airport."),
+        D("x20", "20 hours training", "Includes 10 hrs instrument (at least 5 in a single-engine airplane), 10 hrs complex/turbine/TAA, a 2-hr day XC and a 2-hr night XC (each more than 100 nm straight-line from the original departure point), and 3 hrs prep within the 2 calendar months before the test month."),
+        D("x10", "10 hours solo / PIC with instructor on board", "Includes a 300 nm XC with landings at 3 points, one point at least 250 nm straight-line from the original departure point (150 nm in Hawaii), and 5 hrs night VFR with 10 takeoffs and 10 landings at a towered airport."),
       ] },
       { cat: "Aircraft", items: aircraftDocs },
     ],
     cfi: [
-      { cat: "Documents", items: [D("cert", "Commercial pilot certificate with instrument rating", ""), D("foi", "Fundamentals of Instructing (FOI) knowledge test report", ""), D("fia", "Flight Instructor Airplane (FIA) knowledge test report", ""), ...commonDocs] },
-      { cat: "Endorsements (AC 61-65)", items: [
+      { cat: "Documents", items: [D("cert", "Commercial or ATP certificate with airplane rating and instrument rating (§61.183(c))", ""), D("med", "FAA medical certificate (at least third class) or BasicMed (§61.23(a)(3)(iii))", ""), D("foi", "Fundamentals of Instructing (FOI) knowledge test report (unless exempt under §61.183(e))", ""), D("fia", "Flight Instructor Airplane (FIA) knowledge test report", ""), ...commonDocs] },
+      { cat: "Endorsements (AC 61-65K)", items: [
         D("e-spin", "Spin training endorsement (§61.183(i))", ""),
         D("e-kt", "Knowledge test endorsement(s) (§61.35(a)(1))", ""),
         D("e-pt", "Practical test endorsement (§61.183(g), §61.39(a)(6))", ""),
       ] },
-      { cat: "Preparation", items: [D("lp", "Lesson plans for the ACS areas", "Your DPE may assign specific tasks ahead of time."), D("refs", "Current FAR/AIM, handbooks and ACS available", "")] },
+      { cat: "Preparation", items: [D("lp", "Lesson plans for the ACS areas (FAA-S-ACS-25)", "Your DPE may assign specific tasks ahead of time."), D("refs", "Current FAR/AIM, handbooks and ACS available", "")] },
       { cat: "Aircraft", items: aircraftDocs },
     ],
   };
   // Simpler templates for the remaining certificates.
   ["me", "cfii", "mei", "sport"].forEach((c) => {
     checklists[c] = [
-      { cat: "Documents", items: [D("cert", c === "sport" ? "Student pilot certificate" : "Current pilot / instructor certificate", ""), D("med", c === "sport" ? "Valid U.S. driver's license or FAA medical" : "Current FAA medical certificate (if acting as PIC)", ""), ...commonDocs.filter((d) => c === "me" ? d.id !== "ktr" : true)] },
-      { cat: "Endorsements (AC 61-65)", items: [D("e-pt", "Practical test endorsement (§61.39(a)(6))", "Confirm the exact endorsement wording with your CFI."), D("e-other", "Certificate-specific endorsements per AC 61-65", "")] },
+      { cat: "Documents", items: [D("cert", c === "sport" ? "Student pilot certificate" : "Current pilot / instructor certificate", ""), D("med", c === "sport" ? "Valid U.S. driver's license or FAA medical" : "FAA medical certificate (at least third class) or BasicMed (§61.23(a)(3)(iii))", ""), ...commonDocs.filter((d) => (c === "me" || c === "mei") ? d.id !== "ktr" : true)] },
+      { cat: "Endorsements (AC 61-65K)", items: [D("e-pt", "Practical test endorsement (§61.39(a)(6))", "Confirm the exact endorsement wording with your CFI."), D("e-other", "Certificate-specific endorsements per AC 61-65K", "")] },
+      ...(c === "cfii" || c === "sport" ? [{ cat: "Preparation", items: [D("refs", c === "cfii" ? "Current FAR/AIM, handbooks and the Flight Instructor Instrument PTS (FAA-S-8081-9E; this test still uses a PTS, not an ACS)" : "Current FAR/AIM, handbooks and the Sport Pilot PTS (FAA-S-8081-29B; this test still uses a PTS, not an ACS)", "")] }] : []),
       { cat: "Aircraft", items: c === "cfii" ? [...aircraftDocs, ...ifrAircraft] : aircraftDocs },
     ];
   });

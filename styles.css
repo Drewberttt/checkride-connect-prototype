@@ -1,3 +1,27 @@
+/* Self-hosted brand fonts (SIL OFL 1.1, licenses in fonts/licenses/). font-display: swap, system fallbacks in the stacks below. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("fonts/BricolageGrotesque-Variable-latin.woff2") format("woff2");
+  font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("fonts/BricolageGrotesque-Variable-latin-ext.woff2") format("woff2");
+  font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+
 /* Layout: a calm operations console. Cool-neutral canvas, white panels, one cobalt accent.
    The dark departures-style openings board is the single standout element.
    Airport codes and times are set in mono, like an ops board. */
@@ -445,6 +469,9 @@ td:last-child { border-radius: 0 8px 8px 0; }
 .tabs a { padding: .4rem .85rem; border-radius: 9px; color: var(--muted); font-size: .88rem; font-weight: 500; transition: background .2s, color .2s, box-shadow .2s; }
 .tabs a:hover { color: var(--text); }
 .tabs a.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-md); }
+/* Tap targets at every width: tab links 44px (nav), standalone name/'see all' links at least 24px (WCAG 2.5.8). */
+.tabs a { min-height: 44px; display: inline-flex; align-items: center; }
+h2 a, h3 a, th a, td a, .see-all, .chips > a.small { display: inline-flex; align-items: center; min-height: 24px; }
 
 /* ---------- Notifications ---------- */
 .notif { display: flex; gap: .75rem; padding: .9rem 0; border-bottom: 1px solid var(--border); }
@@ -698,3 +725,12 @@ input[type=checkbox]:focus-visible, input[type=radio]:focus-visible, select:focu
 /* readiness reasons wrap instead of scrolling sideways */
 .table-wrap .ready-table td:nth-child(3) { white-space: normal; min-width: 14rem; }
 @media (max-width: 640px) { .table-wrap .ready-table td:nth-child(3) { min-width: 12rem; } }
+/* Phase 4: 44px tap targets in the top bar at every width (WCAG 2.5.5 target size). Height only, so widths and the 1041-1440 nav fit are unchanged. */
+.nav a { min-height: 44px; display: inline-flex; align-items: center; }
+.nav a.active::after { bottom: 5px; }
+.brand { min-height: 44px; }
+.bell { width: 44px; height: 44px; }
+.role select { height: 44px; min-height: 44px; }
+.slot-row.picked { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 10px; background: var(--surface-2); }
+/* 641–1040px: the nav sits on its own row; wrap instead of hiding links in a scroller. (≤640 keeps the swipe scroller.) */
+@media (min-width: 641px) and (max-width: 1040px) { .nav { flex-wrap: wrap; overflow-x: visible; row-gap: 0; } }
