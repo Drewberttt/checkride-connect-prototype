@@ -40,6 +40,7 @@
   --accent-strong: #1d44d8;
   --accent-soft: #e9eeff;
   --on-accent: #ffffff;
+  --on-warn: #ffffff; /* text on solid --warn (.sample-tag)*/
   --good: #086b48; /* brand guide: #0B875A fails on good-soft; use #086B48 */
   --good-soft: #e1f4ea;
   --warn: #a65800;
@@ -59,14 +60,19 @@
   --r-sm: 8px;
   --r: 14px;
   --r-lg: 20px;
-  /* Brand fonts (Bricolage Grotesque / Geist / Geist Mono) are used only if already installed locally; the brand kit
-     ships no font files, so nothing is downloaded. Fallbacks are system fonts. */
-  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  /* Brand fonts (self-hosted, see @font-face above) are switched on by html.wf: app.js loads them right after the
+     first paint (or at once when this device already has them), so first paint never waits on ~270 KB of fonts. */
+  --font-display: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --ease: cubic-bezier(.2, .8, .2, 1);
   --header-h: 64px;
   color-scheme: light;
+}
+html.wf {
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -84,6 +90,7 @@
     --accent-strong: #91a8ff;
     --accent-soft: #18204a;
     --on-accent: #090c13;
+    --on-warn: #10141d; /* a11y: dark .sample-tag was 1.82:1 with #fff; now 9.9:1 */
     --good: #3fd68d;
     --good-soft: #0e2a1e;
     --warn: #f5b454;
@@ -115,6 +122,7 @@
   --accent-strong: #91a8ff;
   --accent-soft: #18204a;
   --on-accent: #090c13;
+  --on-warn: #10141d;
   --good: #3fd68d;
   --good-soft: #0e2a1e;
   --warn: #f5b454;
@@ -662,7 +670,7 @@ h1 .pill, h2 .pill { letter-spacing: 0; font-family: inherit; }
 
 /* ---------- Phase 3 fixes: sample markers ---------- */
 .sample-badge { display: inline-flex; align-items: center; font-weight: 700; font-size: .78rem; padding: .15rem .5rem; border-radius: 999px; background: var(--warn-soft); color: var(--warn); border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent); }
-.sample-tag { display: inline-block; font-size: .68rem; font-weight: 800; letter-spacing: .04em; padding: .05rem .35rem; margin: 0 .2rem; border-radius: 4px; background: var(--warn); color: #fff; vertical-align: middle; line-height: 1.4; }
+.sample-tag { display: inline-block; font-size: .68rem; font-weight: 800; letter-spacing: .04em; padding: .05rem .35rem; margin: 0 .2rem; border-radius: 4px; background: var(--warn); color: var(--on-warn); vertical-align: middle; line-height: 1.4; }
 .stars { color: var(--warn); }
 .rating-wrap { white-space: nowrap; }
 .loc-field { display: grid; gap: .35rem; min-width: 0; }
@@ -734,3 +742,90 @@ input[type=checkbox]:focus-visible, input[type=radio]:focus-visible, select:focu
 .slot-row.picked { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 10px; background: var(--surface-2); }
 /* 641–1040px: the nav sits on its own row; wrap instead of hiding links in a scroller. (≤640 keeps the swipe scroller.) */
 @media (min-width: 641px) and (max-width: 1040px) { .nav { flex-wrap: wrap; overflow-x: visible; row-gap: 0; } }
+/* Demo date mode label (demo-date.js) */
+.demo-date-bar { background: #fff4cc; color: #4d3800; font-size: .78rem; line-height: 1.35; text-align: center; padding: .25rem .75rem; border-bottom: 1px solid #f0d77a; }
+.demo-date-bar span { color: #5c4a14; }
+@media (max-width: 640px) { .demo-date-bar span { display: none; } }
+/* <=640px: tabs that don't fit whole move into a "More" menu, so no tab is cut mid-word (app.js fitNav). */
+.nav-more { position: relative; flex-shrink: 0; }
+.nav-more > summary { list-style: none; cursor: pointer; color: var(--muted); font-weight: 500; font-size: .92rem; padding: .45rem .75rem; border-radius: 999px; min-height: 44px; display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap; }
+.nav-more > summary::-webkit-details-marker { display: none; }
+.nav-more > summary::after { content: ""; width: 7px; height: 7px; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg) translateY(-2px); }
+.nav-more[open] > summary, .nav-more > summary:hover { color: var(--text); background: var(--surface-2); }
+.nav-more-menu { position: absolute; right: 0; top: calc(100% + 4px); z-index: 30; min-width: 12rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-lg); padding: .35rem; display: flex; flex-direction: column; }
+.nav .nav-more-menu a { border-radius: 10px; justify-content: flex-start; }
+@media (max-width: 640px) { .nav.fitted { overflow: visible; min-width: 0; } }
+
+/* ---------- Round 5: loading, empty, error and offline states ---------- */
+/* Reserve the viewport while the app boots so the footer never jumps (CLS). */
+#app { min-height: 100vh; min-height: 100svh; display: flow-root; }
+.app-loading { min-height: 60vh; }
+.app-loading-msg { display: flex; align-items: center; gap: .6rem; margin: 0 0 1.1rem; color: var(--muted); font-size: .92rem; }
+.spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border-strong, #c9d0dc); border-top-color: var(--accent); animation: spin .8s linear infinite; flex-shrink: 0; }
+.sk { border-radius: 10px; background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in srgb, var(--surface-2) 40%, var(--surface, #fff)) 50%, var(--surface-2) 75%); background-size: 300% 100%; animation: shimmer 1.4s ease-in-out infinite; margin-bottom: .7rem; }
+.sk-title { height: 2.1rem; width: min(70%, 420px); }
+.sk-line { height: .95rem; width: min(92%, 640px); }
+.sk-line.short { width: min(55%, 380px); margin-bottom: 1.4rem; }
+.sk-card { height: 7.5rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+
+.empty.state { display: flex; flex-direction: column; align-items: center; gap: .15rem; text-align: center; padding: 2.25rem 1.25rem; color: var(--muted); }
+.empty.state:not(.card) { padding: 1.25rem .5rem; }
+.state-ic { color: var(--accent); background: var(--accent-soft, #e9eeff); border-radius: 50%; padding: 10px; width: 48px; height: 48px; box-sizing: border-box; margin-bottom: .4rem; flex-shrink: 0; }
+[data-state="render-error"] .state-ic, [data-state="load-error"] .state-ic { color: var(--bad); background: var(--bad-soft, #fdecec); }
+.empty.state h1, .empty.state h3 { font-family: var(--font-display); color: var(--text); font-size: 1.2rem; margin: .1rem 0 .15rem; }
+.empty.state h1 { font-size: 1.5rem; }
+.empty.state p { margin: 0; max-width: 46ch; line-height: 1.5; }
+.empty.state code { font-family: var(--font-mono); font-size: .9em; color: var(--text); background: var(--surface-2); padding: .05rem .35rem; border-radius: 6px; overflow-wrap: anywhere; }
+.empty-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: 1rem; }
+.empty-actions .btn { min-height: 44px; }
+
+.net-banner { text-align: center; font-size: .8rem; line-height: 1.35; padding: .4rem 12px; }
+.net-banner.off { background: #1f2633; color: #fff; }
+.net-banner.on { background: #e6f6ec; color: #11512b; }
+@media (max-width: 640px) { .net-banner span { display: block; } }
+
+/* ---------- Round 5: screen transitions and press feedback ---------- */
+/* New screen: the whole view fades in quickly while its blocks rise (stagger above). First load is instant. */
+#app.enter { animation: fade .22s ease-out both; }
+/* Press feedback on every tappable thing (scale = physical "press"). */
+.nav a, .nav-more summary, .tabs a, .chip, .bell, .see-all, .check-item, a.card, .result, .plan, summary {
+  -webkit-tap-highlight-color: transparent;
+}
+.nav a:active, .nav-more summary:active, .tabs a:active, .bell:active { transform: scale(.94); background: var(--surface-2); }
+.nav a, .nav-more summary, .tabs a { transition: color .15s, background .15s, transform .12s var(--ease); }
+.chip:active { transform: scale(.95); }
+a.card:active, .result:active { transform: scale(.985); box-shadow: var(--shadow-sm); }
+.check-item:active { background: var(--surface-2); transform: scale(.995); }
+.btn.secondary:active, .btn.ghost:active { background: var(--surface-2); }
+.btn:active { box-shadow: none; }
+/* Keyboard focus stays clearly visible (no motion involved). */
+.btn:focus-visible, .chip:focus-visible, .nav a:focus-visible, .nav-more summary:focus-visible, .tabs a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Reduced motion: no movement, no fades, no shimmer. Presses still get instant, non-moving feedback (darker fill + inset ring). */
+@media (prefers-reduced-motion: reduce) {
+  #app.enter, #app.enter .anim { animation: none !important; }
+  .spinner { animation: none !important; border-color: var(--accent); border-right-color: transparent; }
+  .sk { animation: none !important; background: var(--surface-2); }
+  .btn:active, .nav a:active, .nav-more summary:active, .tabs a:active, .bell:active, .chip:active, a.card:active, .result:active, .check-item:active, .plan:active {
+    transform: none !important;
+  }
+  a.card:hover, .result:hover, .chip:hover, .plan:hover { transform: none !important; }
+  .btn:active { filter: brightness(.9); box-shadow: inset 0 0 0 2px color-mix(in srgb, currentColor 35%, transparent); }
+  .nav a:active, .nav-more summary:active, .tabs a:active, .bell:active, .chip:active, a.card:active, .result:active, .check-item:active { box-shadow: inset 0 0 0 2px var(--accent); }
+}
+
+/* Reserve the nav row before app.js fills it (prevents a layout shift on first paint). */
+.nav:empty { min-height: 44px; box-sizing: content-box; }
+
+/* ---------- Usability fixes: cancellation outcomes, terms, tags ---------- */
+.pm-tag { display: inline-block; font-style: italic; }
+.terms-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .6rem; margin-top: .6rem; }
+.terms-pair > div { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: .55rem .7rem; font-size: .86rem; line-height: 1.4; }
+.reason-set { border: 0; padding: 0; margin: 0 0 .8rem; display: grid; gap: .35rem; }
+.reason-set legend { font-weight: 600; margin-bottom: .3rem; }
+.reason-set label { display: flex; align-items: center; gap: .55rem; min-height: 44px; padding: 0 .6rem; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; }
+.reason-set label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.cancel-outcome, .cancel-notice { margin-top: .5rem; padding: .55rem .75rem; border-radius: var(--r-sm); background: var(--surface-2); border-left: 3px solid var(--warn); font-size: .88rem; line-height: 1.45; }
+.cancel-notice p { margin: .15rem 0; }

@@ -1,8 +1,11 @@
-<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><link rel="preload" href="fonts/BricolageGrotesque-Variable-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin><meta name="theme-color" content="#2b59ff"></head><body>
-  <title>Checkride Connect (prototype)</title>
+<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#2b59ff">
+<title>Checkride Connect (prototype)</title>
+<meta name="description" content="Checkride Connect prototype: find sample examiners by certificate, location, availability and price. Example data only, not real examiners; not affiliated with or endorsed by the FAA.">
 <meta name="claude:viewport-fit-sides" content="cover">
 <!-- Fully static: no external fonts, scripts or network calls. Fonts are self-hosted in fonts/. -->
 <link rel="stylesheet" href="styles.css">
+<script>try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf")}catch(e){}</script>
+</head><body>
 
 <header class="topbar">
   <div class="proto-banner" role="alert"><b>EXAMPLE DATA – not real examiners.</b> <span>Fictional sample data. Prototype, no real payments.</span></div>
@@ -30,7 +33,11 @@
   </div>
 </header>
 
-<main id="app" class="wrap" tabindex="-1"></main>
+<main id="app" class="wrap" tabindex="-1"><div class="page app-loading" data-state="loading" role="status" aria-live="polite">
+  <p class="app-loading-msg"><span class="spinner" aria-hidden="true"></span> Loading sample examiners…</p>
+  <div class="sk sk-title" aria-hidden="true"></div><div class="sk sk-line" aria-hidden="true"></div><div class="sk sk-line short" aria-hidden="true"></div>
+  <div class="sk sk-card" aria-hidden="true"></div><div class="sk sk-card" aria-hidden="true"></div>
+</div></main>
 
 <footer class="footer wrap">
   <p><b>EXAMPLE DATA – not real examiners.</b> Prototype, not legal or FAA advice. All examiners, applicants, schools and prices are fictional sample data. No payments are processed and nothing is emailed or texted; data stays in this browser.</p>
@@ -41,9 +48,23 @@
 <div id="modal-root"></div>
 <div id="toasts" class="toasts" aria-live="polite"></div>
 
-<script src="data.js"></script>
-<script src="sample-fl-examiners.js"></script>
-<script src="app.js"></script>
+<script defer src="demo-date.js"></script>
+<script defer src="data.js"></script>
+<script defer src="sample-fl-examiners.js"></script>
+<script defer src="app.js"></script>
+<script id="app-fallback">
+// Data load failure: if a script failed to load or the sample data is missing, show a recoverable error instead of a blank page.
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.CC_APP_READY) return;
+  var app = document.getElementById("app");
+  app.innerHTML = '<div class="page"><div class="card empty state" data-state="load-error" role="alert">' +
+    '<svg class="state-ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4.2M12 17.2v.1"/></svg>' +
+    '<h1>Sample data didn\u2019t load</h1><p>' + (navigator.onLine === false ? "You\u2019re offline and this page isn\u2019t saved on this device yet. Connect once, then it works offline." : "Part of the prototype failed to load. Check that the local server is running, then try again.") + '</p>' +
+    '<div class="empty-actions"><button class="btn" type="button" id="retry-load">Try again</button></div>' +
+    '<p class="muted small">Prototype – no real payments. Prototype, not legal or FAA advice.</p></div></div>';
+  document.getElementById("retry-load").addEventListener("click", function () { location.reload(); });
+});
+</script>
 <script>
 // Offline support: a small service worker caches the app shell and sample data (relative paths, works under a subpath).
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {

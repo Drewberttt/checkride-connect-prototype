@@ -167,7 +167,7 @@ window.CC_DATA = (() => {
   const commonDocs = [
     D("id", "Government-issued photo ID", "Must match the name in IACRA."),
     D("iacra", "IACRA application (FAA Form 8710-1) complete", "Your instructor signs the recommendation, and you sign in IACRA before the checkride."),
-    D("ktr", "Airman Knowledge Test Report", "Passed within the 24 calendar months before the month you take the practical test (§61.39(a)(1)). Bring the report to the checkride (§61.39(a)(2))."),
+    D("ktr", "Airman Knowledge Test Report", "Passed within the 24 calendar months preceding the month you complete the practical test (§61.39(a)(1)(i)). Bring the report to the checkride (§61.39(a)(2))."),
     D("log", "Pilot logbook", "Tab the entries that show required experience and endorsements."),
     D("fee", "Examiner fee, in the payment method your DPE accepts", "Paid directly to the examiner."),
   ];
@@ -175,7 +175,7 @@ window.CC_DATA = (() => {
     D("aw", "Airworthiness certificate on board", ""),
     D("reg", "Registration certificate on board (current)", ""),
     D("poh", "POH/AFM with current weight & balance", ""),
-    D("annual", "Annual inspection within 12 calendar months", "Plus a 100-hour inspection if the aircraft carries people for hire or is provided by the instructor for flight instruction for hire (§91.409(b))."),
+    D("annual", "Annual inspection within 12 calendar months", "Plus a 100-hour inspection if the aircraft carries people for hire or is provided by the person or flight school giving flight instruction for hire (§91.409(b)). Ask your examiner whether this applies to your aircraft."),
     D("elt", "ELT inspection within 12 calendar months, battery not expired", ""),
     D("xpdr", "Transponder check within 24 calendar months", ""),
     D("ad", "AD compliance documented", "Bring the actual maintenance logbooks."),
@@ -222,7 +222,7 @@ window.CC_DATA = (() => {
       { cat: "Aircraft", items: [...aircraftDocs, ...ifrAircraft] },
     ],
     cpl: [
-      { cat: "Documents", items: [D("cert", "Private pilot certificate", ""), D("med", "FAA medical certificate (third class is enough for the checkride, §61.23(a)(3)(iii); second class needed to exercise commercial privileges, §61.23(a)(2)(ii))", ""), ...commonDocs] },
+      { cat: "Documents", items: [D("cert", "Private pilot certificate", ""), D("med", "FAA medical certificate (at least third class, or BasicMed, for the checkride, §61.23(a)(3)(iii); second class needed to exercise commercial privileges, §61.23(a)(2)(ii))", ""), ...commonDocs] },
       { cat: "Endorsements (AC 61-65K)", items: [
         D("e-kt", "Knowledge test endorsement (§61.35(a)(1))", ""),
         D("e-pt", "Practical test endorsement: trained within the 2 calendar months before the month of application and ready (§61.39(a)(6)(i)–(ii))", ""),
