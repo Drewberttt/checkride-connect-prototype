@@ -16,23 +16,33 @@ window.CC_DATA = (() => {
 
   // Approximate coordinates, good enough for distance sorting in a demo.
   const airports = [
-    { id: "KORL", name: "Orlando Executive", city: "Orlando", lat: 28.545, lng: -81.333 },
-    { id: "KSFB", name: "Orlando Sanford Intl", city: "Sanford", lat: 28.778, lng: -81.238 },
-    { id: "KDAB", name: "Daytona Beach Intl", city: "Daytona Beach", lat: 29.18, lng: -81.058 },
-    { id: "KLAL", name: "Lakeland Linder Intl", city: "Lakeland", lat: 27.989, lng: -82.019 },
-    { id: "KVDF", name: "Tampa Executive", city: "Tampa", lat: 28.014, lng: -82.345 },
-    { id: "KPIE", name: "St. Pete–Clearwater Intl", city: "Clearwater", lat: 27.91, lng: -82.687 },
-    { id: "KSRQ", name: "Sarasota Bradenton Intl", city: "Sarasota", lat: 27.395, lng: -82.554 },
-    { id: "KMLB", name: "Melbourne Orlando Intl", city: "Melbourne", lat: 28.103, lng: -80.645 },
-    { id: "KVRB", name: "Vero Beach Regional", city: "Vero Beach", lat: 27.656, lng: -80.418 },
-    { id: "KFXE", name: "Fort Lauderdale Executive", city: "Fort Lauderdale", lat: 26.197, lng: -80.171 },
-    { id: "KBCT", name: "Boca Raton", city: "Boca Raton", lat: 26.379, lng: -80.108 },
-    { id: "KTMB", name: "Miami Executive", city: "Miami", lat: 25.648, lng: -80.433 },
-    { id: "KFMY", name: "Page Field", city: "Fort Myers", lat: 26.587, lng: -81.863 },
-    { id: "KGNV", name: "Gainesville Regional", city: "Gainesville", lat: 29.69, lng: -82.272 },
-    { id: "KCRG", name: "Jacksonville Executive", city: "Jacksonville", lat: 30.336, lng: -81.514 },
-    { id: "KTLH", name: "Tallahassee Intl", city: "Tallahassee", lat: 30.397, lng: -84.35 },
+    { id: "KORL", name: "Orlando Executive", city: "Orlando", lat: 28.545, lng: -81.333, tz: "America/New_York" },
+    { id: "KSFB", name: "Orlando Sanford Intl", city: "Sanford", lat: 28.778, lng: -81.238, tz: "America/New_York" },
+    { id: "KDAB", name: "Daytona Beach Intl", city: "Daytona Beach", lat: 29.18, lng: -81.058, tz: "America/New_York" },
+    { id: "KLAL", name: "Lakeland Linder Intl", city: "Lakeland", lat: 27.989, lng: -82.019, tz: "America/New_York" },
+    { id: "KVDF", name: "Tampa Executive", city: "Tampa", lat: 28.014, lng: -82.345, tz: "America/New_York" },
+    { id: "KPIE", name: "St. Pete–Clearwater Intl", city: "Clearwater", lat: 27.91, lng: -82.687, tz: "America/New_York" },
+    { id: "KSRQ", name: "Sarasota Bradenton Intl", city: "Sarasota", lat: 27.395, lng: -82.554, tz: "America/New_York" },
+    { id: "KMLB", name: "Melbourne Orlando Intl", city: "Melbourne", lat: 28.103, lng: -80.645, tz: "America/New_York" },
+    { id: "KVRB", name: "Vero Beach Regional", city: "Vero Beach", lat: 27.656, lng: -80.418, tz: "America/New_York" },
+    { id: "KFXE", name: "Fort Lauderdale Executive", city: "Fort Lauderdale", lat: 26.197, lng: -80.171, tz: "America/New_York" },
+    { id: "KBCT", name: "Boca Raton", city: "Boca Raton", lat: 26.379, lng: -80.108, tz: "America/New_York" },
+    { id: "KTMB", name: "Miami Executive", city: "Miami", lat: 25.648, lng: -80.433, tz: "America/New_York" },
+    { id: "KFMY", name: "Page Field", city: "Fort Myers", lat: 26.587, lng: -81.863, tz: "America/New_York" },
+    { id: "KGNV", name: "Gainesville Regional", city: "Gainesville", lat: 29.69, lng: -82.272, tz: "America/New_York" },
+    { id: "KCRG", name: "Jacksonville Executive", city: "Jacksonville", lat: 30.336, lng: -81.514, tz: "America/New_York" },
+    { id: "KTLH", name: "Tallahassee Intl", city: "Tallahassee", lat: 30.397, lng: -84.35, tz: "America/New_York" },
   ];
+
+  // D38 #1/#3: every sample airport has an IANA time zone; slot times are shown in the airport's local zone.
+  // FL (Panhandle west of the Apalachicola is Central), TX (El Paso is Mountain), CA, AZ (America/Phoenix: no DST).
+  // TX/CA/AZ sample examiners live in /workspace/checkride-pm/data and are not loaded yet (multi-state is a later run).
+  const airportTz = {
+    KORL: "America/New_York", KSFB: "America/New_York", KISM: "America/New_York", KDAB: "America/New_York", KMLB: "America/New_York", KVRB: "America/New_York", KLAL: "America/New_York", KTPA: "America/New_York", KVDF: "America/New_York", KPIE: "America/New_York", KSRQ: "America/New_York", KFMY: "America/New_York", KRSW: "America/New_York", KAPF: "America/New_York", KFXE: "America/New_York", KFLL: "America/New_York", KPMP: "America/New_York", KBCT: "America/New_York", KOPF: "America/New_York", KTMB: "America/New_York", KEYW: "America/New_York", KJAX: "America/New_York", KCRG: "America/New_York", KVQQ: "America/New_York", KGNV: "America/New_York", KOCF: "America/New_York", KTLH: "America/New_York", KECP: "America/Chicago", KPNS: "America/Chicago",
+    KADS: "America/Chicago", KDAL: "America/Chicago", KTKI: "America/Chicago", KTYR: "America/Chicago", KFTW: "America/Chicago", KAFW: "America/Chicago", KGKY: "America/Chicago", KGPM: "America/Chicago", KDTO: "America/Chicago", KACT: "America/Chicago", KHOU: "America/Chicago", KDWH: "America/Chicago", KSGR: "America/Chicago", KCXO: "America/Chicago", KEFD: "America/Chicago", KAUS: "America/Chicago", KEDC: "America/Chicago", KGTU: "America/Chicago", KHYI: "America/Chicago", KSAT: "America/Chicago", KSSF: "America/Chicago", KCRP: "America/Chicago", KLBB: "America/Chicago", KAMA: "America/Chicago", KMAF: "America/Chicago", KELP: "America/Denver",
+    KVNY: "America/Los_Angeles", KWHP: "America/Los_Angeles", KCMA: "America/Los_Angeles", KSBA: "America/Los_Angeles", KSBP: "America/Los_Angeles", KTOA: "America/Los_Angeles", KLGB: "America/Los_Angeles", KSNA: "America/Los_Angeles", KFUL: "America/Los_Angeles", KCNO: "America/Los_Angeles", KRAL: "America/Los_Angeles", KPOC: "America/Los_Angeles", KCRQ: "America/Los_Angeles", KMYF: "America/Los_Angeles", KSEE: "America/Los_Angeles", KPAO: "America/Los_Angeles", KRHV: "America/Los_Angeles", KSQL: "America/Los_Angeles", KHWD: "America/Los_Angeles", KOAK: "America/Los_Angeles", KLVK: "America/Los_Angeles", KCCR: "America/Los_Angeles", KSAC: "America/Los_Angeles", KMHR: "America/Los_Angeles", KFAT: "America/Los_Angeles", KBFL: "America/Los_Angeles",
+    KDVT: "America/Phoenix", KSDL: "America/Phoenix", KFFZ: "America/Phoenix", KIWA: "America/Phoenix", KCHD: "America/Phoenix", KGEU: "America/Phoenix", KGYR: "America/Phoenix", KPHX: "America/Phoenix", KCGZ: "America/Phoenix", KTUS: "America/Phoenix", KRYN: "America/Phoenix", KAVQ: "America/Phoenix", KPRC: "America/Phoenix", KFLG: "America/Phoenix", KSEZ: "America/Phoenix", KSOW: "America/Phoenix", KIFP: "America/Phoenix", KNYL: "America/Phoenix",
+  };
 
   // soonest/gap/count drive the generated calendar (days from today).
   const dpes = [
@@ -258,5 +268,5 @@ window.CC_DATA = (() => {
     ];
   });
 
-  return { region, certs, airports, allInModel, dpes, pendingDpes, seededBookings, school, checklists };
+  return { region, certs, airports, airportTz, allInModel, dpes, pendingDpes, seededBookings, school, checklists };
 })();

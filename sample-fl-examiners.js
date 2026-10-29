@@ -24,203 +24,232 @@
       "name": "Orlando Executive",
       "city": "Orlando",
       "lat": 28.545,
-      "lng": -81.333
+      "lng": -81.333,
+      "tz": "America/New_York"
     },
     {
       "id": "KSFB",
       "name": "Orlando Sanford Intl",
       "city": "Sanford",
       "lat": 28.778,
-      "lng": -81.238
+      "lng": -81.238,
+      "tz": "America/New_York"
     },
     {
       "id": "KISM",
       "name": "Kissimmee Gateway",
       "city": "Kissimmee",
       "lat": 28.29,
-      "lng": -81.437
+      "lng": -81.437,
+      "tz": "America/New_York"
     },
     {
       "id": "KDAB",
       "name": "Daytona Beach Intl",
       "city": "Daytona Beach",
       "lat": 29.18,
-      "lng": -81.058
+      "lng": -81.058,
+      "tz": "America/New_York"
     },
     {
       "id": "KMLB",
       "name": "Melbourne Orlando Intl",
       "city": "Melbourne",
       "lat": 28.103,
-      "lng": -80.645
+      "lng": -80.645,
+      "tz": "America/New_York"
     },
     {
       "id": "KVRB",
       "name": "Vero Beach Regional",
       "city": "Vero Beach",
       "lat": 27.656,
-      "lng": -80.418
+      "lng": -80.418,
+      "tz": "America/New_York"
     },
     {
       "id": "KLAL",
       "name": "Lakeland Linder Intl",
       "city": "Lakeland",
       "lat": 27.989,
-      "lng": -82.019
+      "lng": -82.019,
+      "tz": "America/New_York"
     },
     {
       "id": "KTPA",
       "name": "Tampa Intl",
       "city": "Tampa",
       "lat": 27.976,
-      "lng": -82.533
+      "lng": -82.533,
+      "tz": "America/New_York"
     },
     {
       "id": "KVDF",
       "name": "Tampa Executive",
       "city": "Tampa",
       "lat": 28.014,
-      "lng": -82.345
+      "lng": -82.345,
+      "tz": "America/New_York"
     },
     {
       "id": "KPIE",
       "name": "St. Pete–Clearwater Intl",
       "city": "Clearwater",
       "lat": 27.91,
-      "lng": -82.687
+      "lng": -82.687,
+      "tz": "America/New_York"
     },
     {
       "id": "KSRQ",
       "name": "Sarasota Bradenton Intl",
       "city": "Sarasota",
       "lat": 27.395,
-      "lng": -82.554
+      "lng": -82.554,
+      "tz": "America/New_York"
     },
     {
       "id": "KFMY",
       "name": "Page Field",
       "city": "Fort Myers",
       "lat": 26.587,
-      "lng": -81.863
+      "lng": -81.863,
+      "tz": "America/New_York"
     },
     {
       "id": "KRSW",
       "name": "Southwest Florida Intl",
       "city": "Fort Myers",
       "lat": 26.536,
-      "lng": -81.755
+      "lng": -81.755,
+      "tz": "America/New_York"
     },
     {
       "id": "KAPF",
       "name": "Naples Municipal",
       "city": "Naples",
       "lat": 26.152,
-      "lng": -81.775
+      "lng": -81.775,
+      "tz": "America/New_York"
     },
     {
       "id": "KFXE",
       "name": "Fort Lauderdale Executive",
       "city": "Fort Lauderdale",
       "lat": 26.197,
-      "lng": -80.171
+      "lng": -80.171,
+      "tz": "America/New_York"
     },
     {
       "id": "KFLL",
       "name": "Fort Lauderdale–Hollywood Intl",
       "city": "Fort Lauderdale",
       "lat": 26.072,
-      "lng": -80.153
+      "lng": -80.153,
+      "tz": "America/New_York"
     },
     {
       "id": "KPMP",
       "name": "Pompano Beach Airpark",
       "city": "Pompano Beach",
       "lat": 26.247,
-      "lng": -80.111
+      "lng": -80.111,
+      "tz": "America/New_York"
     },
     {
       "id": "KBCT",
       "name": "Boca Raton",
       "city": "Boca Raton",
       "lat": 26.379,
-      "lng": -80.108
+      "lng": -80.108,
+      "tz": "America/New_York"
     },
     {
       "id": "KOPF",
       "name": "Miami-Opa Locka Executive",
       "city": "Opa-locka",
       "lat": 25.907,
-      "lng": -80.278
+      "lng": -80.278,
+      "tz": "America/New_York"
     },
     {
       "id": "KTMB",
       "name": "Miami Executive",
       "city": "Miami",
       "lat": 25.648,
-      "lng": -80.433
+      "lng": -80.433,
+      "tz": "America/New_York"
     },
     {
       "id": "KEYW",
       "name": "Key West Intl",
       "city": "Key West",
       "lat": 24.556,
-      "lng": -81.76
+      "lng": -81.76,
+      "tz": "America/New_York"
     },
     {
       "id": "KJAX",
       "name": "Jacksonville Intl",
       "city": "Jacksonville",
       "lat": 30.494,
-      "lng": -81.688
+      "lng": -81.688,
+      "tz": "America/New_York"
     },
     {
       "id": "KCRG",
       "name": "Jacksonville Executive",
       "city": "Jacksonville",
       "lat": 30.336,
-      "lng": -81.514
+      "lng": -81.514,
+      "tz": "America/New_York"
     },
     {
       "id": "KVQQ",
       "name": "Cecil Airport",
       "city": "Jacksonville",
       "lat": 30.219,
-      "lng": -81.877
+      "lng": -81.877,
+      "tz": "America/New_York"
     },
     {
       "id": "KGNV",
       "name": "Gainesville Regional",
       "city": "Gainesville",
       "lat": 29.69,
-      "lng": -82.272
+      "lng": -82.272,
+      "tz": "America/New_York"
     },
     {
       "id": "KOCF",
       "name": "Ocala Intl",
       "city": "Ocala",
       "lat": 29.177,
-      "lng": -82.224
+      "lng": -82.224,
+      "tz": "America/New_York"
     },
     {
       "id": "KTLH",
       "name": "Tallahassee Intl",
       "city": "Tallahassee",
       "lat": 30.397,
-      "lng": -84.35
+      "lng": -84.35,
+      "tz": "America/New_York"
     },
     {
       "id": "KECP",
       "name": "Northwest Florida Beaches Intl",
       "city": "Panama City",
       "lat": 30.358,
-      "lng": -85.796
+      "lng": -85.796,
+      "tz": "America/Chicago"
     },
     {
       "id": "KPNS",
       "name": "Pensacola Intl",
       "city": "Pensacola",
       "lat": 30.473,
-      "lng": -87.187
+      "lng": -87.187,
+      "tz": "America/Chicago"
     }
   ];
 

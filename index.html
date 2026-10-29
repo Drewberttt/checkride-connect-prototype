@@ -1,37 +1,46 @@
-<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#2b59ff">
+<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}:root[data-theme=dark]{color-scheme:dark}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#F6F9FC;color:#162941}:root[data-theme=dark] body{background:#0B1424;color:#EAF0F8}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#2b59ff">
 <title>Checkride Connect (prototype)</title>
 <meta name="description" content="Checkride Connect prototype: find sample examiners by certificate, location, availability and price. Example data only, not real examiners; not affiliated with or endorsed by the FAA.">
 <meta name="claude:viewport-fit-sides" content="cover">
 <!-- Fully static: no external fonts, scripts or network calls. Fonts are self-hosted in fonts/. -->
-<link rel="stylesheet" href="styles.css">
-<script>try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf")}catch(e){}</script>
+<link rel="preload" href="fonts/Manrope-Variable-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('cc-theme')||'system';if(t==='system')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();
+try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf")}catch(e){}</script>
 </head><body>
+<script>(function(){var h=location.hash.slice(1).split("?")[0].split("#")[0];if(h===""||h==="/"||h==="faq")document.body.classList.add("is-landing");})();</script>
 
 <header class="topbar">
   <div class="proto-banner" role="alert"><b>EXAMPLE DATA – not real examiners.</b> <span>Fictional sample data. Prototype, no real payments.</span></div>
-  <div class="wrap topbar-inner">
-    <a class="brand" href="#/">
-      <img class="brand-mark" src="brand/runway-icon.svg" width="32" height="32" alt="">
-      <span>Checkride<b>Connect</b></span>
+  <div class="land-strip" role="note"><b>Private prototype</b> · Fictional demo data <span class="sep">No real requests are sent.</span></div>
+  <div class="topbar-inner">
+    <a class="brand" href="#/" aria-label="Checkride Connect, home">
+      <img class="lockup lockup-light" src="brand/runway-horizontal-light.svg" width="164" height="26" alt="Checkride Connect">
+      <img class="lockup lockup-dark" src="brand/runway-horizontal-dark.svg" width="164" height="26" alt="Checkride Connect">
     </a>
-    <nav id="nav" class="nav" aria-label="Main"></nav>
+    <nav id="crumb" class="crumb" aria-label="Breadcrumb"></nav>
+    <nav id="land-nav" class="land-nav" aria-label="Landing" hidden><a href="#/#who">Who it's for</a><a href="#/#how">How it works</a><a href="#/#faq">FAQs</a></nav>
     <div class="topbar-right">
-      <a id="bell" class="bell" href="#/alerts" aria-label="Notifications" hidden>
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22m7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
-        <span id="bell-count" class="bell-count" hidden></span>
-      </a>
+      <label class="theme-pick"><span class="sr-only">Theme</span>
+        <select id="theme-select" data-theme-select data-action-change="theme" aria-label="Theme">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="system">System</option>
+        </select>
+      </label>
       <label class="role">
         <span class="role-label">View as</span>
         <select id="role-select" aria-label="View the app as">
-          <option value="pilot">Student</option>
-          <option value="dpe">DPE</option>
+          <option value="pilot">Student pilot</option>
+          <option value="dpe">Examiner</option>
           <option value="school">Flight school</option>
           <option value="admin">Admin</option>
         </select>
       </label>
+      <a class="btn cta sm land-cta" href="#/home" data-action="set-role" data-role="pilot" data-to="#/home">Explore the demo</a>
     </div>
   </div>
 </header>
+<nav id="nav" class="tabbar" aria-label="Main"></nav>
 
 <main id="app" class="wrap" tabindex="-1"><div class="page app-loading" data-state="loading" role="status" aria-live="polite">
   <p class="app-loading-msg"><span class="spinner" aria-hidden="true"></span> Loading sample examiners…</p>
@@ -42,7 +51,7 @@
 <footer class="footer wrap">
   <p><b>EXAMPLE DATA – not real examiners.</b> Prototype, not legal or FAA advice. All examiners, applicants, schools and prices are fictional sample data. No payments are processed and nothing is emailed or texted; data stays in this browser.</p>
   <p class="faa-disclaimer"><b>Not affiliated with or endorsed by the FAA.</b></p>
-  <button class="btn ghost sm" data-action="reset">Reset demo</button>
+  <button class="btn ghost sm" data-action="reset-data-ask" id="footer-reset-data">Reset demo data</button>
 </footer>
 
 <div id="modal-root"></div>

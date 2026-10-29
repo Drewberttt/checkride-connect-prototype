@@ -4,7 +4,7 @@
    - Versioned cache; old versions are deleted on activate.
    - Network first for same-origin GETs (so edits show up), cache fallback when offline; navigations fall back to index.html.
    - No push, no background sync, no third-party requests. Bump VERSION when the shell changes. */
-const VERSION = "cc-proto-v5.2.1";
+const VERSION = "cc-proto-v6.2.3";
 const CACHE = "checkride-connect-" + VERSION;
 const SHELL = [
   "./",
@@ -26,10 +26,14 @@ const SHELL = [
   "icons/icon-maskable-192.png",
   "icons/icon-maskable-512.png",
   "brand/runway-icon.svg",
-  "fonts/BricolageGrotesque-Variable-latin.woff2",
-  "fonts/BricolageGrotesque-Variable-latin-ext.woff2",
+  "brand/runway-horizontal-light.svg",
+  "brand/runway-horizontal-dark.svg",
+  "fonts/Manrope-Variable-latin.woff2",
+  "fonts/Manrope-Variable-latin-ext.woff2",
   "fonts/Geist-Variable.woff2",
   "fonts/GeistMono-Variable.woff2",
+  "fonts/licenses/OFL-Manrope.txt",
+  "fonts/licenses/OFL-Geist-and-GeistMono.txt",
 ];
 
 self.addEventListener("install", (event) => {
