@@ -79,3 +79,13 @@ dialog .sync-conflict{margin:0 0 18px}h1[tabindex="-1"]:focus-visible{outline:3p
 
 /* Headings get focus after navigation for screen readers; no visible ring needed. */
 h1[tabindex="-1"]:focus{outline:none}
+
+/* Checkride workspace tabs */
+.workspace-tabs{display:flex;gap:4px;margin:4px 0 18px;padding:4px;background:var(--sky);border:1px solid var(--line);border-radius:var(--radius);position:sticky;top:0;z-index:5}
+.workspace-tab{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 6px;border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.workspace-tab:hover{color:var(--blue)}
+.workspace-tab[aria-selected="true"]{background:var(--white);color:var(--blue);box-shadow:0 1px 3px rgba(16,42,67,.12)}
+.workspace-tab:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.tab-badge{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--blue);color:var(--white);font-size:11px;line-height:18px;text-align:center}
+.workspace-tabpanel>.panel,.workspace-tabpanel>section{margin-bottom:18px}
+@media(max-width:420px){.workspace-tab{font-size:12px;padding:8px 4px}}
