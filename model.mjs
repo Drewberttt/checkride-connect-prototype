@@ -1,9 +1,40 @@
 import {openClarifications} from './clarifications.mjs';
-export const seed = () => ({version:1, examiners:[
-{id:'elena',name:'Elena Morgan',initials:'EM',location:'Concord, NC',bio:'A clear plan, a calm checkride.',airports:['KJQF','KRUQ'],certificates:['Private pilot','Instrument rating'],fee:850,retestFee:400,notice:'Request at least 7 days ahead. Aircraft and eligibility reviewed before acceptance.',slots:[{id:'e1',date:'2026-11-09',time:'08:00',airport:'KJQF'},{id:'e2',date:'2026-11-12',time:'09:00',airport:'KJQF'},{id:'e3',date:'2026-11-17',time:'08:00',airport:'KRUQ'}]},
-{id:'james',name:'James Bennett',initials:'JB',location:'Monroe, NC',bio:'Thoughtful preparation. Straightforward coordination.',airports:['KEQY','KUZA'],certificates:['Private pilot','Commercial pilot'],fee:900,retestFee:450,notice:'Daylight appointments preferred. Discuss aircraft suitability before confirming.',slots:[{id:'j1',date:'2026-11-11',time:'08:30',airport:'KEQY'},{id:'j2',date:'2026-11-16',time:'08:30',airport:'KUZA'}]},
-{id:'riley',name:'Riley Brooks',initials:'RB',location:'Salisbury, NC',bio:'Helping your next chapter take flight.',airports:['KRUQ','KJQF'],certificates:['Instrument rating','Commercial pilot'],fee:950,retestFee:475,notice:'Weather and aircraft availability may require a new date. No fee is collected in this demo.',slots:[{id:'r1',date:'2026-11-10',time:'09:00',airport:'KRUQ'},{id:'r2',date:'2026-11-19',time:'09:00',airport:'KJQF'}]}
-],students:[{id:'maya',name:'Maya Chen',initials:'MC',certificate:'Private pilot',airport:'KJQF'},{id:'alex',name:'Alex Rivera',initials:'AR',certificate:'Instrument rating',airport:'KRUQ'},{id:'sam',name:'Sam Taylor',initials:'ST',certificate:'Commercial pilot',airport:'KEQY'}],requests:[{id:'sample-request',studentId:'alex',examinerId:'riley',slotId:'r1',certificate:'Instrument rating',fee:950,date:'2026-11-10',time:'09:00',airport:'KRUQ',status:'pending',source:'Flight school',checklist:[]} ]});
+
+// Demo dates are kept relative to today so sample openings never expire.
+// Uses the UTC calendar date, matching the "future date" checks below.
+export const todayISO = () => new Date().toISOString().slice(0,10);
+export function addDays(iso, days) {
+ const d = new Date(iso+'T12:00:00Z'); d.setUTCDate(d.getUTCDate()+days); return d.toISOString().slice(0,10);
+}
+export const demoDate = days => addDays(todayISO(), days);
+// Saved demos from before this change were built around this date.
+const LEGACY_ANCHOR = '2026-10-30';
+// Move every appointment-style `date` field forward so a saved demo keeps
+// the same spacing from today instead of slipping into the past.
+export function shiftDemoDates(input) {
+ if(!input||typeof input!=='object')return input;
+ const anchor = /^\d{4}-\d{2}-\d{2}$/.test(input.demoAnchor) ? input.demoAnchor : LEGACY_ANCHOR;
+ const today = todayISO();
+ const delta = Math.round((Date.parse(today+'T12:00:00Z')-Date.parse(anchor+'T12:00:00Z'))/86400000);
+ if(delta>0){
+  const walk = value => {
+   if(Array.isArray(value)){value.forEach(walk);return}
+   if(!value||typeof value!=='object')return;
+   for(const [key,v] of Object.entries(value)){
+    if(key==='date'&&typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v))value[key]=addDays(v,delta);
+    else walk(v);
+   }
+  };
+  walk(input);
+ }
+ if(delta>=0)input.demoAnchor=today;
+ return input;
+}
+export const seed = () => ({version:1, demoAnchor:todayISO(), examiners:[
+{id:'elena',name:'Elena Morgan',initials:'EM',location:'Concord, NC',bio:'A clear plan, a calm checkride.',airports:['KJQF','KRUQ'],certificates:['Private pilot','Instrument rating'],fee:850,retestFee:400,notice:'Request at least 7 days ahead. Aircraft and eligibility reviewed before acceptance.',slots:[{id:'e1',date:demoDate(10),time:'08:00',airport:'KJQF'},{id:'e2',date:demoDate(13),time:'09:00',airport:'KJQF'},{id:'e3',date:demoDate(18),time:'08:00',airport:'KRUQ'}]},
+{id:'james',name:'James Bennett',initials:'JB',location:'Monroe, NC',bio:'Thoughtful preparation. Straightforward coordination.',airports:['KEQY','KUZA'],certificates:['Private pilot','Commercial pilot'],fee:900,retestFee:450,notice:'Daylight appointments preferred. Discuss aircraft suitability before confirming.',slots:[{id:'j1',date:demoDate(12),time:'08:30',airport:'KEQY'},{id:'j2',date:demoDate(17),time:'08:30',airport:'KUZA'}]},
+{id:'riley',name:'Riley Brooks',initials:'RB',location:'Salisbury, NC',bio:'Helping your next chapter take flight.',airports:['KRUQ','KJQF'],certificates:['Instrument rating','Commercial pilot'],fee:950,retestFee:475,notice:'Weather and aircraft availability may require a new date. No fee is collected in this demo.',slots:[{id:'r1',date:demoDate(11),time:'09:00',airport:'KRUQ'},{id:'r2',date:demoDate(20),time:'09:00',airport:'KJQF'}]}
+],students:[{id:'maya',name:'Maya Chen',initials:'MC',certificate:'Private pilot',airport:'KJQF'},{id:'alex',name:'Alex Rivera',initials:'AR',certificate:'Instrument rating',airport:'KRUQ'},{id:'sam',name:'Sam Taylor',initials:'ST',certificate:'Commercial pilot',airport:'KEQY'}],requests:[{id:'sample-request',studentId:'alex',examinerId:'riley',slotId:'r1',certificate:'Instrument rating',fee:950,date:demoDate(11),time:'09:00',airport:'KRUQ',status:'pending',source:'Flight school',checklist:[]} ]});
 export const defaultChecklist = () => ['Confirm application and IACRA status with your examiner','Review required eligibility documents and endorsements','Confirm aircraft documents and maintenance records','Confirm any navigation logs, references, and equipment requested by the examiner'].map((text,i)=>({id:'item-'+i,text,done:false}));
 export function requestSlot(state,{studentId,examinerId,slotId,certificate,source='Student',aircraft='Not specified',readiness='Not provided',notes=''}) {const examiner=state.examiners.find(x=>x.id===examinerId),student=state.students.find(x=>x.id===studentId),slot=examiner?.slots.find(x=>x.id===slotId);if(!examiner||!student||!slot)throw Error('This slot is no longer available. Choose another.');if(!examiner.certificates.includes(certificate))throw Error('Choose a certificate offered by this examiner.');if(state.requests.some(r=>r.examinerId===examinerId&&r.date===slot.date&&r.status==='accepted'))throw Error('This examiner already has a confirmed checkride that day.');if(state.requests.some(r=>r.studentId===studentId&&r.examinerId===examinerId&&r.slotId===slotId&&['pending','accepted'].includes(r.status)))throw Error('You already have a request for this slot.');if(state.requests.some(r=>r.studentId===studentId&&r.date===slot.date&&r.status==='accepted'))throw Error('This student already has a confirmed checkride that day.');const details=validateRequestDetails({aircraft,readiness,notes});const request={...details,coordination:'scheduled',lifecycleHistory:[],checklistRevision:0,checklistSeenRevision:0,messages:[],createdAt:new Date().toISOString(),id:globalThis.crypto?.randomUUID?.()||'r'+Date.now()+Math.random(),studentId,examinerId,slotId,certificate,source,fee:examiner.fee,...slot,status:'pending',checklist:[]};request.id=globalThis.crypto?.randomUUID?.()||'r'+Date.now()+Math.random();state.requests.push(request);return request;}
 export function decideRequest(state,id,decision) {const r=state.requests.find(x=>x.id===id);if(!r||r.status!=='pending')throw Error('This request has already changed.');if(!['accepted','declined'].includes(decision))throw Error('Invalid decision.');if(decision==='accepted'){if(state.requests.some(x=>x.id!==id&&x.status==='accepted'&&((x.examinerId===r.examinerId&&x.date===r.date)||(x.studentId===r.studentId&&x.date===r.date))))throw Error('There is a conflicting confirmed checkride.');r.checklist=defaultChecklist();}r.status=decision;if(decision==='accepted')markAvailabilityChanged(state.examiners.find(e=>e.id===r.examinerId));return r;}
@@ -23,6 +54,7 @@ export function validateRequestDetails({aircraft,readiness,notes=''}) {
  return {aircraft:aircraft.trim(),readiness,notes:notes.trim()};
 }
 export function migrateState(input) {
+ shiftDemoDates(input);
  if(!input||input.version!==1||!Array.isArray(input.examiners)||!Array.isArray(input.students)||!Array.isArray(input.requests))return seed();
  const baseline=seed();
  const text=v=>typeof v==='string'&&v.length>0;

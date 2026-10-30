@@ -1,9 +1,10 @@
 import {canSchool} from './workflows.mjs';
+import {demoDate} from './model.mjs';
 
 // Invented planning inventory, not aircraft dispatch or airworthiness data.
 export const syntheticAircraft = () => [
- {id:'demo-172',name:'Demo Cessna 172',airports:['KJQF','KRUQ'],unavailableDates:['2026-11-12']},
- {id:'demo-pa28',name:'Demo Piper PA-28',airports:['KEQY','KUZA'],unavailableDates:['2026-11-16']}
+ {id:'demo-172',name:'Demo Cessna 172',airports:['KJQF','KRUQ'],unavailableDates:[demoDate(13)]},
+ {id:'demo-pa28',name:'Demo Piper PA-28',airports:['KEQY','KUZA'],unavailableDates:[demoDate(17)]}
 ];
 const appointment=r=>({requestId:r.id,status:r.status,date:r.date,time:r.time,airport:r.airport,examinerId:r.examinerId,certificate:r.certificate,readiness:r.readiness||'Not provided',aircraft:r.aircraft||'Not specified'});
 export function schoolBoard(state,{date}={}){

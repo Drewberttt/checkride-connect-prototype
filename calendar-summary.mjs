@@ -15,7 +15,7 @@ export function monthCells(month){
  const cells=Array(weekday).fill(null);for(let day=1;day<=daysInMonth(month);day++)cells.push(`${month}-${pad(day)}`);
  while(cells.length%7)cells.push(null);return cells;
 }
-export function initialCalendarDate(examiner,requests=[]){return [...examiner.slots.map(s=>s.date),...requests.filter(r=>r.examinerId===examiner.id&&['pending','accepted'].includes(r.status)).map(r=>r.date)].sort()[0]||'2026-11-01'}
+export function initialCalendarDate(examiner,requests=[]){return [...examiner.slots.map(s=>s.date),...requests.filter(r=>r.examinerId===examiner.id&&['pending','accepted'].includes(r.status)).map(r=>r.date)].sort()[0]||new Date().toISOString().slice(0,10)}
 export function summarizeDay(examiner,requests,date){
  const own=requests.filter(r=>r.examinerId===examiner.id),confirmed=own.filter(r=>r.date===date&&r.status==='accepted'),pending=own.filter(r=>r.date===date&&r.status==='pending');
  const proposals=own.filter(r=>r.status==='accepted'&&r.rescheduleProposal?.status==='pending'&&r.rescheduleProposal.to.date===date);
