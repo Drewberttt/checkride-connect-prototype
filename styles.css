@@ -76,3 +76,6 @@ dialog .sync-conflict{margin:0 0 18px}h1[tabindex="-1"]:focus-visible{outline:3p
 .pilot-airports label { display: inline-flex; align-items: center; gap: 6px; }
 .pilot-airports input { width: auto; }
 .pilot-panel .appointment-grid dd { overflow-wrap: anywhere; }
+
+/* Headings get focus after navigation for screen readers; no visible ring needed. */
+h1[tabindex="-1"]:focus{outline:none}
