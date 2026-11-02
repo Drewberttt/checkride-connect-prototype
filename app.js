@@ -196,9 +196,45 @@
   // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
   const COPY = { "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state",
     // D41 (new key for Customer Discovery): the NC sample area has no cost data, so no estimate is shown and nothing is invented.
-    "estimate.no_area_data": `No estimate yet for ${IS_NC ? "North Carolina" : "this area"}. This prototype has no sample aircraft, instructor or travel cost data here, so we don\u2019t guess. Fees shown are each examiner\u2019s own (sample).` };
+    "estimate.no_area_data": `No estimate yet for ${IS_NC ? "North Carolina" : "this area"}. This prototype has no sample aircraft, instructor or travel cost data here, so we don\u2019t guess. Fees shown are each examiner\u2019s own (sample).`,
+    // NC cost data (Marlo, Nov 2; new keys for Customer Discovery). National figures used where NC has none are labelled "national average".
+    "estimate.national_tag": "national average",
+    "estimate.nc_fee_ppl": "This sample fee is within one North Carolina school\u2019s published range for a private pilot checkride: $700 to $900, typically $750.",
+    "estimate.nc_fee_national": "No North Carolina figure for this checkride, so the sample fee sits inside the national average range.",
+    "estimate.national_hours": "Test-day flight hours:",
+    "estimate.national_prep": "Prep hours:",
+    // Two lines each (Customer Discovery, Nov 2): "\n" splits them; the point comes first.
+    "estimate.nc_retest_note": "Retest chance: the national average for {cert} checkrides, from FAA-wide statistics. You can change it.\nNorth Carolina has no figure of its own, and it isn\u2019t this examiner\u2019s pass rate.",
+    "estimate.nc_basis": "North Carolina inputs (public sources, Nov 2, 2026): trainer $185/h, twin $428/h, instructor $60/h, hotel $113 a night.\nWhere North Carolina has no figure, we use national averages: fees for checkrides other than private pilot, test-day and prep hours, retest odds, and the IRS driving rate ($0.76 a mile).",
+    // Marlo, Nov 2: shown only beside the two thin NC lines (the private-DPE fee range and the twin rental rate).
+    "estimate.limited_data": "Based on limited public data.",
+    // Rules 5/6 clock (Marlo, Nov 2; new keys for Customer Discovery). Status messages live in elig-clock.js under clock.prep.* / clock.retest.*.
+    "clock.heading": "Prep and retest checks", "clock.chip.review": "CFI review", "clock.chip.confirm": "Confirm with CFI",
+    "clock.needs_check.note": "Confirm this with your CFI.",
+    // D42 (Mon Nov 2, 2026): optional request-step tick, shown only when Journey has a warn or fails row. Never blocks.
+    "request.cfi_reviewed": "Your CFI has reviewed the items flagged on your Journey.",
+    "request.cfi_reviewed.hint": "Optional. It never stops you sending the request.",
+    "clock.disclaimer": "For your information only. This is not an FAA determination. Your CFI and your examiner confirm whether you\u2019re eligible to test. Not affiliated with or endorsed by the FAA.",
+    "clock.when.slot": "Checked against your checkride on {date} ({zone}, at {airport}).",
+    "clock.when.target": "Checked against your {month} target. Pick an opening to check an exact date.",
+    "clock.prep.label": "Practical-test prep ({amount} {unit})", "clock.prep.label_na": "Practical-test prep",
+    "clock.retest.label": "Retest after a test you didn\u2019t pass (\u00a761.49)",
+    "clock.retest.need_failure_date": "Add the date of the test you didn\u2019t pass to check the retest steps.",
+    "clock.retest.recheck_note": "Your prep hours are checked against this retest date, so hours logged before your last test may fall outside the window. Your knowledge test and medical dates keep running.",
+    "clock.more.summary": "More clock dates (optional): practical-test prep and retests",
+    "clock.more.prep_legend": "Practical-test prep with your instructor", "clock.more.sim_note": "Simulator or FTD time doesn\u2019t count toward this.",
+    "clock.more.prep_none": "No prep dates to log for this certificate.", "clock.more.prep_exempt": "No prep dates to log when adding a class rating (\u00a761.63(c)(3)).", "clock.more.grad": "Part 141 graduation date (optional)",
+    "clock.more.retest_legend": "Retesting", "clock.more.retest_toggle": "I\u2019m retaking a checkride I didn\u2019t pass",
+    "clock.more.fail_date": "Date of the test you didn\u2019t pass", "clock.more.end_date": "Retest endorsement date",
+    "clock.more.trainer": "Did the instructor who endorsed you give the extra training?", "clock.more.rec": "Does your new application have a new instructor recommendation?",
+    "clock.more.spin_fail": "Was the area you didn\u2019t pass stall awareness, spin entry, spins or spin recovery?", "clock.more.spin_ac": "Will you bring an aircraft certificated for spins?" };
   // D41: areas without cost data (NC) never get aircraft / CFI / travel / retest estimates. Only examiner-published sample fees show.
-  const NO_EST_AREA = IS_NC;
+  // Nov 2: NC now has sourced cost data (sample-nc-examiners.js costData + per-examiner costModel). Areas without it still show estimate.no_area_data.
+  const NO_EST_AREA = IS_NC && !(NC && NC.costData === true);
+  // Which inputs of an examiner's estimate are national figures (NC costModel.national). Legacy states keep their own wording.
+  const natOf = (dp, cert) => { const n = dp && dp.costModel && dp.costModel.national; if (!n) return null;
+    return { fee: Array.isArray(n.examinerFee) && n.examinerFee.includes(cert), hours: !!n.rentalHoursTest, prep: !!n.cfiPrepHours, retest: !!n.retestProbability, mileage: !!n.driveRatePerMile }; };
+  const NAT_TAG = (k) => `<span class="nat-tag" data-national="${k}" data-copy-key="estimate.national_tag">${COPY["estimate.national_tag"]}</span>`;
   const noEstFor = (dp) => NO_EST_AREA && !(dp && dp.costModel);
   const NO_EST = `<span data-no-estimate="area">No estimate yet</span>`;
   const PAST_SLOT = COPY["slot.started"]; // QA-039 / QA-070: the stale-slot refusal uses the slot.started key
@@ -246,9 +282,9 @@
   const studentCancelBody = (sl, ms, dp) => !FEES ? `Your confirmed checkride is ${slotAt(sl)}. If you cancel, the slot goes back to ${esc(first(dp.name))}, and the next person in line can request it. Checkride Connect is free, so there\u2019s nothing from us to refund or credit.` : ms >= H48
     ? `It\u2019s ${durText(ms)} until ${slotWhen(sl)}. Because that\u2019s 48 hours or more, your $15 booking fee becomes a credit. You can use it on any booking for 12 months.`
     : `It\u2019s ${durText(ms)} until ${slotWhen(sl)}. Because that\u2019s less than 48 hours, the $15 booking fee is kept.`;
-  // Sample deposit: about 20% of the examiner fee, rounded to $25. Credited toward the fee. Mock only.
+  // Sample deposit: about a fifth of the examiner fee, rounded to $25. Credited toward the fee. Mock only.
   const depositFor = (dp, cert) => dp.depositUsd != null && dp.depositUsd !== "" ? Math.min(dp.fees[cert], Number(dp.depositUsd)) : Math.min(dp.fees[cert], Math.max(100, Math.round((dp.fees[cert] * 0.2) / 25) * 25));
-  const depositRule = (dp) => dp.depositUsd != null && dp.depositUsd !== "" ? `set by the examiner at ${money(Number(dp.depositUsd))} per checkride` : "about 20% of the fee, rounded to $25, minimum $100";
+  const depositRule = (dp) => dp.depositUsd != null && dp.depositUsd !== "" ? `set by the examiner at ${money(Number(dp.depositUsd))} per checkride` : "about a fifth of the fee, rounded to $25, minimum $100";
 
   // ---- All-in cost model (EXAMPLE NUMBERS from sample data, not quotes) ----
   const sampleOf = (dp) => dp.sample || { rental: 150, lodging: 130, noShow: 250, avgDaysToNext: null, leadDays: null, reviewList: [] };
@@ -319,14 +355,14 @@
       <div class="summary small" style="margin-top:.9rem">
         <div class="line"><span>Examiner fee, ${esc(certById(cert).short)} (sample)</span><b>${money(x.fee)}</b></div>
         ${FEES ? `<div class="line"><span>Student booking fee (flat, mock)</span><b>${money(x.studentFee)}</b></div>` : ""}
-        <div class="line"><span>Aircraft rental + fuel estimate<div class="muted small">${esc(x.aircraftNote)}</div></span><b>${money(x.aircraft)}</b></div>
+        <div class="line"><span>Aircraft rental + fuel estimate<div class="muted small">${esc(x.aircraftNote)}${natOf(dp, cert) && natOf(dp, cert).hours ? ` \u00b7 <span data-copy-key="estimate.national_hours">${COPY["estimate.national_hours"]}</span> ${NAT_TAG("hours")}` : ""}</div></span><b>${money(x.aircraft)}</b></div>
         <div class="line"><span>${x.travelLabel}<div class="muted small" data-travel-note>${esc(x.travelNote)}</div></span><b>${money(x.travel)}</b></div>
         <div class="line" style="border-top:1px solid var(--border-strong);margin-top:.3rem;padding-top:.5rem"><span><b>Example all-in total${x.at ? ` for an opening at ${x.at}` : ""}</b></span><b>${money(x.total)}</b></div>
       </div>
       ${x.offer ? `<p class="small" id="travel-offer" style="margin:.6rem 0 0">${esc(x.offer)}</p>` : ""}
       <div class="summary small" style="margin-top:.75rem">
         <div class="line muted"><span>Not added to the total, if needed: retest / discontinuance (sample)</span><b>+${money(x.retest)}</b></div>
-        <div class="line muted"><span>Not added to the total, if needed: no-show / late-cancel fee, up to (sample)</span><b>+${money(x.noShow)}</b></div>
+        ${x.noShow != null ? `<div class="line muted"><span>Not added to the total, if needed: no-show / late-cancel fee, up to (sample)</span><b>+${money(x.noShow)}</b></div>` : ""}
       </div>
       <p class="warn-note small" style="margin:.75rem 0 0"><b>ASSUMPTION:</b> Deposit paid to your examiner (mock): ${money(x.dep)}, ${depositRule(dp)}. It is <b>part of</b> the examiner fee, not an extra; Checkride Connect never holds it. It is due at approval${FEES ? ` together with the ${money(BOOKING_FEE)} student fee (${money(x.dep + BOOKING_FEE)})` : ` (${FREE_LINE.replace(".", "")}, no booking fee)`}, and the rest (${money(x.fee - x.dep)}) is paid at the test. Real deposit rules are set by each examiner. Prototype, not legal or FAA advice, and no real payments.</p>
     </section>`;
@@ -391,27 +427,34 @@
   };
   const EST_LABEL = "Estimate built from example inputs, not a quote";
   const EST_PILL = `<span class="pill warn" data-estimate-label>${EST_LABEL}</span>`;
-  const retestNote = (cert) => `The retest chance is a shared default for every ${esc(certById(cert).short)} checkride, from FAA-wide statistics, and you can change it. It is not this examiner\u2019s pass rate. ${VERIFY}`;
+  const retestNote = (cert, dp) => natOf(dp, cert) && natOf(dp, cert).retest ? `<span data-copy-key="estimate.nc_retest_note">${COPY["estimate.nc_retest_note"].replace("{cert}", esc(certById(cert).short)).replace("\n", "<br>")}</span> ${NAT_TAG("retest")} ${VERIFY}` : `The retest chance is a shared default for every ${esc(certById(cert).short)} checkride, from FAA-wide statistics, and you can change it. It is not this examiner\u2019s pass rate. ${VERIFY}`;
+  // Customer Discovery, Nov 2: [VERIFY] on each NC claim; "Based on limited public data." only beside the two thin lines.
+  const VCLAIM = (c) => VERIFY.replace('<span class="pill verify"', `<span class="pill verify" data-verify-claim="${c}"`);
+  const LIMITED = () => `<span class="limited-data" data-copy-key="estimate.limited_data">${COPY["estimate.limited_data"]}</span>`;
+  const ncBasis = () => { const [l1, l2] = COPY["estimate.nc_basis"].split("\n");
+    return `<span data-basis-line="1">${l1.replace("twin $428/h", `twin $428/h (${LIMITED()}) ${VCLAIM("nc-twin")}`)} ${VCLAIM("nc-inputs")}</span><br><span data-basis-line="2">${l2} ${VCLAIM("irs-mileage")}</span>`; };
   // Profile card ("Expected all-in, including retest risk").
   const estimateCard = (dp, cert, near, at) => {
     if (noEstFor(dp)) return ""; // D41: allInCard already shows "No estimate yet" for this area
     const travel = allIn(dp, cert, near, at).travel, e = estimateFor(dp, cert, travel);
     if (!e) return "";
     const L = (k, v, note) => `<div class="line"><span>${k}${note ? `<div class="muted small">${note}</div>` : ""}</span><b class="mono">${v}</b></div>`;
+    const nat = natOf(dp, cert), ncFee = nat ? (nat.fee ? `<span data-copy-key="estimate.nc_fee_national">${COPY["estimate.nc_fee_national"]}</span> ${NAT_TAG("fee")} ${VCLAIM("nc-fee-national")}` : `<span data-copy-key="estimate.nc_fee_ppl">${COPY["estimate.nc_fee_ppl"]}</span> ${VCLAIM("nc-fee-ppl")} ${LIMITED()}`) : "";
     return `<section class="card" id="cost-estimate" data-estimate="${dp.id}:${cert}">
       <p class="eyebrow">ESTIMATE \u00b7 EXAMPLE INPUTS</p>
       <div class="row spread"><h2 style="margin:0">Expected all-in, including retest risk</h2>${EST_PILL}</div>
       <form class="row" data-form="retest" data-auto data-cert="${cert}" style="margin:.75rem 0 0;gap:.75rem;align-items:flex-end;flex-wrap:wrap">${retestSelect(cert, "retest-p")}</form>
       <div class="summary small" style="margin-top:.9rem">
-        ${L(`Examiner fee, ${esc(certById(cert).short)} (sample)`, money(e.exam))}
-        ${L("Aircraft on test day (estimate)", money(e.aircraft), `${e.hours} h \u00d7 ${money(e.rate)}/h${e.isMulti ? `, a twin at about ${TWIN_MULT}\u00d7 a trainer` : ""}. Sourced test-day flight time is about ${e.range.low}\u2013${e.range.high} h.`)}
-        ${L("CFI prep and mock checkride (estimate)", money(e.prep), `${e.prepHours} h dual + ${e.groundHours} h ground at ${money(e.cfiRate)}/h instructor and the same rental rate`)}
+        ${L(`Examiner fee, ${esc(certById(cert).short)} (sample)`, money(e.exam), ncFee)}
+        ${L("Aircraft on test day (estimate)", money(e.aircraft), `${e.hours} h \u00d7 ${money(e.rate)}/h${e.isMulti ? `, a twin at about ${TWIN_MULT}\u00d7 a trainer` : ""}. Sourced test-day flight time is about ${e.range.low}\u2013${e.range.high} h.${nat && nat.hours ? ` <span data-copy-key="estimate.national_hours">${COPY["estimate.national_hours"]}</span> ${NAT_TAG("hours")}` : ""}`)}
+        ${L("CFI prep and mock checkride (estimate)", money(e.prep), `${e.prepHours} h dual + ${e.groundHours} h ground at ${money(e.cfiRate)}/h instructor and the same rental rate${nat && nat.prep ? ` \u00b7 <span data-copy-key="estimate.national_prep">${COPY["estimate.national_prep"]}</span> ${NAT_TAG("prep")}` : ""}`)}
         ${L("Travel (estimate)", money(e.travel))}
         ${FEES ? L("Student booking fee (mock)", money(e.studentFee)) : ""}
-        ${L("Retest risk (estimate)", money(e.expectedRetest), e.p > 0 ? `${oneIn(e.p).toLowerCase()} \u00d7 ${money(e.retestCost)} if a retest is needed (retest fee ${money(e.retestFee)}, extra training, rental${e.travel ? ", travel again" : ""})` : "Left out of this estimate")}
+        ${L("Retest risk (estimate)", money(e.expectedRetest), e.p > 0 ? `${oneIn(e.p).toLowerCase()} \u00d7 ${money(e.retestCost)} if a retest is needed (retest fee ${money(e.retestFee)}, extra training, rental${e.travel ? ", travel again" : ""})${nat && nat.retest ? ` \u00b7 retest odds: ${NAT_TAG("retest")}` : ""}` : "Left out of this estimate")}
         <div class="line total"><span><b>Expected all-in (est.)</b></span><b class="mono" data-est-total>${money(e.grand)}</b></div>
       </div>
-      <p class="muted small" style="margin:.6rem 0 0">${retestNote(cert)}</p>
+      <p class="muted small" style="margin:.6rem 0 0">${retestNote(cert, dp)}</p>
+      ${nat ? `<p class="muted small" style="margin:.35rem 0 0" data-nc-basis data-copy-key="estimate.nc_basis">${ncBasis()}</p>` : ""}
       <p class="muted small" style="margin:.35rem 0 0">Every input is example data: sample fees and rental rates, and shared defaults for prep hours and retests${e.built ? " (this examiner\u2019s rates are sample values, with the rest from shared defaults)" : ""}. Your school\u2019s rates and your own progress change the real number.</p>
     </section>`;
   };
@@ -424,7 +467,8 @@
       <div class="line"><span><b>Expected all-in, including retest risk</b></span><b class="mono" data-est-total>${money(e.grand)}</b></div>
       <p class="muted" style="margin:.25rem 0 0">Adds CFI prep (${money(e.prep)}), aircraft on test day (${money(e.aircraft)}, ${e.hours} h) and retest risk (${money(e.expectedRetest)}) to the fee and travel above.</p>
       <form data-form="retest" data-auto data-cert="${cert}" style="margin:.5rem 0 0">${retestSelect(cert, "retest-p-req")}</form>
-      <p class="muted" style="margin:.35rem 0 0">${EST_LABEL}. ${retestNote(cert)}</p>
+      <p class="muted" style="margin:.35rem 0 0">${EST_LABEL}. ${retestNote(cert, dp)}</p>
+      ${natOf(dp, cert) ? `<p class="muted" style="margin:.35rem 0 0" data-nc-basis data-copy-key="estimate.nc_basis">${ncBasis()}</p>` : ""}
     </div>`;
   };
   const reviewsCard = (dp, cert) => {
@@ -909,16 +953,23 @@ const closeModal = () => {
   // B: state = the state of the search airport. ?st= picks a state: a covered one (FL/TX/CA/AZ) moves the search to that state's
   // sample airport unless the airport is already there; any other US state shows the outside-coverage message (ux-copy-v3, D16).
   function searchFilters(q) {
-    let near = apt(q.near) ? q.near : DEFAULT_NEAR;
+    // QA-082: an old or unknown airport (KTPA, XNC99, KORL in the NC sample) or checkride in a #/search link falls back
+    // to the default like before, but now says so with the same "We adjusted this link:" note as #/find (QA-069).
+    const qn = q.near == null ? "" : String(q.near).trim(), qnU = qn.toUpperCase();
+    const qc = q.cert == null ? "" : String(q.cert).trim();
+    const fixed = [];
+    let near = apt(qn) ? qn : apt(qnU) ? qnU : DEFAULT_NEAR;
+    if (qn && near !== qn && near !== qnU) fixed.push(`the airport \u201c${qn}\u201d has no sample examiners, so it shows ${near}`);
+    if (qc && !certById(qc)) fixed.push(`the checkride \u201c${qc}\u201d isn\u2019t in the sample data, so it shows ${certById("ppl").name}`);
     const st = String(q.st || "").toUpperCase();
     let outside = "";
     if (st && COVERED_STATES.some(([c]) => c === st)) { if (aptState(near) !== st) near = STATE_HOME[st]; }
     else if (st && (US_STATES[st] || US_TERR[st] || /^[A-Z]{2}$/.test(st))) outside = st; // QA-049: an unknown or territory code shows the outside panel, never Florida silently
-    return { cert: certById(q.cert) ? q.cert : "ppl", near, state: aptState(near), outside, radius: +q.radius || 75, before: q.before || "", maxFee: +q.maxFee || 0, sort: q.sort || "soonest" };
+    return { cert: certById(q.cert) ? q.cert : "ppl", near, state: aptState(near), outside, radius: +q.radius || 75, before: q.before || "", maxFee: +q.maxFee || 0, sort: q.sort || "soonest", fixed };
   }
   const US_TERR = { PR: "Puerto Rico", GU: "Guam", VI: "the U.S. Virgin Islands", AS: "American Samoa", MP: "the Northern Mariana Islands" };
   const stateName = (c) => (COVERED_STATES.find(([k]) => k === c) || [c, US_STATES[c] || US_TERR[c] || "this state"])[1]; // QA-055: never the raw code
-  const OUTSIDE_COPY = `This prototype only has sample examiners in ${coveredCodes()} so far. Pick an airport there to try it out.`;
+  const OUTSIDE_COPY = `This prototype only has sample examiners in ${IS_NC ? coveredList() : coveredCodes()} so far. Pick an airport there to try it out.`;
   const stateSelect = (cur) => `<label class="field"><span>State</span><select name="st" data-state-select>
       ${!COVERED_STATES.some(([k]) => k === cur) && !US_STATES[cur] && !US_TERR[cur] ? `<option value="" selected disabled>${COPY["search.state.placeholder"]}</option>` : ""}
       <optgroup label="Sample examiners">${COVERED_STATES.map(([c, n]) => `<option value="${c}" ${c === cur ? "selected" : ""}>${c} · ${n}</option>`).join("")}</optgroup>
@@ -1013,6 +1064,7 @@ const closeModal = () => {
         <div class="page-head v3-head" style="margin:0">
           <p class="eyebrow">Search</p>
           <h1>${f.outside ? `${esc(c.short)} checkrides in ${esc(stateName(f.outside))}` : `Soonest ${esc(c.short)} checkrides near ${f.near}`}</h1>
+          ${f.fixed.length ? `<p class="v4-note" id="search-param-note" role="status">We adjusted this link: ${esc(f.fixed.join("; "))}.</p>` : ""}
           <p class="muted small" id="search-helper" style="margin:0 0 .25rem">Soonest openings first. Fees shown are each examiner's own.</p>
           ${f.outside ? "" : `<p class="muted" style="margin:0" id="search-count">${results.length} of ${inState} sample examiners in ${esc(stateName(f.state))} match${fees.length ? (Math.min(...fees) === Math.max(...fees) ? ` · fee ${money(fees[0])}` : ` · fees ${money(Math.min(...fees))}–${money(Math.max(...fees))}`) : ""}${soonest ? ` · soonest opening ${fmtDate(soonest.date)} (${relDays(soonest.date, slotTz(soonest))})` : ""}</p>`}
         </div>
@@ -1050,7 +1102,7 @@ const closeModal = () => {
       </div>
       <div class="price" style="text-align:right">
         <div class="amt">${money(r.fee)}</div><div class="muted small">${esc(certById(f.cert).short)} fee</div>
-        ${r.soonest ? `<div class="pill good" style="margin-top:.4rem">Soonest ${relDays(r.soonest.date, slotTz(r.soonest))}</div>` : `<div class="pill" style="margin-top:.4rem">${isStale(dp.id) ? "Not confirmed" : "No openings"}</div>`}
+        ${r.soonest ? `<div class="pill good" style="margin-top:.4rem">Soonest ${relDays(r.soonest.date, slotTz(r.soonest))}</div>` : `<div class="pill" style="margin-top:.4rem">${isStale(dp.id) ? "Availability not confirmed" : "No openings posted"}</div>`}
       </div>
     </article>`;
   }
@@ -1110,7 +1162,7 @@ const closeModal = () => {
         <div class="stack">
           <section class="card">
             <h2>Fees</h2>
-            <p class="muted small">Set by the examiner and paid directly to them. Prototype booking: ${FEES ? `a flat ${money(BOOKING_FEE)} student booking fee plus a sample deposit paid to your examiner (ASSUMPTION, about 20% of the fee, credited toward it), both shown only if the examiner approves.` : `a sample deposit paid to your examiner (ASSUMPTION, about 20% of the fee, credited toward it), due only if the examiner approves. ${FREE_LINE}`} Nothing is charged. Prototype, not legal or FAA advice.</p>
+            <p class="muted small">Set by the examiner and paid directly to them. Prototype booking: ${FEES ? `a flat ${money(BOOKING_FEE)} student booking fee plus a sample deposit paid to your examiner (ASSUMPTION, about a fifth of the fee, credited toward it), both shown only if the examiner approves.` : `a sample deposit paid to your examiner (ASSUMPTION, about a fifth of the fee, credited toward it), due only if the examiner approves. ${FREE_LINE}`} Nothing is charged. Prototype, not legal or FAA advice.</p>
             <div class="table-wrap"><table>
               <thead><tr><th>Certificate / rating</th><th class="num">Examiner fee</th></tr></thead>
               <tbody>${certIds.map((c) => `<tr ${c === cert ? 'class="best"' : ""}><td>${esc(certById(c).name)} <span class="muted small">${esc(certById(c).detail)}</span></td><td class="num"><b>${money(dp.fees[c])}</b></td></tr>`).join("")}</tbody>
@@ -1207,8 +1259,8 @@ const closeModal = () => {
           <td>${r.soon ? `${fmtDate(r.soon.date)} <span class="muted small">${relDays(r.soon.date, slotTz(r.soon))}</span>` : '<span class="muted small">None open</span>'}</td>
         </tr>`).join("")}</tbody>
       </table></div>
-      <p class="muted small" style="margin:.75rem 0 0">Example numbers only, not quotes. Exam fees are set by each examiner and paid to them. Aircraft and travel are rough estimates from sample data, and retest or no-show fees are not included (see each profile). The deposit paid to your examiner (ASSUMPTION, about 20% of the fee) is part of the exam fee, so it is not added here. Wait figures are sample data, not real reviews.<span class="cmp-mobile-note"> On a phone the table shows examiner, exam fee, all-in total and wait; open a profile for the full breakdown.</span></p>
-      </section>` : emptyState({ id: "compare-empty", ic: "search", title: "No examiners offer this checkride in range", body: "Try a larger radius, or pick another certificate or airport.", actions: `<a class="btn secondary" href="#/search">Open search</a>` })}
+      <p class="muted small" style="margin:.75rem 0 0">Example numbers only, not quotes. Exam fees are set by each examiner and paid to them. Aircraft and travel are rough estimates from sample data, and retest or no-show fees are not included (see each profile). The deposit paid to your examiner (ASSUMPTION, about a fifth of the fee) is part of the exam fee, so it is not added here. Wait figures are sample data, not real reviews.<span class="cmp-mobile-note"> On a phone the table shows examiner, exam fee, all-in total and wait; open a profile for the full breakdown.</span></p>
+      </section>` : emptyState({ id: "compare-empty", ic: "search", title: "No sample examiners offer this checkride in range", body: "Try a larger radius, or pick another checkride or airport.", actions: `<a class="btn secondary" href="#/search">Open search</a>` })}
     </div>`;
   }
 
@@ -1618,7 +1670,7 @@ const closeModal = () => {
           <h2>Examiner fee by certificate</h2>
           <div class="grid g2">${certIds.map((c) => numField("fee-" + c, `${esc(certById(c).name)} ($)`, dp.fees[c], 100, 5000)).join("")}</div>
           <h2>Deposit</h2>
-          ${numField("depositUsd", "Deposit per checkride ($, part of the fee). Leave blank for the sample rule (about 20%).", dp.depositUsd, 0, 2000)}
+          ${numField("depositUsd", "Deposit per checkride ($, part of the fee). Leave blank for the sample rule (about a fifth of the fee).", dp.depositUsd, 0, 2000)}
           <label class="field"><span>Deposit refund terms (quoted to students, in your words)</span><textarea name="depositTerms" rows="2" maxlength="300" required>${esc(depTerms(dp))}</textarea></label>
           <h2>Travel and retest</h2>
           <div class="grid g2">
@@ -1986,7 +2038,7 @@ const closeModal = () => {
             <div class="line" style="border-top:1px solid var(--border-strong);margin-top:.3rem;padding-top:.5rem"><span><b>Total due if all are accepted</b></span><b>${money(tot.due)}</b></div>
             <div class="line muted"><span>Actually charged in this prototype</span><b id="cohort-charged">$0</b></div>
           </div>
-          <div class="warn-note small" style="margin:.75rem 0"><b>ASSUMPTION, not a policy:</b> the deposit is about 20% of the examiner fee, rounded to $25, minimum $100, and is part of the fee, not an extra. Real deposit rules are set by each examiner. ${NO_EST_AREA ? `All-in: ${COPY["estimate.no_area_data"]}` : "All-in adds example aircraft and travel estimates used only for ranking."}</div>
+          <div class="warn-note small" style="margin:.75rem 0"><b>ASSUMPTION, not a policy:</b> the deposit is about a fifth of the examiner fee, rounded to $25, minimum $100, and is part of the fee, not an extra. Real deposit rules are set by each examiner. ${NO_EST_AREA ? `All-in: ${COPY["estimate.no_area_data"]}` : "All-in adds example aircraft and travel estimates used only for ranking."}</div>
           ${plan.blocked.length ? `<p class="small" style="margin:0 0 .5rem">Proceeding with the eligible students only. Not included: ${plan.blocked.map((c) => esc(c.st.name)).join(", ")}.</p>` : ""}
           <button class="btn" data-action="cohort-create" id="cohort-create">Create ${plural(rows.length, "mock request")}</button>
           <span class="small muted" style="margin-left:.5rem">Creates requests in this browser only. Each examiner sees the readiness answers. Nothing is sent or charged.</span>
@@ -2214,7 +2266,8 @@ const closeModal = () => {
   };
   const fmtMonth = (ym) => { const [y, m] = ym.split("-").map(Number); return new Date(y, m - 1, 1).toLocaleDateString("en-US", { month: "short", year: "numeric" }); };
   const targetChip = () => `<span class="pill" id="journey-target" data-target="${S.target}">Target: ${fmtMonth(S.target)} \u00b7 <button class="linkish" type="button" data-action="target-change" aria-haspopup="dialog">Change</button></span>`;
-  const ROLL = { bad: ["bad", "Closed"], warn: ["warn", "Heads-up"], good: ["good", "On track"], none: ["", "Not set"] };
+  // Rules 5/6 (Marlo, Nov 2): "CFI review" = warn/fails (needs the CFI tick), "Confirm with CFI" = needs-check (note, no tick, v2.1).
+  const ROLL = { bad: ["bad", "Closed"], review: ["warn", COPY["clock.chip.review"]], warn: ["warn", "Heads-up"], check: ["", COPY["clock.chip.confirm"]], good: ["good", "On track"], none: ["", "Not set"] };
   const eligRollup = () => {
     const r9 = S.ready9 || {}, dates = S.ready9Dates || {};
     const cur = activeReq(), sl = cur && slotOf(cur);
@@ -2229,11 +2282,84 @@ const closeModal = () => {
       else if (!sl && exp < goal) { sigs.push("warn"); why.push(`Knowledge test result valid through ${fmtDateY(exp)}, before the end of your target month (draft rule).${smp}`); }
       else { sigs.push("good"); why.push(`Knowledge test result valid through ${fmtDateY(exp)} (draft rule).${smp}`); }
     }
-    const any = dates.kt || Object.values(r9).some(Boolean);
-    const k = sigs.includes("bad") ? "bad" : sigs.includes("warn") ? "warn" : any ? "good" : "none";
+    // Rules 5/6: only what the student entered moves the roll-up (missing data stays neutral, ux-copy-v3 §2).
+    const ck = clockResults().filter((x) => x.entered);
+    for (const { r } of ck) sigs.push(r.status === "warn" && r.reason === "fails" ? "review" : r.status === "needs-check" ? "check" : "good");
+    const any = dates.kt || Object.values(r9).some(Boolean) || ck.length;
+    const k = ["bad", "review", "warn", "check"].find((x) => sigs.includes(x)) || (any ? "good" : "none");
     return { k, cls: ROLL[k][0], label: ROLL[k][1], why: why.join(" ") };
   };
+  // D42: Journey has a warn or fails row (knowledge-test "Closed"/"Heads-up", or a Rules 5/6 "CFI review" row).
+  const journeyFlagged = () => ["bad", "review", "warn"].includes(eligRollup().k);
   const rollChip = (r) => `<span class="pill ${r.cls}" data-rollup="${r.k}">${r.label}</span>`;
+  // ---- Eligibility clock, Rules 5 (3 h practical-test prep) and 6 (retest after a failure, §61.49): elig-clock.js.
+  // Informational labels only; warn, never block (decision #18). Dates are document dates; the checkride date is the
+  // airport-local slot date (D38), labelled with the airport, so results are the same in any reader zone.
+  const CLOCK_RATING = { ppl: "private-asel", ir: "instrument-airplane", cpl: "commercial-asel", me: "private-amel", cfi: "cfi", mei: "cfi", cfii: "cfi-instrument", sport: "sport-airplane" };
+  const CK = () => S.clock || {};
+  const triVal = (v) => (v === "yes" ? true : v === "no" ? false : null);
+  const clockCert = () => { const cur = activeReq(); return cur ? cur.cert : "ppl"; };
+  const clockPlanned = () => {
+    const cur = activeReq(), sl = cur && slotOf(cur);
+    if (sl) return { planned: sl.date, key: "clock.when.slot", text: COPY["clock.when.slot"].replace("{date}", fmtDateY(sl.date)).replace("{airport}", sl.airport).replace("{zone}", zoneLabel(slotTz(sl))) };
+    const ym = S.target || defaultTarget();
+    return { planned: ym, key: "clock.when.target", text: COPY["clock.when.target"].replace("{month}", parseIso(ym + "-01").toLocaleDateString("en-US", { month: "long", year: "numeric" })) };
+  };
+  const clockEntries = () => { const rows = (CK().prep || []).filter((e) => e && E_OK(e.date) && +e.hours > 0); return rows.length ? rows.map((e) => ({ date: e.date, hours: +e.hours, qualifies: !e.sim })) : null; };
+  const E_OK = (d) => !!(window.CC_ELIG && window.CC_ELIG.cal.isYmd(d));
+  const clockResults = () => {
+    const E = window.CC_ELIG; if (!E) return [];
+    const c = CK(), cert = clockCert(), rating = CLOCK_RATING[cert] || "private-asel", when = clockPlanned(), out = [];
+    const entries = clockEntries(), grad = E_OK(c.grad) ? c.grad : null;
+    const prep = E.checkPrep({ rating, entries, testStart: when.planned, pathway: grad ? "part141" : "part61", graduationDate: grad, addedClass: cert === "me", fmt: fmtDateY });
+    out.push({ r: prep, label: prep.amount ? COPY["clock.prep.label"].replace("{amount}", prep.amount).replace("{unit}", prep.unit) : COPY["clock.prep.label_na"], entered: !!(entries || grad) && !["not-applicable", "exempt"].includes(prep.reason) });
+    if (c.retest) {
+      if (!E_OK(c.fail)) out.push({ r: { rule: "retest_61_49", status: "needs-check", reason: "missing", key: "clock.retest.need_failure_date", message: COPY["clock.retest.need_failure_date"], cite: "14 CFR 61.49", verify: [5], cfiNote: COPY["clock.needs_check.note"], missing: true }, label: COPY["clock.retest.label"], entered: false });
+      else out.push({ r: E.checkRetest({ failureDate: c.fail, endorsementDate: E_OK(c.end) ? c.end : null, planned: when.planned, endorserGaveTraining: triVal(c.trainer), has8710: triVal(c.rec), cfiSpinFailure: cert === "cfi" && c.spinFail === "yes", spinCertified: triVal(c.spinAc), fmt: fmtDateY }), label: COPY["clock.retest.label"], entered: true });
+    }
+    return out;
+  };
+  const clockChip = (r) => {
+    const [cls, t, k] = r.status === "warn" && r.reason === "fails" ? ["warn", COPY["clock.chip.review"], "review"] : r.reason === "missing" ? ["", "Not set", "none"]
+      : r.status === "needs-check" ? ["", COPY["clock.chip.confirm"], "check"] : ["good", "On track", "good"];
+    return `<span class="pill ${cls}" data-clock-chip="${k}">${t}</span>`;
+  };
+  const verifyFor = (nums) => nums && nums.length ? `<span class="pill verify" data-verify-flags="${nums.join(",")}" title="${esc(nums.map((n) => `#${n} ${window.CC_ELIG.VERIFY_FLAGS[n]}`).join(" \u2022 "))}">[VERIFY]</span>` : "";
+  function clockBlock(id) {
+    const rows = clockResults(); if (!rows.length) return "";
+    const when = clockPlanned(), retest = CK().retest;
+    return `<div class="elig-clock" id="${id}" data-elig-clock>
+      <h3 class="h4" style="margin:.75rem 0 .25rem" data-copy-key="clock.heading">${COPY["clock.heading"]}</h3>
+      <p class="small muted" style="margin:0 0 .35rem" data-copy-key="${when.key}">${esc(when.text)}</p>
+      <ul class="clock-rows">${rows.map(({ r, label }) => `<li class="clock-row" data-rule="${r.rule}" data-status="${r.status}" data-reason="${r.reason}" data-copy-key="${r.key}"${r.cfiAckRequired ? ` data-cfi-ack="required"` : ""}>
+        <div class="row" style="gap:.4rem;flex-wrap:wrap"><b>${esc(label)}</b> ${clockChip(r)} ${verifyFor(r.verify)}</div>
+        <p class="small" style="margin:.2rem 0 0">${esc(r.message)}</p>
+        ${r.cfiNote ? `<p class="small muted" style="margin:.15rem 0 0" data-cfi-note data-copy-key="clock.needs_check.note">${COPY["clock.needs_check.note"]}</p>` : ""}
+        ${r.cite ? `<p class="small muted" style="margin:.15rem 0 0">Basis: ${esc(r.cite)} (draft reading)</p>` : ""}</li>`).join("")}</ul>
+      ${retest ? `<p class="small muted" style="margin:.35rem 0 0" data-copy-key="clock.retest.recheck_note">${COPY["clock.retest.recheck_note"]} ${verifyFor([5])}</p>` : ""}
+      <p class="small muted" style="margin:.35rem 0 0" data-copy-key="clock.disclaimer">${COPY["clock.disclaimer"]}</p>
+    </div>`;
+  }
+  // Readiness inputs for Rules 5/6 (optional, saved in this browser only).
+  function clockInputs() {
+    const c = CK(), cert = clockCert(), rating = CLOCK_RATING[cert] || "private-asel", rule = window.CC_ELIG && window.CC_ELIG.PREP_RULES[rating];
+    const prep = c.prep || [], has = clockEntries() || c.grad || c.retest;
+    const tri = (id, key, label) => `<label class="field" style="max-width:420px"><span>${label}</span><select id="${id}" data-clock="${key}">${[["", "Not sure yet"], ["yes", "Yes"], ["no", "No"]].map(([v, l]) => `<option value="${v}" ${(c[key] || "") === v ? "selected" : ""}>${l}</option>`).join("")}</select></label>`;
+    const dt = (id, key, label, val) => `<label class="field" style="max-width:240px"><span>${label}</span><input type="date" id="${id}" data-clock="${key}" value="${esc(val || "")}" /></label>`;
+    return `<details class="clock-more" id="clock-more" ${has || ui.clockOpen ? "open" : ""}><summary data-copy-key="clock.more.summary">${COPY["clock.more.summary"]}</summary>
+      <fieldset class="clock-fs"><legend data-copy-key="clock.more.prep_legend">${COPY["clock.more.prep_legend"]}</legend>
+        ${rule && cert !== "me" ? `${[0, 1, 2].map((i) => { const e = prep[i] || {}; return `<div class="row clock-prep-row" style="gap:.6rem;align-items:end;flex-wrap:wrap">${dt(`clock-prep-d${i}`, `prep.${i}.date`, `Date ${i + 1}`, e.date)}<label class="field" style="max-width:110px"><span>Hours</span><input type="number" inputmode="decimal" min="0" max="24" step="0.1" id="clock-prep-h${i}" data-clock="prep.${i}.hours" value="${esc(e.hours || "")}" /></label><label class="row" style="gap:.35rem;min-height:44px"><input type="checkbox" id="clock-prep-s${i}" data-clock="prep.${i}.sim" ${e.sim ? "checked" : ""} /> <span class="small">Simulator or FTD</span></label></div>`; }).join("")}
+        <p class="small muted" style="margin:.25rem 0" data-copy-key="clock.more.sim_note">${COPY["clock.more.sim_note"]} ${verifyFor([16])}</p>
+        ${dt("clock-grad", "grad", COPY["clock.more.grad"], c.grad)}` : cert === "me" ? `<p class="small muted" style="margin:0" data-copy-key="clock.more.prep_exempt">${COPY["clock.more.prep_exempt"]} ${verifyFor([17])}</p>` : `<p class="small muted" style="margin:0" data-copy-key="clock.more.prep_none">${COPY["clock.more.prep_none"]} ${VERIFY}</p>`}
+      </fieldset>
+      <fieldset class="clock-fs"><legend data-copy-key="clock.more.retest_legend">${COPY["clock.more.retest_legend"]}</legend>
+        <label class="row" style="gap:.4rem;min-height:44px"><input type="checkbox" id="clock-retest" data-clock="retest" ${c.retest ? "checked" : ""} /> <span data-copy-key="clock.more.retest_toggle">${COPY["clock.more.retest_toggle"]}</span></label>
+        ${c.retest ? `<div class="row" style="gap:.6rem;flex-wrap:wrap">${dt("clock-fail", "fail", COPY["clock.more.fail_date"], c.fail)}${dt("clock-end", "end", COPY["clock.more.end_date"], c.end)}</div>
+          ${tri("clock-trainer", "trainer", COPY["clock.more.trainer"])}${tri("clock-rec", "rec", COPY["clock.more.rec"])}
+          ${cert === "cfi" ? `${tri("clock-spinfail", "spinFail", COPY["clock.more.spin_fail"])}${c.spinFail === "yes" ? tri("clock-spinac", "spinAc", COPY["clock.more.spin_ac"]) : ""}` : ""}` : ""}
+      </fieldset>
+    </details>`;
+  }
   const ready9Count = () => { const r = S.ready9 || {}; return ["kt", "exp", "end", "med", "iacra", "docs", "id", "terms", "prep"].filter((k) => r[k]).length; };
 
   function viewJourney() {
@@ -2261,7 +2387,8 @@ const closeModal = () => {
             <div class="row" style="margin-top:.4rem">${targetChip()}</div>
             ${seg9(n)}
             ${roll.why ? `<p class="small" style="margin:0 0 .25rem">${esc(roll.why)}</p>` : roll.k === "none" ? `<p class="small muted" style="margin:0 0 .25rem">Nothing entered yet. Tick items on your <a href="#/readiness">readiness checklist</a>.</p>` : ""}
-            <p class="small muted" style="margin:0">Draft: verify with your CFI. Not legal or FAA advice.</p>
+            ${clockBlock("elig-clock")}
+            <p class="small muted" style="margin:.35rem 0 0">Draft: verify with your CFI. Not legal or FAA advice.</p>
           </section>
           ${nextItem ? `<section class="card next-step"><p class="eyebrow">YOUR NEXT STEP</p><h3>${esc(nextItem.t)}</h3><a class="btn secondary sm" href="#/readiness">Open the checklist</a></section>` : ""}
           <section class="card">${state}</section>
@@ -2290,6 +2417,7 @@ const closeModal = () => {
         <p class="muted small">${cur ? `For your ${esc(certById(cert).name)} checkride with ${esc(dp.name)} \u00b7 ${slotAt(s)}` : `For your ${esc(certById(cert).name)} checkride`}</p>
         ${cs && cs.sent ? `<p class="small">${esc(dp.name)} confirmed this list on ${fmtDate(iso(new Date(cs.sent.sentAt)), { month: "short", day: "numeric" })}.</p>` : ""}
         <div class="row" style="margin:.25rem 0 .5rem;gap:.75rem;align-items:end"><label class="field" style="max-width:240px"><span>Knowledge test date (optional)</span><input type="date" id="kt-date-r9" data-r9date="kt" value="${esc((S.ready9Dates || {}).kt || "")}" /></label>${rollChip(eligRollup())}</div>
+        ${clockInputs()}${clockBlock("elig-clock-r9")}
         <ol class="ready9">${items.map((it, i) => { const d = !!r9[it.id]; return `<li><label class="check-item ${d ? "done" : ""}"><input type="checkbox" data-r9="${it.id}" ${d ? "checked" : ""} /><div><div class="t"><span class="mono muted">${i + 1}</span> ${esc(it.t)}</div><div class="muted small">${it.h}</div>${it.lbl ? `<div class="small"><b>${it.lbl}</b></div>` : ""}${it.id === "prep" && cs && cs.sent ? `<a class="small" href="#/my-checklists">Open prep list</a>` : ""}</div></label>${it.id === "med" ? medicalBlock() : it.id === "prep" ? prepStudent(cur && cur.status === "confirmed" ? cur : null, dp) : ""}</li>`; }).join("")}</ol>
         <p class="small muted" style="margin:.75rem 0 0">A checklist to help you prepare, not an FAA requirement list. Your CFI and examiner have the final word.</p>
         <p class="small muted" style="margin:.25rem 0 0">Draft: verify with your CFI. Not legal or FAA advice. Ticks are saved in this browser only.</p>
@@ -2558,7 +2686,7 @@ const closeModal = () => {
           <input type="hidden" name="radius" value="${f.radius}">
           <div class="field v4-f-radius"><span class="v4-lbl" id="find-r-l">Within</span><div class="v4-seg" role="group" aria-labelledby="find-r-l">${V4_RADII.map((r) => `<a class="v4-seg-b" href="${v4FindHref(f, { radius: r })}" ${r === f.radius ? 'aria-current="true" ' : ""}data-radius="${r}">${r} nm</a>`).join("")}</div></div>
         </form>
-        <p id="find-count" class="v4-count" aria-live="polite"><b>${plural(res.length, "examiner")}</b> for ${esc(c.name)} within ${f.radius} nm of <span class="mono">${f.near}</span> \u00b7 ${esc(apt(f.near).city)}${nTravel ? ` <span class="small">(${nTravel} based farther out travel to you)</span>` : ""}${res.length > FIND_PAGE ? ` \u00b7 <span id="find-shown">showing ${shown}</span>` : ""}</p>
+        <p id="find-count" class="v4-count" aria-live="polite"><b>${plural(res.length, "examiner")}</b> for ${esc(c.name)} within ${f.radius} nm of <span class="mono">${f.near}</span> \u00b7 ${esc(apt(f.near).city)}${nTravel ? ` <span class="small">(${nTravel} based farther away travel to you)</span>` : ""}${res.length > FIND_PAGE ? ` \u00b7 <span id="find-shown">showing ${shown}</span>` : ""}</p>
         <div class="stack" id="find-results">${res.length ? res.slice(0, shown).map((r, i) => v4FindCard(r, f, i === firstOpen)).join("")
           : emptyState({ id: "find-empty", ic: "search", title: "No sample examiners in range", body: `Nobody in the sample data gives the ${esc(c.short)} checkride within ${f.radius} nm of ${f.near}. Try a wider distance or another airport.`, actions: f.radius < 100 ? `<a class="btn secondary sm" href="${v4FindHref(f, { radius: 100 })}">Search 100 nm</a>` : "" })}</div>
         ${shown < res.length ? `<div class="v4-more-row"><button type="button" class="btn secondary v4-wide" id="find-more" data-action="find-more">Show more (${Math.min(FIND_PAGE, res.length - shown)} of ${res.length - shown} left)</button></div>` : ""}
@@ -2667,7 +2795,7 @@ const closeModal = () => {
     "who.lead": "Less chasing down information. More clarity for everyone involved.",
     "students.h2": "Stop chasing examiners. Start requesting checkrides.",
     "students.body": "You\u2019ve done the training. Skip the week of phone calls and voicemails between sign-off and test day.",
-    "students.feat": [["Every sample DPE near you, in one search", "Filter by checkride and airport, and see who has openings."], ["Fees and policies upfront", "Published examiner fees, retest fees and cancellation rules."], ["Request a real opening, not a callback", "Pick an open time. It\u2019s held while the examiner reviews, and confirmed only once they accept."], ["Show up prepared", "Your examiner\u2019s own checklist says what to finish and what to bring."]],
+    "students.feat": [["Every sample DPE near you, in one search", "Filter by checkride and airport, and see who has openings."], ["Fees and policies upfront", "Published examiner fees, retest fees and cancellation rules."], ["Request an opening, not a callback", "Pick an open time. We usually hold it while the examiner reviews, and it\u2019s confirmed only once they accept."], ["Show up prepared", "Your examiner\u2019s own checklist says what to finish and what to bring."]],
     "examiners.h2": "Spend your time examining, not scheduling.",
     "examiners.body": "Post your openings once. Requests arrive that already match your checkrides and airports, with the details you need to decide.",
     "examiners.feat": [["Requests that already fit", "Students only see checkrides you give, at airports you fly from."], ["Every detail upfront", "Slot, aircraft, recommending CFI and the applicant\u2019s self-attested readiness arrive with each request."], ["Checklists in one tap", "Accept + checklist opens your prep list for that applicant, ready to edit and send."], ["Your rules, published", "You set fees, airports and cancellation terms. Everyone sees them before asking."]],
@@ -2694,7 +2822,7 @@ const closeModal = () => {
     "how.h2": "From signed off to checkride", "how.h2b": "in three steps",
     // D41 changed: step 02 adds "(self-attested)" and the request-not-booking sentence; chips are ours (status meaning).
     "how.steps": [["01", "Search nearby examiners", "Filter by checkride and airport. Fees, policies and open dates are published upfront.", "Example data", "accent"],
-      ["02", "Request a slot", "Pick an opening, confirm you\u2019re ready (self-attested), and send your aircraft and CFI details. The slot is held while the DPE reviews. It\u2019s a request, not a booking, until the examiner accepts.", "Confirmed after acceptance", "good"],
+      ["02", "Request a slot", "Pick an opening, confirm you\u2019re ready (self-attested), and send your aircraft and CFI details. We usually hold the slot while the DPE reviews. It\u2019s a request, not a booking, until the examiner accepts.", "Confirmed after acceptance", "good"],
       ["03", "Prep with their checklist", "Once accepted, your examiner sends exactly what to finish and what to bring. Tick it off and go fly.", "Your next step", "accent"]],
     "who.eyebrow": "BUILT FOR EVERYONE IN THE CHECKRIDE", "who.h2": "One place for students,", "who.h2b": "examiners and flight schools",
     "who.lead": "",
@@ -2702,8 +2830,10 @@ const closeModal = () => {
     "students.h2": "Stop chasing examiners. Start requesting checkrides.",
     "students.body": "You\u2019ve done the training. Checkride Connect cuts out the week of phone calls, voicemails and word-of-mouth guesswork between sign-off and test day.",
     // D41 changed: "Every DPE" -> "Every sample DPE"; "Published prices ... No surprises on test day." -> examiner fees, no
-    // surprise promise (no all-in estimate for NC yet); "Book a real slot" -> "Request a real opening" + confirmed on accept.
-    "students.feat": [["Every sample DPE near you, in one search", "Filter by checkride and airport, and see who actually has openings."], ["Fees and policies upfront", "Published examiner fees, retest fees and cancellation rules, before you ask."], ["Request a real opening, not a callback", "Request an open time. It\u2019s held for you while the DPE reviews, and confirmed only once they accept."], ["Show up prepared", "Your examiner\u2019s own checklist says what to finish and what to bring."]],
+    // surprise promise (no all-in estimate for NC yet); "Book a real slot" -> "Request an opening" + confirmed on accept.
+    // Nov 2 (Customer Discovery, approved): "a real opening" -> "an opening" (openings are fictional); "held" -> "We usually hold"
+    // (no hold within 12 hours of the slot, D33); free.eyebrow "OUR PROMISE" -> "WHAT IT COSTS".
+    "students.feat": [["Every sample DPE near you, in one search", "Filter by checkride and airport, and see who actually has openings."], ["Fees and policies upfront", "Published examiner fees, retest fees and cancellation rules, before you ask."], ["Request an opening, not a callback", "Request an open time. We usually hold it while the DPE reviews, and it\u2019s confirmed only once they accept."], ["Show up prepared", "Your examiner\u2019s own checklist says what to finish and what to bring."]],
     // D41 changed: "everything you need to say yes" -> "to decide" (the examiner may decline).
     "examiners.body": "Post your openings once. Checkride Connect sends you requests that already match your checkrides and airports, with everything you need to decide.",
     // D41 changed: "readiness confirmations" -> self-attested readiness, tail number dropped (not collected); checklist line
@@ -2718,7 +2848,7 @@ const closeModal = () => {
     "schools.feat": [["Examiners at a glance", "Airports, fees per checkride and next opening for nearby sample DPEs, in one table."], ["Request for your students", "Send a request on a student\u2019s behalf, with the aircraft and recommending CFI."], ["Every request, one list", "See which requests are waiting, accepted or declined."], ["Fewer admin hours", "Fewer phone chains between students, CFIs and examiners."]],
     // D41 changed: his "Every core feature, free for everyone. ... No paywalls and no locked features." is a permanent pricing
     // promise; our rule is free during the prototype (fees switch off), so it reads "Free during the prototype".
-    "free.eyebrow": "OUR PROMISE", "free.h2": "Free during the prototype.", "free.h2b": "No fees from us.",
+    "free.eyebrow": "WHAT IT COSTS", "free.h2": "Free during the prototype.", "free.h2b": "No fees from us.",
     "free.body": "Search, scheduling, requests and checklists are free for students, examiners and flight schools while we test this prototype. You pay your examiner directly for the checkride, under the examiner\u2019s own terms.",
     // D41 changed: "Launching first in North Carolina." -> sample-area wording (no launch claim in a prototype).
     "final.body": () => `Sample examiners in ${coveredList()} for now. Find an examiner near your field.`,
@@ -2752,7 +2882,7 @@ const closeModal = () => {
     const p0 = pend[0], s0 = p0 && slotOf(p0);
     const inbox = `<div class="v4-card v4-inbox" aria-label="Sample examiner inbox">
         <div class="row spread"><b>Requests</b><span class="pill v4-ex">Example data</span></div>
-        <div class="v4-stats"><div><b class="mono">${pend.length}</b><span class="small muted">Pending</span></div><div><b class="mono">${wk.length}</b><span class="small muted">This week</span></div><div><b class="mono">${openN}</b><span class="small muted">Open slots</span></div></div>
+        <div class="v4-stats"><div><b class="mono">${pend.length}</b><span class="small muted">Pending</span></div><div><b class="mono">${wk.length}</b><span class="small muted">Confirmed this week</span></div><div><b class="mono">${openN}</b><span class="small muted">Open slots</span></div></div>
         ${p0 ? `<div class="v4-req"><div class="row spread"><b>${esc(p0.applicant)}</b>${chip("warn", "Requested")}</div><div class="small">${esc(certById(p0.cert).name)} \u00b7 ${fmtDate(s0.date)} \u00b7 ${slotTime(s0)}</div><div class="muted small">${esc(p0.aircraft)} \u00b7 CFI ${esc(p0.cfi)}</div><div class="small" style="margin-top:.35rem">${countPill(of9(p0.readiness))}</div>
           <div class="row" style="gap:.5rem;margin-top:.6rem"><a class="btn secondary sm" href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">Decline</a><a class="btn sm" href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">Accept + checklist</a></div></div>` : ""}
         ${pend.slice(1, 3).map((b) => { const s = slotOf(b); return `<div class="v4-req-row"><div><b>${esc(b.applicant)}</b><div class="muted small">${esc(certById(b.cert).short)} \u00b7 ${fmtDate(s.date)}</div></div>${chip("warn", "Requested")}</div>`; }).join("")}
@@ -2830,8 +2960,8 @@ const closeModal = () => {
       <div class="faq-head">${FAQ_H("faq-h")}</div>
       ${faqAccordion("faq")}
     </section>
-    <p class="small muted land-footer">Early prototype. All names, schools, openings and prices are fictional. Nothing is charged, and no real requests are sent. Not affiliated with or endorsed by the FAA.</p>
-    <p class="small muted land-footer"><b>Prototype – no real payments.</b> Nothing is charged, emailed or texted.</p>
+    <p class="small muted land-footer">Early prototype. All names, schools, openings and prices are fictional. Nothing is charged, emailed or texted, and no real requests are sent. Not affiliated with or endorsed by the FAA.</p>
+    <p class="small muted land-footer"><b>Prototype: no real payments.</b></p>
     <p class="small muted land-footer">${LC("footer.copy")}</p>
     </div>`;
   }
@@ -3222,6 +3352,8 @@ function countUp(root) {
         <label class="field"><span>Recommending instructor</span><input name="cfi" required maxlength="80" value="${rs && rs.cfi ? esc(rs.cfi) + ", CFI" : ""}" placeholder="Name, CFI" /></label>
         ${readinessFields(cert)}
         <label class="check-row small"><input type="checkbox" name="iacra" required /> <span>My IACRA application is started, and my instructor will sign the recommendation before the checkride.</span></label>
+        ${!rs && journeyFlagged() ? `<label class="check-row small" data-req-cfi-reviewed><input type="checkbox" name="cfiReviewed" id="req-cfi-reviewed" aria-describedby="req-cfi-reviewed-hint" /> <span data-copy-key="request.cfi_reviewed">${COPY["request.cfi_reviewed"]}</span></label>
+        <p class="small muted" id="req-cfi-reviewed-hint" style="margin:-.35rem 0 0"><span data-copy-key="request.cfi_reviewed.hint">${COPY["request.cfi_reviewed.hint"]}</span> <a href="#/journey" data-action="close-modal">See your Journey</a></p>` : ""}
         <div class="small" id="req-ready">Your <a href="#/checklists/${cert}" data-action="close-modal">${esc(certById(cert).short)} checklist</a>: <b>${(() => { const k = checklistCount(cert); return readyText(k.n, k.total); })()}</b>. The examiner will see this.</div>
         <label class="field"><span>Note to examiner (optional)</span><textarea name="note" rows="2" maxlength="500" placeholder="Anything ${esc(first(dp.name))} should know"></textarea></label>
         <div class="summary small" id="req-summary">${requestSummary(dp, cert, s)}</div>
@@ -3647,6 +3779,7 @@ function countUp(root) {
       const dpx = dpeById(s.dpeId);
       const b = { id: uid("b"), slotId: s.id, dpeId: s.dpeId, applicant: fd.get("name").trim() || "Alex Pilot", mine: true, cert, aircraft: fd.get("aircraft").trim(), cfi: fd.get("cfi").trim(), readiness: checklistPct(cert), selfCheck: { attested: true, by: "student", warnings: gate.warn.length, warn: gate.warn, answers: { ...answersFromForm(f), iacra: true }, ktDate: fd.get("kt-date") || "", hours: Object.fromEntries([...fd.entries()].filter(([k]) => k.startsWith("h-")).map(([k, v]) => [k.slice(2), +v])) }, status: "requested", createdAt: Date.now(), feeUsd: dpx.fees[cert], depositUsd: depositFor(dpx, cert), bookingFeeUsd: BOOKING_FEE };
       const note = (fd.get("note") || "").trim(); if (note) b.note = note;
+      if (f.querySelector("#req-cfi-reviewed")) b.cfiReviewed = !!fd.get("cfiReviewed"); // D42: optional, informational only
       b.near = fd.get("near") || DEFAULT_NEAR;
       if (s.simulated) b.simulated = true;
       if (parseHash().q.slot === s.id) b.fromAlert = true;
@@ -3826,6 +3959,11 @@ function countUp(root) {
       }
       save(); rerender(); const back = $(t.dataset.med === "type" ? "#med-type" : "#med-date"); if (back) back.focus(); return;
     }
+    if (t.dataset.clock) { // Rules 5/6 inputs: save, rerender, keep focus (labels only, never blocks)
+      const c = S.clock = S.clock || {}, p = t.dataset.clock.split("."), v = t.type === "checkbox" ? t.checked : t.value;
+      if (p[0] === "prep") { c.prep = c.prep || []; c.prep[+p[1]] = c.prep[+p[1]] || {}; c.prep[+p[1]][p[2]] = v; } else c[p[0]] = v;
+      ui.clockOpen = true; save(); const id = t.id; rerender(); const back = id && document.getElementById(id); if (back) back.focus(); return;
+    }
     if (t.dataset.r9date) { S.ready9Dates = S.ready9Dates || {}; S.ready9Dates[t.dataset.r9date] = t.value; if (t.dataset.r9date === "kt") S.ktSample = false; save(); rerender(); return; }
     if (t.dataset.r9) { S.ready9 = S.ready9 || {}; S.ready9[t.dataset.r9] = t.checked; save(); rerender(); return; }
     if (t.dataset.actionChange === "acting-dpe") { S.actingDpe = t.value; rerender(); return; }
@@ -3858,6 +3996,7 @@ function countUp(root) {
     setTimeout(() => { if (document.contains(t)) applyState(t, nextSel); }, 0);
   });
   // Builder inputs autosave without re-rendering (keeps focus while typing).
+  document.addEventListener("toggle", (e) => { if (e.target && e.target.id === "clock-more") ui.clockOpen = e.target.open; }, true);
   document.addEventListener("input", (e) => {
     authLive(e.target); // QA-075
     if (e.target.form && (e.target.form.dataset.form === "request" || e.target.form.dataset.form === "cohort-ready") && e.target.name !== "cert") showGate(e.target.form);
@@ -3895,6 +4034,9 @@ function countUp(root) {
   document.querySelectorAll(".brand img.lockup-light, .brand img.lockup-dark").forEach((im) => { const v = im.classList.contains("lockup-dark") ? BRAND_LOGO.dark : BRAND_LOGO.light; if (im.getAttribute("src") !== v) { im.setAttribute("src", v); im.setAttribute("width", BRAND_WH[0]); im.setAttribute("height", BRAND_WH[1]); } });
   // D41: BRAND "runway" also brings back the Runway favicons (kept in icons/runway/). Default icons are his logo mark.
   document.documentElement.dataset.brand = BRAND;
+  // QA-083: the install manifest swaps too (runway.webmanifest lists icons/runway/*). QA-084: the dark-tab PNG is his mark
+  // recoloured, so under "runway" it's dropped (icons/runway/favicon.svg is used as is).
+  if (BRAND === "runway") { const mf = document.querySelector('link[rel="manifest"]'); if (mf) mf.setAttribute("href", "runway.webmanifest"); document.querySelectorAll('link[rel~="icon"][media]').forEach((l) => l.remove()); }
   if (BRAND === "runway") document.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"]').forEach((l) => { const h = l.getAttribute("href") || ""; if (/^icons\/(favicon|apple-touch)/.test(h)) l.setAttribute("href", h.replace(/^icons\//, "icons/runway/")); else if (h === "favicon.ico") l.setAttribute("href", "icons/runway/favicon.ico"); });
   window.addEventListener("hashchange", () => { closeModal(); render(); });
 

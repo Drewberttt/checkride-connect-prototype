@@ -4,7 +4,7 @@
    - Versioned cache; old versions are deleted on activate.
    - Network first for same-origin GETs (so edits show up), cache fallback when offline; navigations fall back to index.html.
    - No push, no background sync, no third-party requests. Bump VERSION when the shell changes. */
-const VERSION = "cc-proto-v7.3.0"; // rc3: QA-075/081 auth validation, QA-076/077/078/079/080 (v7.2.0 = D41 logo/NC/landing; v7.1.0 = v4-rc2)
+const VERSION = "cc-proto-v7.5.0"; // v4-rc4: QA-082 search link note, QA-083 runway manifest + precache, QA-084 dark favicon, QA-089 icon cache-first, D42, CD copy (v7.4.0 = v4 dev: eligibility Rules 5/6 (elig-clock.js), home "Next openings" card fix (v7.3.0 = rc3: QA-075/081 auth validation, QA-076/077/078/079/080 (v7.2.0 = D41 logo/NC/landing; v7.1.0 = v4-rc2)
 const CACHE = "checkride-connect-" + VERSION;
 const SHELL = [
   "./",
@@ -19,6 +19,7 @@ const SHELL = [
   "sample-az-examiners.js",
   "sample-nc-examiners.js",
   "cost-model.js",
+  "elig-clock.js",
   "site.webmanifest",
   "favicon.ico",
   "icons/favicon.svg",
@@ -30,9 +31,20 @@ const SHELL = [
   "icons/icon-512.png",
   "icons/icon-maskable-192.png",
   "icons/icon-maskable-512.png",
+  "icons/favicon-dark-16.png",
+  "icons/favicon-dark-32.png",
+  "icons/favicon-dark-48.png",
+  "runway.webmanifest",
   "icons/runway/favicon.ico",
   "icons/runway/favicon.svg",
   "icons/runway/apple-touch-icon.png",
+  "icons/runway/favicon-16.png",
+  "icons/runway/favicon-32.png",
+  "icons/runway/favicon-48.png",
+  "icons/runway/icon-192.png",
+  "icons/runway/icon-512.png",
+  "icons/runway/icon-maskable-192.png",
+  "icons/runway/icon-maskable-512.png",
   "brand/checkride-connect-logo-light.png",
   "brand/checkride-connect-logo-dark.png",
   "brand/checkride-connect-icon.png",
@@ -64,13 +76,18 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin || !url.href.startsWith(self.registration.scope)) return;
+  // QA-089: tab and home-screen icons (favicon*, apple-touch-icon, icon-*, the manifests' icons) are answered from the
+  // precache first. They only change with a VERSION bump, and answering at once means a page that is torn down mid-load
+  // (Firefox test runs that freeze the page clock) no longer leaves a pending network fetch inside respondWith.
+  const ICON = /\/(favicon[^/]*|apple-touch-icon\.png|icon-[^/]*\.png)$/.test(url.pathname);
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
     const key = url.href.split("#")[0];
+    if (ICON) { const hit = await cache.match(key, { ignoreSearch: true }); if (hit) return hit; }
     try {
       const res = await fetch(req);
       // Cache under the URL without its #fragment so "./" and "./#/..." share one entry.
-      if (res && res.ok && res.type === "basic") cache.put(key, res.clone());
+      if (res && res.ok && res.type === "basic") cache.put(key, res.clone()).catch(() => {});
       return res;
     } catch (e) {
       const hit = await cache.match(key, { ignoreSearch: true });

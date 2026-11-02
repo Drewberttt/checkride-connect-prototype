@@ -1,5 +1,6 @@
-46a09123d70da95a6ef3efc6bcaf3e17  ./PLAN.md
-0c595ddafb45e266cca029cc3cc760cf  ./app.js
+cc6eb4407208c6b4056262de01af9363  ./PLAN.md
+46dd0622494dadf0a8027f66f377a2e3  ./READY.txt
+908c35a928475d4b861af8c8ee91bdf7  ./app.js
 5cbea5106073f55f0f47e3b3fb458c3e  ./brand/checkride-connect-icon.png
 392ea9d3b1d972379620a1daf91b2558  ./brand/checkride-connect-logo-dark.png
 a202dae0dcc6d5215ff71b9c676375b8  ./brand/checkride-connect-logo-light.png
@@ -10,6 +11,7 @@ fa7efeae0d92b7dcb508ed799da4f71d  ./brand/runway-horizontal-dark.svg
 84f132d8fcb6465de7df0351ecdb85b5  ./cost-model.js
 3b698f0a35040c654efa1ded9a49e96d  ./data.js
 79fc78318bc43678be5488ecaa051f6b  ./demo-date.js
+3090e2a4569fce3c9a59dd2d142cd816  ./elig-clock.js
 0e370001f8b58d041889aa0f802a7dfc  ./favicon.ico
 68be1efffc77209196c09fcb95978bda  ./fonts/Geist-Variable.woff2
 6f7e3c2d46d5110150158d6d1cc6b079  ./fonts/GeistMono-Variable.woff2
@@ -22,7 +24,10 @@ a216ac8723e9b95b204d3bc619ebcabd  ./fonts/licenses/OFL-Manrope.txt
 c2d9e683c6dc843b4d0272d0bc6f5f8e  ./icons/favicon-16.png
 de289e00ab3d8e886f8c8f19015d31dc  ./icons/favicon-32.png
 85bb45944052b1c2df097616591eb76d  ./icons/favicon-48.png
-2e7b7ae447b29957e49e3c1774fb1de6  ./icons/favicon.svg
+185b8765d4c90ddbf12b08b249a3ec5d  ./icons/favicon-dark-16.png
+e4c09d6b8323b9093a709249df528ec8  ./icons/favicon-dark-32.png
+2a2bc24ce85cee98f2879197d43561d5  ./icons/favicon-dark-48.png
+237d79aeae37d4b8dfc7cc6d3ec2f93d  ./icons/favicon.svg
 3a08220d50b447324874b1ae375d06fa  ./icons/icon-192.png
 41e51735375bfd3688030b0a5d64e299  ./icons/icon-512.png
 629689f2d9fc641a11891cc2809ed9ad  ./icons/icon-maskable-192.png
@@ -37,12 +42,13 @@ a3b842cfa889e7af57a601e52fa46d7e  ./icons/runway/favicon-32.png
 762b44bc4308395d682dd01f13e516c2  ./icons/runway/icon-512.png
 8f4b8cf87c40ba3128df53072df66756  ./icons/runway/icon-maskable-192.png
 d2af29547f56d1c21dc578bc9f072f90  ./icons/runway/icon-maskable-512.png
-6fa9ac245186a55ddb09b69533a51246  ./index.html
+54d7c5b26584c45060ea113285777e4b  ./index.html
+1d9219db1c99a7f1f2c20ee9e60e8e25  ./runway.webmanifest
 a3c2f3f5ba57e90585dd5fb7e2274564  ./sample-az-examiners.js
 009ee921f4133bb0731c2e05a107dc87  ./sample-ca-examiners.js
 892ae51c486cf5473b545c01e4c04e7b  ./sample-fl-examiners.js
-7bfb90c48349b0e0a944f0b490dbf03f  ./sample-nc-examiners.js
+39ba7291462ae3eb3259491e28628f6c  ./sample-nc-examiners.js
 a366624dc65a9d309d37082c6e40284c  ./sample-tx-examiners.js
 0784ef4e53aebf0a1340993f44391b98  ./site.webmanifest
-3234a7485e58cda8e7936bdcaf4aa468  ./styles.css
-f1a89803c7ef511310cdf1ca1267abff  ./sw.js
+99573819c2cebd0042e905426bcc6387  ./styles.css
+3e02625ccc80217d34329b417fd68a1e  ./sw.js
