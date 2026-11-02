@@ -32,20 +32,20 @@
    resolved to light or dark by the pre-paint script in index.html. Older variable names used across this file map onto v3 values. */
 :root, :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #F6F9FC; --bg-tint: #F3F6FF;
+  --bg: #F7FAFD; --bg-tint: #F3F6FF;
   --surface: #FFFFFF; --surface-inset: #F6F9FB; --surface-hero: #EDF5FC; --surface-hero-2: #EAF2FD;
   --surface-2: #F0F3F9; --surface-3: #EAEDF6;
-  --text: #162941; --muted: #56657A; --faint: #5E6778; --subtle: #5E6778; --label: #495A6E; --placeholder: #626C7E;
-  --border: #DEE5EF; --border-strong: #D1DAEB; --rule: #D1DAEB; --rule-accent: #C3DAFA; --border-control: #808DA2;
-  --brand: #162941;
-  --accent: #3660E1; --accent-strong: #2E4BC0; --accent-text: #3353C0; --accent-soft: #EAF3FC; --accent-soft-2: #E6EDFD; --on-accent: #FFFFFF;
-  --headline-accent: #3660E1; --date-num: #2A4DCD; --indicator: #3660E1; --focus: #3562E3;
-  --navy: #15273F; --on-navy: #F9FDFE; --on-navy-muted: #C9D6E8; --navy-dot: #A6C6F9; --strip-text: #3E5B7D;
+  --text: #172941; --muted: #4A5A73; --faint: #5E6778; --subtle: #5E6778; --label: #495A6E; --placeholder: #626C7E;
+  --border: #D6E0EC; --border-strong: #D1DAEB; --rule: #D1DAEB; --rule-accent: #C3DAFA; --border-control: #808DA2;
+  --brand: #172941;
+  --accent: #3860E3; --accent-strong: #2A4FC7; --accent-text: #2A4FC7; --accent-soft: #E6ECFC; --accent-soft-2: #E3F2FC; --on-accent: #FFFFFF;
+  --headline-accent: #3860E3; --date-num: #2A4DCD; --indicator: #3860E3; --focus: #3860E3;
+  --navy: #172941; --on-navy: #F9FDFE; --on-navy-muted: #C9D6E8; --navy-dot: #A6C6F9; --strip-text: #3E5B7D;
   --on-warn: #FFFFFF;
-  --good: #2F7A45; --good-text: #36623E; --good-soft: #EAF6ED;
-  --warn: #785126; --warn-text: #785126; --warn-soft: #FCF6DB;
-  --bad: #8E3D3C; --bad-text: #8E3D3C; --bad-soft: #FBEFF0; --bad-border-control: #B86E72;
-  --info-soft: #EAF3FC; --info-text: #3353C0; --neutral-soft: #F0F3F9; --neutral-text: #495A6E; --track: #EAEDF6;
+  --good: #1F7A4D; --good-text: #1F7A4D; --good-soft: #E2F4EA;
+  --warn: #8A5300; --warn-text: #8A5300; --warn-soft: #FFF1D6;
+  --bad: #B42318; --bad-text: #B42318; --bad-soft: #FDE8E6; --bad-border-control: #B86E72;
+  --info-soft: #E3F2FC; --info-text: #0B5E8E; --neutral-soft: #F0F3F9; --neutral-text: #495A6E; --track: #EAEDF6;
   --verify-soft: #F3EEFF; --verify-text: #5B3DB8;
   --signal: #f2b33d;
   --board-bg: #15273F; --board-row: #1C3150; --board-row-hover: #233B5F; --board-text: #F9FDFE; --board-dim: #C9D6E8;
@@ -54,13 +54,13 @@
   --shadow-md: 0 1px 2px rgb(22 41 65 / .05), 0 14px 30px -12px rgb(22 41 65 / .18);
   --shadow-lg: 0 30px 70px -20px rgb(22 41 65 / .35);
   --shadow-card: 0 1px 2px rgb(22 41 65 / .04), 0 8px 24px -12px rgb(22 41 65 / .10);
-  --shadow-cta: 0 10px 22px -10px rgb(54 96 225 / .55);
+  --shadow-cta: 0 10px 22px -10px rgb(56 96 227 / .55);
   --r-xs: 6px; --r-sm: 10px; --r-md: 12px; --r: 16px; --r-lg: 16px; --r-xl: 20px; --r-pill: 999px;
   --target-min: 44px; --dur-fast: 120ms; --dur: 200ms;
   /* Fonts switch on with html.wf (after first paint; see app.js brandFonts), so first paint never waits on webfonts.
      Before then the metric-matched local "… Fallback" faces keep line breaks stable, so the swap does not shift layout. */
   --font-display: "Manrope Fallback", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Geist Fallback", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Manrope Fallback", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --fw-display: 800; --fw-h2: 700;
   --fs-display: 2.5rem; --fs-h1: 1.875rem; --fs-h2: 1.375rem; --fs-h3: 1.0625rem; --fs-eyebrow: .75rem; --fs-stat: 2rem;
@@ -69,9 +69,10 @@
 }
 html.wf, html.wf[data-theme] {
   --font-display: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Geist", "Geist Fallback", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
+/* QA-057: a stray "ce; }" fragment here used to swallow the whole dark token block below. */
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #0B1424; --bg-tint: #0E1830;
@@ -80,7 +81,7 @@ html.wf, html.wf[data-theme] {
   --text: #EAF0F8; --muted: #AEBACC; --faint: #9DA9BC; --subtle: #9DA9BC; --label: #B3BFD1; --placeholder: #8C98AC;
   --border: #24334C; --border-strong: #2B3B57; --rule: #2B3B57; --rule-accent: #35508A; --border-control: #71819B;
   --brand: #EAF0F8;
-  --accent: #3660E1; --accent-strong: #B4C7FF; --accent-text: #9DB4FF; --accent-soft: #1B2C4F; --accent-soft-2: #22355C; --on-accent: #FFFFFF;
+  --accent: #3860E3; --accent-strong: #B4C7FF; --accent-text: #9DB4FF; --accent-soft: #1B2C4F; --accent-soft-2: #22355C; --on-accent: #FFFFFF;
   --headline-accent: #8FA9FF; --date-num: #B4C7FF; --indicator: #9DB4FF; --focus: #9DB4FF;
   --navy: #050C18; --on-navy: #E6EEF9; --on-navy-muted: #B9C7DB; --navy-dot: #A6C6F9; --strip-text: #B9CBE6;
   --on-warn: #121E33;
@@ -501,7 +502,8 @@ h2 a, h3 a, th a, td a, .see-all, .chips > a.small { display: inline-flex; align
 @media (max-width: 900px) {
   .split > aside form.stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .65rem; }
   .split > aside form.stack > * + * { margin-top: 0; }
-  .split-r > aside.card { order: -1; }
+  /* QA-020: no order:-1 for the calendar aside; DOM order = visual order (Openings card is already at the top). */
+  .split > aside form.stack > .loc-field { grid-column: 1 / -1; }
 }
 @media (max-width: 480px) {
   .brand { font-size: .96rem; }
@@ -702,7 +704,7 @@ input[type=checkbox]:focus-visible, input[type=radio]:focus-visible, select:focu
 .empty.state:not(.card) { padding: 1.25rem .5rem; }
 .state-ic { color: var(--accent-text); background: var(--accent-soft, #e9eeff); border-radius: 50%; padding: 10px; width: 48px; height: 48px; box-sizing: border-box; margin-bottom: .4rem; flex-shrink: 0; }
 [data-state="render-error"] .state-ic, [data-state="load-error"] .state-ic { color: var(--bad); background: var(--bad-soft, #fdecec); }
-.empty.state h1, .empty.state h3 { font-family: var(--font-display); color: var(--text); font-size: 1.2rem; margin: .1rem 0 .15rem; }
+.empty.state h1, .empty.state h2, .empty.state h3 { font-family: var(--font-display); color: var(--text); font-size: 1.2rem; margin: .1rem 0 .15rem; }
 .empty.state h1 { font-size: 1.5rem; }
 .empty.state p { margin: 0; max-width: 46ch; line-height: 1.5; }
 .empty.state code { font-family: var(--font-mono); font-size: .9em; color: var(--text); background: var(--surface-2); padding: .05rem .35rem; border-radius: 6px; overflow-wrap: anywhere; }
@@ -759,7 +761,7 @@ a.card:active, .result:active { transform: scale(.985); box-shadow: var(--shadow
 
 /* =====================================================================
    v3 visual overhaul (design-spec-v3, mockups-v3 01–16). Components + app chrome.
-   Logo stays #2B59FF (lockup SVG, theme-color); UI accent is #3660E1. Intentional, do not unify (spec §2.1, §10).
+   Logo stays #2B59FF (lockup SVG, theme-color); UI accent is #3860E3. Intentional, do not unify (spec §2.1, §10).
    ===================================================================== */
 body { font: var(--fs-body, 1rem)/1.6 var(--font-body); background: var(--bg); }
 h1, h2, .display, .big-num, .stat .v { font-family: var(--font-display); }
@@ -1028,3 +1030,180 @@ input[aria-invalid="true"] { border-color: var(--bad, #b42318); box-shadow: 0 0 
 /* C: keep sr-only table headers inside the scroll wrapper (absolute child escaped .table-wrap and widened the page) */
 .table-wrap { position: relative; }
 th { position: relative; }
+
+/* ===================== v4: Vercel look (components) ===================== */
+:root { --v4-r: 16px; --v4-shadow: 0 1px 2px rgba(23,41,65,.06), 0 8px 24px rgba(23,41,65,.06); --sky: #7CC4F2; --sky-soft: #E3F2FC; --sky-ink: #0B5E8E; }
+:root[data-theme="dark"] { --sky-soft: #12304A; --sky-ink: #9CD3F7; --v4-shadow: 0 1px 2px rgba(0,0,0,.3); }
+.card { border-radius: var(--v4-r); box-shadow: var(--v4-shadow); }
+.btn { border-radius: 10px; }
+.eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sky-ink); }
+h1, h2, h3, .display { font-weight: 800; letter-spacing: -.02em; }
+.mono { font-family: var(--font-mono); font-weight: 500; }
+.v4-ex { background: var(--sky-soft) !important; color: var(--sky-ink) !important; font-weight: 600; }
+.v4-lbl { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; }
+.v4-wide { width: 100%; justify-content: center; }
+.v4-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--v4-r); box-shadow: var(--v4-shadow); padding: 1.1rem 1.15rem; }
+.v4-card-top { display: flex; gap: .8rem; align-items: center; }
+.v4-who { flex: 1; min-width: 0; }
+.v4-who .h3, .v4-who h2 { margin: 0; font-size: 1.05rem; }
+.v4-who a { color: var(--text); text-decoration: none; }
+.v4-who a:hover { color: var(--accent-strong); text-decoration: underline; }
+.v4-fee { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+.v4-fee b { font-size: 1.15rem; font-family: var(--font-mono); }
+.v4-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem; }
+.v4-apt { display: inline-flex; align-items: center; gap: .3rem; border: 1px solid var(--border); border-radius: 999px; padding: .15rem .6rem; font-size: .8125rem; color: var(--muted); background: var(--surface); }
+.v4-next { margin-top: .9rem; border-top: 1px solid var(--border); padding-top: .9rem; }
+.v4-times { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: .5rem; margin-bottom: .75rem; }
+.v4-time { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 48px; padding: .4rem .5rem; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); text-decoration: none; font: inherit; cursor: pointer; }
+.v4-time:hover { border-color: var(--accent); }
+.v4-time[aria-pressed="true"], .v4-time.is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.v4-time[aria-pressed="true"] .muted, .v4-time.is-on .muted { color: #fff; } /* axe: #E6ECFC on brand was 4.49:1 */
+.v4-time.is-off { opacity: 1; background: var(--surface-2); color: var(--muted); cursor: default; text-decoration: line-through; }
+.v4-time.is-off .small { text-decoration: none; }
+.v4-card-foot { display: flex; justify-content: space-between; align-items: center; gap: .5rem; margin-top: .9rem; flex-wrap: wrap; }
+.v4-card-foot a { font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+
+/* #/find */
+.v4-col { max-width: 640px; margin: 0 auto; }
+.v4-find-head { display: flex; align-items: center; gap: .75rem; }
+.v4-find-head h1 { margin: 0; }
+.v4-find-head .eyebrow { margin: 0; }
+.v4-ic { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; align-items: center; justify-content: center; background: var(--accent-soft); color: var(--accent-strong); flex-shrink: 0; }
+/* QA-059: ref layout. CHECKRIDE / NEAR side by side at every width (also 360/390), the distance chips on their own row.
+   The old ".field:last-of-type" matched by element type, so the full-width span landed on the wrong field. */
+.v4-filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .6rem .6rem; padding: 0; margin: 0 0 .25rem; }
+.v4-filters .field { margin: 0; min-width: 0; }
+.v4-filters .v4-f-radius { grid-column: 1 / -1; }
+.v4-filters select { width: 100%; min-width: 0; text-overflow: ellipsis; }
+.v4-seg { display: flex; gap: .4rem; }
+.v4-seg-b { flex: 1; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid var(--border); border-radius: 999px; color: var(--text); text-decoration: none; font-weight: 600; font-family: var(--font-mono); background: var(--surface); }
+.v4-seg { justify-content: flex-start; }
+.v4-seg-b { flex: 0 0 auto; padding: 0 1rem; }
+/* QA-060: the selected distance chip is brand (soft fill, brand border and text), as on the ref. */
+.v4-seg-b[aria-current="true"] { background: var(--accent-soft); color: var(--accent-text); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.v4-count { margin: 1rem 0 .75rem; color: var(--muted); }
+.v4-count b { color: var(--text); }
+@media (max-width: 340px) { .v4-filters { grid-template-columns: 1fr; } }
+
+/* Profile openings + sticky bar */
+.v4-openings { margin-top: 1rem; }
+.v4-days { display: flex; gap: .5rem; overflow-x: auto; padding: .75rem 0 .25rem; scrollbar-width: thin; }
+.v4-day { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 56px; min-height: 60px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; cursor: pointer; }
+.v4-day b { font-size: 1.15rem; font-family: var(--font-mono); }
+.v4-day[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.v4-bar { position: sticky; bottom: calc(var(--tabbar-h, 64px) + 8px + env(safe-area-inset-bottom, 0px)); z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; padding: .8rem 1rem; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 8px 28px rgba(23,41,65,.16); }
+@media (min-width: 1024px) { .v4-bar { bottom: 12px; } }
+
+/* Pretend log in / sign up */
+.v4-auth { display: flex; justify-content: center; padding-top: 1rem; }
+.v4-auth-card { width: 100%; max-width: 460px; padding: 1.75rem; }
+.v4-auth-card h1 { font-size: 1.75rem; margin: 1rem 0 .25rem; }
+.v4-auth-logo { display: inline-flex; min-height: 44px; align-items: center; }
+.v4-demo-note { background: var(--sky-soft); color: var(--text); border-radius: 10px; padding: .6rem .8rem; font-size: .875rem; }
+.v4-roles { border: 0; padding: 0; margin: 0; display: grid; gap: .5rem; }
+.v4-roles legend { font-weight: 700; margin-bottom: .5rem; }
+.v4-radio { display: flex; gap: .7rem; align-items: flex-start; cursor: pointer; min-height: 44px; }
+.v4-radio.card { padding: .8rem 1rem; box-shadow: none; }
+.v4-radio.card:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.v4-radio > span { display: flex; flex-direction: column; }
+.v4-radio input { margin-top: .2rem; accent-color: var(--accent); }
+.v4-radio.sm { align-items: center; border: 1px solid var(--border); border-radius: 999px; padding: .25rem .8rem; font-size: .875rem; }
+.v4-role-mini { border: 0; padding: 0; margin: 0; }
+.v4-check { display: flex; gap: .5rem; align-items: flex-start; min-height: 44px; }
+.v4-authbar { display: none; gap: .4rem; align-items: center; }
+body.is-landing .v4-authbar { display: inline-flex; }
+@media (max-width: 640px) { body.is-landing .land-cta { display: none; } }
+.v4-hi { white-space: nowrap; max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+
+/* Landing (v4) */
+.v4-hero .land-hero-grid { align-items: center; }
+.v4-hero-panel { border-radius: 24px; padding: 2rem 1.25rem; background: linear-gradient(135deg, #3860E3 0%, #2A4FC7 55%, #7CC4F2 140%); }
+.v4-mock { max-width: 420px; margin: 0 auto; }
+.v4-toast-mock { max-width: 420px; margin: .9rem auto 0; display: flex; gap: .5rem; align-items: center; background: var(--surface); color: var(--good-text, #1F7A4D); border-radius: 999px; padding: .5rem .9rem; font-weight: 600; font-size: .875rem; box-shadow: var(--v4-shadow); }
+.v4-split { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
+@media (min-width: 1024px) { .v4-split { grid-template-columns: 1.05fr .95fr; gap: 3.5rem; } .v4-split.rev { grid-template-columns: .95fr 1.05fr; } /* QA-020: mock is first in the DOM, no order */ }
+.v4-split h2 { font-size: clamp(1.75rem, 3.2vw, 2.6rem); line-height: 1.12; margin: .25rem 0 .75rem; }
+.v4-feats { list-style: none; padding: 0; margin: 1.25rem 0; display: grid; gap: 1rem; }
+@media (min-width: 640px) { .v4-feats { grid-template-columns: 1fr 1fr; } }
+.v4-feats li { display: flex; gap: .7rem; align-items: flex-start; }
+.v4-feats p { margin: .15rem 0 0; }
+.v4-tick { flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; background: var(--accent-soft); color: var(--accent-strong); }
+.v4-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: .8rem 0; }
+.v4-stats > div { background: var(--surface-2); border-radius: 10px; padding: .6rem; display: flex; flex-direction: column; }
+.v4-stats b { font-size: 1.4rem; }
+.v4-req { border: 1px solid var(--accent); border-radius: 12px; padding: .8rem; margin-bottom: .5rem; }
+.v4-req-row { display: flex; justify-content: space-between; align-items: center; gap: .5rem; padding: .6rem 0; border-top: 1px solid var(--border); }
+.v4-req-row:first-of-type { border-top: 0; }
+.avatar.sm { width: 36px; height: 36px; font-size: .8rem; flex-shrink: 0; }
+.v4-table { width: 100%; }
+.v4-table th { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.v4-promise { background: linear-gradient(135deg, #172941 0%, #1E3A66 100%); color: #fff; border-radius: 24px; padding: 2.5rem 1.5rem; text-align: center; }
+.v4-promise .eyebrow { color: var(--sky); }
+.v4-promise h2, .v4-promise p { color: #fff; }
+.v4-promise h2 .b { color: #BFD3FF; }
+.v4-promise p { max-width: 640px; margin-inline: auto; color: #DCE6F5; }
+.v4-promise .btn.secondary { background: transparent; color: #fff; border-color: rgba(255,255,255,.6); }
+.v4-promise .pill.warn { background: #FFF1D6; color: #8A5300; }
+.v4-final { text-align: center; }
+.v4-final h2 { font-size: clamp(1.75rem, 3.2vw, 2.6rem); }
+.v4-near { margin-top: 1rem; }
+/* v4: radios/checkboxes inside the auth cards keep their native size (global inputs are full width) */
+.v4-radio input, .v4-check input, .v4-roles input { width: 1.1rem; height: 1.1rem; min-height: 0; min-width: 0; flex: none; padding: 0; margin: .2rem 0 0; }
+
+/* Extra (QA-050): Simulate opening is visibly disabled during its 1.2 s lock */
+.btn.is-busy, .btn[aria-disabled="true"] { opacity: .55; cursor: progress; pointer-events: none; }
+/* QA-052: no-openings note in the day panel */
+#day-none, #date-moved { margin: .25rem 0 .6rem; }
+/* QA-011: larger tap targets where practical. Breadcrumb links meet 24 px everywhere; on touch / narrow screens the
+   breadcrumb, "← Back" links and checkbox rows get a 44 px hit area without changing the text size. */
+.crumb a { display: inline-block; padding-block: 3px; line-height: 18px; }
+.back-link { display: inline-flex; align-items: center; min-height: 24px; }
+@media (pointer: coarse), (max-width: 640px) {
+  .crumb a { padding-block: 13px; }
+  .back-link { min-height: 44px; }
+  input[type="checkbox"], input[type="radio"] { min-width: 22px; min-height: 22px; }
+}
+
+/* ---- v4-rc2 ---- */
+/* QA-062: the openings picker is the only booking surface; the rest of the profile is one column. */
+.v4-prof-more { max-width: 100%; }
+.v4-op-foot { display: flex; flex-wrap: wrap; gap: .35rem .6rem; align-items: center; margin-top: .9rem; padding-top: .75rem; border-top: 1px solid var(--border); }
+/* QA-073: stale / emptied-day states use the v4 sky-soft panel; the started-slot message and refusal toast use critical styling. */
+.v4-note { background: var(--sky-soft); color: var(--text); border-radius: 10px; padding: .65rem .85rem; margin: .75rem 0 0; font-size: .875rem; }
+.v4-note a { color: var(--accent-strong, var(--accent)); font-weight: 600; }
+.v4-note.crit { background: var(--bad-soft); color: var(--text); border-left: 4px solid var(--bad); }
+.v4-note.crit b { color: var(--bad-text); }
+.toast.crit { background: var(--bad-soft); color: var(--text); border: 1px solid var(--bad); }
+.toast.crit::before { background: var(--bad); }
+/* QA-064: unpicked time tiles are sky-soft; the picked tile keeps the brand fill. */
+.v4-time:not(.is-off):not([aria-pressed="true"]):not(.is-on) { background: var(--sky-soft); border-color: transparent; }
+.v4-time:not(.is-off):not([aria-pressed="true"]):not(.is-on):hover { border-color: var(--accent); }
+.v4-time:not(.is-off):not([aria-pressed="true"]):not(.is-on) .muted { color: var(--sky-ink); }
+/* QA-071: the sticky Request bar never hides keyboard focus. --bar-h is the measured bar height (set by app.js); anything
+   scrolled or focused into view stops above the bar, plus the fixed tab bar below 1024px. */
+:root { --bar-h: 0px; }
+@media (max-width: 1023.98px) {
+  html:has(#v4-bar):has(body:not(.is-landing)) { scroll-padding-bottom: calc(var(--tabbar-h, 64px) + var(--bar-h) + 24px + env(safe-area-inset-bottom, 0px)); }
+  body:not(.is-landing) #v4-openings :is(a, button, [tabindex]):not(#v4-bar *) { scroll-margin-bottom: calc(var(--tabbar-h, 64px) + var(--bar-h) + 24px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (min-width: 1024px) {
+  html:has(#v4-bar) { scroll-padding-bottom: calc(var(--bar-h) + 24px); }
+  #v4-openings :is(a, button, [tabindex]):not(#v4-bar *) { scroll-margin-bottom: calc(var(--bar-h) + 24px); }
+}
+/* While the openings card has not scrolled up past the tab bar yet, the bar is tucked away rather than drawn under #nav. */
+.v4-bar.is-tucked { visibility: hidden; }
+
+/* QA-060: the prototype notice is a slim strip (one run of text), not a stacked block. Same three statements. */
+.proto-strip { display: block; margin: 0 0 1rem; padding: .4rem .75rem; border-radius: 0; border: 0; border-left: 3px solid var(--accent); background: var(--accent-soft); color: var(--strip-text); font-size: .75rem; line-height: 1.45; }
+.proto-strip > span { display: inline; }
+.proto-strip > span + span::before { content: " \00b7 "; }
+.modal .proto-strip { margin: 0; }
+/* QA-060: "Next open" pill is sky-soft (the ref), not green. QA-058: travel chip + reason line. */
+.pill.v4-next-pill { background: var(--sky-soft); color: var(--sky-ink); border-color: transparent; }
+.pill.v4-travel { background: var(--accent-soft); color: var(--accent-text); border-color: transparent; }
+.v4-travel-why { margin: .5rem 0 0; }
+/* QA-066: Show more */
+.v4-more-row { margin-top: 1rem; }
+/* v4-rc2: examiner notes for the shown day (kept from the removed legacy Availability card, QA-062) */
+.v4-day-notes{list-style:none;margin:.6rem 0 0;padding:0;color:var(--muted)}
+.v4-day-notes li{margin:.15rem 0}

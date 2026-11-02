@@ -25,7 +25,12 @@
     (X.airports || []).filter((a) => !haveA.has(a.id)).forEach((a) => D.airports.push({ ...a, state: st, tz: a.tz || (D.airportTz && D.airportTz[a.id]) || undefined }));
     X.dpes.filter((d) => !haveD.has(d.id)).forEach((d) => { D.dpes.push(d); MULTI_STATE.push(d.id); });
   });
+  // EASY SWITCH (rc2): the example states. Edit this one list; Find/landing copy reads it through coveredList().
   const COVERED_STATES = [["FL", "Florida"], ["TX", "Texas"], ["CA", "California"], ["AZ", "Arizona"]];
+  // EASY SWITCH (rc2): the logo lockups (currently Runway). app.js uses this everywhere and syncs the header at boot;
+  // index.html (first paint) and sw.js (precache) list the same two files.
+  const BRAND_LOGO = { light: "brand/runway-horizontal-light.svg", dark: "brand/runway-horizontal-dark.svg" };
+  const coveredList = () => { const n = COVERED_STATES.map(([, x]) => x); return n.length > 1 ? n.slice(0, -1).join(", ") + " and " + n[n.length - 1] : n.join(""); };
   const US_STATES = { AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming" };
   const STATE_HOME = { FL: "KORL", TX: "KADS", CA: "KVNY", AZ: "KDVT" }; // default "near" airport when you switch state
   const aptState = (id) => { const a = D.airports.find((x) => x.id === id); return (a && a.state) || "FL"; };
@@ -157,7 +162,9 @@
   const slotStart = (sl) => zonedEpoch(sl.date, sl.time, slotTz(sl));
   // QA-039: one shared rule. A slot whose start instant (airport zone) has passed is never listed, alerted, offered or requestable.
   const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
-  const PAST_SLOT = "That date has passed. Pick today or later."; // closest ux-copy key (date validation); listed as a copy gap
+  // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
+  const COPY = { "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state" };
+  const PAST_SLOT = COPY["slot.started"]; // QA-039 / QA-070: the stale-slot refusal uses the slot.started key
   const slotLive = (sl) => !!sl && sl.status === "open" && !slotPast(sl);
   const slotTime = (sl) => `${fmtTime(sl.time)} ${zoneLabel(slotTz(sl))}`;
   const durText = (ms) => { const h = Math.floor(Math.max(ms, 0) / 3600e3); if (h < 1) return "less than 1 hour"; if (h < 48) return plural(h, "hour"); const d = Math.floor(h / 24), r = h % 24; return plural(d, "day") + (r ? ", " + plural(r, "hour") : ""); };
@@ -290,7 +297,8 @@
   }
   // The user's retest chance per checkride type (stored in this browser). Default = the shared default for that type.
   const retestP = (cert) => { const v = S.retestP && S.retestP[cert]; return typeof v === "number" && v >= 0 && v <= 0.6 ? v : pTypical(cert); };
-  const oneIn = (p) => (p <= 0 ? "Leave out" : `About 1 in ${Math.round(1 / p)}`);
+  // QA-047: the label matches the value used. "1 in n" only when it is close (within 0.02); otherwise "k in 10" (0.6 → About 6 in 10). No percentages.
+  const oneIn = (p) => { if (p <= 0) return "Leave out"; const n = Math.round(1 / p); return Math.abs(1 / n - p) <= 0.02 ? `About 1 in ${n}` : `About ${Math.round(p * 10)} in 10`; };
   function estimateFor(dp, cert, travel, feeOverride) {
     const cm = costModelFor(dp, cert);
     if (!cm) return null;
@@ -672,6 +680,12 @@
 
   // Demo control: creates a clearly labelled simulated opening that matches an alert (or for one examiner), then runs the
   // normal alert matching. Example data only; nothing is sent.
+  // Extra (QA-050 note): Simulate opening looks disabled during its 1.2 s lock. aria-disabled (not disabled) keeps keyboard focus on it.
+  function simBusy() {
+    const mark = (on) => document.querySelectorAll('[data-action="sim-open"]').forEach((b) => { b.classList.toggle("is-busy", on); if (on) { b.setAttribute("aria-disabled", "true"); b.setAttribute("aria-busy", "true"); } else { b.removeAttribute("aria-disabled"); b.removeAttribute("aria-busy"); } });
+    mark(true); setTimeout(() => mark(true), 0);
+    setTimeout(() => mark(false), Math.max(0, (ui.simLock || 0) - Date.now()));
+  }
   function simulateOpening({ alertId, dpeId }) {
     const a = alertId ? S.alerts.find((x) => x.id === alertId) : null;
     let dp = null, cert = null;
@@ -747,9 +761,13 @@
   }
 
   // ---------- UI primitives ----------
-  function toast(msg) {
+  let lastToast = { msg: "", at: 0 };
+  function toast(msg, kind) {
+    // QA-016: one action can reach the same handler twice (Enter fires change + submit); show an identical message once.
+    if (msg === lastToast.msg && Date.now() - lastToast.at < 1000) return;
+    lastToast = { msg, at: Date.now() };
     const el = document.createElement("div");
-    el.className = "toast";
+    el.className = "toast" + (kind ? " " + kind : ""); // QA-073: kind "crit" = critical styling (stale-slot refusal)
     el.textContent = msg;
     $("#toasts").appendChild(el);
     setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 260); }, 4200);
@@ -771,7 +789,21 @@
   const FOCUSABLE = 'a[href], button:not([disabled]), input:not([type=hidden]):not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
   // Scrollable tables need to be keyboard-reachable.
   function a11yFix(root) {
-    root.querySelectorAll(".table-wrap").forEach((t) => { t.tabIndex = 0; t.setAttribute("role", "region"); if (!t.getAttribute("aria-label")) t.setAttribute("aria-label", "Scrollable table"); });
+    // QA-067: each region is named from its table's caption (or the card heading) and the names are unique on the page;
+    // header cells get scope (col in thead, row in tbody).
+    const used = new Map();
+    root.querySelectorAll(".table-wrap").forEach((t) => {
+      t.tabIndex = 0; t.setAttribute("role", "region");
+      let l = t.getAttribute("aria-label");
+      if (!l || l === "Scrollable table") {
+        const cap = t.querySelector("caption"), h = t.closest("section, .card, .page") && t.closest("section, .card, .page").querySelector("h1, h2, h3");
+        l = ((cap && cap.textContent) || (h && h.textContent) || "Table").replace(/\s+/g, " ").trim() + " (table)";
+      }
+      const n = (used.get(l) || 0) + 1; used.set(l, n);
+      t.setAttribute("aria-label", n > 1 ? `${l} ${n}` : l);
+    });
+    root.querySelectorAll("table thead th:not([scope])").forEach((th) => th.setAttribute("scope", "col"));
+    root.querySelectorAll("table tbody th:not([scope])").forEach((th) => th.setAttribute("scope", "row"));
   }
 const closeModal = () => {
   const bg = $("#modal-root .modal-bg");
@@ -822,11 +854,13 @@ const closeModal = () => {
     return { cert: certById(q.cert) ? q.cert : "ppl", near, state: aptState(near), outside, radius: +q.radius || 75, before: q.before || "", maxFee: +q.maxFee || 0, sort: q.sort || "soonest" };
   }
   const US_TERR = { PR: "Puerto Rico", GU: "Guam", VI: "the U.S. Virgin Islands", AS: "American Samoa", MP: "the Northern Mariana Islands" };
-  const stateName = (c) => (COVERED_STATES.find(([k]) => k === c) || [c, US_STATES[c] || US_TERR[c] || c])[1];
+  const stateName = (c) => (COVERED_STATES.find(([k]) => k === c) || [c, US_STATES[c] || US_TERR[c] || "this state"])[1]; // QA-055: never the raw code
   const OUTSIDE_COPY = "This prototype only has sample examiners in FL, TX, CA and AZ so far. Pick an airport there to try it out.";
   const stateSelect = (cur) => `<label class="field"><span>State</span><select name="st" data-state-select>
+      ${!COVERED_STATES.some(([k]) => k === cur) && !US_STATES[cur] && !US_TERR[cur] ? `<option value="" selected disabled>${COPY["search.state.placeholder"]}</option>` : ""}
       <optgroup label="Sample examiners">${COVERED_STATES.map(([c, n]) => `<option value="${c}" ${c === cur ? "selected" : ""}>${c} · ${n}</option>`).join("")}</optgroup>
       <optgroup label="Not covered yet">${Object.entries(US_STATES).filter(([c]) => !COVERED_STATES.some(([k]) => k === c)).map(([c, n]) => `<option value="${c}" ${c === cur ? "selected" : ""}>${c} · ${n}</option>`).join("")}</optgroup>
+      <optgroup label="Territories (not covered yet)">${Object.entries(US_TERR).map(([c, n]) => `<option value="${c}" ${c === cur ? "selected" : ""}>${c} · ${n.replace(/^the /, "")}</option>`).join("")}</optgroup>
     </select></label>`;
   const outsideCoverage = (st) => `<section class="card empty state" id="outside-coverage" data-state="outside" data-outside="${st}">
       <h2 style="margin:0 0 .35rem">No sample examiners in ${esc(stateName(st))} yet</h2>
@@ -960,7 +994,7 @@ const closeModal = () => {
 
   function viewProfile(q, id) {
     const dp = dpeById(id);
-    if (!dp) return `<div class="page">${emptyState({ id: "dpe-not-found", ic: "search", h: "h1", title: "Examiner not found", body: "This sample examiner isn\u2019t in the data set (links can go stale after a reset).", actions: `<a class="btn" href="#/search">Back to search</a>` })}</div>`;
+    if (!dp) return `<div class="page">${emptyState({ id: "dpe-not-found", ic: "search", h: "h1", title: "Examiner not found", body: "This sample examiner isn\u2019t in the data set (links can go stale after a reset).", actions: `<a class="btn" href="#/find">Back to Find a DPE</a>` })}</div>`; // QA-072
     const certIds = Object.keys(dp.fees);
     const cert = certIds.includes(q.cert) ? q.cert : certIds[0];
     // QA-045 (D40): ATP and rotorcraft have no estimator yet. A ?cert=atp|rh link says so instead of silently showing another cert's numbers.
@@ -968,21 +1002,32 @@ const closeModal = () => {
     const noEstName = noEst ? (((dp.otherAuthorizations || []).find((o) => o.id === noEst) || {}).name || (noEst === "atp" ? "ATP" : "Rotorcraft")) : "";
     const near = nearFor(q.near, dp);
     const slots = openSlots({ dpeId: dp.id });
-    // Reset the calendar focus whenever the URL changes (new examiner or a slot link).
+    // Reset the picker whenever the URL changes (new examiner, a slot link or a "Next opening" link).
+    // QA-070: the day only ever changes because the student chose it. A ?date= with no openings, or a picked slot that has
+    // started, stays on that day with a message; the sticky bar never re-targets to another date on its own.
     if (ui.profileKey !== location.hash) {
-      const focus = q.date || slots[0]?.date || iso(today0());
-      ui.profileKey = location.hash; ui.sel = q.date || slots[0]?.date || null; ui.month = focus.slice(0, 7);
+      const want = q.pick || q.slot || null, ws = want ? S.slots.find((s) => s.id === want && s.dpeId === dp.id) : null;
+      ui.profileKey = location.hash; ui.v4pick = want; ui.v4cur = null; ui.v4lost = null; ui.v4needPick = false; ui.dateMoved = null;
+      ui.sel = q.date || (ws && ws.date) || slots.find((s) => s.certs.includes(cert))?.date || slots[0]?.date || null; ui.selFixed = !!(q.date || ws);
+      if (want && !(ws && slotLive(ws) && !isStale(dp.id))) { ui.v4pick = null; ui.v4needPick = true; if (ws && !q.slot) ui.v4lost = { id: ws.id, date: ws.date, time: slotTime(ws), started: slotPast(ws) }; }
+      ui.month = (ui.sel || iso(today0())).slice(0, 7);
     }
-    // If the selected day no longer has openings (e.g. the examiner closed it or let availability go stale), move to the next open day.
     else if (!ui.sel && slots.length) { ui.sel = slots[0].date; ui.month = ui.sel.slice(0, 7); }
-    else if (ui.sel && !q.date && !slots.some((s) => s.date === ui.sel) && !S.slots.some((s) => s.dpeId === dp.id && s.date === ui.sel && s.status === "held" && s.bookingId && S.bookings.some((b) => b.id === s.bookingId && b.mine))) { ui.sel = slots[0]?.date || null; if (ui.sel) ui.month = ui.sel.slice(0, 7); }
+    // QA-070: the slot the sticky bar was showing has started (60 s re-check, focus, visibility) or was taken: clear the pick,
+    // keep the student's day, say so, and keep focus on the message instead of <body>.
+    { const cur = ui.v4cur && S.slots.find((s) => s.id === ui.v4cur);
+      if (cur && cur.dpeId === dp.id && !(slotLive(cur) && !isStale(dp.id))) {
+        ui.v4lost = { id: cur.id, date: cur.date, time: slotTime(cur), started: slotPast(cur) }; ui.v4pick = null; ui.v4cur = null; ui.v4needPick = true; ui.sel = cur.date; ui.selFixed = true;
+        const a = document.activeElement;
+        if (!ui.focusAfter && (!a || a === document.body || (a.closest && a.closest("#v4-openings")))) ui.focusAfter = "#slot-started || #day-none || #v4-op-h";
+      } }
     const own = S.role === "dpe" && S.actingDpe === dp.id;
     // Arriving from an alert: highlight that slot and open the request form once for this link.
     const pick = q.slot ? S.slots.find((s) => s.id === q.slot && s.dpeId === dp.id && slotLive(s) && !isStale(dp.id)) : null;
-    if (pick) { ui.sel = pick.date; ui.month = pick.date.slice(0, 7); if (ui.autoReqKey !== location.hash) { ui.autoReqKey = location.hash; ui.pendingReq = [pick.id, q.cert]; } }
+    if (pick) { if (ui.autoReqKey !== location.hash) { ui.autoReqKey = location.hash; ui.pendingReq = [pick.id, q.cert]; } }
     const daySlots = ui.sel ? S.slots.filter((s) => s.dpeId === dp.id && s.date === ui.sel && s.status !== "removed" && !(s.status === "open" && slotPast(s))).sort((a, b) => a.time.localeCompare(b.time)) : [];
     return `<div class="page">
-      ${own ? `<div class="cta-banner" style="margin-bottom:1rem"><b>This is your public profile as pilots see it.</b> <a href="#/requests">Back to dashboard</a></div>` : `<p><a href="#/search?cert=${cert}">← Back to search</a></p>`}
+      ${own ? `<div class="cta-banner" style="margin-bottom:1rem"><b>This is your public profile as pilots see it.</b> <a href="#/requests">Back to dashboard</a></div>` : `<p><a class="back-link" href="#/search?cert=${cert}">← Back to search</a></p>`}
       <div style="margin-bottom:1.25rem">
           <section class="card">
             <div class="row" style="gap:1rem;align-items:flex-start">
@@ -996,8 +1041,9 @@ const closeModal = () => {
             </div>
             <p style="margin-top:1rem">${esc(dp.bio)}</p>
           </section>
+          ${v4Openings(dp, cert, slots, own, q, pick)}
       </div>
-      <div class="split-r">
+      <div class="v4-prof-more">
         <div class="stack">
           <section class="card">
             <h2>Fees</h2>
@@ -1024,27 +1070,19 @@ const closeModal = () => {
           </section>
           ${reviewsCard(dp, cert)}
         </div>
-        <aside class="card sticky">
-          <h2>Availability</h2>
-          <div style="margin:-.25rem 0 .75rem">${freshBadge(dp.id)}</div>
-          ${calendar(dp)}
-          <div class="day-panel" style="margin-top:1rem">
-            ${ui.sel ? `<h3>${fmtDate(ui.sel, { weekday: "long", month: "long", day: "numeric" })}</h3>` : `<p class="muted small">${isStale(dp.id) ? "No dates shown." : "No open dates right now."}</p>`}
-            ${pick ? `<div class="cta-banner small" id="alert-pick" style="margin-bottom:.6rem"><b>From your alert:</b> ${slotTime(pick)} is preselected.${pick.simulated ? ` <span class="pill warn">Simulated opening</span>` : ""}</div>` : q.slot ? `<p class="small" id="alert-pick-gone"><b>That opening is no longer available.</b> Pick another time below.</p>` : ""}
-            ${daySlots.map((s) => `<div class="slot-row${pick && pick.id === s.id ? " picked" : ""}"${pick && pick.id === s.id ? ' aria-current="true"' : ""}>
-                <div><b>${slotTime(s)}</b> · ${s.airport}<div class="muted small">${s.certs.map((c) => certById(c).short).join(", ")}</div>${s.note ? `<div class="small slot-note">Note: ${esc(s.note)}</div>` : ""}</div>
-                ${slotLive(s) && !isStale(dp.id) ? `<button class="btn sm" data-action="request" data-slot="${s.id}" data-cert="${cert}">Request</button>` : statusPill(s.status)}
-              </div>`).join("")}
-          </div>
-          <div class="cta-banner small" style="margin-top:1rem">
-            <b>Nothing that works?</b> <a href="#" data-action="alert-dpe" data-dpe="${dp.id}" data-cert="${cert}">Save a mock alert for ${esc(first(dp.name))}</a>
-          </div>
-          ${isStale(dp.id) ? `<p class="small" style="margin:.75rem 0 0"><b>Availability not recently confirmed.</b> Contact the examiner. Openings are hidden until they confirm.</p>` : ""}
-          <p class="muted small" style="margin:.75rem 0 0">${plural(slots.length, "open slot")} · sample calendar, generated for this demo. Always confirm the date with the examiner; this prototype guarantees nothing.</p>
-        </aside>
       </div>
     </div>`;
   }
+
+  // QA-052 / QA-070 / QA-073: a day whose openings have all started (or were taken) says so in a sky-soft panel, with a link
+  // to the next opening. The student follows the link themselves; the day never changes on its own.
+  function dayNone(dp, cert, slots, day) {
+    const d = day || ui.sel;
+    const nx = slots.find((s) => s.date > d && s.certs.includes(cert)) || null;
+    const isToday = d === slotToday({ airport: dp.home });
+    return `<div class="v4-note" id="day-none" tabindex="-1"><b>${isToday ? COPY["search.empty_today"] : `No openings left on ${esc(fmtDate(d, { weekday: "short", month: "short", day: "numeric" }))}.`}</b> ${nx ? `<a href="#/dpe/${dp.id}?cert=${cert}&date=${nx.date}&pick=${nx.id}" data-action="day-next" data-date="${nx.date}" data-slot="${nx.id}" id="day-next">Next opening: ${esc(fmtDate(nx.date, { weekday: "short", month: "short", day: "numeric" }))} \u00b7 ${slotTime(nx)}</a>` : "No later openings right now."}</div>`;
+  }
+
 
   function calendar(dp) {
     const [y, m] = ui.month.split("-").map(Number);
@@ -1357,7 +1395,7 @@ const closeModal = () => {
           ${examinerTerms(dp)}
           <div class="muted small" style="margin-top:.35rem" data-policy>${POLICY_SHORT} <a href="#/pricing#deposit-policy">How cancellations work</a></div>
         </div>`; }).join("")}</div>`
-        : emptyState({ id: "bookings-empty", ic: "calendar", title: "No checkride requests yet", body: "Find a sample examiner and send a request. It's a request, not a booking. Nothing is charged.", actions: `<a class="btn" href="#/search">Search openings</a>` })}
+        : emptyState({ id: "bookings-empty", ic: "calendar", h: "h2" /* QA-019 */, title: "No checkride requests yet", body: "Find a sample examiner and send a request. It's a request, not a booking. Nothing is charged.", actions: `<a class="btn" href="#/search">Search openings</a>` })}
     </div>`;
   }
 
@@ -1379,7 +1417,7 @@ const closeModal = () => {
     };
     return `<div class="page">
       <div class="page-head v3-head"><p class="eyebrow">Journey</p><h1>From your examiner <span class="pill warn" style="vertical-align:middle">Unverified draft</span></h1><p class="muted">Curated lists your examiner sends after approving your request. Ticks are saved in this browser only. Items start from the standard lists, which are unverified drafts.</p></div>
-      ${mine.length ? `<div class="stack">${mine.map(card).join("")}</div>` : emptyState({ id: "my-checklists-empty", ic: "list", title: "No checklists from an examiner yet", body: "Send a request, then switch to <b>Examiner</b> to accept it and send a checklist.", actions: `<a class="btn" href="#/search">Search examiners</a><a class="btn secondary" href="#/checklists">Standard checklists</a>` })}
+      ${mine.length ? `<div class="stack">${mine.map(card).join("")}</div>` : emptyState({ id: "my-checklists-empty", ic: "list", h: "h2" /* QA-019 */, title: "No checklists from an examiner yet", body: "Send a request, then switch to <b>Examiner</b> to accept it and send a checklist.", actions: `<a class="btn" href="#/search">Search examiners</a><a class="btn secondary" href="#/checklists">Standard checklists</a>` })}
     </div>`;
   }
 
@@ -1390,11 +1428,12 @@ const closeModal = () => {
     const s = S.slots.find((x) => x.id === b.slotId), c = S.curated[b.id];
     const back = `<p><a href="#/requests">← Back to dashboard</a></p>`;
     if (b.status !== "confirmed") return `<div class="page">${back}<div class="card empty"><h1 class="h3">Accept the request first</h1><p>A checklist can be built once the request is confirmed.</p></div></div>`;
-    const head = `<div class="page-head row spread"><div><h1 style="margin:0">Curated checklist <span class="pill warn" style="vertical-align:middle">Prototype</span></h1><p class="muted" style="margin:0">${esc(b.applicant)} · ${esc(certById(b.cert).name)} · ${fmtDate(s.date)} · ${s.airport}${b.mine ? " · request made in Student view" : " · sample applicant"}</p></div></div>`;
+    const head = `<div class="page-head row spread"><div><h1 style="margin:0" id="cl-h1" tabindex="-1">Curated checklist <span class="pill warn" style="vertical-align:middle">Prototype</span></h1><p class="muted" style="margin:0">${esc(b.applicant)} · ${esc(certById(b.cert).name)} · ${fmtDate(s.date)} · ${s.airport}${b.mine ? " · request made in Student view" : " · sample applicant"}</p></div></div>`;
     if (!c) return `<div class="page">${back}${head}<section class="card"><h2>Start your list</h2><p class="muted">Begin with the standard ${esc(certById(b.cert).short)} checklist (an unverified draft) and edit it, or start blank.</p>
       <div class="row"><button class="btn" data-action="cl-start" data-id="${b.id}" data-mode="std">Start from standard ${esc(certById(b.cert).short)} list</button><button class="btn secondary" data-action="cl-start" data-id="${b.id}" data-mode="blank">Start blank</button></div></section>${prepEditor(b)}</div>`;
     const dirty = !c.sent || JSON.stringify({ i: c.items, n: c.note }) !== JSON.stringify({ i: c.sent.items, n: c.sent.note });
     return `<div class="page">${back}${head}
+      ${c.prefilled && !c.sent ? `<p class="v4-note" id="cl-prefilled" role="status">Accepted. This list is prefilled with the standard ${esc(certById(b.cert).short)} checklist (an unverified draft) and the default prep list below. Edit both, then send.</p>` : ""}
       <div class="split-r">
         <section class="card">
           <h2>Items (${c.items.length})</h2>
@@ -1425,7 +1464,7 @@ const closeModal = () => {
   function viewDpeDash() {
     const dp = dpeById(S.actingDpe) || D.dpes[0];
     const dtz = aptTz(dp.home);
-    const mySlots = S.slots.filter((s) => s.dpeId === dp.id && s.status !== "removed" && s.date >= slotToday(s)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    const mySlots = S.slots.filter((s) => s.dpeId === dp.id && s.status !== "removed" && s.date >= slotToday(s) && !(s.status === "open" && slotPast(s))) /* QA-054: same started-slot helper as the pilot views */.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
     const myBookings = S.bookings.filter((b) => b.dpeId === dp.id);
     const pending = myBookings.filter((b) => b.status === "requested");
     const confirmed = myBookings.filter((b) => b.status === "confirmed");
@@ -1449,7 +1488,7 @@ const closeModal = () => {
                 <div class="row small" style="margin-top:.3rem;gap:.5rem"><div style="width:120px">${seg9(of9(b.readiness))}</div>${countPill(of9(b.readiness))}${b.selfCheck ? ` · <span class="pill">Self-attested readiness${b.selfCheck.warnings ? `, ${plural(b.selfCheck.warnings, "warning")}` : ""} (unverified)</span>` : ""}</div>
                 ${selfCheckDetails(b)}
               </div>
-              <div class="row"><button class="btn good sm" data-action="accept" data-id="${b.id}">Accept request</button><button class="btn bad sm" data-action="decline" data-id="${b.id}">Decline</button></div>
+              <div class="row"><button class="btn bad sm" data-action="decline" data-id="${b.id}">Decline</button><button class="btn good sm" data-action="accept" data-id="${b.id}">Accept request</button><button class="btn sm" data-action="accept-checklist" data-id="${b.id}">Accept + checklist</button></div>
             </div>`; }).join("") : emptyState({ id: "dpe-pending-empty", ic: "check", cls: "", title: "", body: "No new requests. They'll show up here." })}
             ${myBookings.filter((b) => isWithdrawn(b) && Date.now() - b.cancel.at < 7 * DAY).map((b) => `<p class="small muted" data-dpe-withdrawn="${b.id}" style="margin:.5rem 0 0">${cancelLine(b, slotOf(b))}</p>`).join("")}
           </section>
@@ -1963,7 +2002,7 @@ const closeModal = () => {
       </section>`}
       <p class="eyebrow" id="roster-label">Your students · ${st.length}</p>
       <h2>Roster <span class="muted small" style="font-weight:400">(mock, fictional students)</span></h2>
-      <section class="card"><div class="table-wrap"><table>
+      <section class="card"><div class="table-wrap"><table><caption class="sr-only">Student roster: checkride, CFI, readiness, endorsements and status</caption>
         <thead><tr><th>Student</th><th>Checkride</th><th>CFI</th><th>Readiness</th><th>Endorsements</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead>
         <tbody>${st.map((s) => `<tr>
           <td><b>${esc(s.name)}</b></td><td>${esc(certById(s.cert).short)}</td><td class="small">${esc(s.cfi)}</td>
@@ -1974,6 +2013,7 @@ const closeModal = () => {
         </tr>`).join("")}</tbody>
       </table></div></section>
       <p class="muted small" style="margin-top:1rem">Planned${FEES ? " for school tiers" : ""} (not built): shared alerts for the roster, and one view of checklist progress.</p>
+    ${v4SchoolNear()}
     </div>`;
   }
 
@@ -2127,68 +2167,6 @@ const closeModal = () => {
   };
   const rollChip = (r) => `<span class="pill ${r.cls}" data-rollup="${r.k}">${r.label}</span>`;
   const ready9Count = () => { const r = S.ready9 || {}; return ["kt", "exp", "end", "med", "iacra", "docs", "id", "terms", "prep"].filter((k) => r[k]).length; };
-
-  function viewLanding() {
-    const next = openSlots({ cert: "ppl", state: "FL" });
-    const s0 = next[0], dp = s0 && dpeById(s0.dpeId);
-    const more = s0 ? openSlots({ dpeId: dp.id, cert: "ppl" }).slice(0, 2) : [];
-    const x = s0 ? allIn(dp, "ppl", "KORL", s0.airport) : null;
-    const preview = s0 ? `<aside class="card land-preview" aria-labelledby="lp-title">
-        <div class="row spread"><h2 id="lp-title" class="h3">Find your next step</h2><span class="pill">Sample preview</span></div>
-        <div class="row" style="gap:.75rem;margin-top:.75rem;flex-wrap:nowrap"><div class="avatar">${initials(dp.name)}</div><div><b>${esc(dp.name)}</b><div class="muted small">Fictional examiner \u00b7 ${dp.home}</div></div></div>
-        <div class="small" style="margin-top:.6rem">${esc(certLong("ppl"))} \u00b7 <b>Soonest \u00b7 ${relDays(s0.date, slotTz(s0)).replace(/^in /, "")}</b></div>
-        <div class="chips">${more.map((s) => `<a class="chip" href="#/dpe/${dp.id}?cert=ppl&date=${s.date}">${fmtDate(s.date)} \u00b7 <span class="mono">${slotTime(s)}</span></a>`).join("")}</div>
-        <div class="summary small" style="margin-top:.6rem">
-          <div class="line"><span>Examiner fee</span><b class="mono">${money(x.fee)}</b></div>
-          <div class="line"><span>Travel (estimate)</span><b class="mono">${money(x.travel)}</b></div>
-          <div class="line"><span>Checkride Connect</span><b>${FEES ? money(BOOKING_FEE) : "Free"}</b></div>
-        </div>
-        <a class="btn cta" style="width:100%;margin-top:.75rem" href="#/dpe/${dp.id}?cert=ppl&date=${s0.date}">Request this slot</a>
-      </aside>` : "";
-    const aud = [["01 / Students", "Find the right fit.", "Not just a phone number.", "Compare examiners\u2019 certificates, airports, published fees and openings, then send a request. It\u2019s confirmed only when the examiner accepts.", "pilot"],
-      ["02 / Examiners", "Your calendar.", "Your decisions.", "Set your availability and terms, then accept or decline requests that arrive with the details attached. Nothing is confirmed until you accept.", "dpe"],
-      ["03 / Flight schools", "Every student.", "One clear view.", "See each student\u2019s readiness, eligibility clock and checkride requests in one place.", "school"]];
-    const how = [["01", "Find and request", "Choose an opening and send a request with your readiness details and an optional note to the examiner. It\u2019s a request, not a booking.", "Awaiting your examiner", "warn"],
-      ["02", "Review and accept", "The examiner reviews your request and decides. Only an accepted request becomes a confirmed checkride.", "Confirmed after acceptance", "good"],
-      ["03", "Prepare together", "Once your request is accepted, the examiner\u2019s readiness checklist shows up in your workspace, and you track your prep there.", "Your next step", "accent"]];
-    return `<div class="landing">
-    <section class="land-hero">
-      <div class="land-hero-grid">
-        <div>
-          <p class="eyebrow">EARLY PROTOTYPE \u00b7 CHECKRIDE SCHEDULING</p>
-          <h1 class="display paired">Your next checkride. <span class="b">A clearer path.</span></h1>
-          <p class="lead muted">Finding an examiner shouldn\u2019t feel like another test. See openings and fees upfront, send a request, and get ready in one place. This is an early prototype, so every examiner, school and opening shown is fictional.</p>
-          <div class="row"><a class="btn cta" href="#/home" data-action="set-role" data-role="pilot" data-to="#/home">Explore the demo</a><a class="btn secondary" href="#/#how">See how it works</a></div>
-          <p class="small muted" style="margin-top:1rem">Built for students, examiners and flight schools. Free during the prototype. No fees from us.</p>
-        </div>
-        ${preview}
-      </div>
-    </section>
-    <section class="land-sec" id="who">
-      <p class="eyebrow">ONE CONNECTION. THREE PERSPECTIVES.</p>
-      <h2 class="paired">Built for the people <span class="b">behind every checkride.</span></h2>
-      <p class="lead muted">Less chasing down information. More clarity for everyone involved.</p>
-      <div class="grid g3">${aud.map(([l, a, b, line, role]) => `<a class="card aud-card" href="#" data-action="set-role" data-role="${role}"><p class="eyebrow">${l}</p><h3 class="paired h-card">${a} <span class="b">${b}</span></h3><p class="muted small" style="margin:0">${line}</p></a>`).join("")}</div>
-    </section>
-    <section class="land-sec" id="how">
-      <p class="eyebrow">HOW IT WORKS</p>
-      <h2 class="paired">Requests, not guesswork. <span class="b">Preparation in one place.</span></h2>
-      <ol class="grid g3 steps-v3">${how.map(([n, t, b, c, v]) => `<li class="card"><span class="step-n mono">${n}</span><h3>${t}</h3><p class="muted small">${b}</p>${chip(v, c)}</li>`).join("")}</ol>
-    </section>
-    <section class="land-sec card free-note" id="free">
-      <p class="eyebrow">WHAT IT COSTS</p>
-      <h2 class="paired">Free during the prototype. <span class="b">No fees from us.</span></h2>
-      <p class="muted">Students, examiners and flight schools pay Checkride Connect nothing while we test this prototype. You pay your examiner directly for the checkride, under the examiner\u2019s own terms.</p>
-      <a class="btn secondary" href="#/pricing">See pricing</a>
-    </section>
-    <section class="land-sec faq-sec" id="faq" aria-labelledby="faq-h">
-      <div class="faq-head">${FAQ_H("faq-h")}</div>
-      ${faqAccordion("faq")}
-    </section>
-    <p class="small muted land-footer">Early prototype. All names, schools, openings and prices are fictional. Nothing is charged, and no real requests are sent. Not affiliated with or endorsed by the FAA.</p>
-    <p class="small muted land-footer"><b>Prototype – no real payments.</b> Nothing is charged, emailed or texted.</p>
-    </div>`;
-  }
 
   function viewJourney() {
     const reqs = myReqs(), cur = activeReq();
@@ -2424,9 +2402,348 @@ const closeModal = () => {
     </div>`;
   }
 
+  // ===================== v4: Vercel look (checkride-connect.vercel.app reference) =====================
+  // Layout, sections and flows follow the reference site; product rules (example data, no %, zone labels,
+  // fees off, warn-never-block, D-decisions, ux-copy-v3 keys) win where they conflict (vercel-ref/conflicts.md).
+  const V4_RADII = [25, 50, 100];
+  const V4_PLANE = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>`;
+  const V4_CHECK = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>`;
+  const v4Sample = () => `<span class="pill v4-ex">Example examiner</span>`;
+  const v4DateCap = (d) => fmtDate(d, { weekday: "short", month: "short", day: "numeric" }).toUpperCase();
+  const v4Short = (d) => fmtDate(d, { month: "short", day: "numeric" });
+  // Airports with at least one sample examiner based there, grouped by state (the "Near" picker on #/find).
+  const v4NearOpts = (cur) => COVERED_STATES.map(([c, n]) => {
+    const ids = [...new Set(allDpes().filter((dp) => dpeState(dp) === c).map((dp) => dp.home))].filter((id) => apt(id)).sort();
+    if (cur && aptState(cur) === c && !ids.includes(cur)) ids.unshift(cur);
+    return `<optgroup label="${n}">${ids.map((id) => `<option value="${id}" ${id === cur ? "selected" : ""}>${id} \u00b7 ${esc(apt(id).city)}</option>`).join("")}</optgroup>`;
+  }).join("");
+  function v4FindFilters(q) {
+    const cert = certById(q.cert) && q.cert !== "sport" ? q.cert : "ppl";
+    const near = apt(q.near) ? q.near : "KORL";
+    const radius = V4_RADII.includes(+q.radius) ? +q.radius : 50;
+    // QA-069: a link with a value we can't use says what it fell back to instead of switching silently.
+    const fixed = [];
+    if (q.cert && cert !== q.cert) fixed.push(`checkride “${q.cert}” isn’t in the sample data, showing ${certById(cert).name}`);
+    if (q.near && near !== q.near) fixed.push(`airport “${q.near}” has no sample examiners, showing ${near}`);
+    if (q.radius != null && q.radius !== "" && radius !== +q.radius) fixed.push(`distance “${q.radius}” isn’t one of 25, 50 or 100 nm, showing ${radius} nm`);
+    return { cert, near, state: aptState(near), outside: "", radius, before: "", maxFee: 0, sort: "soonest", fixed };
+  }
+  const FIND_PAGE = 20; // QA-066 (PM-approved): #/find shows 20 cards at a time with "Show more".
+  const v4FindHref = (f, o = {}) => { const g = { ...f, ...o }; return `#/find?cert=${g.cert}&near=${g.near}&radius=${g.radius}`; };
+
+  function v4FindCard(r, f, open) {
+    const { dp } = r, stale = isStale(dp.id), home = apt(dp.home);
+    const travels = r.dist > f.radius; // QA-058: in the list only because they travel to the pilot
+    const apts = [...new Set([dp.home, ...r.slots.map((s) => s.airport)])].slice(0, 3);
+    const nextDay = r.soonest && !stale ? r.soonest.date : null;
+    const prof = `#/dpe/${dp.id}?cert=${f.cert}&near=${f.near}`;
+    const daySlots = open && nextDay ? r.slots.filter((s) => s.date === nextDay).slice(0, 4) : [];
+    return `<article class="v4-card v4-find-card" data-dpe="${dp.id}">
+      <div class="v4-card-top">
+        <div class="avatar">${initials(dp.name)}</div>
+        <div class="v4-who"><h2 class="h3"><a href="${prof}">${esc(dp.name)}</a></h2><div class="muted small">${esc(home.city)} \u00b7 ${r.dist} nm</div></div>
+        <div class="v4-fee"><b class="mono">${money(r.fee)}</b><span class="muted small">${esc(certById(f.cert).short)}</span></div>
+      </div>
+      <div class="v4-chips">${v4Sample()}${travels ? `<span class="pill v4-travel">Travels to you</span>` : ""}${apts.map((id) => `<span class="v4-apt"><span class="mono">${id}</span> ${esc(apt(id).city)}</span>`).join("")}</div>
+      ${travels ? `<p class="small muted v4-travel-why">Based ${r.dist} nm from ${f.near}, outside your ${f.radius} nm. Listed because this examiner travels up to ${dp.travelNm} nm to meet you (sample).</p>` : ""}
+      ${daySlots.length ? `<div class="v4-next">
+        <p class="v4-lbl">${v4DateCap(nextDay)} \u00b7 ${daySlots[0].airport}</p>
+        <div class="v4-times">${daySlots.map((s) => `<a class="v4-time" href="${prof}&date=${s.date}&pick=${s.id}"><span class="mono">${slotTime(s)}</span><span class="small muted">${s.airport}</span></a>`).join("")}</div>
+        <a class="btn secondary v4-wide" href="${prof}&date=${nextDay}">See all openings</a>
+      </div>` : `<div class="v4-card-foot">${nextDay ? `<span class="pill v4-next-pill">Next open ${v4Short(nextDay)}</span>` : `<span class="pill">${stale ? "Availability not confirmed" : "No openings posted"}</span>`}<a href="${prof}">View profile \u2192</a></div>`}
+    </article>`;
+  }
+
+  function viewFind(q) {
+    const f = v4FindFilters(q);
+    const res = searchDpes(f);
+    const c = certById(f.cert);
+    const firstOpen = res.findIndex((r) => r.soonest && !isStale(r.dp.id));
+    const key = v4FindHref(f);
+    if (ui.findKey !== key) { ui.findKey = key; ui.findShown = FIND_PAGE; }
+    const shown = Math.min(res.length, ui.findShown || FIND_PAGE);
+    const nTravel = res.filter((r) => r.dist > f.radius).length;
+    return `<div class="page v4-find">
+      <div class="v4-col">
+        <div class="v4-find-head"><span class="v4-ic" aria-hidden="true">${V4_PLANE}</span><div><p class="eyebrow">FIND A DPE</p><h1>Find a DPE</h1></div></div>
+        <p class="muted small" style="margin:.25rem 0 1rem">Fictional sample examiners in ${coveredList()}. Fees are each examiner\u2019s own; you pay them directly.</p>
+        ${f.fixed.length ? `<p class="v4-note" id="find-param-note" role="status">Some link settings couldn\u2019t be used: ${esc(f.fixed.join("; "))}.</p>` : ""}
+        <form class="v4-filters" data-form="find" data-auto aria-label="Find a DPE filters">
+          <label class="field v4-f-cert"><span class="v4-lbl">Checkride</span><select name="cert" id="find-cert">${D.certs.filter((x) => x.id !== "sport").map((x) => `<option value="${x.id}" ${x.id === f.cert ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
+          <label class="field v4-f-near"><span class="v4-lbl">Near</span><select name="near" id="find-near">${v4NearOpts(f.near)}</select></label>
+          <input type="hidden" name="radius" value="${f.radius}">
+          <div class="field v4-f-radius"><span class="v4-lbl" id="find-r-l">Within</span><div class="v4-seg" role="group" aria-labelledby="find-r-l">${V4_RADII.map((r) => `<a class="v4-seg-b" href="${v4FindHref(f, { radius: r })}" ${r === f.radius ? 'aria-current="true" ' : ""}data-radius="${r}">${r} nm</a>`).join("")}</div></div>
+        </form>
+        <p id="find-count" class="v4-count" aria-live="polite"><b>${plural(res.length, "examiner")}</b> for ${esc(c.name)} within ${f.radius} nm of <span class="mono">${f.near}</span> \u00b7 ${esc(apt(f.near).city)}${nTravel ? ` <span class="small">(${nTravel} based farther out travel to you)</span>` : ""}${res.length > FIND_PAGE ? ` \u00b7 <span id="find-shown">showing ${shown}</span>` : ""}</p>
+        <div class="stack" id="find-results">${res.length ? res.slice(0, shown).map((r, i) => v4FindCard(r, f, i === firstOpen)).join("")
+          : emptyState({ id: "find-empty", ic: "search", title: "No sample examiners in range", body: `Nobody in the sample data gives the ${esc(c.short)} checkride within ${f.radius} nm of ${f.near}. Try a wider distance or another airport.`, actions: f.radius < 100 ? `<a class="btn secondary sm" href="${v4FindHref(f, { radius: 100 })}">Search 100 nm</a>` : "" })}</div>
+        ${shown < res.length ? `<div class="v4-more-row"><button type="button" class="btn secondary v4-wide" id="find-more" data-action="find-more">Show more (${Math.min(FIND_PAGE, res.length - shown)} of ${res.length - shown} left)</button></div>` : ""}
+        <section class="card v4-more" style="margin-top:1rem"><div class="row spread"><div><b>Need a date window, a fee cap or a map?</b><div class="muted small">The full search has more filters, compare and alerts.</div></div><a class="btn secondary sm" href="#/search?cert=${f.cert}&near=${f.near}&radius=${f.radius}">More filters</a></div></section>
+      </div>
+    </div>`;
+  }
+
+  // Profile: Vercel-style openings picker (day tabs, time grid, sticky "Request slot" bar). Shares ui.sel with the calendar.
+  function v4Openings(dp, cert, slots, own, q, alertPick) {
+    q = q || {};
+    const stale = isStale(dp.id);
+    const certSlots = slots.filter((s) => s.certs.includes(cert));
+    const days = [...new Set(certSlots.map((s) => s.date))].sort().slice(0, 7);
+    const lost = ui.v4lost && ui.v4lost.date ? ui.v4lost : null;
+    // QA-070: the slot.started message (role=status, focusable) when the picked opening started or went away.
+    const lostMsg = lost ? `<p class="v4-note crit" id="slot-started" role="status" tabindex="-1"><b>${lost.started ? COPY["slot.started"] : "That opening is no longer available."}</b> <span>${esc(fmtDate(lost.date, { weekday: "short", month: "short", day: "numeric" }))} \u00b7 <span class="mono">${esc(lost.time)}</span>. Pick another time.</span></p>` : "";
+    const alertMsg = alertPick ? `<div class="cta-banner small" id="alert-pick" style="margin:.75rem 0 0"><b>From your alert:</b> ${slotTime(alertPick)} is preselected.${alertPick.simulated ? ` <span class="pill warn">Simulated opening</span>` : ""}</div>` : q.slot ? `<p class="v4-note" id="alert-pick-gone"><b>That opening is no longer available.</b> Pick another time below.</p>` : "";
+    const foot = `<div class="v4-op-foot small"><span>${freshBadge(dp.id)}</span> <b>Nothing that works?</b> <a href="#" data-action="alert-dpe" data-dpe="${dp.id}" data-cert="${cert}">Save a mock alert for ${esc(first(dp.name))}</a></div>
+      <p class="muted small" style="margin:.5rem 0 0">${plural(slots.length, "open slot")} \u00b7 sample calendar, generated for this demo. Always confirm the date with the examiner; this prototype guarantees nothing.</p>`;
+    if (stale || !days.length) return `<section class="card v4-openings" id="v4-openings" aria-labelledby="v4-op-h"><h2 id="v4-op-h">Openings</h2>${lostMsg}${alertMsg}<p class="muted small" style="margin:0">${stale ? "<b>Availability not recently confirmed.</b> Contact the examiner. Openings are hidden until the examiner confirms." : `No open ${esc(certById(cert).short)} slots right now.`} <a href="#" data-action="alert-dpe" data-dpe="${dp.id}" data-cert="${cert}">Save a mock alert</a></p></section>`;
+    // The shown day is the student's: a fixed day (a ?date= link, or the day of a slot that started) is never swapped for another.
+    const day = days.includes(ui.sel) ? ui.sel : ui.selFixed && ui.sel ? null : days[0];
+    const times = day ? S.slots.filter((s) => s.dpeId === dp.id && s.date === day && s.status !== "removed" && !(s.status === "open" && slotPast(s))).sort((a, b) => a.time.localeCompare(b.time)) : [];
+    const live = times.filter((s) => slotLive(s) && s.certs.includes(cert));
+    // QA-070: after a pick was lost, nothing is preselected until the student picks again.
+    const pick = live.find((s) => s.id === ui.v4pick) || (ui.v4needPick ? null : live[0]) || null;
+    ui.v4cur = pick ? pick.id : null;
+    const shown = day || ui.sel;
+    return `<section class="card v4-openings" id="v4-openings" aria-labelledby="v4-op-h">
+      <div class="row spread"><h2 id="v4-op-h" style="margin:0">Openings</h2><span class="muted small">${esc(fmtDate(shown, { month: "long", year: "numeric" }))}</span></div>
+      ${lostMsg}${alertMsg}
+      <div class="v4-days" role="group" aria-label="Open days">${days.map((d) => `<button type="button" class="v4-day" data-action="v4-day" data-date="${d}" aria-pressed="${d === day}"><span class="small">${fmtDate(d, { weekday: "short" })}</span><b>${parseIso(d).getDate()}</b></button>`).join("")}</div>
+      ${day ? `<p class="v4-lbl" style="margin:.9rem 0 .5rem">${v4DateCap(day)}</p>
+      <div class="v4-times" role="group" aria-label="Times">${times.map((s) => { const ok = slotLive(s) && s.certs.includes(cert); return ok
+        ? `<button type="button" class="v4-time" data-action="v4-pick" data-slot="${s.id}" aria-pressed="${!!pick && pick.id === s.id}"><span class="mono">${slotTime(s)}</span><span class="small muted">${s.airport}</span></button>`
+        : `<span class="v4-time is-off"><span class="mono">${slotTime(s)}</span><span class="small">${s.status === "open" ? "Other checkrides" : "Taken"}</span></span>`; }).join("")}</div>
+      ${(() => { const nt = times.filter((s) => s.note && slotLive(s) && s.certs.includes(cert)); return nt.length ? `<ul class="v4-day-notes small" id="v4-day-notes" aria-label="Notes from the examiner">${nt.map((s) => `<li><span class="mono">${slotTime(s)}</span>: ${esc(s.note)}</li>`).join("")}</ul>` : ""; })()}
+      ${live.length ? "" : dayNone(dp, cert, slots, day)}` : `<div style="margin-top:.9rem">${dayNone(dp, cert, slots, ui.sel)}</div>`}
+      <p class="muted small v4-slot-note" id="v4-slot-note" style="margin:.75rem 0 0">Each slot is about 4 hours, oral and flight (typical, varies by examiner). ${VERIFY}</p>
+      <p class="muted small" style="margin:.4rem 0 0">Times are local to the airport. A request holds the slot while ${esc(first(dp.name))} reviews it; it\u2019s confirmed only once they accept.</p>
+      ${foot}
+      ${own ? "" : pick ? `<div class="v4-bar" id="v4-bar"><div><b>${esc(fmtDate(pick.date))} \u00b7 <span class="mono">${slotTime(pick)}</span></b><div class="muted small">${pick.airport} \u00b7 ${esc(certById(cert).short)} \u00b7 ${money(dp.fees[cert])} to the examiner</div></div><button class="btn cta" data-action="request" data-slot="${pick.id}" data-cert="${cert}" id="v4-request">Request slot</button></div>` : ""}
+    </section>`;
+  }
+
+
+  // Pretend log in / sign up: local state only. Nothing is sent; passwords, emails and phones are never stored.
+  const V4_DEMO_NOTE = `<p class="v4-demo-note" role="note"><b>Demo only.</b> No real accounts: nothing is sent or checked, and your password, email and phone are never stored. Only a display name, role and airport stay in this browser (Reset clears them).</p>`;
+  const V4_ROLES = [["pilot", "Student pilot", "Find an examiner and request a checkride."], ["dpe", "Examiner (DPE)", "Post openings and answer requests."], ["school", "Flight school", "Request checkrides for your students."]];
+  function v4AuthShell(inner) {
+    return `<div class="page v4-auth"><div class="v4-auth-card card">
+      <a class="v4-auth-logo" href="#/" aria-label="Checkride Connect, home"><img class="lockup lockup-light" src="${BRAND_LOGO.light}" width="164" height="26" alt=""><img class="lockup lockup-dark" src="${BRAND_LOGO.dark}" width="164" height="26" alt=""></a>
+      ${inner}</div></div>`;
+  }
+  function viewLogin() {
+    const u = S.demoUser;
+    return v4AuthShell(`<h1>Welcome back</h1><p class="muted">Log in to the demo to manage your checkride requests.</p>${V4_DEMO_NOTE}
+      <form class="stack" data-form="demo-login" autocomplete="off" novalidate>
+        <label class="field"><span>Email</span><input type="email" name="email" id="login-email" autocomplete="off" placeholder="you@example.com" required></label>
+        <label class="field"><span>Password</span><input type="password" name="password" id="login-password" autocomplete="off" required><span class="small muted">Demo: never stored or sent.</span></label>
+        <fieldset class="field v4-role-mini"><legend class="small">Open the demo as</legend><div class="row" style="gap:.5rem;flex-wrap:wrap">${V4_ROLES.map(([r, l]) => `<label class="v4-radio sm"><input type="radio" name="role" value="${r}" ${(u ? u.role : S.role) === r ? "checked" : ""}> ${l}</label>`).join("")}</div></fieldset>
+        <button class="btn cta v4-wide" type="submit" id="login-submit">Log in (demo)</button>
+      </form>
+      <p class="small" style="margin:1rem 0 0;text-align:center">New here? <a href="#/signup">Create a demo account</a></p>`);
+  }
+  function viewSignup(q) {
+    const role = V4_ROLES.some(([r]) => r === (ui.signupRole || q.role)) ? (ui.signupRole || q.role) : "pilot";
+    const aptLbl = { pilot: "Home airport", dpe: "Main airport you test at", school: "School\u2019s home airport" }[role];
+    const goal = role === "pilot" ? `<label class="field"><span>Checkride you\u2019re working toward</span><select name="goal" id="signup-goal">${D.certs.filter((c) => c.id !== "sport").map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join("")}<option value="atp">ATP (info only: not bookable in this prototype)</option></select></label>
+        <label class="field"><span>Recommending CFI <span class="muted">(optional)</span></span><input name="cfi" id="signup-cfi" autocomplete="off"></label>` : "";
+    return v4AuthShell(`<h1>Create your account</h1><p class="muted">Free during the prototype. Takes about a minute.</p>${V4_DEMO_NOTE}
+      <form class="stack" data-form="demo-signup" autocomplete="off" novalidate>
+        <fieldset class="v4-roles"><legend>I am a\u2026</legend>${V4_ROLES.map(([r, l, d]) => `<label class="v4-radio card"><input type="radio" name="role" value="${r}" ${r === role ? "checked" : ""} data-signup-role><span><b>${l}</b><span class="muted small">${d}</span></span></label>`).join("")}</fieldset>
+        <label class="field"><span>Full name</span><input name="name" id="signup-name" autocomplete="off" required></label>
+        <label class="field"><span>${aptLbl}</span><select name="airport" id="signup-airport">${v4NearOpts(STATE_HOME.FL)}</select></label>
+        ${goal}
+        <label class="field"><span>Phone <span class="muted">(optional)</span></span><input type="tel" name="phone" id="signup-phone" autocomplete="off"><span class="small muted">Demo: not stored, nothing is texted.</span></label>
+        <label class="field"><span>Email</span><input type="email" name="email" id="signup-email" autocomplete="off" required><span class="small muted">Demo: not stored, nothing is emailed.</span></label>
+        <label class="field"><span>Password</span><input type="password" name="password" id="signup-password" autocomplete="off" minlength="8" required><span class="small muted">At least 8 characters. Demo: never stored or sent.</span></label>
+        <label class="v4-check small"><input type="checkbox" name="age" id="signup-age" required> I\u2019m 16 or older and I understand this is a prototype with example data.</label>
+        <p class="small muted" id="signup-err" role="alert" style="margin:0"></p>
+        <button class="btn cta v4-wide" type="submit" id="signup-submit">Create demo account</button>
+      </form>
+      <p class="small" style="margin:1rem 0 0;text-align:center">Already have one? <a href="#/login">Log in</a></p>`);
+  }
+
+  // Landing (v4): reference-site section order; keyed ux-copy-v3 copy kept for hero, #who, #how, #free and #faq.
+  // EASY SWITCH (rc2): landing wording lives here (copy keys). Text is unchanged from v4-rc1.
+  const LANDING_COPY = {
+    "hero.eyebrow": "EARLY PROTOTYPE \u00b7 CHECKRIDE SCHEDULING",
+    "hero.h1": "Your next checkride.", "hero.h1b": "A clearer path.",
+    "hero.lead": "Finding an examiner shouldn\u2019t feel like another test. See openings and fees upfront, send a request, and get ready in one place. This is an early prototype, so every examiner, school and opening shown is fictional.",
+    "final.h2": "Ready for your checkride?",
+    "final.body": () => `Sample examiners in ${coveredList()}. Find one near your field.`,
+  };
+  const LC = (k) => { const v = LANDING_COPY[k]; return typeof v === "function" ? v() : v; };
+  function viewLanding() {
+    const f = { cert: "ppl", near: "KORL", state: "FL", outside: "", radius: 50, before: "", maxFee: 0, sort: "soonest" };
+    const res = searchDpes(f).filter((r) => r.soonest && !isStale(r.dp.id));
+    const dayN = (r) => r.slots.filter((s) => s.date === r.soonest.date).length;
+    const top = res.find((r) => dayN(r) >= 3) || res.find((r) => dayN(r) >= 2) || res[0];
+    const heroDay = top ? top.slots.filter((s) => s.date === top.soonest.date).slice(0, 3) : [];
+    const hs = heroDay[1] || heroDay[0];
+    const hero = top ? `<div class="v4-hero-panel" aria-hidden="false"><article class="v4-card v4-mock" aria-label="Sample request card">
+        <div class="v4-card-top"><div class="avatar">${initials(top.dp.name)}</div><div class="v4-who"><b>${esc(top.dp.name)}</b><div class="muted small">Example examiner \u00b7 ${esc(apt(top.dp.home).city)}, FL \u00b7 ${top.dist} nm</div></div><div class="v4-fee"><b class="mono">${money(top.fee)}</b><span class="muted small">Private Pilot</span></div></div>
+        <p class="v4-lbl" style="margin:.9rem 0 .5rem">${v4DateCap(top.soonest.date)} \u00b7 ${top.soonest.airport}</p>
+        <div class="v4-times">${heroDay.map((s) => `<span class="v4-time${s === hs ? " is-on" : ""}"><span class="mono">${slotTime(s)}</span></span>`).join("")}</div>
+        <a class="btn cta v4-wide" href="#/dpe/${top.dp.id}?cert=ppl&near=KORL&date=${hs.date}&pick=${hs.id}" data-action="set-role" data-role="pilot" data-to="#/dpe/${top.dp.id}?cert=ppl&near=KORL&date=${hs.date}&pick=${hs.id}">Request ${slotTime(hs)} slot</a>
+      </article><p class="v4-toast-mock">${V4_CHECK} Accepted \u00b7 prep checklist sent <span class="muted">(mock)</span></p></div>` : "";
+    const aud = [["01 / Students", "Find the right fit.", "Not just a phone number.", "Compare examiners\u2019 certificates, airports, published fees and openings, then send a request. It\u2019s confirmed only when the examiner accepts.", "pilot", "#/#students"],
+      ["02 / Examiners", "Your calendar.", "Your decisions.", "Set your availability and terms, then accept or decline requests that arrive with the details attached. Nothing is confirmed until you accept.", "dpe", "#/#examiners"],
+      ["03 / Flight schools", "Every student.", "One clear view.", "See each student\u2019s readiness, eligibility clock and checkride requests in one place.", "school", "#/#schools"]];
+    const how = [["01", "Find and request", "Choose an opening and send a request with your readiness details and an optional note to the examiner. It\u2019s a request, not a booking.", "Awaiting your examiner", "warn"],
+      ["02", "Review and accept", "The examiner reviews your request and decides. Only an accepted request becomes a confirmed checkride.", "Confirmed after acceptance", "good"],
+      ["03", "Prepare together", "Once your request is accepted, the examiner\u2019s readiness checklist shows up in your workspace, and you track your prep there.", "Your next step", "accent"]];
+    const feat = (items) => `<ul class="v4-feats">${items.map(([t, b]) => `<li><span class="v4-tick">${V4_CHECK}</span><div><b>${t}</b><p class="muted small">${b}</p></div></li>`).join("")}</ul>`;
+    // Examiner inbox mock from the first sample examiner's own requests.
+    const dp0 = D.dpes[0], bk = S.bookings.filter((b) => b.dpeId === dp0.id);
+    const pend = bk.filter((b) => b.status === "requested"), wk = bk.filter((b) => b.status === "confirmed" && daysUntil(slotOf(b).date, slotTz(slotOf(b))) <= 7 && daysUntil(slotOf(b).date, slotTz(slotOf(b))) >= 0);
+    const openN = openSlots({ dpeId: dp0.id }).length;
+    const p0 = pend[0], s0 = p0 && slotOf(p0);
+    const inbox = `<div class="v4-card v4-inbox" aria-label="Sample examiner inbox">
+        <div class="row spread"><b>Requests</b><span class="pill v4-ex">Example data</span></div>
+        <div class="v4-stats"><div><b class="mono">${pend.length}</b><span class="small muted">Pending</span></div><div><b class="mono">${wk.length}</b><span class="small muted">This week</span></div><div><b class="mono">${openN}</b><span class="small muted">Open slots</span></div></div>
+        ${p0 ? `<div class="v4-req"><div class="row spread"><b>${esc(p0.applicant)}</b>${chip("warn", "Requested")}</div><div class="small">${esc(certById(p0.cert).name)} \u00b7 ${fmtDate(s0.date)} \u00b7 ${slotTime(s0)}</div><div class="muted small">${esc(p0.aircraft)} \u00b7 CFI ${esc(p0.cfi)}</div><div class="small" style="margin-top:.35rem">${countPill(of9(p0.readiness))}</div>
+          <div class="row" style="gap:.5rem;margin-top:.6rem"><a class="btn secondary sm" href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">Decline</a><a class="btn sm" href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">Accept + checklist</a></div></div>` : ""}
+        ${pend.slice(1, 3).map((b) => { const s = slotOf(b); return `<div class="v4-req-row"><div><b>${esc(b.applicant)}</b><div class="muted small">${esc(certById(b.cert).short)} \u00b7 ${fmtDate(s.date)}</div></div>${chip("warn", "Requested")}</div>`; }).join("")}
+      </div>`;
+    const near3 = searchDpes(f).slice(0, 4);
+    const studs = D.school.students.slice(0, 2);
+    const table = `<div class="v4-card v4-table-card" aria-label="Sample examiners near ${D.school.airport}">
+        <div class="row spread"><b>Examiners near ${D.school.airport}</b><span class="pill v4-ex">Example data</span></div>
+        <div class="table-wrap"><table class="v4-table"><thead><tr><th>Examiner</th><th class="num">Private</th><th class="num">Next</th></tr></thead><tbody>${near3.map((r) => `<tr><td>${esc(r.dp.name)}</td><td class="num mono">${money(r.fee)}</td><td class="num">${r.soonest && !isStale(r.dp.id) ? v4Short(r.soonest.date) : "\u2014"}</td></tr>`).join("")}</tbody></table></div>
+        ${studs.map((s) => `<div class="v4-req-row"><b>${esc(s.name)}</b>${s.status === "confirmed" ? chip("good", "Confirmed") : s.status === "requested" ? chip("warn", "Requested") : chip("", "No request yet")}</div>`).join("")}
+        <a class="btn v4-wide" href="#/school/requests" data-action="set-role" data-role="school" data-to="#/school/requests" style="margin-top:.75rem">Request for a student</a>
+      </div>`;
+    const findMock = `<div class="v4-card v4-findmock" aria-label="Sample search">
+        <div class="row" style="gap:.5rem;flex-wrap:wrap"><span class="v4-apt"><span class="mono">KORL</span></span><span class="v4-apt">Private Pilot</span><span class="v4-apt">50 nm</span><span class="v4-apt">Next 2 weeks</span></div>
+        ${near3.slice(0, 3).map((r) => `<div class="v4-req-row"><div class="row" style="gap:.6rem;flex-wrap:nowrap"><div class="avatar sm">${initials(r.dp.name)}</div><div><b>${esc(r.dp.name)}</b><div class="muted small">${r.dist} nm${r.soonest && !isStale(r.dp.id) ? ` \u00b7 Next open ${v4Short(r.soonest.date)}` : ""}</div></div></div><b class="mono">${money(r.fee)}</b></div>`).join("")}
+        <a class="btn v4-wide" href="#/find" data-action="set-role" data-role="pilot" data-to="#/find" style="margin-top:.75rem">Request a slot</a>
+      </div>`;
+    return `<div class="landing v4-landing">
+    <section class="land-hero v4-hero">
+      <div class="land-hero-grid">
+        <div>
+          <p class="eyebrow">${LC("hero.eyebrow")}</p>
+          <h1 class="display paired">${LC("hero.h1")} <span class="b">${LC("hero.h1b")}</span></h1>
+          <p class="lead muted">${LC("hero.lead")}</p>
+          <div class="row"><a class="btn cta" href="#/find" data-action="set-role" data-role="pilot" data-to="#/find" id="land-find">Find a DPE \u2192</a><a class="btn secondary" href="#/home" data-action="set-role" data-role="pilot" data-to="#/home">Explore the demo</a></div>
+          <p class="small muted" style="margin-top:1rem">Built for students, examiners and flight schools. Free during the prototype. No fees from us. <a href="#/#how">See how it works</a> \u00b7 <a href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">I\u2019m an examiner</a></p>
+        </div>
+        ${hero}
+      </div>
+    </section>
+    <section class="land-sec" id="how">
+      <p class="eyebrow">HOW IT WORKS</p>
+      <h2 class="paired">Requests, not guesswork. <span class="b">Preparation in one place.</span></h2>
+      <ol class="grid g3 steps-v3">${how.map(([n, t, b, c, v]) => `<li class="card"><span class="step-n mono">${n}</span><h3>${t}</h3><p class="muted small">${b}</p>${chip(v, c)}</li>`).join("")}</ol>
+    </section>
+    <section class="land-sec" id="who">
+      <p class="eyebrow">ONE CONNECTION. THREE PERSPECTIVES.</p>
+      <h2 class="paired">Built for the people <span class="b">behind every checkride.</span></h2>
+      <p class="lead muted">Less chasing down information. More clarity for everyone involved.</p>
+      <div class="grid g3">${aud.map(([l, a, b, line, role, href]) => `<a class="card aud-card" href="${href}"><p class="eyebrow">${l}</p><h3 class="paired h-card">${a} <span class="b">${b}</span></h3><p class="muted small" style="margin:0">${line}</p></a>`).join("")}</div>
+    </section>
+    <section class="land-sec v4-split" id="students" aria-labelledby="students-h">
+      <div><p class="eyebrow">FOR STUDENT PILOTS</p><h2 id="students-h">Stop chasing examiners. Start requesting checkrides.</h2>
+        <p class="muted">You\u2019ve done the training. Skip the week of phone calls and voicemails between sign-off and test day.</p>
+        ${feat([["Every sample DPE near you, in one search", "Filter by checkride and airport, and see who has openings."], ["Fees and policies upfront", "Published examiner fees, retest fees and cancellation rules."], ["Request a real opening, not a callback", "Pick an open time. It\u2019s held while the examiner reviews, and confirmed only once they accept."], ["Show up prepared", "Your examiner\u2019s own checklist says what to finish and what to bring."]])}
+        <a class="btn" href="#/find" data-action="set-role" data-role="pilot" data-to="#/find">Find a DPE near you</a></div>
+      ${findMock}
+    </section>
+    <section class="land-sec v4-split rev" id="examiners" aria-labelledby="examiners-h">
+      ${inbox}
+      <div><p class="eyebrow">FOR EXAMINERS</p><h2 id="examiners-h">Spend your time examining, not scheduling.</h2>
+        <p class="muted">Post your openings once. Requests arrive that already match your checkrides and airports, with the details you need to decide.</p>
+        ${feat([["Requests that already fit", "Students only see checkrides you give, at airports you fly from."], ["Every detail upfront", "Slot, aircraft, recommending CFI and the applicant\u2019s self-attested readiness arrive with each request."], ["Checklists in one tap", "Accept + checklist opens your prep list for that applicant, ready to edit and send."], ["Your rules, published", "You set fees, airports and cancellation terms. Everyone sees them before asking."]])}
+        <a class="btn" href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">Open the examiner demo</a></div>
+    </section>
+    <section class="land-sec v4-split" id="schools" aria-labelledby="schools-h">
+      <div><p class="eyebrow">FOR FLIGHT SCHOOLS</p><h2 id="schools-h">Get signed-off students tested sooner.</h2>
+        <p class="muted">Compare the sample examiners near your field and request slots for your students in one place.</p>
+        ${feat([["Examiners at a glance", "Airports, fees per checkride and next opening for nearby examiners, in one table."], ["Request for your students", "Send a request on a student\u2019s behalf, with the aircraft and recommending CFI."], ["Every request, one list", "See which requests are waiting, accepted or declined."], ["Fewer phone chains", "Less back and forth between students, CFIs and examiners."]])}
+        <a class="btn" href="#/school" data-action="set-role" data-role="school" data-to="#/school">Browse examiners</a></div>
+      ${table}
+    </section>
+    <section class="land-sec v4-promise free-note" id="free">
+      <p class="eyebrow">${FEES ? "PROPOSED PRICING" : "WHAT IT COSTS"}</p>
+      ${FEES ? `<h2>Proposed pricing</h2><p><span class="pill warn">Proposed pricing</span> A flat ${money(BOOKING_FEE)} student booking fee and optional school plans are proposed. Nothing is charged in this prototype; you pay your examiner directly.</p>`
+        : `<h2 class="paired">Free during the prototype. <span class="b">No fees from us.</span></h2><p>Students, examiners and flight schools pay Checkride Connect nothing while we test this prototype. You pay your examiner directly for the checkride, under the examiner\u2019s own terms.</p>`}
+      <a class="btn secondary" href="#/pricing">See pricing</a>
+    </section>
+    <section class="land-sec v4-final" aria-labelledby="final-h">
+      <h2 id="final-h">${LC("final.h2")}</h2>
+      <p class="muted">${LC("final.body")}</p>
+      <div class="row" style="justify-content:center"><a class="btn cta" href="#/find" data-action="set-role" data-role="pilot" data-to="#/find">Find a DPE</a><a class="btn secondary" href="#/#how">See how it works</a></div>
+    </section>
+    <section class="land-sec faq-sec" id="faq" aria-labelledby="faq-h">
+      <div class="faq-head">${FAQ_H("faq-h")}</div>
+      ${faqAccordion("faq")}
+    </section>
+    <p class="small muted land-footer">Early prototype. All names, schools, openings and prices are fictional. Nothing is charged, and no real requests are sent. Not affiliated with or endorsed by the FAA.</p>
+    <p class="small muted land-footer"><b>Prototype – no real payments.</b> Nothing is charged, emailed or texted.</p>
+    <p class="small muted land-footer">\u00a9 2026 Checkride Connect \u00b7 Prototype, not legal or FAA advice.</p>
+    </div>`;
+  }
+
+  // School: "Examiners near <airport>" table (reference layout).
+  function v4SchoolNear() {
+    const a = D.school.airport, f = { cert: "ppl", near: a, state: aptState(a), outside: "", radius: 50, before: "", maxFee: 0, sort: "soonest" };
+    const rows = searchDpes(f).slice(0, 6);
+    const cs = ["ppl", "ir", "cpl"];
+    return `<section class="card v4-near" id="school-near" aria-labelledby="school-near-h">
+      <div class="row spread"><h2 id="school-near-h" style="margin:0">Examiners near ${a}</h2><span class="pill v4-ex">Example data</span></div>
+      <div class="table-wrap"><table class="v4-table"><caption class="sr-only">Sample examiners near ${a}: airports, fee per checkride and next opening</caption><thead><tr><th scope="col">Examiner</th><th scope="col">Airports</th>${cs.map((c) => `<th scope="col" class="num">${esc(certById(c).short)}</th>`).join("")}<th class="num">Next</th></tr></thead><tbody>
+      ${rows.map((r) => `<tr><td><a href="#/dpe/${r.dp.id}?cert=ppl&near=${a}">${esc(r.dp.name)}</a><div class="muted small">${r.dist} nm</div></td><td class="mono small">${[...new Set([r.dp.home, ...r.slots.map((s) => s.airport)])].slice(0, 3).join(" ")}</td>${cs.map((c) => `<td class="num mono">${r.dp.fees[c] ? money(r.dp.fees[c]) : "\u2014"}</td>`).join("")}<td class="num">${r.soonest && !isStale(r.dp.id) ? v4Short(r.soonest.date) : "\u2014"}</td></tr>`).join("")}
+      </tbody></table></div>
+      <div class="row" style="margin-top:.75rem;gap:.5rem"><a class="btn sm" href="#/school/requests">Request for a student</a><a class="btn secondary sm" href="#/find?cert=ppl&near=${a}">Find a DPE</a></div>
+    </section>`;
+  }
+
+  const V4_ACTIONS = {
+    "day-next": (el, e) => { if (e) e.preventDefault(); ui.sel = el.dataset.date; ui.selFixed = true; ui.month = ui.sel.slice(0, 7); ui.dateMoved = null; ui.v4lost = null; ui.v4pick = el.dataset.slot || null; ui.v4needPick = true; ui.focusAfter = `[data-action="v4-pick"][aria-pressed="true"] || [data-action="v4-day"][aria-pressed="true"] || #v4-op-h`; render(); },
+    // QA-066: show the next 20 cards; focus stays on "Show more" (or lands on the first new card when the list is complete).
+    "find-more": () => { const prev = ui.findShown || FIND_PAGE; ui.findShown = prev + FIND_PAGE; ui.focusAfter = `#find-more || #find-results > article:nth-child(${prev + 1}) h2 a`; render(); },
+    "v4-day": (el) => { ui.dateMoved = null; ui.v4lost = null; ui.selFixed = true; ui.sel = el.dataset.date; ui.month = ui.sel.slice(0, 7); ui.v4pick = null; ui.focusAfter = `[data-action="v4-day"][data-date="${ui.sel}"]`; render(); },
+    "v4-pick": (el) => { ui.v4pick = el.dataset.slot; ui.v4lost = null; ui.focusAfter = `[data-action="v4-pick"][data-slot="${ui.v4pick}"]`; render(); },
+    // QA-061 (conflicts.md #15, D34): accept, then open the builder already prefilled with the default list; the examiner
+    // edits and sends it. Focus lands on the builder's h1 so keyboard users keep their place.
+    "accept-checklist": (el) => {
+      actions.accept(el);
+      const b = S.bookings.find((x) => x.id === el.dataset.id);
+      if (!b || b.status !== "confirmed") return; // refused (e.g. the opening started): stay on the requests list
+      if (!S.curated[b.id]) { S.curated[b.id] = { items: standardItems(b.cert).map((i) => ({ id: uid("i"), ...i })), note: "", updatedAt: Date.now(), sent: null, prefilled: true }; save(); }
+      ui.focusAfter = "#cl-h1 || #app h1";
+      go(`#/dpe-checklist/${b.id}`);
+    },
+    "demo-logout": () => { S.demoUser = null; save(); toast("Logged out of the demo. Nothing was sent."); go("#/"); },
+  };
+  const V4_FORMS = {
+    find: (f, fd) => { const q = new URLSearchParams({ cert: fd.get("cert"), near: fd.get("near"), radius: fd.get("radius") || 50 }); location.hash = "#/find?" + q.toString(); },
+    "demo-login": (f, fd) => {
+      const email = String(fd.get("email") || "").trim(), role = fd.get("role") || "pilot";
+      if (!email || !String(fd.get("password") || "")) { toast("Enter any email and password: this is a demo, nothing is checked."); return; }
+      const name = (S.demoUser && S.demoUser.name) || "Demo user";
+      S.demoUser = { name, role, airport: (S.demoUser && S.demoUser.airport) || "" }; S.role = role;
+      f.reset(); save(); toast(`Logged in to the demo as ${name}. No account was checked and nothing was sent.`); go(HOME[role]);
+    },
+    "demo-signup": (f, fd) => {
+      const name = String(fd.get("name") || "").trim(), role = fd.get("role") || "pilot", pw = String(fd.get("password") || "");
+      const err = !name ? "Add your name." : !String(fd.get("email") || "").includes("@") ? "Add an email (it isn\u2019t stored)." : pw.length < 8 ? "Use at least 8 characters for the password (it isn\u2019t stored)." : !fd.get("age") ? "Confirm you\u2019re 16 or older." : "";
+      if (err) {
+        const e = $("#signup-err"); if (e) e.textContent = err;
+        // QA-068: move focus to the first field with a problem, and tie the message to it.
+        const id = !name ? "signup-name" : !String(fd.get("email") || "").includes("@") ? "signup-email" : pw.length < 8 ? "signup-password" : "signup-age";
+        f.querySelectorAll("[aria-describedby~='signup-err']").forEach((x) => { if (x.id !== id) x.removeAttribute("aria-describedby"); });
+        const fe = document.getElementById(id); if (fe) { fe.setAttribute("aria-invalid", "true"); fe.setAttribute("aria-describedby", "signup-err"); fe.focus(); }
+        return;
+      }
+      const airport = fd.get("airport") || "";
+      S.demoUser = { name: name.slice(0, 60), role, airport }; S.role = role; ui.signupRole = null;
+      f.reset(); save(); toast(`Demo account for ${S.demoUser.name}. Nothing was sent; your email, phone and password weren\u2019t kept.`); go(HOME[role]);
+    },
+  };
+
   // ---------- router ----------
   const routes = [
-    [/^\/$/, viewLanding], [/^\/home$/, viewHome], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest], [/^\/offer\/(\w+)$/, viewOffer],
+    [/^\/$/, viewLanding], [/^\/find$/, viewFind], [/^\/login$/, viewLogin], [/^\/signup$/, viewSignup], [/^\/home$/, viewHome], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest], [/^\/offer\/(\w+)$/, viewOffer],
     [/^\/dpe-today$/, viewDpeToday], [/^\/dpe-applicants$/, viewDpeApplicants], [/^\/school\/requests$/, viewSchoolRequests], [/^\/school\/readiness$/, viewSchoolReadiness], [/^\/search$/, viewSearch], [/^\/dpe\/(\w+)$/, viewProfile], [/^\/compare$/, viewCompare],
     [/^\/alerts$/, viewAlerts], [/^\/checklists(?:\/(\w+))?$/, viewChecklists], [/^\/bookings$/, viewBookings], [/^\/my-checklists$/, viewMyChecklists], [/^\/dpe-checklist\/(\w+)$/, viewBuilder],
     [/^\/requests$/, viewDpeDash], [/^\/school$/, viewSchool], [/^\/school\/cohort$/, viewCohort], [/^\/dpe-openings$/, viewOpenings], [/^\/openings$/, viewPublish], [/^\/dpe-fees$/, viewDpeFees], [/^\/admin$/, viewAdmin], [/^\/pricing$/, viewPricing],
@@ -2450,7 +2767,7 @@ const closeModal = () => {
     const pend = S.bookings.filter((b) => b.dpeId === S.actingDpe && b.status === "requested").length;
     const unread = S.notifications.filter((n) => !n.read).length;
     return ({
-      pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts", "/offer/"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
+      pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/find", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts", "/offer/"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
       dpe: [["#/dpe-today", "Today", "today", ["/dpe-today"]], ["#/requests", "Requests", "inbox", ["/requests", "/request/", "/openings"], pend], ["#/dpe-openings", "Calendar", "cal", ["/dpe-openings"]], ["#/dpe-applicants", "Applicants", "people", ["/dpe-applicants", "/dpe-checklist/"]], ["#/more", "More", "more", ["/more", "/faq", "/dpe-fees", "/dpe/", "/pricing"]]],
       school: [["#/school", "Roster", "people", ["/school", "/school/cohort"]], ["#/school/requests", "Checkride requests", "inbox", ["/school/requests", "/request/"]], ["#/school/readiness", "Readiness", "list", ["/school/readiness"]], ["#/more", "More", "more", ["/more", "/faq", "/search", "/compare", "/checklists", "/pricing", "/dpe/"]]],
       admin: [["#/admin", "Admin", "shield", ["/admin"]], ["#/search", "Listings", "search", ["/search", "/dpe/"]], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
@@ -2463,7 +2780,7 @@ const closeModal = () => {
     NAV().forEach(([, , , pre], i) => pre.forEach((p) => { const hit = p.endsWith("/") ? path.startsWith(p) : path === p || path.startsWith(p + "/"); if (hit && p.length > len) { best = i; len = p.length; } }));
     return best;
   };
-  const CRUMBS = { "/openings": "Publish an opening", "/home": "Home", "/search": "Search", "/compare": "Compare fees", "/alerts": "Alerts", "/journey": "Journey", "/readiness": "Readiness checklist", "/bookings": "My checkrides", "/my-checklists": "From your examiner", "/checklists": "Checklists", "/more": "More", "/faq": "FAQs", "/pricing": "Pricing", "/dpe-today": "Today", "/requests": "Requests", "/dpe-openings": "Calendar", "/dpe-applicants": "Applicants", "/dpe-fees": "Your terms", "/school": "Roster", "/school/requests": "Checkride requests", "/school/readiness": "Readiness", "/school/cohort": "Cohort scheduling", "/admin": "Admin" };
+  const CRUMBS = { "/find": "Find a DPE", "/openings": "Publish an opening", "/home": "Home", "/search": "Search", "/compare": "Compare fees", "/alerts": "Alerts", "/journey": "Journey", "/readiness": "Readiness checklist", "/bookings": "My checkrides", "/my-checklists": "From your examiner", "/checklists": "Checklists", "/more": "More", "/faq": "FAQs", "/pricing": "Pricing", "/dpe-today": "Today", "/requests": "Requests", "/dpe-openings": "Calendar", "/dpe-applicants": "Applicants", "/dpe-fees": "Your terms", "/school": "Roster", "/school/requests": "Checkride requests", "/school/readiness": "Readiness", "/school/cohort": "Cohort scheduling", "/admin": "Admin" };
   const crumb = (path) => {
     const tab = NAV()[navActive(path)];
     const leaf = CRUMBS[path] || (path.startsWith("/request/") ? "Request" : path.startsWith("/dpe/") ? "Examiner profile" : path.startsWith("/dpe-checklist/") ? "Checklist" : path.startsWith("/checklists/") ? "Checklists" : "");
@@ -2517,16 +2834,19 @@ const closeModal = () => {
     let html = null;
     try { for (const [re, fn] of routes) { const m = path.match(re); if (m) { html = fn(q, ...m.slice(1)); break; } } }
     catch (err) { html = renderError(err); }
-    const landing = path === "/";
-    document.body.classList.toggle("is-landing", landing);
+    const landing = path === "/", pub = landing || path === "/login" || path === "/signup";
+    // QA-065: remember what had focus so a re-render that replaces it can put focus back on the same control.
+    const fKey = focusKey(document.activeElement), pathChanged = ui.lastPath !== path && ui.lastPath !== null;
+    document.body.classList.toggle("is-landing", pub);
     $("#app").innerHTML = (landing ? "" : PROTO_STRIP) + (html ?? notFound(path));
     a11yFix($("#app"));
     if (!/^\/dpe\/[^/]+$/.test(path)) ui.profileKey = null;
     const act = navActive(path);
-    $("#nav").innerHTML = landing ? "" : NAV().map(([href, label, ic, , badge], i) => `<a href="${href}" class="${i === act ? "active" : ""}"${i === act ? ' aria-current="page"' : ""}>${tabIcon(ic)}<span class="t">${label}</span>${badge ? `<span class="badge"${ic === "bell" ? ' id="alerts-badge"' : ""} aria-label="${badge} ${ic === "bell" ? "unread" : "awaiting review"}">${badge}</span>` : ""}</a>`).join("");
-    $("#nav").hidden = landing;
+    $("#nav").innerHTML = pub ? "" : NAV().map(([href, label, ic, , badge], i) => `<a href="${href}" class="${i === act ? "active" : ""}"${i === act ? ' aria-current="page"' : ""}>${tabIcon(ic)}<span class="t">${label}</span>${badge ? `<span class="badge"${ic === "bell" ? ' id="alerts-badge"' : ""} aria-label="${badge} ${ic === "bell" ? "unread" : "awaiting review"}">${badge}</span>` : ""}</a>`).join("");
+    $("#nav").hidden = pub;
     $("#crumb").innerHTML = landing ? "" : crumb(path);
-    $("#land-nav").hidden = !landing;
+    $("#land-nav").hidden = !pub;
+    { const au = $("#v4-auth"); if (au) au.innerHTML = S.demoUser ? `<span class="v4-hi small">Demo: <b>${esc(S.demoUser.name)}</b></span><button class="btn ghost sm" data-action="demo-logout">Log out</button>` : `<a class="btn ghost sm" href="#/login">Log in</a><a class="btn sm" href="#/signup">Sign up</a>`; }
     $("#role-select").value = S.role;
     document.querySelectorAll("[data-theme-select]").forEach((x) => { x.value = getTheme(); });
     const unread = S.notifications.filter((n) => !n.read).length;
@@ -2548,8 +2868,25 @@ if (ui.lastPath !== path) {
       requestAnimationFrame(() => requestAnimationFrame(again)); setTimeout(again, 350); } }
     else if (!anchor) ui.lastAnchor = null;
     // QA-041/042: a handler can ask for focus to land on a given element after this render.
-    if (ui.focusAfter) { const sel = ui.focusAfter; ui.focusAfter = null; const fe = $(sel); if (fe) { if (!/^(INPUT|SELECT|TEXTAREA|BUTTON|A)$/.test(fe.tagName) && !fe.hasAttribute("tabindex")) fe.setAttribute("tabindex", "-1"); fe.focus({ preventScroll: true }); } }
+    barFit(); // QA-071
+    if (ui.focusAfter) { const sel = ui.focusAfter; ui.focusAfter = null; const fe = sel.split(" || ").map((x) => $(x)).find(Boolean); /* first match in priority order */ if (fe) { if (!/^(INPUT|SELECT|TEXTAREA|BUTTON|A)$/.test(fe.tagName) && !fe.hasAttribute("tabindex")) fe.setAttribute("tabindex", "-1"); fe.focus({ preventScroll: true }); } }
+    // QA-065: never leave keyboard / screen-reader users on <body>. A new screen focuses its h1 (tabindex=-1, no scroll);
+    // the same screen re-rendered (radius chip, filter change, re-check) gets the equivalent control back.
+    else if (!document.activeElement || document.activeElement === document.body) {
+      const back = !pathChanged && fKey ? $(fKey) : null;
+      if (back) back.focus({ preventScroll: true });
+      else if (pathChanged && !anchor && !$("#modal-root .modal")) { const h = $("#app h1"); if (h) { if (!h.hasAttribute("tabindex")) h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); } }
+    }
   }
+function focusKey(el) {
+  if (!el || el === document.body || !el.closest || !el.closest("#app, #nav, #crumb, header")) return null;
+  const q = (k) => CSS.escape(el.getAttribute(k));
+  if (el.id) return "#" + CSS.escape(el.id);
+  if (el.dataset.radius) return `[data-radius="${q("data-radius")}"]`;
+  if (el.dataset.action) return `[data-action="${q("data-action")}"]` + (el.dataset.slot ? `[data-slot="${q("data-slot")}"]` : el.dataset.date ? `[data-date="${q("data-date")}"]` : el.dataset.id ? `[data-id="${q("data-id")}"]` : "");
+  if (el.name && el.form && el.form.dataset.form) return `form[data-form="${CSS.escape(el.form.dataset.form)}"] [name="${q("name")}"]`;
+  return null;
+}
 const rerender = () => { save(); render(); };
 
 // ---------- motion ----------
@@ -2681,10 +3018,13 @@ function countUp(root) {
     return res;
   }
 
+  // QA-053: after a started slot is refused, focus goes to the "No openings left" message (or the Openings heading / page h1), never <body>.
+  function staleFocus() { ui.focusAfter = "#slot-started || #day-none || #v4-op-h || #app h1"; }
+
   function openRequest(slotId, certHint) {
     const s = S.slots.find((x) => x.id === slotId);
     if (!s) return;
-    if (slotPast(s)) { toast(PAST_SLOT); rerender(); return; } // QA-039
+    if (slotPast(s)) { toast(PAST_SLOT, "crit"); staleFocus(); rerender(); return; } // QA-039 / QA-052 / QA-053
     const dp = dpeById(s.dpeId);
     const certs = s.certs.filter((c) => dp.fees[c]);
     const rs = S.role === "school" && ui.forStudent ? D.school.students.find((x) => x.name === ui.forStudent) : null; // UF#7
@@ -2787,6 +3127,7 @@ function countUp(root) {
       if (ui.simLock && Date.now() < ui.simLock) return;
       ui.simLock = Date.now() + 1200;
       simulateOpening({ alertId: el.dataset.alert, dpeId: el.dataset.dpe });
+      simBusy();
     },
     "notif-perm": () => { try { Promise.resolve(Notification.requestPermission()).then(() => rerender()); } catch (e) { /* unsupported */ } },
     "del-alert": (el) => { S.alerts = S.alerts.filter((a) => a.id !== el.dataset.id); toast("Alert deleted."); rerender(); },
@@ -2851,7 +3192,7 @@ function countUp(root) {
     "school-find": (el) => { ui.forStudent = el.dataset.student; return true; }, // UF#7: the request form opens prefilled for this student
     "read-notif": (el) => { const n = S.notifications.find((x) => x.id === el.dataset.id); if (n) n.read = true; save(); return true; },
     "cal-nav": (el) => { const [y, m] = ui.month.split("-").map(Number); const d = new Date(y, m - 1 + Number(el.dataset.dir), 1); ui.month = iso(d).slice(0, 7); render(); },
-    "cal-day": (el) => { ui.sel = el.dataset.date; render(); },
+    "cal-day": (el) => { ui.dateMoved = null; ui.sel = el.dataset.date; render(); },
     request: (el) => openRequest(el.dataset.slot, el.dataset.cert),
     "share-checklist": (el) => {
       toast("Sharing is not available in this prototype. No link was created and nothing was sent.");
@@ -2994,6 +3335,8 @@ function countUp(root) {
     approve: (el) => {
       const p = S.pending.find((x) => x.id === el.dataset.id);
       if (!p || p.status === "approved" || S.approvedDpes.some((x) => x.id === "n" + p.id)) return; // QA-007: a double-click lists once
+      if (ui.approveLock && Date.now() < ui.approveLock) return; // QA-007: the 2nd click of a double-click lands on the next row after re-render; ignore it
+      ui.approveLock = Date.now() + 700;
       p.status = "approved";
       const defaults = { ppl: 1100, ir: 1050, cpl: 1200, cfi: 1700, sport: 750 };
       S.approvedDpes.push({ id: "n" + p.id, name: p.name, home: p.home, travelNm: 50, travelFee: 150, retestFee: 550, fsdo: p.fsdo, since: new Date().getFullYear(), languages: ["English"], rating: 0, reviews: 0, responseHours: 24,
@@ -3110,7 +3453,7 @@ function countUp(root) {
       const own = s.bookingId && S.bookings.find((x) => x.id === s.bookingId && x.mine && Date.now() - x.createdAt < 5000);
       if (own) { closeModal(); return; }
       if (s.status !== "open") { closeModal(); toast("Sorry, someone else just requested that slot."); rerender(); return; }
-      if (slotPast(s)) { closeModal(); toast(PAST_SLOT); rerender(); return; } // QA-039: the start time has passed
+      if (slotPast(s)) { closeModal(); toast(PAST_SLOT, "crit"); staleFocus(); rerender(); return; } // QA-039: the start time has passed; QA-053: focus lands on the message
       const gate = showGate(f, true);
       if (gate.block.length) { toast("Readiness check: confirm the remaining items before submitting (mock, self-attested)."); $("#req-gate").scrollIntoView({ block: "nearest" }); $("#req-gate").setAttribute("tabindex", "-1"); $("#req-gate").focus(); return; }
       if (isStale(s.dpeId)) { closeModal(); toast("This examiner has not confirmed their availability recently. Contact the examiner."); rerender(); return; }
@@ -3205,6 +3548,7 @@ function countUp(root) {
   };
 
   // ---------- event wiring ----------
+  Object.assign(actions, V4_ACTIONS); Object.assign(forms, V4_FORMS); // v4
   document.addEventListener("click", (e) => {
     const sk = e.target.closest && e.target.closest(".skip-link");
     if (sk) { e.preventDefault(); const m = $("#app"); if (m) m.focus(); return; }
@@ -3213,19 +3557,43 @@ function countUp(root) {
     const passThrough = actions[el.dataset.action](el, e);
     if (passThrough !== true && (el.tagName === "A" || el.tagName === "BUTTON")) e.preventDefault();
   });
+  // QA-071: measure the sticky Request bar into --bar-h (used by scroll-padding / scroll-margin), and tuck the bar away while
+  // its card is still below the fixed tab bar so it is never drawn under #nav.
+  function barFit() {
+    const b = document.getElementById("v4-bar"), root = document.documentElement;
+    if (!b) { root.style.setProperty("--bar-h", "0px"); return; }
+    root.style.setProperty("--bar-h", b.offsetHeight + "px");
+    const n = document.getElementById("nav");
+    let tuck = false;
+    if (n && !n.hidden && getComputedStyle(n).position === "fixed") {
+      const q = n.getBoundingClientRect();
+      if (q.height && q.top > window.innerHeight / 2) { const r = b.getBoundingClientRect(); tuck = r.bottom > q.top + 0.5 && r.top < window.innerHeight; }
+    }
+    // A focused control inside the bar is never hidden: scroll it clear of the tab bar instead.
+    if (tuck && b.contains(document.activeElement)) { const q = n.getBoundingClientRect(), r = b.getBoundingClientRect(); window.scrollBy({ top: r.bottom - q.top + 8, behavior: "auto" }); tuck = false; }
+    if (b.classList.contains("is-tucked") !== tuck) b.classList.toggle("is-tucked", tuck);
+  }
+  window.CC_BAR_FIT = barFit;
+  { let raf = 0; const kick = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; barFit(); }); };
+    window.addEventListener("scroll", kick, { passive: true }); window.addEventListener("resize", kick); }
   // QA-034: a keyboard-focused control that lands under the fixed mobile tab bar is scrolled clear of it
   // (backs up the CSS scroll-padding / scroll-margin; some engines treat a 2 px sliver as "visible" and don't scroll).
   document.addEventListener("focusin", (e) => {
     const t = e.target, bar = document.getElementById("nav");
-    if (!t || !t.getBoundingClientRect || !bar || bar.hidden || t.closest("#nav, #modal-root, #toasts")) return;
+    if (!t || !t.getBoundingClientRect || t.closest("#nav, #modal-root, #toasts")) return;
     // Keyboard focus only (:focus-visible): a tap or click must not scroll the page out from under the pointer.
     try { if (!t.matches(":focus-visible")) return; } catch (err) { /* old engines: fall through */ }
-    const br = bar.getBoundingClientRect();
-    // Only the bottom tab bar (phone/tablet); the desktop rail/top bar never triggers this.
-    if (getComputedStyle(bar).position !== "fixed" || br.height === 0 || br.top >= window.innerHeight || br.top < window.innerHeight / 2 || br.bottom < window.innerHeight - 4) return;
+    barFit();
+    // Obstructions at the bottom of the viewport: the fixed mobile tab bar (QA-034) and the sticky Request bar (QA-071).
+    let top = window.innerHeight;
+    if (bar && !bar.hidden && getComputedStyle(bar).position === "fixed") { const br = bar.getBoundingClientRect(); if (br.height && br.top < window.innerHeight && br.top >= window.innerHeight / 2 && br.bottom >= window.innerHeight - 4) top = Math.min(top, br.top); }
+    const vb = document.getElementById("v4-bar");
+    if (vb && !vb.contains(t) && !vb.classList.contains("is-tucked")) { const r2 = vb.getBoundingClientRect(); if (r2.height && r2.top < window.innerHeight && r2.top > window.innerHeight / 3) top = Math.min(top, r2.top); }
+    if (top >= window.innerHeight) return;
     const r = t.getBoundingClientRect();
-    if (r.bottom > br.top - 8 && r.top < br.bottom) window.scrollBy({ top: r.bottom - br.top + 16, behavior: "auto" });
+    if (r.bottom > top - 8 && r.top < window.innerHeight) { window.scrollBy({ top: r.bottom - top + 16, behavior: "auto" }); barFit(); }
   });
+
   document.addEventListener("submit", (e) => {
     const f = e.target;
     if (!f.dataset.form || !forms[f.dataset.form]) return;
@@ -3234,6 +3602,7 @@ function countUp(root) {
   });
   document.addEventListener("change", (e) => {
     const t = e.target;
+    if (t.hasAttribute && t.hasAttribute("data-signup-role")) { const nm = ($("#signup-name") || {}).value || ""; ui.signupRole = t.value; render(); const n2 = $("#signup-name"); if (n2) n2.value = nm; const r2 = document.querySelector(`[data-signup-role][value="${t.value}"]`); if (r2) r2.focus(); return; }
     if (t.dataset.ctick) {
       S.ticks[t.dataset.ctick] = S.ticks[t.dataset.ctick] || {};
       S.ticks[t.dataset.ctick][t.dataset.item] = t.checked;
@@ -3329,6 +3698,8 @@ function countUp(root) {
     }
   });
   $("#role-select").addEventListener("change", (e) => { S.role = e.target.value; go(HOME[S.role]); });
+  // BRAND_LOGO: keep the static header lockups in step with the one constant.
+  document.querySelectorAll(".brand img.lockup-light, .brand img.lockup-dark").forEach((im) => { const v = im.classList.contains("lockup-dark") ? BRAND_LOGO.dark : BRAND_LOGO.light; if (im.getAttribute("src") !== v) im.setAttribute("src", v); });
   window.addEventListener("hashchange", () => { closeModal(); render(); });
 
   // Offline banner: the app keeps working from the SW cache; nothing is ever sent, online or not.
@@ -3355,6 +3726,38 @@ function countUp(root) {
   render();
   netStatus();
   window.CC_APP_READY = true;
+
+  // QA-039 staleness re-check (v4). Every 60 s, and when the tab regains focus or becomes visible, look for open slots
+  // whose start instant (airport zone) has passed since the last check. If any did, re-render so lists, pickers and
+  // the sticky Request bar drop them. Never re-render under an open modal or while the user is typing; an open request
+  // form gets an inline note instead, and Request / submit re-validate (openRequest and forms.request use PAST_SLOT).
+  let liveCheckAt = Date.now(), staleDue = false;
+  function staleRecheck() {
+    const now = Date.now(), from = liveCheckAt; liveCheckAt = now;
+    if (S.slots.some((x) => x.status === "open" && (() => { const t = slotStart(x); return t > from && t <= now; })())) staleDue = true;
+    const reqF = $("#modal-root form[data-form=request]");
+    if (reqF) {
+      const sl = S.slots.find((x) => x.id === (reqF.elements.slot && reqF.elements.slot.value));
+      if (sl && slotPast(sl) && !$("#req-started")) { reqF.noValidate = true; reqF.insertAdjacentHTML("afterbegin", `<p class="warn-note small" id="req-started" role="alert">${esc(PAST_SLOT)}</p>`); }
+    }
+    if (!staleDue || $("#modal-root .modal-bg")) return false;
+    const a = document.activeElement;
+    if (a && a.closest && a.closest("form") && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && a.type !== "radio" && a.type !== "checkbox") return false;
+    staleDue = false; render(); return true;
+  }
+  // QA-020: the Main nav is a left rail at >= 1024 px (visually before the page) and a bottom tab bar below that
+  // (visually after the page and footer). Keep its DOM position in step so Tab follows the visual order; no tabindex.
+  (function navOrder() {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const place = () => { const nav = $("#nav"), main = $("#app"), foot = $("footer.footer"); if (!nav || !main || !foot) return;
+      if (mq.matches) { if (nav.nextElementSibling !== main) main.before(nav); } else if (foot.nextElementSibling !== nav) foot.after(nav); };
+    place(); if (mq.addEventListener) mq.addEventListener("change", place); else if (mq.addListener) mq.addListener(place);
+  })();
+  window.CC_STALE_RECHECK = staleRecheck; // test hook (mocked clock)
+  window.CC_ONE_IN = oneIn; // test hook (QA-047 labels)
+  setInterval(staleRecheck, 60000);
+  window.addEventListener("focus", staleRecheck);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") staleRecheck(); });
 
   // Brand fonts after first paint: load all three faces, then switch them on in one swap (html.wf). Remembered per device.
   (function brandFonts() {

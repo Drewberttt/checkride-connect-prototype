@@ -6,7 +6,7 @@
 <script>(function(){try{var t=localStorage.getItem('cc-theme')||'system';if(t==='system')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;if(localStorage.getItem('cc-theme')&&localStorage.getItem('cc-theme')!=='system'){var ms=document.querySelectorAll('meta[name=theme-color]');for(var i=0;i<ms.length;i++){ms[i].media=(ms[i].content==='#10141d')===(t==='dark')?'all':'not all';}}}catch(e){document.documentElement.dataset.theme='light';}})();
 try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf")}catch(e){}</script>
 </head><body>
-<script>(function(){var h=location.hash.slice(1).split("?")[0].split("#")[0];if(h===""||h==="/"||h==="faq")document.body.classList.add("is-landing");})();</script>
+<script>(function(){var h=location.hash.slice(1).split("?")[0].split("#")[0];if(h===""||h==="/"||h==="faq"||h==="/login"||h==="/signup")document.body.classList.add("is-landing");})();</script>
 
 <a class="skip-link" href="#app">Skip to content</a>
 <header class="topbar">
@@ -18,7 +18,7 @@ try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf"
       <img class="lockup lockup-dark" src="brand/runway-horizontal-dark.svg" width="164" height="26" alt="Checkride Connect">
     </a>
     <nav id="crumb" class="crumb" aria-label="Breadcrumb"></nav>
-    <nav id="land-nav" class="land-nav" aria-label="Landing" hidden><a href="#/#who">Who it's for</a><a href="#/#how">How it works</a><a href="#/#faq">FAQs</a></nav>
+    <nav id="land-nav" class="land-nav" aria-label="Landing" hidden><a href="#/#how">How it works</a><a href="#/#students">Students</a><a href="#/#examiners">Examiners</a><a href="#/#schools">Flight schools</a><a href="#/#faq">FAQs</a></nav>
     <div class="topbar-right">
       <label class="theme-pick"><span class="sr-only">Theme</span>
         <select id="theme-select" data-theme-select data-action-change="theme" aria-label="Theme">
@@ -36,6 +36,7 @@ try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf"
           <option value="admin" hidden disabled>Admin</option>
         </select>
       </label>
+      <div id="v4-auth" class="v4-authbar land-cta-auth"><a class="btn ghost sm" href="#/login">Log in</a><a class="btn sm" href="#/signup">Sign up</a></div>
       <a class="btn cta sm land-cta" href="#/home" data-action="set-role" data-role="pilot" data-to="#/home">Explore the demo</a>
     </div>
   </div>
