@@ -117,8 +117,9 @@ window.CC_DATA = (() => {
   // ---------- SAMPLE extras for the all-in cost view and the reviews / wait-time panel ----------
   // EXAMPLE NUMBERS ONLY. Every number and every review below is invented for the prototype.
   const allInModel = {
-    hours: { ppl: 2.5, ir: 2.5, cpl: 2.5, me: 3, cfi: 2.5, cfii: 2.5, mei: 3, sport: 2 }, // example flight hours on test day
-    multi: ["me", "mei"], multiMult: 1.9, // example: multi-engine rental runs about 1.9x a trainer
+    // B: typical test-day flight time from cost-model.js (sourced range about 1.3-2.0 h), replacing the old 2.5-3 h.
+    hours: { ppl: 1.5, ir: 1.8, cpl: 1.6, me: 1.5, cfi: 1.8, cfii: 1.8, mei: 1.6, sport: 1.2 }, // example flight hours on test day
+    multi: ["me", "mei"], multiMult: 2.4, // B: a twin rents for about 2.4x a trainer (395 / 165, PilotBound 2026), was 1.9
     cruiseKt: 105,                        // example speed for the fly-there estimate
     lodgingOverNm: 100,                   // example: one hotel night if the examiner is farther than this
   };

@@ -14,6 +14,25 @@
     D.dpes.push(...FL.dpes.filter((d) => !have.has(d.id)));
     if (Array.isArray(FL.airports) && D.airports.every((a) => FL.airports.some((b) => b.id === a.id))) D.airports = FL.airports;
   }
+  // B (multi-state): fictional TX / CA / AZ sample sets (tx01.., ca01.., az01..) are APPENDED after d1..d13 and fl01..fl50,
+  // so d1, d2, d9 (referenced by seeded bookings, the school and the capacity days) keep their ids and positions.
+  // Every airport carries a US state and an IANA time zone (D38): airport.tz, else data.js airportTz, else the region zone.
+  D.airports.forEach((a) => { if (!a.state) a.state = "FL"; });
+  const MULTI_STATE = [];
+  [window.CC_SAMPLE_TX, window.CC_SAMPLE_CA, window.CC_SAMPLE_AZ].forEach((X) => {
+    if (!X || !X.fictional || !Array.isArray(X.dpes) || !X.region) return;
+    const st = X.region.short, haveA = new Set(D.airports.map((a) => a.id)), haveD = new Set(D.dpes.map((d) => d.id));
+    (X.airports || []).filter((a) => !haveA.has(a.id)).forEach((a) => D.airports.push({ ...a, state: st, tz: a.tz || (D.airportTz && D.airportTz[a.id]) || undefined }));
+    X.dpes.filter((d) => !haveD.has(d.id)).forEach((d) => { D.dpes.push(d); MULTI_STATE.push(d.id); });
+  });
+  const COVERED_STATES = [["FL", "Florida"], ["TX", "Texas"], ["CA", "California"], ["AZ", "Arizona"]];
+  const US_STATES = { AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming" };
+  const STATE_HOME = { FL: "KORL", TX: "KADS", CA: "KVNY", AZ: "KDVT" }; // default "near" airport when you switch state
+  const aptState = (id) => { const a = D.airports.find((x) => x.id === id); return (a && a.state) || "FL"; };
+  const dpeState = (dp) => aptState(dp.home);
+  // B: the pilot's "near" airport for an examiner. A near airport in another state (the KORL default on a TX profile) would
+  // price a 900 nm trip, so out-of-state falls back to the examiner's home airport. Florida keeps the old KORL default.
+  const nearFor = (n, dp) => { const st = dp ? dpeState(dp) : "FL"; if (apt(n) && aptState(n) === st) return n; return st === "FL" ? (apt(n) ? n : "KORL") : dp.home; };
   // ===================== PROTOTYPE CONFIG: the one switch for fees =====================
   // Owner decision (Oct 29, 2026): Checkride Connect is FREE during the prototype.
   // FEES_ENABLED: false  -> no $15 student booking fee anywhere (pricing, request, all-in, cohort, credits,
@@ -78,11 +97,21 @@
   const zoneLabel = (tz) => ZONE_ABBR[tz] || (() => { try { return new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "shortGeneric" }).formatToParts(new Date()).find((x) => x.type === "timeZoneName").value; } catch (e) { return tz; } })();
   const aptTz = (id) => { const a = D.airports.find((x) => x.id === id); return (a && a.tz) || (D.airportTz && D.airportTz[id]) || REGION_TZ; };
   const fmtIn = (ts, tz, o) => new Date(ts).toLocaleString("en-US", { ...o, timeZone: tz });
-  // A timestamp in a zone, with the zone label (default: the sample region's zone).
-  // System timestamps (sent, requested, cancelled, updated, notifications) stay in the reader's own zone, spelled out
-  // ("Nov 2, 12:40 PM Eastern"), per ux-copy-v3 "Times (D38)". Slot times and request hold ends use the airport zone instead.
-  const readerZoneName = () => { try { const v = new Intl.DateTimeFormat("en-US", { timeZoneName: "longGeneric" }).formatToParts(new Date()).find((x) => x.type === "timeZoneName").value; return v.replace(/ Time$/, ""); } catch (e) { return ""; } };
-  const fmtTs = (ts) => `${new Date(ts).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} ${readerZoneName()}`.trim();
+  // QA-033 (B): system and activity timestamps (sent, requested, cancelled, withdrawn, updated, notifications, the
+  // Requests "Weekly check" line) use the READER's own zone with the SHORT zone label: "Oct 29, 3:12 PM ET".
+  // Slot and checkride times, and request hold ends, stay in the airport zone (D38). Never "GMT+00:00".
+  const READER_ABBR = { ...ZONE_ABBR, "America/Detroit": "ET", "America/Indiana/Indianapolis": "ET", "America/Kentucky/Louisville": "ET", "America/Boise": "MT", "America/Anchorage": "AKT", "Pacific/Honolulu": "HT", "UTC": "UTC", "Etc/UTC": "UTC", "Etc/GMT": "UTC", "GMT": "UTC" };
+  const readerTz = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; } catch (e) { return "UTC"; } };
+  const readerZoneLabel = () => {
+    const tz = readerTz(); if (READER_ABBR[tz]) return READER_ABBR[tz];
+    try {
+      const v = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "short" }).formatToParts(new Date()).find((x) => x.type === "timeZoneName").value;
+      const m = /^GMT([+-]\d{1,2})?(?::(\d\d))?$/.exec(v);
+      if (m) return m[1] ? `UTC${m[1]}${m[2] && m[2] !== "00" ? ":" + m[2] : ""}` : "UTC";
+      return v;
+    } catch (e) { return "UTC"; }
+  };
+  const fmtTs = (ts) => `${new Date(ts).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} ${readerZoneLabel()}`.trim();
 
   const DAY = 86400000;
   // Midnight (as a calendar date) of "today" in the sample region's zone; date math below is calendar math only.
@@ -98,6 +127,10 @@
   const slotToday = (sl) => todayIn(slotTz(sl));
   const daysUntil = (s, tz = REGION_TZ) => Math.round((parseIso(s) - parseIso(todayIn(tz))) / DAY);
   const fmtDate = (s, o = { weekday: "short", month: "short", day: "numeric" }) => parseIso(s).toLocaleDateString("en-US", o);
+  // QA-036: long-horizon dates (knowledge-test expiry, a "before" date) always carry the year: "Mon, Jan 31, 2028".
+  // fmtDateY always shows it; fmtDateA shows it when the date is in another year than today or more than ~6 months out.
+  const fmtDateY = (s) => fmtDate(s, { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+  const fmtDateA = (s) => (s.slice(0, 4) !== todayIn().slice(0, 4) || Math.abs(daysUntil(s)) > 180 ? fmtDateY(s) : fmtDate(s));
   const fmtTime = (t) => { const [h, m] = t.split(":").map(Number); return `${h % 12 || 12}:${String(m || 0).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`; };
   const relDays = (s, tz) => { const n = daysUntil(s, tz); return n <= 0 ? "today" : n === 1 ? "tomorrow" : `in ${plural(n, "day")}`; };
 
@@ -122,6 +155,10 @@
   const H48 = 48 * 3600e3;
   const slotTz = (sl) => aptTz(sl.airport);
   const slotStart = (sl) => zonedEpoch(sl.date, sl.time, slotTz(sl));
+  // QA-039: one shared rule. A slot whose start instant (airport zone) has passed is never listed, alerted, offered or requestable.
+  const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
+  const PAST_SLOT = "That date has passed. Pick today or later."; // closest ux-copy key (date validation); listed as a copy gap
+  const slotLive = (sl) => !!sl && sl.status === "open" && !slotPast(sl);
   const slotTime = (sl) => `${fmtTime(sl.time)} ${zoneLabel(slotTz(sl))}`;
   const durText = (ms) => { const h = Math.floor(Math.max(ms, 0) / 3600e3); if (h < 1) return "less than 1 hour"; if (h < 48) return plural(h, "hour"); const d = Math.floor(h / 24), r = h % 24; return plural(d, "day") + (r ? ", " + plural(r, "hour") : ""); };
   const durShort = (ms) => { const h = Math.floor(Math.max(ms, 0) / 3600e3); return h < 48 ? (h < 1 ? "less than 1 hour" : plural(h, "hour")) : plural(Math.floor(h / 24), "day"); };
@@ -133,9 +170,34 @@
   const fmtEt = (ts) => fmtTs(ts); // cancellation moment: a system timestamp, reader's zone
   const creditUntil = (ts) => { const [y, m, d] = ymdIn(ts, REGION_TZ).split("-").map(Number); return new Date(y + 1, m - 1, d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); };
   const tsWhen = (ts, tz = REGION_TZ) => `${fmtIn(ts, tz, { weekday: "short", month: "short", day: "numeric" })} \u00b7 ${fmtIn(ts, tz, { hour: "numeric", minute: "2-digit" })} ${zoneLabel(tz)}`;
+  // QA-044: one rule for event moments (sent, withdrawn): the reader's zone, with the weekday (ux-copy 5.2a sample).
+  const tsReader = (ts) => `${fmtIn(ts, readerTz(), { weekday: "short", month: "short", day: "numeric" })} \u00b7 ${fmtIn(ts, readerTz(), { hour: "numeric", minute: "2-digit" })} ${readerZoneLabel()}`.trim();
   // Soft hold (F4/F12): up to 48 hours from sending, ending no later than 12 hours before the slot; inside 12 hours, no hold.
   const H12 = 12 * 3600e3;
+  // QA-038: once a pilot's hold has run out with no reply, the hold line is replaced (copy from Drewbert's run notes;
+  // the spec is silent, pending PM review).
+  const HOLD_ENDED = "Hold ended. The examiner didn\u2019t reply in time. You can request another opening.";
+  const holdEnded = (b, sl) => { if (!b || b.status !== "requested" || !b.mine || !sl) return false; const he = holdEnd(b, sl); return !!he && he <= Date.now(); };
+  // .bak11 (QA-038, F11): req.status.hold_ended replaces req.status.released. The waitlist sentence only when the student is on
+  // THIS examiner's waitlist (same rule as the withdraw toast). An ended hold never counts as a pass or a fail on the record.
+  const holdEndedLine = (b) => { const onWl = !!b && S.alerts.some((a) => a.cert === b.cert && a.dpeId === b.dpeId); return `<p class="small" data-hold-ended>${HOLD_ENDED}${onWl ? ` <span data-hold-wl>You keep your place on ${esc(first(dpeById(b.dpeId).name))}\u2019s waitlist.</span>` : ""} <a href="#/search${b && b.cert ? `?cert=${encodeURIComponent(b.cert)}` : ""}" data-hold-search>Search openings</a></p>`; };
   const holdEnd = (b, sl) => { const st = slotStart(sl); return st - b.createdAt < H12 ? null : Math.min(b.createdAt + H48, st - H12); };
+  // C (D32/F12): examiner-side hold chips. dpe.request.hold / dpe.request.nohold.
+  const dpeHoldLine = (b, sl) => {
+    if (!b || b.status !== "requested" || !sl || !b.createdAt) return "";
+    const he = holdEnd(b, sl), who = esc(first(b.applicant || "The student"));
+    if (he === null) return `<div class="small" data-dpe-hold="none">Starts in less than 12 hours, so there\u2019s no hold. Other students can request this slot too; the first request you accept gets it.</div>`;
+    if (he > Date.now()) return `<div class="small" data-dpe-hold="${he}">Held for ${who} until ${tsWhen(he, slotTz(sl))}. If you haven\u2019t answered by then, the slot is released.</div>`;
+    return "";
+  };
+  // C (D34/D36, F6/F14): no-shows. Only the examiner marks one (after the slot time); the student can dispute within 7 days of
+  // the confirmed checkride date; a dispute affects the record only (no fee). Examiners see a 12-month count that leaves out
+  // disputes under review and reversed ones.
+  const NS_WINDOW = 7 * 86400000;
+  const nsDisputeBy = (sl) => slotStart(sl) + NS_WINDOW;
+  const nsCounts = (b) => !!b.noShow && Date.now() - b.noShow.at < 365 * 86400000 && !(b.noShow.dispute && b.noShow.dispute.status !== "upheld");
+  const noShowCount = (name) => S.bookings.filter((x) => x.applicant === name && nsCounts(x)).length;
+  const dpeNoShowLine = (b) => `<div class="small muted" data-noshows="${noShowCount(b.applicant)}">No-shows in the last 12 months: ${noShowCount(b.applicant)} \u00b7 Disputed no-shows aren\u2019t counted until they\u2019re resolved.</div>`;
   // ux-copy-v2 5.6 dialog bodies. PM default, pending Drewbert and a lawyer.
   const studentCancelBody = (sl, ms, dp) => !FEES ? `Your confirmed checkride is ${slotAt(sl)}. If you cancel, the slot goes back to ${esc(first(dp.name))}, and the next person in line can request it. Checkride Connect is free, so there\u2019s nothing from us to refund or credit.` : ms >= H48
     ? `It\u2019s ${durText(ms)} until ${slotWhen(sl)}. Because that\u2019s 48 hours or more, your $15 booking fee becomes a credit. You can use it on any booking for 12 months.`
@@ -150,7 +212,10 @@
   const allIn = (dp, cert, near, at) => {
     const M = D.allInModel, sm = sampleOf(dp);
     const fee = dp.fees[cert], dep = depositFor(dp, cert);
-    const hrs = M.hours[cert] || 2.5, rate = Math.round(sm.rental * (M.multi.includes(cert) ? M.multiMult : 1));
+    // B: a sample examiner's own costModel (TX/CA/AZ) wins, so this card and the expected all-in estimate agree.
+    const cmx = dp.costModel || {}, own = cmx.byCert && cmx.byCert[cert];
+    const hrs = (own && own.rentalHoursTest) || M.hours[cert] || 1.5;
+    const rate = M.multi.includes(cert) ? (cmx.rentalRatePerHr && cmx.rentalRatePerHr.me) || Math.round(sm.rental * M.multiMult) : Math.round(sm.rental);
     const aircraft = Math.round(hrs * rate);
     const dist = distNm(dp.home, near);
     let travel = 0, travelLabel = "Travel / lodging estimate", travelNote = "Examiner is based at your airport";
@@ -197,6 +262,99 @@
       </div>
       <p class="warn-note small" style="margin:.75rem 0 0"><b>ASSUMPTION:</b> Deposit paid to your examiner (mock): ${money(x.dep)}, ${depositRule(dp)}. It is <b>part of</b> the examiner fee, not an extra; Checkride Connect never holds it. It is due at approval${FEES ? ` together with the ${money(BOOKING_FEE)} student fee (${money(x.dep + BOOKING_FEE)})` : ` (${FREE_LINE.replace(".", "")}, no booking fee)`}, and the rest (${money(x.fee - x.dep)}) is paid at the test. Real deposit rules are set by each examiner. Prototype, not legal or FAA advice, and no real payments.</p>
     </section>`;
+  };
+  // ---------- B: expected all-in cost estimator (CC_COST_MODEL from /workspace/checkride-pm/data/cost-model.js) ----------
+  // ESTIMATE FROM EXAMPLE INPUTS. Test-day flight time uses the sourced 1.3–2.0 h range (typical per checkride type) and a
+  // twin rents for about 2.4x a trainer (395 / 165, PilotBound 2026). The retest chance is a SHARED default per checkride type
+  // from FAA-wide statistics, adjustable by the user. It is never an examiner's pass rate.
+  const CM = window.CC_COST_MODEL || null;
+  const TWIN_MULT = 2.4;
+  const pTypical = (cert) => (CM && CM.byCert[cert] ? CM.byCert[cert].retestProbability.typical : 0.25);
+  // TX / CA / AZ sample examiners ship a fictional costModel. Older sample examiners (d1.., fl01..) get one built from their own
+  // sample fee, sample rental rate and the shared cost-model.js defaults, so every profile can show the same estimate.
+  function costModelFor(dp, cert) {
+    if (!CM) return null;
+    const own = dp.costModel && dp.costModel.byCert && dp.costModel.byCert[cert];
+    if (own) return { ...dp.costModel, byCert: { ...dp.costModel.byCert, [cert]: { ...own, examinerFee: dp.fees[cert] ?? own.examinerFee } } };
+    const d = CM.byCert[cert];
+    if (!d || dp.fees[cert] == null) return null;
+    const st = (CM.stateRates || {})[dpeState(dp)] || {};
+    const se = sampleOf(dp).rental, fee = dp.fees[cert];
+    const primary = ["ppl", "ir"].find((c) => dp.fees[c]) || Object.keys(dp.fees)[0];
+    return {
+      fictional: true, built: true, rentalRatePerHr: { se, me: Math.round(se * TWIN_MULT) }, cfiRatePerHr: st.cfi || CM.rates.cfi.typical,
+      byCert: { [cert]: { examinerFee: fee, rentalHoursTest: d.rentalHoursTest.typical, cfiPrepHours: d.cfiPrepHours.typical, cfiPrepGroundHours: CM.shared.cfiPrepGroundHours.typical,
+        retestProbability: d.retestProbability.typical, retestFee: cert === primary && dp.retestFee ? dp.retestFee : Math.round((fee * CM.shared.retestFeeRatio.typical) / 25) * 25,
+        retestRentalHours: CM.shared.retestRentalHours.typical, retestDualHours: CM.shared.retestDualHours.typical } },
+    };
+  }
+  // The user's retest chance per checkride type (stored in this browser). Default = the shared default for that type.
+  const retestP = (cert) => { const v = S.retestP && S.retestP[cert]; return typeof v === "number" && v >= 0 && v <= 0.6 ? v : pTypical(cert); };
+  const oneIn = (p) => (p <= 0 ? "Leave out" : `About 1 in ${Math.round(1 / p)}`);
+  function estimateFor(dp, cert, travel, feeOverride) {
+    const cm = costModelFor(dp, cert);
+    if (!cm) return null;
+    const bc = cm.byCert[cert];
+    if (feeOverride != null) bc.examinerFee = feeOverride;
+    const p = retestP(cert), isMulti = (CM.multi || []).includes(cert);
+    const x = CM.expectedAllInForExaminer({ ...dp, costModel: { ...cm, byCert: { ...cm.byCert, [cert]: { ...bc, retestProbability: p } } } }, cert, travel);
+    if (!x) return null;
+    const rate = isMulti ? cm.rentalRatePerHr.me : cm.rentalRatePerHr.se;
+    const range = CM.byCert[cert] ? CM.byCert[cert].rentalHoursTest : { low: 1.3, high: 2.0 };
+    // QA-046: round each line once and show the total as the sum of the rounded lines, so the card always adds up.
+    const R = Math.round, rl = { exam: R(x.exam), aircraft: R(x.aircraft), prep: R(x.prep), travel: R(x.travel), expectedRetest: R(x.expectedRetest), retestCost: R(x.retestCost) };
+    const total = rl.exam + rl.aircraft + rl.prep + rl.travel + rl.expectedRetest;
+    return { ...x, ...rl, total, exactTotal: x.total, p, rate, isMulti, hours: bc.rentalHoursTest, range, prepHours: bc.cfiPrepHours, groundHours: bc.cfiPrepGroundHours, cfiRate: cm.cfiRatePerHr,
+      retestFee: bc.retestFee, built: !!cm.built, studentFee: BOOKING_FEE, grand: total + BOOKING_FEE };
+  }
+  const RETEST_OPTS = [0, 0.1, 0.125, 0.2, 0.25, 0.33, 0.4, 0.5];
+  const retestSelect = (cert, id) => {
+    const def = pTypical(cert), cur = retestP(cert);
+    const opts = [...new Set([...RETEST_OPTS.filter((v) => v === 0 || (Math.abs(v - def) > 0.02 && oneIn(v) !== oneIn(def))), def, cur])].sort((a, b) => a - b);
+    // QA-047: dedupe options by label, but the stored value always keeps its own (selected) option.
+    const lab = (v) => oneIn(v) + (Math.abs(v - def) < 1e-9 ? " (shared default)" : "");
+    const seen = new Set(opts.filter((v) => Math.abs(v - cur) < 1e-9).map(lab));
+    return `<label class="field"><span>Retest chance (estimate, adjustable)</span><select name="p" id="${id}" data-retest-select>${opts.map((v) => {
+      const l = lab(v), isCur = Math.abs(v - cur) < 1e-9;
+      if (!isCur) { if (seen.has(l)) return ""; seen.add(l); }
+      return `<option value="${v}" ${Math.abs(v - cur) < 1e-9 ? "selected" : ""}>${l}</option>`;
+    }).join("")}</select></label>`;
+  };
+  const EST_LABEL = "Estimate built from example inputs, not a quote";
+  const EST_PILL = `<span class="pill warn" data-estimate-label>${EST_LABEL}</span>`;
+  const retestNote = (cert) => `The retest chance is a shared default for every ${esc(certById(cert).short)} checkride, from FAA-wide statistics, and you can change it. It is not this examiner\u2019s pass rate. ${VERIFY}`;
+  // Profile card ("Expected all-in, including retest risk").
+  const estimateCard = (dp, cert, near, at) => {
+    const travel = allIn(dp, cert, near, at).travel, e = estimateFor(dp, cert, travel);
+    if (!e) return "";
+    const L = (k, v, note) => `<div class="line"><span>${k}${note ? `<div class="muted small">${note}</div>` : ""}</span><b class="mono">${v}</b></div>`;
+    return `<section class="card" id="cost-estimate" data-estimate="${dp.id}:${cert}">
+      <p class="eyebrow">ESTIMATE \u00b7 EXAMPLE INPUTS</p>
+      <div class="row spread"><h2 style="margin:0">Expected all-in, including retest risk</h2>${EST_PILL}</div>
+      <form class="row" data-form="retest" data-auto data-cert="${cert}" style="margin:.75rem 0 0;gap:.75rem;align-items:flex-end;flex-wrap:wrap">${retestSelect(cert, "retest-p")}</form>
+      <div class="summary small" style="margin-top:.9rem">
+        ${L(`Examiner fee, ${esc(certById(cert).short)} (sample)`, money(e.exam))}
+        ${L("Aircraft on test day (estimate)", money(e.aircraft), `${e.hours} h \u00d7 ${money(e.rate)}/h${e.isMulti ? `, a twin at about ${TWIN_MULT}\u00d7 a trainer` : ""}. Sourced test-day flight time is about ${e.range.low}\u2013${e.range.high} h.`)}
+        ${L("CFI prep and mock checkride (estimate)", money(e.prep), `${e.prepHours} h dual + ${e.groundHours} h ground at ${money(e.cfiRate)}/h instructor and the same rental rate`)}
+        ${L("Travel (estimate)", money(e.travel))}
+        ${FEES ? L("Student booking fee (mock)", money(e.studentFee)) : ""}
+        ${L("Retest risk (estimate)", money(e.expectedRetest), e.p > 0 ? `${oneIn(e.p).toLowerCase()} \u00d7 ${money(e.retestCost)} if a retest is needed (retest fee ${money(e.retestFee)}, extra training, rental${e.travel ? ", travel again" : ""})` : "Left out of this estimate")}
+        <div class="line total"><span><b>Expected all-in (est.)</b></span><b class="mono" data-est-total>${money(e.grand)}</b></div>
+      </div>
+      <p class="muted small" style="margin:.6rem 0 0">${retestNote(cert)}</p>
+      <p class="muted small" style="margin:.35rem 0 0">Every input is example data: sample fees and rental rates, and shared defaults for prep hours and retests${e.built ? " (this examiner\u2019s rates are sample values, with the rest from shared defaults)" : ""}. Your school\u2019s rates and your own progress change the real number.</p>
+    </section>`;
+  };
+  // Compact version for the request workspace's fee card.
+  const estimateMini = (dp, cert, travel, fee) => {
+    const e = estimateFor(dp, cert, travel, fee);
+    if (!e) return "";
+    return `<div class="inset small" id="fee-estimate" data-estimate="${dp.id}:${cert}" style="margin-top:.75rem">
+      <div class="line"><span><b>Expected all-in, including retest risk</b></span><b class="mono" data-est-total>${money(e.grand)}</b></div>
+      <p class="muted" style="margin:.25rem 0 0">Adds CFI prep (${money(e.prep)}), aircraft on test day (${money(e.aircraft)}, ${e.hours} h) and retest risk (${money(e.expectedRetest)}) to the fee and travel above.</p>
+      <form data-form="retest" data-auto data-cert="${cert}" style="margin:.5rem 0 0">${retestSelect(cert, "retest-p-req")}</form>
+      <p class="muted" style="margin:.35rem 0 0">${EST_LABEL}. ${retestNote(cert)}</p>
+    </div>`;
   };
   const reviewsCard = (dp, cert) => {
     const sm = sampleOf(dp);
@@ -250,21 +408,29 @@
     return n;
   }
 
+  // One examiner's generated calendar. The rng seed is the examiner's index in D.dpes, so appending examiners never moves anyone's slots.
+  function genSlots(slots, dp, i, n, mkId = (k) => "s" + k) {
+    const r = rng(i * 97 + 13);
+    const near = D.airports.filter((a) => a.id !== dp.home && distNm(dp.home, a.id) <= dp.travelNm).map((a) => a.id);
+    let day = dp.soonest;
+    for (let k = 0; k < dp.count; k++) {
+      if (parseIso(addDays(day)).getDay() === 0) day++; // no Sundays
+      const airport = near.length && r() < 0.25 ? near[Math.floor(r() * near.length)] : dp.home;
+      const time = ["08:00", "08:30", "09:00", "12:30", "13:00"][Math.floor(r() * 5)];
+      slots.push({ id: mkId(++n), dpeId: dp.id, date: addDays(day), time, airport, certs: Object.keys(dp.fees), status: "open", bookingId: null });
+      day += dp.gap + Math.floor(r() * 3);
+    }
+    return n;
+  }
+  // B: TX / CA / AZ sample calendars get their own id prefix ("ms"), so the Florida slot ids (s1..) stay exactly as before.
+  function addMultiStateSlots(slots) {
+    let m = 0;
+    D.dpes.forEach((dp, i) => { if (MULTI_STATE.includes(dp.id)) m = genSlots(slots, dp, i, m, (k) => "ms" + k); });
+  }
   function seed() {
     const slots = [];
     let n = 0;
-    D.dpes.forEach((dp, i) => {
-      const r = rng(i * 97 + 13);
-      const near = D.airports.filter((a) => a.id !== dp.home && distNm(dp.home, a.id) <= dp.travelNm).map((a) => a.id);
-      let day = dp.soonest;
-      for (let k = 0; k < dp.count; k++) {
-        if (parseIso(addDays(day)).getDay() === 0) day++; // no Sundays
-        const airport = near.length && r() < 0.25 ? near[Math.floor(r() * near.length)] : dp.home;
-        const time = ["08:00", "08:30", "09:00", "12:30", "13:00"][Math.floor(r() * 5)];
-        slots.push({ id: "s" + ++n, dpeId: dp.id, date: addDays(day), time, airport, certs: Object.keys(dp.fees), status: "open", bookingId: null });
-        day += dp.gap + Math.floor(r() * 3);
-      }
-    });
+    D.dpes.forEach((dp, i) => { if (!MULTI_STATE.includes(dp.id)) n = genSlots(slots, dp, i, n); });
     const bookings = D.seededBookings.map((b, i) => {
       const s = slots.filter((x) => x.dpeId === b.dpeId)[b.slotIndex];
       const id = "b" + (i + 1);
@@ -279,10 +445,11 @@
       });
     });
     n = addTripleDays(slots, n);
+    addMultiStateSlots(slots);
     const avail = {};
     D.dpes.forEach((dp, i) => { const ts = Date.now() - ((i % 4) * 24 + i + 2) * 3600e3; avail[dp.id] = { confirmedAt: ts, updatedAt: ts, reminderDay: 0, pauseReminders: false }; });
     return {
-      v: 3, fl: 1, role: "pilot", nextId: 1000, slots, bookings, avail,
+      v: 3, fl: 1, ms: 1, role: "pilot", nextId: 1000, slots, bookings, avail,
       alerts: [{ id: "a1", cert: "ppl", near: "KORL", radius: 75, before: addDays(45), maxFee: 1300, dpeId: "", channels: ["email"], createdAt: Date.now() }],
       notifications: [{ id: "n1", ts: Date.now(), title: "Your first sample alert is active", body: "Mock alert, nothing is emailed. In a real version we would tell you when a Private Pilot checkride opens within 75 nm of KORL in the next 45 days for $1,300 or less.", read: false }],
       checklist: {}, curated: {}, ticks: {}, tier: "free",
@@ -297,7 +464,7 @@
     if (!s.target) s.target = defaultTarget();
     if (!s.fl) {
       const fresh = seed(), have = new Set(s.slots.map((x) => x.dpeId));
-      fresh.slots.filter((x) => !have.has(x.dpeId)).forEach((x) => s.slots.push({ ...x, id: "fl-" + x.id }));
+      fresh.slots.filter((x) => !have.has(x.dpeId) && !MULTI_STATE.includes(x.dpeId)).forEach((x) => s.slots.push({ ...x, id: "fl-" + x.id }));
       s.avail = s.avail || {};
       Object.entries(fresh.avail).forEach(([k, v]) => { if (!s.avail[k]) s.avail[k] = v; });
       s.fl = 1;
@@ -309,6 +476,16 @@
       addTripleDays(tmp, 0, (k) => "p4s" + k);
       tmp.filter((x) => x.id.startsWith("p4s") && !have.has(x.dpeId + "_" + x.date + "_" + x.time)).forEach((x) => s.slots.push(x));
       s.p4 = 1;
+    }
+    if (!s.ms && MULTI_STATE.length) {
+      // B: saved demos get the TX / CA / AZ sample calendars without touching existing slots or bookings.
+      const have = new Set(s.slots.map((x) => x.id));
+      const tmp = []; addMultiStateSlots(tmp);
+      tmp.filter((x) => !have.has(x.id)).forEach((x) => s.slots.push(x));
+      s.avail = s.avail || {};
+      const ts = Date.now() - 26 * 3600e3;
+      MULTI_STATE.forEach((id) => { if (!s.avail[id]) s.avail[id] = { confirmedAt: ts, updatedAt: ts, reminderDay: 0, pauseReminders: false }; });
+      s.ms = 1;
     }
     const oldTier = { starter: "free", enterprise: "academy" };
     if (oldTier[s.tier]) s.tier = oldTier[s.tier];
@@ -334,9 +511,9 @@
   applyDpeEdits();
 
   // ---------- queries ----------
-  const openSlots = ({ dpeId, cert, before } = {}) => {
+  const openSlots = ({ dpeId, cert, before, state } = {}) => {
     return S.slots
-      .filter((s) => s.status === "open" && s.date >= slotToday(s) && !isStale(s.dpeId) && (!dpeId || s.dpeId === dpeId) && (!cert || s.certs.includes(cert)) && (!before || s.date <= before))
+      .filter((s) => s.status === "open" && s.date >= slotToday(s) && !slotPast(s) && !isStale(s.dpeId) && (!dpeId || s.dpeId === dpeId) && (!cert || s.certs.includes(cert)) && (!before || s.date <= before) && (!state || aptState(s.airport) === state))
       .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
   };
 
@@ -363,47 +540,71 @@
   const touchAvail = (id) => { const a = availOf(id); a.confirmedAt = a.updatedAt = Date.now(); };
   const SLOT_TIMES = ["08:00", "08:30", "09:00", "10:30", "12:30", "13:00", "15:30"];
   // Apply a DPE's weekly grid to the real slot list. Booked/held slots are never removed.
+  // QA-040: the weekly pattern only manages pattern slots. One-off openings (Publish form, simulated) are never moved,
+  // re-timed or removed by a pattern save, and the toast counts only real changes. QA-039: days before the publish form's
+  // lead-time rule (a date after today at that airport) are skipped.
+  const isOneOff = (x) => x.src === "oneoff" || !!x.simulated;
   function applyAvailability(dp, days) {
-    const created = []; let closedDays = 0, keptDays = 0, openedDays = 0;
+    const created = []; let closedDays = 0, keptDays = 0, openedDays = 0, skipped = 0, removed = 0, updated = 0, oneOffs = 0;
     days.forEach((d) => {
-      const cur = S.slots.filter((x) => x.dpeId === dp.id && x.date === d.date && x.status !== "removed");
+      if (d.date <= todayIn(aptTz(d.airport || dp.home))) return;
+      const all = S.slots.filter((x) => x.dpeId === dp.id && x.date === d.date && x.status !== "removed");
+      const cur = all.filter((x) => !isOneOff(x));
+      const ones = all.length - cur.length, c0 = created.length + removed + updated; // one-offs are only mentioned for days the save changed
       const taken = cur.filter((x) => x.status !== "open");
       const opens = cur.filter((x) => x.status === "open").sort((a, b) => a.time.localeCompare(b.time));
-      if (!d.open) { opens.forEach((x) => { x.status = "removed"; }); if (opens.length) closedDays++; if (taken.length) keptDays++; return; }
+      if (!d.open) { opens.forEach((x) => { x.status = "removed"; }); removed += opens.length; if (opens.length) { closedDays++; oneOffs += ones; } if (taken.length) keptDays++; return; }
       const want = Math.max(d.cap, taken.length) - taken.length;
-      opens.slice(want).forEach((x) => { x.status = "removed"; });
+      const drop = opens.slice(want); drop.forEach((x) => { x.status = "removed"; }); removed += drop.length;
       const keep = opens.slice(0, want);
+      skipped += keep.length; // C (Marlo): openings already published for this day are kept, never re-created
       if (!cur.length) openedDays++;
+      const base = keep[0] ? { airport: keep[0].airport, note: keep[0].note || "" } : null; // the row shows the first open slot's fields
       keep.forEach((x, i) => {
-        x.airport = d.airport; x.note = d.note;
-        if (i === 0 && !cur.some((y) => y !== x && y.status !== "removed" && y.time === d.time)) x.time = d.time;
+        const before = x.time + "|" + x.airport + "|" + (x.note || "");
+        // QA-040: a plain save never rewrites other slots; only fields the examiner actually changed in the row are applied
+        if (i === 0 || d.airport !== base.airport) x.airport = d.airport;
+        if (i === 0 || (d.note || "") !== base.note) x.note = d.note;
+        if (i === 0 && !all.some((y) => y !== x && y.status !== "removed" && y.time === d.time)) x.time = d.time;
+        if (x.time + "|" + x.airport + "|" + (x.note || "") !== before) { updated++; skipped--; }
       });
       for (let i = keep.length; i < want; i++) {
         const used = S.slots.filter((y) => y.dpeId === dp.id && y.date === d.date && y.status !== "removed").map((y) => y.time);
         const time = i === 0 && !keep.length && !used.includes(d.time) ? d.time : (SLOT_TIMES.find((tm) => !used.includes(tm)) || "16:30");
+        if (used.includes(time)) { skipped++; continue; } // same examiner, date and start time already published
         const ns = { id: uid("s"), dpeId: dp.id, date: d.date, time, airport: d.airport, certs: Object.keys(dp.fees), status: "open", bookingId: null, note: d.note, src: "weekly" };
         S.slots.push(ns); created.push(ns);
       }
+      if (created.length + removed + updated > c0) oneOffs += ones;
     });
-    return { created, closedDays, keptDays, openedDays };
+    return { created, closedDays, keptDays, openedDays, skipped, removed, updated, oneOffs };
   }
 
   // ---------- (e) location: airport/city text with a picker, or a mock "sample location" (no GPS, no network) ----------
   const aptLabel = (a) => `${a.id} – ${a.city} (${a.name})`;
+  // QA-049: well-known airports outside the sample states (public ICAO codes, reference only, no examiner data). Typing one
+  // shows that state's outside-coverage panel instead of "Couldn't find".
+  const OUT_ICAO = { KJFK: "NY", KLGA: "NY", KALB: "NY", KBUF: "NY", KROC: "NY", KSYR: "NY", KISP: "NY", KHPN: "NY", KFRG: "NY", KEWR: "NJ", KTEB: "NJ", KMMU: "NJ",
+    KBOS: "MA", KBED: "MA", KBDL: "CT", KPVD: "RI", KMHT: "NH", KPWM: "ME", KBTV: "VT", KPHL: "PA", KPIT: "PA", KBWI: "MD", KDCA: "VA", KIAD: "VA", KRIC: "VA",
+    KILG: "DE", KCRW: "WV", KCLT: "NC", KRDU: "NC", KCHS: "SC", KATL: "GA", KPDK: "GA", KSAV: "GA", KBHM: "AL", KJAN: "MS", KMSY: "LA", KBNA: "TN", KMEM: "TN",
+    KSDF: "KY", KCVG: "KY", KCLE: "OH", KCMH: "OH", KDTW: "MI", KIND: "IN", KORD: "IL", KMDW: "IL", KMKE: "WI", KMSP: "MN", KDSM: "IA", KSTL: "MO", KMCI: "MO",
+    KLIT: "AR", KOKC: "OK", KTUL: "OK", KICT: "KS", KOMA: "NE", KFSD: "SD", KFAR: "ND", KDEN: "CO", KAPA: "CO", KCOS: "CO", KABQ: "NM", KSLC: "UT", KLAS: "NV",
+    KRNO: "NV", KBOI: "ID", KBIL: "MT", KCYS: "WY", KSEA: "WA", KBFI: "WA", KPDX: "OR", PANC: "AK", PAFA: "AK", PHNL: "HI", PHOG: "HI" };
+  const outsideStateFor = (str) => { const t = String(str || "").trim().toUpperCase().split(/[\s,–-]+/)[0]; return OUT_ICAO[t] || OUT_ICAO["K" + t] || ""; };
   function resolveAirport(str) {
     const s = String(str || "").trim().toUpperCase();
     if (!s) return null;
     const tok = s.split(/[\s–-]+/)[0];
     const byId = D.airports.find((a) => a.id === tok || a.id === "K" + tok);
     if (byId) return byId.id;
-    const t = s.replace(/,?\s*FL(ORIDA)?$/, "").trim();
+    const t = s.replace(/,?\s*(FL(ORIDA)?|TX|TEXAS|CA|CALIFORNIA|AZ|ARIZONA)$/, "").trim();
     const a = D.airports.find((x) => x.city.toUpperCase() === t) || D.airports.find((x) => x.city.toUpperCase().startsWith(t)) || D.airports.find((x) => x.name.toUpperCase().includes(t));
     return a ? a.id : null;
   }
-  const locationField = (near, id = "loc") => `<div class="loc-field">
+  const locationField = (near, id = "loc", state = "") => `<div class="loc-field">
       <label class="field"><span>Near me: airport or city</span><input name="nearText" list="${id}-list" autocomplete="off" value="${esc(aptLabel(apt(near)))}" aria-describedby="${id}-hint" /></label>
       <input type="hidden" name="near" value="${near}" />
-      <datalist id="${id}-list">${D.airports.map((a) => `<option value="${esc(aptLabel(a))}"></option>`).join("")}</datalist>
+      <datalist id="${id}-list">${D.airports.filter((a) => !state || a.state === state).map((a) => `<option value="${esc(aptLabel(a))}"></option>`).join("")}</datalist>
       <div class="row small" id="${id}-hint" style="gap:.5rem"><button type="button" class="btn ghost sm" data-action="sample-location">Use a sample location</button><span class="muted">Mock: picks a sample airport, no GPS.</span></div>
     </div>`;
 
@@ -411,7 +612,7 @@
     const out = [];
     allDpes().forEach((dp) => {
       const fee = dp.fees[f.cert];
-      if (!fee || (f.maxFee && fee > f.maxFee) || !reachable(dp, f.near, f.radius)) return;
+      if (!fee || (f.maxFee && fee > f.maxFee) || (f.state && dpeState(dp) !== f.state) || !reachable(dp, f.near, f.radius)) return;
       const slots = openSlots({ dpeId: dp.id, cert: f.cert, before: f.before });
       const soonest = slots[0] || null;
       out.push({ dp, fee, dist: distNm(dp.home, f.near), slots, soonest, slotDist: soonest ? distNm(soonest.airport, f.near) : distNm(dp.home, f.near), travel: travelCost(dp, f.near) });
@@ -524,6 +725,7 @@
     return { id: uid("n"), ts: Date.now(), read: false, kind: "booking-cancel", bookingId: b.id, dpeId: dp.id, cert: b.cert, title, body, lines, channel: "In-app notice (mock) \u00b7 nothing was emailed or texted" };
   }
   function fireAlerts(slot, kind, { skipMine = false, quiet = false } = {}) {
+    if (slotPast(slot)) return; // QA-039: no alert for a slot that has already started
     const dp = dpeById(slot.dpeId);
     const matched = skipMine ? [] : S.alerts.filter((a) => alertMatches(a, slot));
     // Stand-in for other pilots' alerts in a real system.
@@ -587,24 +789,55 @@ const closeModal = () => {
 
   const certOptions = (val, only) => D.certs.filter((c) => !only || only.includes(c.id)).map((c) => `<option value="${c.id}" ${c.id === val ? "selected" : ""}>${esc(c.name)}</option>`).join("");
   const certSelect = (name, val, only, label = "Certificate / rating") => `<label class="field"><span>${label}</span><select name="${name}">${certOptions(val, only)}</select></label>`;
-  const airportSelect = (name, val, label = "Near", only) => `<label class="field"><span>${label}</span><select name="${name}">${D.airports.filter((a) => !only || only.includes(a.id)).map((a) => `<option value="${a.id}" ${a.id === val ? "selected" : ""}>${a.id} · ${esc(a.city)}</option>`).join("")}</select></label>`;
+  // B: grouped by state (FL / TX / CA / AZ) once more than one state is loaded.
+  const airportSelect = (name, val, label = "Near", only) => {
+    const list = D.airports.filter((a) => !only || only.includes(a.id));
+    const opt = (a) => `<option value="${a.id}" ${a.id === val ? "selected" : ""}>${a.id} · ${esc(a.city)}</option>`;
+    const states = COVERED_STATES.filter(([c]) => list.some((a) => a.state === c));
+    const body = states.length > 1 ? states.map(([c, n]) => `<optgroup label="${n}">${list.filter((a) => a.state === c).map(opt).join("")}</optgroup>`).join("") : list.map(opt).join("");
+    return `<label class="field"><span>${label}</span><select name="${name}">${body}</select></label>`;
+  };
   const radiusSelect = (val) => `<label class="field"><span>Within</span><select name="radius">${[25, 50, 75, 100, 150, 250].map((r) => `<option value="${r}" ${r === val ? "selected" : ""}>${r} nm</option>`).join("")}</select></label>`;
   const feeSelect = (val) => `<label class="field"><span>Max fee</span><select name="maxFee"><option value="">Any</option>${[1000, 1200, 1300, 1500, 2000].map((v) => `<option value="${v}" ${v === val ? "selected" : ""}>Up to ${money(v)}</option>`).join("")}</select></label>`;
   const statCard = (v, l) => `<div class="card stat"><div class="v">${v}</div><div class="l">${l}</div></div>`;
   const statusPill = (st) => ({ requested: '<span class="pill warn">Awaiting review</span>', confirmed: '<span class="pill good">Confirmed</span>', declined: '<span class="pill bad">Declined</span>', cancelled: '<span class="pill">Cancelled</span>', open: '<span class="pill accent">Open</span>', held: '<span class="pill warn">Awaiting review</span>', booked: '<span class="pill good">Confirmed</span>' }[st] || "");
-  // ux-copy-v3 req.status.*: request, not booking. (No soft-hold line: the 48h hold is not built in this run.)
-  const reqPill = (b) => { const f = first(dpeById(b.dpeId).name); return { requested: (() => { const sl = slotOf(b), he = sl && b.mine ? holdEnd(b, sl) : null; const held = he && he > Date.now(); return `<span class="pill warn" data-req-status="pending"${held ? ` data-held-until="${he}"` : ""}>Awaiting ${esc(f)} \u00b7 ${held ? `Held for you until ${tsWhen(he, slotTz(sl))} \u00b7 ` : ""}Not confirmed yet</span>`; })(), confirmed: '<span class="pill good" data-req-status="confirmed">Confirmed</span>', declined: '<span class="pill bad" data-req-status="declined">Declined</span>', cancelled: '<span class="pill" data-req-status="cancelled">Cancelled</span>' }[b.status] || ""; };
+  // ux-copy-v3 req.status.*: request, not booking. Soft hold per D32 (req.status.pending / pending_nohold).
+  // QA-028 (B): a pending request the student withdrew is "Withdrawn", not "Cancelled" (ux-copy-v3 §5.2a req.withdraw.*, req.card.withdrawn).
+  const isWithdrawn = (b) => !!b && b.status === "cancelled" && !!(b.cancel && b.cancel.request);
+  const WITHDRAWN_PILL = '<span class="pill" data-req-status="withdrawn">Withdrawn</span>';
+  const bookingPill = (b) => (isWithdrawn(b) ? WITHDRAWN_PILL : statusPill(b.status));
+  const reqPill = (b) => { if (isWithdrawn(b)) return WITHDRAWN_PILL; const f = first(dpeById(b.dpeId).name); return { requested: (() => { const sl = slotOf(b), he = sl && b.mine ? holdEnd(b, sl) : null; const held = he && he > Date.now(), ended = he && !held; const nohold = !!(sl && b.mine && b.createdAt && he === null); if (ended) return `<span class="pill" data-req-status="hold-ended" data-hold-ended>Hold ended</span>`; // QA-043: one state, no contradiction (wording pending PM)
+ if (nohold) return `<span class="pill warn" data-req-status="pending" data-nohold>Awaiting ${esc(f)} \u00b7 No hold \u00b7 First to be accepted gets it</span>`; return `<span class="pill warn" data-req-status="pending"${held ? ` data-held-until="${he}"` : ""}${ended ? " data-hold-ended" : ""}>Awaiting ${esc(f)} \u00b7 ${held ? `Held for you until ${tsWhen(he, slotTz(sl))} \u00b7 ` : ended ? "Hold ended \u00b7 " : ""}Not confirmed yet</span>`; })(), confirmed: '<span class="pill good" data-req-status="confirmed">Confirmed</span>', declined: '<span class="pill bad" data-req-status="declined">Declined</span>', cancelled: '<span class="pill" data-req-status="cancelled">Cancelled</span>' }[b.status] || ""; };
   // v3 eyebrow + paired headline (ink line, accent line).
   const head = (eyebrow, a, b, lead = "", tag = "h1", extra = "") => `<div class="page-head v3-head"><p class="eyebrow">${eyebrow}</p><${tag} class="paired">${a}${b ? ` <span class="b">${b}</span>` : ""}${extra}</${tag}>${lead ? `<p class="lead muted">${lead}</p>` : ""}</div>`;
 
+  // B: state = the state of the search airport. ?st= picks a state: a covered one (FL/TX/CA/AZ) moves the search to that state's
+  // sample airport unless the airport is already there; any other US state shows the outside-coverage message (ux-copy-v3, D16).
   function searchFilters(q) {
-    return { cert: certById(q.cert) ? q.cert : "ppl", near: apt(q.near) ? q.near : "KORL", radius: +q.radius || 75, before: q.before || "", maxFee: +q.maxFee || 0, sort: q.sort || "soonest" };
+    let near = apt(q.near) ? q.near : "KORL";
+    const st = String(q.st || "").toUpperCase();
+    let outside = "";
+    if (st && COVERED_STATES.some(([c]) => c === st)) { if (aptState(near) !== st) near = STATE_HOME[st]; }
+    else if (st && (US_STATES[st] || US_TERR[st] || /^[A-Z]{2}$/.test(st))) outside = st; // QA-049: an unknown or territory code shows the outside panel, never Florida silently
+    return { cert: certById(q.cert) ? q.cert : "ppl", near, state: aptState(near), outside, radius: +q.radius || 75, before: q.before || "", maxFee: +q.maxFee || 0, sort: q.sort || "soonest" };
   }
+  const US_TERR = { PR: "Puerto Rico", GU: "Guam", VI: "the U.S. Virgin Islands", AS: "American Samoa", MP: "the Northern Mariana Islands" };
+  const stateName = (c) => (COVERED_STATES.find(([k]) => k === c) || [c, US_STATES[c] || US_TERR[c] || c])[1];
+  const OUTSIDE_COPY = "This prototype only has sample examiners in FL, TX, CA and AZ so far. Pick an airport there to try it out.";
+  const stateSelect = (cur) => `<label class="field"><span>State</span><select name="st" data-state-select>
+      <optgroup label="Sample examiners">${COVERED_STATES.map(([c, n]) => `<option value="${c}" ${c === cur ? "selected" : ""}>${c} · ${n}</option>`).join("")}</optgroup>
+      <optgroup label="Not covered yet">${Object.entries(US_STATES).filter(([c]) => !COVERED_STATES.some(([k]) => k === c)).map(([c, n]) => `<option value="${c}" ${c === cur ? "selected" : ""}>${c} · ${n}</option>`).join("")}</optgroup>
+    </select></label>`;
+  const outsideCoverage = (st) => `<section class="card empty state" id="outside-coverage" data-state="outside" data-outside="${st}">
+      <h2 style="margin:0 0 .35rem">No sample examiners in ${esc(stateName(st))} yet</h2>
+      <p style="margin:0">${OUTSIDE_COPY}</p>
+      <div class="row" style="margin-top:.75rem;gap:.5rem;flex-wrap:wrap">${COVERED_STATES.map(([c, n]) => `<a class="btn secondary sm" href="#/search?st=${c}">${n}</a>`).join("")}</div>
+    </section>`;
   const toQuery = (o) => new URLSearchParams(Object.entries(o).filter(([, v]) => v !== "" && v != null && v !== 0)).toString();
 
   // ---------- views ----------
   function viewHome() {
-    const next = openSlots({ cert: "ppl" });
+    const next = openSlots({ cert: "ppl", state: "FL" }); // B: the demo pilot flies from KORL, so Home shows Florida openings
     const rows = next.slice(0, 5).map((s, i) => {
       const dp = dpeById(s.dpeId);
       return `<a class="board-row" style="--i:${i}" href="#/dpe/${dp.id}?cert=ppl&date=${s.date}">
@@ -652,13 +885,14 @@ const closeModal = () => {
     if (f.maxFee) acts.push(`<a class="btn secondary" href="#/search?${toQuery({ ...f, maxFee: 0, sort: f.sort === "soonest" ? "" : f.sort })}">Remove the max fee</a>`);
     if (f.before) acts.push(`<a class="btn secondary" href="#/search?${toQuery({ ...f, before: "", sort: f.sort === "soonest" ? "" : f.sort })}">Remove the date limit</a>`);
     acts.push(`<a class="btn ghost" href="#/search?${toQuery({ cert: f.cert, near: f.near })}">Clear filters</a>`);
-    const why = [f.maxFee ? `fee up to ${money(f.maxFee)}` : "", f.before ? `checkride before ${fmtDate(f.before)}` : ""].filter(Boolean).join(", ");
+    const why = [f.maxFee ? `fee up to ${money(f.maxFee)}` : "", f.before ? `checkride before ${fmtDateA(f.before)}` : ""].filter(Boolean).join(", ");
     return emptyState({ id: "search-empty", ic: "search", title: "No sample examiners match these filters",
       body: `Nothing for ${esc(certById(f.cert).name)} within ${f.radius} nm of ${esc(f.near)}${why ? ` with ${why}` : ""}. Widen the search, or save a mock alert above to hear about new openings.`, actions: acts.join("") });
   }
   function viewSearch(q) {
     const f = searchFilters(q);
-    const results = searchDpes(f);
+    const results = f.outside ? [] : searchDpes(f);
+    const inState = allDpes().filter((dp) => dpeState(dp) === f.state).length;
     const c = certById(f.cert);
     const fees = results.map((r) => r.fee);
     const soonest = results.find((r) => r.soonest)?.soonest;
@@ -667,8 +901,9 @@ const closeModal = () => {
       <aside class="card sticky">
         <h2>Filters</h2>
         <form class="stack" data-form="search" data-auto>
+          ${stateSelect(f.outside || f.state)}
           ${certSelect("cert", f.cert)}
-          ${locationField(f.near, "loc-s")}
+          ${locationField(f.near, "loc-s", f.outside ? "" : f.state)}
           ${radiusSelect(f.radius)}
           <label class="field"><span>Checkride before</span><input type="date" name="before" value="${esc(f.before)}" min="${addDays(1)}" /></label>
           ${feeSelect(f.maxFee)}
@@ -680,20 +915,21 @@ const closeModal = () => {
       <section class="stack">
         <div class="page-head v3-head" style="margin:0">
           <p class="eyebrow">Search</p>
-          <h1>Soonest ${esc(c.short)} checkrides near ${f.near}</h1>
+          <h1>${f.outside ? `${esc(c.short)} checkrides in ${esc(stateName(f.outside))}` : `Soonest ${esc(c.short)} checkrides near ${f.near}`}</h1>
           <p class="muted small" id="search-helper" style="margin:0 0 .25rem">Soonest openings first. Fees shown are each examiner's own.</p>
-          <p class="muted" style="margin:0">${results.length} of ${allDpes().length} sample examiners match${fees.length ? ` · fees ${money(Math.min(...fees))}–${money(Math.max(...fees))}` : ""}${soonest ? ` · soonest opening ${fmtDate(soonest.date)} (${relDays(soonest.date, slotTz(soonest))})` : ""}</p>
+          ${f.outside ? "" : `<p class="muted" style="margin:0" id="search-count">${results.length} of ${inState} sample examiners in ${esc(stateName(f.state))} match${fees.length ? (Math.min(...fees) === Math.max(...fees) ? ` · fee ${money(fees[0])}` : ` · fees ${money(Math.min(...fees))}–${money(Math.max(...fees))}`) : ""}${soonest ? ` · soonest opening ${fmtDate(soonest.date)} (${relDays(soonest.date, slotTz(soonest))})` : ""}</p>`}
         </div>
+        ${f.outside ? outsideCoverage(f.outside) : ""}
         ${(() => { const top = f.sort === "soonest" ? withSlots[0] : null; if (!top) return ""; return `<div class="card soonest-lead" id="soonest-lead"><div class="small muted">Soonest checkride near ${f.near} (sample)</div>
           <div class="soonest-big"><b>${fmtDate(top.soonest.date, { weekday: "short", month: "short", day: "numeric" })}</b> · ${slotTime(top.soonest)} · ${top.soonest.airport} <span class="muted small">${top.slotDist <= 2 ? "at your airport" : top.slotDist + " nm away"}</span></div>
           <div class="small">${esc(top.dp.name)} ${sampleBadge()} · ${money(top.fee)} · ${relDays(top.soonest.date, slotTz(top.soonest))}</div>
           <a class="btn sm" style="margin-top:.5rem" href="#/dpe/${top.dp.id}?cert=${f.cert}&date=${top.soonest.date}&near=${f.near}">See this opening</a></div>`; })()}
-        <div class="cta-banner row spread">
+        ${f.outside ? "" : `<div class="cta-banner row spread">
           <div><b>Want an earlier date?</b> <span class="muted">Save this search as a mock alert (stored in this browser, no email sent).</span></div>
           <button class="btn sm" data-action="alert-from-search">Save mock alert</button>
         </div>
         <h2 class="sr-only">Examiners</h2>
-        ${results.length ? [...withSlots, ...results.filter((r) => !r.slots.length)].map((r) => resultCard(r, f)).join("") : searchEmpty(f)}
+        ${results.length ? [...withSlots, ...results.filter((r) => !r.slots.length)].map((r) => resultCard(r, f)).join("") : searchEmpty(f)}`}
       </section>
     </div>`;
   }
@@ -711,7 +947,7 @@ const closeModal = () => {
         <div class="small">${where}${r.soonest ? ` · next opening ${r.slotDist <= 2 ? "at " + r.soonest.airport : r.slotDist + " nm away at " + r.soonest.airport}` : ""}</div>
         ${freshOf(dp.id).level === "ok" ? "" : `<div class="small" style="margin-top:.25rem">${freshBadge(dp.id)}</div>`}
         ${r.slots.length
-          ? `<div class="chips">${chips}${r.slots.length > 4 ? `<a class="small" style="align-self:center" href="#/dpe/${dp.id}?cert=${f.cert}">+${r.slots.length - 4} more</a>` : ""}</div>`
+          ? `<div class="chips">${chips}${r.slots.length > 4 ? `<a class="small more-link" style="align-self:center" href="#/dpe/${dp.id}?cert=${f.cert}">+${r.slots.length - 4} more</a>` : ""}</div>`
           : isStale(dp.id) ? `<p class="small muted" style="margin:.5rem 0 0">Openings hidden until the examiner confirms them again.</p>`
           : `<p class="small muted" style="margin:.5rem 0 0">No openings in your date range. <a href="#" data-action="alert-from-search" data-dpe="${dp.id}">Save a mock alert for ${esc(first(dp.name))}</a></p>`}
       </div>
@@ -727,7 +963,10 @@ const closeModal = () => {
     if (!dp) return `<div class="page">${emptyState({ id: "dpe-not-found", ic: "search", h: "h1", title: "Examiner not found", body: "This sample examiner isn\u2019t in the data set (links can go stale after a reset).", actions: `<a class="btn" href="#/search">Back to search</a>` })}</div>`;
     const certIds = Object.keys(dp.fees);
     const cert = certIds.includes(q.cert) ? q.cert : certIds[0];
-    const near = apt(q.near) ? q.near : "KORL";
+    // QA-045 (D40): ATP and rotorcraft have no estimator yet. A ?cert=atp|rh link says so instead of silently showing another cert's numbers.
+    const noEst = !certIds.includes(q.cert) && (q.cert === "atp" || q.cert === "rh") ? q.cert : "";
+    const noEstName = noEst ? (((dp.otherAuthorizations || []).find((o) => o.id === noEst) || {}).name || (noEst === "atp" ? "ATP" : "Rotorcraft")) : "";
+    const near = nearFor(q.near, dp);
     const slots = openSlots({ dpeId: dp.id });
     // Reset the calendar focus whenever the URL changes (new examiner or a slot link).
     if (ui.profileKey !== location.hash) {
@@ -739,9 +978,9 @@ const closeModal = () => {
     else if (ui.sel && !q.date && !slots.some((s) => s.date === ui.sel) && !S.slots.some((s) => s.dpeId === dp.id && s.date === ui.sel && s.status === "held" && s.bookingId && S.bookings.some((b) => b.id === s.bookingId && b.mine))) { ui.sel = slots[0]?.date || null; if (ui.sel) ui.month = ui.sel.slice(0, 7); }
     const own = S.role === "dpe" && S.actingDpe === dp.id;
     // Arriving from an alert: highlight that slot and open the request form once for this link.
-    const pick = q.slot ? S.slots.find((s) => s.id === q.slot && s.dpeId === dp.id && s.status === "open" && !isStale(dp.id)) : null;
+    const pick = q.slot ? S.slots.find((s) => s.id === q.slot && s.dpeId === dp.id && slotLive(s) && !isStale(dp.id)) : null;
     if (pick) { ui.sel = pick.date; ui.month = pick.date.slice(0, 7); if (ui.autoReqKey !== location.hash) { ui.autoReqKey = location.hash; ui.pendingReq = [pick.id, q.cert]; } }
-    const daySlots = ui.sel ? S.slots.filter((s) => s.dpeId === dp.id && s.date === ui.sel && s.status !== "removed").sort((a, b) => a.time.localeCompare(b.time)) : [];
+    const daySlots = ui.sel ? S.slots.filter((s) => s.dpeId === dp.id && s.date === ui.sel && s.status !== "removed" && !(s.status === "open" && slotPast(s))).sort((a, b) => a.time.localeCompare(b.time)) : [];
     return `<div class="page">
       ${own ? `<div class="cta-banner" style="margin-bottom:1rem"><b>This is your public profile as pilots see it.</b> <a href="#/requests">Back to dashboard</a></div>` : `<p><a href="#/search?cert=${cert}">← Back to search</a></p>`}
       <div style="margin-bottom:1.25rem">
@@ -762,18 +1001,19 @@ const closeModal = () => {
         <div class="stack">
           <section class="card">
             <h2>Fees</h2>
-            <p class="muted small">Set by the examiner and paid directly to them. Prototype booking: ${FEES ? `a flat ${money(BOOKING_FEE)} student booking fee plus a sample Deposit paid to your examiner (ASSUMPTION, about 20% of the fee, credited toward it), both shown only if the examiner approves.` : `a sample Deposit paid to your examiner (ASSUMPTION, about 20% of the fee, credited toward it), due only if the examiner approves. ${FREE_LINE}`} Nothing is charged. Prototype, not legal or FAA advice.</p>
+            <p class="muted small">Set by the examiner and paid directly to them. Prototype booking: ${FEES ? `a flat ${money(BOOKING_FEE)} student booking fee plus a sample deposit paid to your examiner (ASSUMPTION, about 20% of the fee, credited toward it), both shown only if the examiner approves.` : `a sample deposit paid to your examiner (ASSUMPTION, about 20% of the fee, credited toward it), due only if the examiner approves. ${FREE_LINE}`} Nothing is charged. Prototype, not legal or FAA advice.</p>
             <div class="table-wrap"><table>
               <thead><tr><th>Certificate / rating</th><th class="num">Examiner fee</th></tr></thead>
               <tbody>${certIds.map((c) => `<tr ${c === cert ? 'class="best"' : ""}><td>${esc(certById(c).name)} <span class="muted small">${esc(certById(c).detail)}</span></td><td class="num"><b>${money(dp.fees[c])}</b></td></tr>`).join("")}</tbody>
             </table></div>
-            ${(dp.otherAuthorizations || []).length ? `<div class="other-auth" style="margin-top:.9rem"><div class="small"><b>Other authorizations (info only)</b> <span class="pill">Not bookable in this prototype</span></div><ul class="small" style="margin:.35rem 0 0;padding-left:1.1rem">${dp.otherAuthorizations.map((o) => `<li>${esc(o.name)}${o.detail ? ` <span class="muted">${esc(o.detail)}</span>` : ""}${o.fee ? ` · sample fee ${money(o.fee)}` : ""}</li>`).join("")}</ul></div>` : ""}
+            ${(dp.otherAuthorizations || []).length ? `<div class="other-auth" style="margin-top:.9rem"><div class="small"><b>Other authorizations (info only)</b> <span class="pill">Not bookable in this prototype</span></div><ul class="small" style="margin:.35rem 0 0;padding-left:1.1rem">${dp.otherAuthorizations.map((o) => `<li>${esc(o.name)}${o.detail ? ` <span class="muted">${esc(o.detail)}</span>` : ""}${o.fee ? ` · sample fee ${money(o.fee)}` : ""}${o.id === "atp" || o.id === "rh" ? ` <span class="muted" data-no-estimate="${esc(o.id)}">\u00b7 No estimate yet for this certificate.</span>` : ""}</li>`).join("")}</ul></div>` : ""}
             <div class="grid g2" style="margin-top:1rem">
               <div><div class="muted small">Retest / discontinuance (sample)</div><b>${money(dp.retestFee)}</b></div>
               <div><div class="muted small">Travel to your airport (≤ ${dp.travelNm} nm)</div><b>+${money(dp.travelFee)}</b></div>
             </div>
           </section>
-          ${allInCard(dp, cert, near, (daySlots.find((s) => s.status === "open") || slots[0] || {}).airport)}
+          ${noEst ? `<section class="card" id="cost-estimate" data-no-estimate="${esc(noEst)}"><p class="eyebrow">ESTIMATE \u00b7 EXAMPLE INPUTS</p><h2 style="margin:0 0 .35rem">${esc(noEstName)}</h2><p style="margin:0">No estimate yet for this certificate.</p></section>` : `${allInCard(dp, cert, near, (daySlots.find((s) => s.status === "open") || slots[0] || {}).airport)}
+          ${estimateCard(dp, cert, near, (daySlots.find((s) => s.status === "open") || slots[0] || {}).airport)}`}
           <section class="card">
             <h2>Policies</h2>
             <p><b>Cancellation:</b> ${esc(dp.cancellation)}</p>
@@ -793,7 +1033,7 @@ const closeModal = () => {
             ${pick ? `<div class="cta-banner small" id="alert-pick" style="margin-bottom:.6rem"><b>From your alert:</b> ${slotTime(pick)} is preselected.${pick.simulated ? ` <span class="pill warn">Simulated opening</span>` : ""}</div>` : q.slot ? `<p class="small" id="alert-pick-gone"><b>That opening is no longer available.</b> Pick another time below.</p>` : ""}
             ${daySlots.map((s) => `<div class="slot-row${pick && pick.id === s.id ? " picked" : ""}"${pick && pick.id === s.id ? ' aria-current="true"' : ""}>
                 <div><b>${slotTime(s)}</b> · ${s.airport}<div class="muted small">${s.certs.map((c) => certById(c).short).join(", ")}</div>${s.note ? `<div class="small slot-note">Note: ${esc(s.note)}</div>` : ""}</div>
-                ${s.status === "open" && !isStale(dp.id) ? `<button class="btn sm" data-action="request" data-slot="${s.id}" data-cert="${cert}">Request</button>` : statusPill(s.status)}
+                ${slotLive(s) && !isStale(dp.id) ? `<button class="btn sm" data-action="request" data-slot="${s.id}" data-cert="${cert}">Request</button>` : statusPill(s.status)}
               </div>`).join("")}
           </div>
           <div class="cta-banner small" style="margin-top:1rem">
@@ -831,7 +1071,7 @@ const closeModal = () => {
   }
 
   function viewCompare(q) {
-    const f = searchFilters({ radius: 100, ...q });
+    const f = searchFilters({ radius: 75, ...q }); // UF#12: same default radius as search
     const c = certById(f.cert);
     const rows = allDpes().filter((dp) => dp.fees[f.cert] && reachable(dp, f.near, f.radius)).map((dp) => {
       const x = allIn(dp, f.cert, f.near);
@@ -865,7 +1105,7 @@ const closeModal = () => {
           <td>${r.soon ? `${fmtDate(r.soon.date)} <span class="muted small">${relDays(r.soon.date, slotTz(r.soon))}</span>` : '<span class="muted small">None open</span>'}</td>
         </tr>`).join("")}</tbody>
       </table></div>
-      <p class="muted small" style="margin:.75rem 0 0">Example numbers only, not quotes. Exam fees are set by each examiner and paid to them. Aircraft and travel are rough estimates from sample data, and retest or no-show fees are not included (see each profile). The Deposit paid to your examiner (ASSUMPTION, about 20% of the fee) is part of the exam fee, so it is not added here. Wait figures are sample data, not real reviews.<span class="cmp-mobile-note"> On a phone the table shows examiner, exam fee, all-in total and wait; open a profile for the full breakdown.</span></p>
+      <p class="muted small" style="margin:.75rem 0 0">Example numbers only, not quotes. Exam fees are set by each examiner and paid to them. Aircraft and travel are rough estimates from sample data, and retest or no-show fees are not included (see each profile). The deposit paid to your examiner (ASSUMPTION, about 20% of the fee) is part of the exam fee, so it is not added here. Wait figures are sample data, not real reviews.<span class="cmp-mobile-note"> On a phone the table shows examiner, exam fee, all-in total and wait; open a profile for the full breakdown.</span></p>
       </section>` : emptyState({ id: "compare-empty", ic: "search", title: "No examiners offer this checkride in range", body: "Try a larger radius, or pick another certificate or airport.", actions: `<a class="btn secondary" href="#/search">Open search</a>` })}
     </div>`;
   }
@@ -878,7 +1118,7 @@ const closeModal = () => {
       const dp = a.dpeId ? dpeById(a.dpeId) : null;
       return `<div class="card">
         <div class="row spread"><h3 style="margin:0">${esc(c.name)}</h3><button class="btn ghost sm" data-action="del-alert" data-id="${a.id}">Delete</button></div>
-        <p class="muted small" style="margin:.3rem 0">Within ${a.radius} nm of ${a.near}${a.before ? ` · before ${fmtDate(a.before)}` : ""}${a.maxFee ? ` · up to ${money(a.maxFee)}` : ""}${dp ? ` · only ${esc(dp.name)}` : ""}</p>
+        <p class="muted small" style="margin:.3rem 0">Within ${a.radius} nm of ${a.near}${a.before ? ` · before ${fmtDateA(a.before)}` : ""}${a.maxFee ? ` · up to ${money(a.maxFee)}` : ""}${dp ? ` · only ${esc(dp.name)}` : ""}</p>
         <div class="row small"><span class="pill">Mock: email only (not sent)</span>
         <a href="#/search?${toQuery({ cert: a.cert, near: a.near, radius: a.radius, before: a.before, maxFee: a.maxFee })}">${plural(matches, "matching opening")} now →</a></div>
         <div class="row small" style="margin-top:.6rem"><button class="btn ghost sm" data-action="sim-open" data-alert="${a.id}">Simulate a matching opening</button><span class="muted">Demo only: adds a labelled simulated slot and runs this alert.</span></div>
@@ -910,12 +1150,12 @@ const closeModal = () => {
           ${"Notification" in window ? `<div class="small" id="notif-perm" style="margin-bottom:.75rem">${Notification.permission === "granted" ? `<span class="pill good">Browser notifications on</span> <span class="muted">Shown by this page only. Nothing is emailed or texted.</span>` : Notification.permission === "denied" ? `<span class="muted">Browser notifications are blocked in this browser. The inbox still works.</span>` : `<button class="btn ghost sm" data-action="notif-perm">Also show browser notifications (optional)</button> <span class="muted">Shown by this page only, never email or SMS.</span>`}</div>` : ""}
           ${S.notifications.length ? S.notifications.slice(0, 25).map((n) => {
             const slot = n.slotId ? S.slots.find((s) => s.id === n.slotId) : null;
-            const live = slot && slot.status === "open";
+            const live = slotLive(slot);
             return `<div class="notif ${n.read ? "read" : ""}"><span class="dot"></span><div style="flex:1">
-              <b>${esc(n.title)}</b><div class="small">${esc(n.body)}</div>
+              <b>${esc(n.title)}</b><div class="small">${esc(n.body)}${n.link ? ` \u00b7 <a href="${esc(n.link)}" data-action="read-notif" data-id="${n.id}">${esc(n.linkText || "Open")}</a>` : ""}</div>
               ${n.kind === "booking-cancel" ? `<div class="small cancel-notice" data-notice="${esc(n.bookingId)}">${(n.lines || []).map((l) => `<div>${esc(l.t)}${l.tag ? ` ${LEGAL_TAG} ${PM_TAG}` : ""}</div>`).join("")}<div class="row" style="margin-top:.35rem"><a class="btn sm" href="#/dpe/${esc(n.dpeId)}?cert=${esc(n.cert)}" data-action="read-notif" data-id="${n.id}">Rebook with ${esc(first(dpeById(n.dpeId)?.name || "the examiner"))}</a><a class="btn secondary sm" href="#/search?cert=${esc(n.cert)}" data-action="read-notif" data-id="${n.id}">Find another examiner</a></div></div>` : ""}
               <div class="muted small">${fmtTs(n.ts)}${n.channel ? " · " + esc(n.channel) : ""}</div>
-              ${n.simulated ? `<span class="pill warn" style="margin-top:.3rem">Simulated</span> ` : ""}${slot ? (live ? `<a class="btn sm" style="margin-top:.4rem" href="${notifLink(n, slot)}" data-action="read-notif" data-id="${n.id}">Book this opening</a>` : `<span class="pill" style="margin-top:.4rem">Already taken</span>`) : ""}
+              ${n.simulated ? `<span class="pill warn" style="margin-top:.3rem">Simulated</span> ` : ""}${slot ? (live ? `<a class="btn sm" style="margin-top:.4rem" href="${notifLink(n, slot)}" data-action="read-notif" data-id="${n.id}">Book this opening</a> <a class="small" href="#/offer/${n.id}" data-action="read-notif" data-id="${n.id}" data-offer-link>A slot opened with ${esc(dpeById(n.dpeId)?.name || "")}</a>` : `<span class="pill" style="margin-top:.4rem">Already taken</span>`) : ""}
             </div></div>`;
           }).join("") : emptyState({ id: "inbox-empty", ic: "inbox", cls: "", title: "Your inbox is empty", body: "When a saved alert matches a new opening, it shows up here. Try <b>Simulate an opening</b> on an alert." })}
         </aside>
@@ -954,7 +1194,9 @@ const closeModal = () => {
   function cancelLine(b, s) {
     const c = b.cancel;
     if (!c) return "Cancelled. Nothing was charged.";
-    if (c.request) return "Request cancelled. Nothing was charged.";
+    if (c.request) return S.role === "dpe" && s
+      ? `${esc(first(b.applicant || "The student"))} withdrew their request for ${slotAt(s)}. The slot is open again.` // dpe.request.withdrawn
+      : `Withdrawn by you \u00b7 ${tsReader(c.at)} \u00b7 Slot released`; // req.card.withdrawn
     const tz = s ? slotTz(s) : REGION_TZ;
     const when = fmtIn(c.at, tz, { month: "short", day: "numeric" });
     const who = c.by === "student-via-dpe" ? "Cancelled at your request" : "Cancelled by you";
@@ -970,6 +1212,116 @@ const closeModal = () => {
     return c.fee === "credited" ? `${who} \u00b7 ${fmtEt(c.at)}, ${durShort(c.aheadMs)} ahead \u00b7 $15: credited` : `${who} \u00b7 ${durShort(c.aheadMs)} ahead \u00b7 $15: kept`;
   }
 
+  // ---- C (D35/F10): checkride-day prep list, item 9. Starts from chk.prep.default.*; the examiner can add, reword or remove.
+  const PREP_DEFAULT = (n) => [`Meeting time and place confirmed with ${n}`, "Aircraft scheduled for the day, with your school or the owner", "Weather checked the evening before and the morning of", `Any planning ${n} asked for, done and with you`, "Items 1\u20138 packed in one place", "A good night\u2019s sleep and something to eat before you go"];
+  const prepDefaults = (n) => PREP_DEFAULT(n).map((t, i) => ({ id: "pd" + (i + 1), t, o: t }));
+  function prepOf(b) {
+    S.prep = S.prep || {};
+    if (!S.prep[b.id]) S.prep[b.id] = { items: prepDefaults(dpeById(b.dpeId).name), sent: null };
+    return S.prep[b.id];
+  }
+  function prepSync(bid) {
+    const pr = S.prep && S.prep[bid]; if (!pr) return;
+    document.querySelectorAll('#prep-form input[name^="t-"]').forEach((i) => { const it = pr.items.find((x) => "t-" + x.id === i.name); if (it) it.t = i.value; });
+  }
+  // Student view (chk.prep.*). Without a confirmed checkride, the default list with the examiner's name if there is one.
+  function prepStudent(b, dp) {
+    const n = dp ? esc(dp.name) : "your examiner";
+    const sent = b && S.prep && S.prep[b.id] && S.prep[b.id].sent;
+    const items = sent ? sent.items : prepDefaults(n);
+    const from = !!(sent && sent.changed);
+    const list = items.length ? `<ul class="small prep-items" style="margin:.35rem 0 0;padding-left:1.1rem">${items.map((it) => `<li>${esc(it.t)}${from && !it.o ? ` <span class="muted">\u00b7 Added by ${n}</span>` : from && it.o !== it.t ? ` <span class="muted">\u00b7 Updated by ${n}</span>` : ""}</li>`).join("")}</ul>`
+      : `<p class="small" data-prep-empty style="margin:.35rem 0 0">Nothing extra from ${n} for the day. You\u2019re set on this one.</p>`;
+    return `<div class="inset prep-student" data-prep="${from ? "dpe" : "default"}" style="margin:.4rem 0 .2rem 2.2rem">
+      <div class="row" style="gap:.5rem"><b class="small">Checkride-day prep</b>${chip(from ? "" : "", from ? `From ${n}` : "Default list")}</div>
+      <p class="muted small" style="margin:.25rem 0 0">A starting list for the day. ${dp ? n : "Your examiner"} can add to it or change it, and you\u2019ll see it here. ${VERIFY}</p>${list}</div>`;
+  }
+  // Examiner editor (chk.d.prep.*), on the confirmed applicant's checklist page.
+  function prepEditor(b) {
+    const pr = prepOf(b);
+    return `<section class="card" id="prep-editor" style="margin-top:1rem">
+      <p class="eyebrow">YOUR EXAMINER DESK</p><h2>Checkride-day prep \u00b7 ${esc(first(b.applicant))}</h2>
+      <p class="muted small">Starts from our default list. Add, reword or remove items so it matches how you run the day. ${VERIFY}</p>
+      <form class="stack" data-form="prep-save" id="prep-form"><input type="hidden" name="bid" value="${b.id}" />
+        ${pr.items.map((it, i) => `<div class="row prep-row" style="flex-wrap:nowrap;gap:.5rem"><input id="prep-${it.id}" name="t-${it.id}" value="${esc(it.t)}" maxlength="140" aria-label="Edit item ${i + 1}" style="flex:1;min-width:0" /><button type="button" class="btn ghost sm" data-action="prep-del" data-id="${b.id}" data-item="${it.id}" aria-label="Remove item ${i + 1}">Remove</button></div>`).join("") || `<p class="muted small">Nothing extra from ${esc(dpeById(b.dpeId).name)} for the day. You\u2019re set on this one.</p>`}
+        <div class="row"><button type="button" class="btn secondary sm" data-action="prep-add" data-id="${b.id}">Add an item</button><button class="btn" type="submit" id="prep-save">Save list</button>${pr.sent ? ` <span class="small muted">Saved ${fmtTs(pr.sent.at)}</span>` : ""}</div>
+      </form>
+    </section>`;
+  }
+
+  // ---- C (D20/D13): medical type selector and optional date (as entered), reminder 60 days before. Warn, never block.
+  const MED_OPTS = [["c1", "Class 1 medical"], ["c2", "Class 2 medical"], ["c3", "Class 3 medical"], ["basicmed", "BasicMed"], ["dl", "U.S. driver\u2019s license (Sport Pilot)"], ["unsure", "Not sure yet"]];
+  const medDaysLeft = (d) => Math.round((parseIso(d) - parseIso(iso(new Date()))) / DAY);
+  function medicalBlock() {
+    const m = S.medical || {}, o = MED_OPTS.find((x) => x[0] === m.type);
+    const dated = o && m.type !== "unsure";
+    const row = !dated ? `<span class="muted small">${chip("", "Not set")}</span>`
+      : m.date ? `<p class="small" data-med-row="date" style="margin:.35rem 0 0">Your ${esc(o[1])} is valid through ${fmtDateY(m.date)} (as you entered it). \u00b7 <button type="button" class="linkish" data-action="med-edit">Edit</button> ${medDaysLeft(m.date) <= 60 ? chip("warn", "Heads-up") : chip("good", "On track")}</p>`
+      : `<p class="small" data-med-row="nodate" style="margin:.35rem 0 0">${esc(o[1])} \u00b7 No date added. Add one if you\u2019d like a reminder 60 days before it. \u00b7 <button type="button" class="linkish" data-action="med-edit">Add date</button> ${chip("", "Not set")}</p>`;
+    return `<div class="inset med-block" id="med-block" style="margin:.4rem 0 .2rem 2.2rem">
+      <label class="field"><span>What will you use for your checkride? ${VERIFY}</span><select id="med-type" data-med="type"><option value="" ${o ? "" : "selected"}>Not set</option>${MED_OPTS.map(([v, l]) => `<option value="${v}" ${m.type === v ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></label>
+      <p class="muted small" style="margin:.25rem 0 0">Pick what\u2019s on your certificate or card. Not sure which one you need? Your CFI or AME can tell you.</p>
+      ${m.type === "basicmed" ? `<p class="muted small" style="margin:.25rem 0 0">BasicMed has more than one date to keep current. Enter the one that comes first, and check the details with your CFI. ${VERIFY}</p>` : ""}
+      ${m.type === "dl" ? `<p class="muted small" style="margin:.25rem 0 0">A U.S. driver\u2019s license can work for some Sport Pilot checkrides. Check with your CFI that it covers yours. ${VERIFY}</p>` : ""}
+      ${dated ? `<label class="field" style="max-width:240px;margin-top:.5rem"><span>${m.type === "dl" ? "License expires (optional)" : "Valid through (optional)"}</span><input type="date" id="med-date" data-med="date" value="${esc(m.date || "")}" /></label><p class="muted small" style="margin:.25rem 0 0">Enter the date shown for the privileges you\u2019ll use on your checkride. You can skip this.</p>` : ""}
+      ${row}
+    </div>`;
+  }
+
+  // ---- C (wl.offer.*, D5/D14/D19/D23): the waitlist-offer screen. Hold end in the student's own zone (D19).
+  const wlOf = (dpeId) => { S.wl = S.wl || {}; return S.wl[dpeId] || (S.wl[dpeId] = { pos: 4, passes: 0 }); }; // mock place in line
+  const WL_BACK = 12; // mock "back of the line"
+  const quietHour = (ts) => { const h = new Date(ts).getHours(); return h >= 21 || h < 8; };
+  function offerHold(n, sl) {
+    const st = slotStart(sl), t0 = n.ts;
+    if (st - t0 < 72 * 3600e3) return { end: Math.min(t0 + 30 * 60e3, st), kind: "short" };
+    const end = t0 + 2 * 3600e3;
+    if (quietHour(end)) { const x = new Date(end); if (x.getHours() >= 21) x.setDate(x.getDate() + 1); x.setHours(9, 0, 0, 0); return { end: x.getTime(), kind: "quiet" }; }
+    return { end, kind: "std" };
+  }
+  const readerTime = (ts) => `${fmtIn(ts, undefined, { hour: "numeric", minute: "2-digit" })} ${readerZoneLabel()}`;
+  const sameReaderDay = (a, b) => new Date(a).toDateString() === new Date(b).toDateString();
+  function viewOffer(q, id) {
+    const n = S.notifications.find((x) => x.id === id), sl = n && S.slots.find((x) => x.id === n.slotId), dp = n && dpeById(n.dpeId);
+    if (!n || !sl || !dp) return `<div class="page">${emptyState({ id: "offer-not-found", ic: "bell", h: "h1", title: "Already taken", body: "", actions: `<a class="btn" href="#/alerts">Alerts</a><a class="btn secondary" href="#/search">Find another opening</a>` })}</div>`;
+    S.offers = S.offers || {};
+    const o = S.offers[id] || {}, wl = wlOf(dp.id), f = esc(first(dp.name)), when = esc(slotAt(sl)), h = offerHold(n, sl), now = Date.now();
+    const mineB = sl.bookingId && S.bookings.find((x) => x.id === sl.bookingId && x.mine);
+    const ended = !mineB && (now > h.end || !slotLive(sl)); // QA-039: a started slot ends the offer
+    const endT = `<b data-hold-end="${h.end}">${readerTime(h.end)}</b>`;
+    const body = h.kind === "short" ? `${when}. This one\u2019s coming up fast, so we can hold it for 30 minutes, until ${endT}. If you miss it overnight, that\u2019s fine: it doesn\u2019t count as a pass, and you keep your place.`
+      : h.kind === "quiet" ? `${when}. It\u2019s yours to request until <b data-hold-end="${h.end}">${readerTime(h.end)} ${sameReaderDay(h.end, now) ? "today" : "tomorrow"}</b> (${fmtIn(h.end, undefined, { weekday: "short", month: "short", day: "numeric" })}), so you won\u2019t miss it overnight.`
+      : `${when}. It\u2019s yours to request until ${endT}${sameReaderDay(h.end, now) ? " today" : ""}. After that, it goes to the next person in line.`;
+    const cert = n.cert, fee = dp.fees[cert], dep = depositFor(dp, cert);
+    const al = S.alerts.find((a) => a.cert === cert) || {};
+    const travel = allIn(dp, cert, nearFor(al.near, dp), sl.airport).travel;
+    const allin = `Examiner fee ${money(fee)} \u00b7 Checkride Connect: ${FEES ? `${money(BOOKING_FEE)} student booking fee (mock) <span class="pill warn">Proposed pricing</span>` : "free"} \u00b7 deposit ${money(dep)}, paid directly to ${f} under ${f}\u2019s terms \u00b7 travel: ${sl.airport === dp.home && !travel ? "none, this slot is at the examiner\u2019s home airport" : money(travel)}`;
+    const endedText = (!o.passed && quietHour(h.end)) ? `That opening\u2019s hold ended overnight, so it went to the next person. No pass counted. You\u2019re still #${wl.pos}.`
+      : o.passed ? "" : wl.passes >= 1 ? `That hold ended, so the slot went to the next person. We counted it as a pass. You\u2019re now #${WL_BACK}, at the back of the line.` : `That hold ended, so the slot went to the next person. We counted it as a pass. You\u2019re still #${wl.pos}.`;
+    return `<div class="page">
+      ${head("OPENING AVAILABLE", "A slot opened.", "Your call.")}
+      <section class="card" id="wl-offer" data-offer-kind="${h.kind}">
+        <h2>A slot opened with ${esc(dp.name)}</h2>
+        ${mineB ? `<p>${reqPill(mineB)}</p>` : ended ? `<p class="small" data-offer-ended>${endedText || "Already taken"}</p>` : `<p data-offer-chip>${chip("warn", `Held for you until ${readerTime(h.end)}`)}</p><p data-offer-body>${body}</p>
+        <p class="small muted" data-hold-rule>We hold openings for 2 hours, or 30 minutes if the slot is less than 3 days away. If a 2-hour hold would end overnight (9 PM\u20138 AM your time), we hold it until 9 AM.</p>
+        <p class="small" data-offer-allin>${allin}</p>
+        ${o.passed ? "" : `<p class="small muted" data-pass-rule>Pass once and you keep your place. Pass twice and you move to the back of the line. A hold that runs out overnight doesn\u2019t count as a pass.</p>`}
+        <div class="row"><button class="btn cta" data-action="request" data-slot="${sl.id}" data-cert="${cert}">Request this slot</button>${o.passed ? "" : `<button class="btn secondary" data-action="offer-pass" data-id="${id}">Pass, keep my place</button>`}</div>`}
+        <p class="muted small" style="margin:.75rem 0 0">${n.channel ? esc(n.channel) : "Mock alert \u00b7 nothing was sent"}</p>
+      </section>
+    </div>`;
+  }
+  // ux-copy-v3 §5.6: no-show card and dispute state (student side).
+  function noShowCard(b, s, dp) {
+    if (!b.noShow || !s) return "";
+    const f = esc(first(dp.name)), by = nsDisputeBy(s), d = b.noShow.dispute;
+    const tail = d ? (d.status === "reversed" ? `We reviewed it and removed the no-show from your record. Your deposit still follows ${f}\u2019s terms.`
+      : d.status === "upheld" ? "We reviewed it, and the no-show stays on your record. Thanks for telling us what happened."
+      : "Got it. We\u2019ll show the outcome here.")
+      : Date.now() <= by ? `Think this is wrong? \u00b7 <button type="button" class="linkish" data-action="ns-dispute" data-id="${b.id}">Dispute by ${fmtIn(by, slotTz(s), { month: "short", day: "numeric" })}</button>`
+      : "The 7-day dispute window for this no-show has closed.";
+    return `<div class="small cancel-outcome" data-noshow="${d ? d.status : "open"}" style="margin-top:.35rem"><b>Marked as a no-show by ${f} for your confirmed checkride on ${slotAt(s)} \u00b7 The slot is closed \u00b7 Deposit: per ${f}\u2019s terms</b><div>${tail}</div><div class="muted">Prototype: nothing is charged.</div></div>`;
+  }
   function viewBookings() {
     const mine = S.bookings.filter((b) => b.mine).sort((a, b) => b.createdAt - a.createdAt);
     return `<div class="page">
@@ -987,8 +1339,8 @@ const closeModal = () => {
             </div></div>
             <div class="row">
               <a class="btn secondary sm" href="#/request/${b.id}">Open request</a>
-              ${b.status === "requested" ? `<button class="btn secondary sm" data-action="as-dpe" data-dpe="${dp.id}">Respond as ${esc(first(dp.name))} (demo)</button><button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Cancel request</button>` : ""}
-              ${b.status === "confirmed" ? `<a class="btn secondary sm" href="#/my-checklists">From your examiner</a><button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Cancel checkride</button>` : ""}
+              ${b.status === "requested" ? `<button class="btn secondary sm" data-action="as-dpe" data-dpe="${dp.id}">Respond as ${esc(first(dp.name))} (demo)</button><button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Withdraw request</button>` : ""}
+              ${b.status === "confirmed" && !b.noShow ? `<a class="btn secondary sm" href="#/my-checklists">From your examiner</a><button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Cancel checkride</button>` : ""}
             </div>
           </div>
           <div class="summary small" style="margin-top:.8rem">
@@ -1000,6 +1352,7 @@ const closeModal = () => {
           </div>
           <div class="muted small" style="margin-top:.5rem">${b.status === "requested" ? `Waiting for ${esc(first(dp.name))} to review your request. Nothing is confirmed until ${esc(first(dp.name))} accepts. Nothing charged.` : b.status === "confirmed" ? `Confirmed. In a real version: Deposit paid to your examiner (mock) ${FEES ? "and the booking fee charged now" : "under their terms"}; this prototype charged nothing.` : b.status === "declined" ? `${esc(first(dp.name))} couldn't take this request. Nothing was confirmed, so nothing changes on your side.` : ""}</div>
           ${b.status === "cancelled" ? `<div class="small cancel-outcome" data-outcome="${esc(b.cancel?.fee || "none")}" style="margin-top:.35rem"><b>${cancelLine(b, s)}</b><div class="muted">Prototype: nothing is charged.</div></div>` : ""}
+          ${noShowCard(b, s, dp)}
           ${FEES && b.status === "confirmed" && slotStart(s) - Date.now() >= H48 ? `<div class="small" data-cutoff style="margin-top:.35rem">Cancel by ${tsWhen(slotStart(s) - H48, slotTz(s))} to get your $15 back as a credit. ${LEGAL_TAG}</div>` : ""}
           ${examinerTerms(dp)}
           <div class="muted small" style="margin-top:.35rem" data-policy>${POLICY_SHORT} <a href="#/pricing#deposit-policy">How cancellations work</a></div>
@@ -1036,10 +1389,10 @@ const closeModal = () => {
     if (!b) return `<div class="page">${emptyState({ id: "request-not-found", ic: "inbox", h: "h1", title: "Request not found", body: "It may have been cancelled, or the demo was reset.", actions: `<a class="btn" href="#/requests">Back to dashboard</a>` })}</div>`;
     const s = S.slots.find((x) => x.id === b.slotId), c = S.curated[b.id];
     const back = `<p><a href="#/requests">← Back to dashboard</a></p>`;
-    if (b.status !== "confirmed") return `<div class="page">${back}<div class="card empty"><h2>Accept the request first</h2><p>A checklist can be built once the request is confirmed.</p></div></div>`;
+    if (b.status !== "confirmed") return `<div class="page">${back}<div class="card empty"><h1 class="h3">Accept the request first</h1><p>A checklist can be built once the request is confirmed.</p></div></div>`;
     const head = `<div class="page-head row spread"><div><h1 style="margin:0">Curated checklist <span class="pill warn" style="vertical-align:middle">Prototype</span></h1><p class="muted" style="margin:0">${esc(b.applicant)} · ${esc(certById(b.cert).name)} · ${fmtDate(s.date)} · ${s.airport}${b.mine ? " · request made in Student view" : " · sample applicant"}</p></div></div>`;
     if (!c) return `<div class="page">${back}${head}<section class="card"><h2>Start your list</h2><p class="muted">Begin with the standard ${esc(certById(b.cert).short)} checklist (an unverified draft) and edit it, or start blank.</p>
-      <div class="row"><button class="btn" data-action="cl-start" data-id="${b.id}" data-mode="std">Start from standard ${esc(certById(b.cert).short)} list</button><button class="btn secondary" data-action="cl-start" data-id="${b.id}" data-mode="blank">Start blank</button></div></section></div>`;
+      <div class="row"><button class="btn" data-action="cl-start" data-id="${b.id}" data-mode="std">Start from standard ${esc(certById(b.cert).short)} list</button><button class="btn secondary" data-action="cl-start" data-id="${b.id}" data-mode="blank">Start blank</button></div></section>${prepEditor(b)}</div>`;
     const dirty = !c.sent || JSON.stringify({ i: c.items, n: c.note }) !== JSON.stringify({ i: c.sent.items, n: c.sent.note });
     return `<div class="page">${back}${head}
       <div class="split-r">
@@ -1065,6 +1418,7 @@ const closeModal = () => {
           <p class="muted small" style="margin:.75rem 0 0">${b.mine ? "The student sees this under From your examiner in Student view. No email is sent." : "This is a sample applicant, so only the saved copy exists. Requests made in Student view receive the list under From your examiner. No email is sent."} Student ticks are kept for items that stay in the list.</p>
         </aside>
       </div>
+      ${prepEditor(b)}
     </div>`;
   }
 
@@ -1091,11 +1445,13 @@ const closeModal = () => {
               <div style="flex:1;min-width:220px"><b>${esc(b.applicant)}</b> · ${esc(certById(b.cert).name)}${b.mine ? ' <span class="pill accent">from Student view</span>' : b.school ? ' <span class="pill accent">from Demo Flight Academy</span>' : ""}
                 <div class="small">${fmtDate(s.date)} · ${slotTime(s)} · ${s.airport}</div>
                 <div class="muted small">${esc(b.aircraft)} · CFI: ${esc(b.cfi)}</div>
+                ${dpeHoldLine(b, s)}${dpeNoShowLine(b)}
                 <div class="row small" style="margin-top:.3rem;gap:.5rem"><div style="width:120px">${seg9(of9(b.readiness))}</div>${countPill(of9(b.readiness))}${b.selfCheck ? ` · <span class="pill">Self-attested readiness${b.selfCheck.warnings ? `, ${plural(b.selfCheck.warnings, "warning")}` : ""} (unverified)</span>` : ""}</div>
                 ${selfCheckDetails(b)}
               </div>
               <div class="row"><button class="btn good sm" data-action="accept" data-id="${b.id}">Accept request</button><button class="btn bad sm" data-action="decline" data-id="${b.id}">Decline</button></div>
             </div>`; }).join("") : emptyState({ id: "dpe-pending-empty", ic: "check", cls: "", title: "", body: "No new requests. They'll show up here." })}
+            ${myBookings.filter((b) => isWithdrawn(b) && Date.now() - b.cancel.at < 7 * DAY).map((b) => `<p class="small muted" data-dpe-withdrawn="${b.id}" style="margin:.5rem 0 0">${cancelLine(b, slotOf(b))}</p>`).join("")}
           </section>
           <section class="card">
             <h2>Confirmed checkrides &amp; checklists</h2>
@@ -1103,13 +1459,13 @@ const closeModal = () => {
             ${confirmed.length ? confirmed.map((b) => { const s = S.slots.find((x) => x.id === b.slotId); const c = S.curated[b.id]; return `<div class="slot-row">
               <div style="flex:1;min-width:220px"><b>${esc(b.applicant)}</b> · ${esc(certById(b.cert).name)}${b.mine ? ' <span class="pill accent">from Student view</span>' : b.school ? ' <span class="pill accent">from Demo Flight Academy</span>' : ""}
                 <div class="small">${fmtDate(s.date)} · ${slotTime(s)} · ${s.airport}</div></div>
-              <div class="row">${c?.sent ? '<span class="pill good">Checklist sent</span>' : c ? '<span class="pill warn">Draft</span>' : '<span class="pill">No checklist yet</span>'}<a class="btn secondary sm" href="#/dpe-checklist/${b.id}">${c ? "Edit checklist" : "Build checklist"}</a></div>
+              <div class="row">${c?.sent ? '<span class="pill good">Checklist sent</span>' : c ? '<span class="pill warn">Draft</span>' : '<span class="pill">No checklist yet</span>'}<a class="btn secondary sm" href="#/dpe-checklist/${b.id}">${c ? "Edit checklist" : "Build checklist"}</a>${b.noShow ? `<span class="pill bad" data-ns-marked="${b.id}">No-show</span>` : slotStart(s) <= Date.now() ? `<button class="btn ghost sm" data-action="ns-mark" data-id="${b.id}">Mark no-show</button>` : ""}</div>
             </div>`; }).join("") : emptyState({ id: "dpe-confirmed-empty", ic: "list", cls: "", title: "", body: "No confirmed checkrides yet. When you accept a request, that applicant's checklist shows up here." })}
           </section>
           <section class="card">
             <h2>Upcoming calendar</h2>
             <div class="table-wrap"><table>
-              <thead><tr><th>Date</th><th>Airport</th><th>Status</th><th>Applicant</th><th></th></tr></thead>
+              <thead><tr><th>Date</th><th>Airport</th><th>Status</th><th>Applicant</th><th><span class="sr-only">Actions</span></th></tr></thead>
               <tbody>${mySlots.slice(0, 14).map((s) => { const b = s.bookingId ? S.bookings.find((x) => x.id === s.bookingId) : null; return `<tr>
                 <td>${fmtDate(s.date)} <span class="muted small">${slotTime(s)}</span></td><td>${s.airport}</td><td>${statusPill(s.status)}</td>
                 <td>${b && s.status !== "open" ? `${esc(b.applicant)} <span class="muted small">${esc(certById(b.cert).short)}</span>` : '<span class="muted">—</span>'}</td>
@@ -1187,7 +1543,10 @@ const closeModal = () => {
     const dp = dpeById(S.actingDpe) || D.dpes[0];
     const dtz = aptTz(dp.home);
     const nearby = D.airports.filter((a) => distNm(dp.home, a.id) <= dp.travelNm).map((a) => a.id);
-    const mine = S.slots.filter((x) => x.dpeId === dp.id && x.status === "open" && x.date >= slotToday(x)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time)).slice(0, 5);
+    const mineAll = S.slots.filter((x) => x.dpeId === dp.id && x.status === "open" && x.date >= slotToday(x) && !slotPast(x)).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    // QA-035 / QA-008: the just-published (or already-published) opening is always listed, so focus can move to it.
+    const hi = ui.pubHighlight && mineAll.find((x) => x.id === ui.pubHighlight.id);
+    const mine = mineAll.slice(0, 5); if (hi && !mine.includes(hi)) mine.push(hi);
     return `<div class="page">
       <div class="page-head row spread">
         ${head("Your examiner desk", "Publish an opening.", "", "One date at a time. For your weekly pattern, use Calendar.", "h1")}
@@ -1207,11 +1566,11 @@ const closeModal = () => {
               <fieldset style="border:0;padding:0;margin:0"><legend class="small muted" style="font-weight:600;margin-bottom:.3rem">CERTIFICATES OFFERED</legend>
                 <div class="row small">${Object.keys(dp.fees).map((c) => `<label class="row" style="gap:.3rem"><input type="checkbox" name="certs" value="${c}" checked /> ${esc(certById(c).short)}</label>`).join("")}</div>
               </fieldset>
-              <button class="btn" type="submit">Publish opening</button>
+              <button class="btn" type="submit" id="publish-submit">Publish opening</button>
             </form>
           </section>
           <section class="card small" id="publish-upcoming"><h2 class="h3">Your next open dates</h2>
-            ${mine.length ? `<ul class="plain">${mine.map((x) => `<li>${slotWhenLong(x)} \u00b7 ${x.airport}</li>`).join("")}</ul>` : '<p class="muted">No open dates yet.</p>'}
+            ${mine.length ? `<ul class="plain">${mine.map((x) => `<li id="pub-${x.id}" tabindex="-1">${slotWhenLong(x)} \u00b7 ${x.airport}${hi && hi.id === x.id ? ` <span class="pill ${ui.pubHighlight.dup ? "warn" : "good"}">${ui.pubHighlight.dup ? "Already published" : "Just published"}</span>` : ""}</li>`).join("")}</ul>` : '<p class="muted">No open dates yet.</p>'}
           </section>
       </div>
     </div>`;
@@ -1221,7 +1580,7 @@ const closeModal = () => {
     const dp = dpeById(S.actingDpe) || D.dpes[0];
     const a = availOf(dp.id), fr = freshOf(dp.id);
     const next = dpeNextOpen(dp.id);
-    const dates = Array.from({ length: 21 }, (_, i) => addDaysIn(i, aptTz(dp.home)));
+    const dates = Array.from({ length: 21 }, (_, i) => addDaysIn(i + 1, aptTz(dp.home))); // QA-039: same lead-time rule as the Publish form
     const weeks = [];
     dates.forEach((d) => {
       const dt = parseIso(d); const mon = new Date(dt); mon.setDate(dt.getDate() - ((dt.getDay() + 6) % 7));
@@ -1231,7 +1590,8 @@ const closeModal = () => {
     });
     const near = D.airports.filter((x) => x.id === dp.home || distNm(dp.home, x.id) <= dp.travelNm).map((x) => x.id);
     const row = (d) => {
-      const cur = S.slots.filter((x) => x.dpeId === dp.id && x.date === d && x.status !== "removed").sort((x, y) => x.time.localeCompare(y.time));
+      const all = S.slots.filter((x) => x.dpeId === dp.id && x.date === d && x.status !== "removed").sort((x, y) => x.time.localeCompare(y.time));
+      const cur = all.filter((x) => !isOneOff(x)), ones = all.length - cur.length; // QA-040: the pattern row shows pattern slots only
       const taken = cur.filter((x) => x.status !== "open").length;
       const firstOpen = cur.find((x) => x.status === "open") || cur[0];
       const isOpen = cur.length > 0;
@@ -1241,13 +1601,13 @@ const closeModal = () => {
       const sunday = parseIso(d).getDay() === 0;
       return `<div class="avail-day ${isOpen ? "is-open" : ""}" data-date="${d}">
         <div class="avail-top">
-          <div class="avail-date"><b>${fmtDate(d, { weekday: "short", month: "short", day: "numeric" })}</b>${taken ? `<span class="small muted">${plural(taken, "request/booking")} on this day</span>` : sunday ? `<span class="small muted">Sunday</span>` : ""}</div>
+          <div class="avail-date"><b>${fmtDate(d, { weekday: "short", month: "short", day: "numeric" })}</b>${taken ? `<span class="small muted">${plural(taken, "request/booking")} on this day</span>` : sunday ? `<span class="small muted">Sunday</span>` : ""}${ones ? `<span class="small muted" data-oneoff-count="${ones}">${plural(ones, "one-off opening")} on this day, not changed by the weekly pattern</span>` : ""}</div>
           <label class="switch"><input type="checkbox" name="open-${d}" ${isOpen ? "checked" : ""} aria-label="Open on ${fmtDate(d)}" /><span class="track"></span><span class="lbl on">Open</span><span class="lbl off">Closed</span></label>
         </div>
         <div class="avail-fields">
           <label class="field"><span>Checkrides</span><select name="cap-${d}">${Array.from({ length: maxCap }, (_, i) => i + 1).map((n) => `<option value="${n}" ${n === cap ? "selected" : ""} ${n < taken ? "disabled" : ""}>${n}</option>`).join("")}</select></label>
           <label class="field"><span>Start time (airport local)</span><select name="time-${d}">${times.map((tm) => `<option value="${tm}" ${firstOpen && firstOpen.time === tm ? "selected" : ""}>${fmtTime(tm)}</option>`).join("")}</select></label>
-          <label class="field"><span>Airport</span><select name="airport-${d}">${near.map((x) => `<option value="${x}" ${(firstOpen ? firstOpen.airport : dp.home) === x ? "selected" : ""}>${x}</option>`).join("")}</select></label>
+          <label class="field"><span>Airport</span><select name="airport-${d}">${[...new Set([...near, ...(firstOpen ? [firstOpen.airport] : [])])].map((x) => `<option value="${x}" ${(firstOpen ? firstOpen.airport : dp.home) === x ? "selected" : ""}>${x}</option>`).join("")}</select></label>
           <label class="field avail-note"><span>Note (optional)</span><input name="note-${d}" maxlength="80" value="${esc((firstOpen && firstOpen.note) || "")}" placeholder="e.g. orals at 8, flight after lunch" /></label>
         </div>
       </div>`;
@@ -1431,7 +1791,7 @@ const closeModal = () => {
     const items = [
       ...r.end.map((e, i) => `<li>${A.end[i] ? "Confirmed" : "Not confirmed"}: ${esc(e.replace(/ \(draft cite.*\)$/, ""))}</li>`),
       ...r.hours.map(([k, l, min]) => `<li>${esc(l)}: <b>${A.h[k] === "" || A.h[k] === undefined ? "not entered" : esc(String(A.h[k])) + " h"}</b> <span class="muted">(draft min ${min} h)</span></li>`),
-      ...(r.test ? [`<li>Knowledge test: ${A.ktPass ? "passed" : "not marked passed"}${A.ktDate ? ` ${fmtDate(A.ktDate)}, result expires ${fmtDate(ktExpiry(A.ktDate))} (draft rule)` : ""}</li>`] : []),
+      ...(r.test ? [`<li>Knowledge test: ${A.ktPass ? "passed" : "not marked passed"}${A.ktDate ? ` ${fmtDateY(A.ktDate)}, result expires ${fmtDateY(ktExpiry(A.ktDate))} (draft rule)` : ""}</li>`] : []),
       `<li>IACRA application started: ${A.iacra ? "yes" : "no"}</li>`,
     ].join("");
     const w = sc.warn || [];
@@ -1480,7 +1840,7 @@ const closeModal = () => {
       const readySec = `<section class="card stack" id="cohort-ready">
         <h2 style="margin:0">Readiness check per student <span class="pill warn" style="vertical-align:middle">Self-attested</span></h2>
         <p class="small muted" style="margin:0">Same draft checks as a student request: endorsements, logbook hours, knowledge test (24-calendar-month draft rule), plus IACRA started. Cohort requests also warn below ${of9(COHORT_PCT_MIN)} of 9 ready. Unverified draft, not legal or FAA advice. Blocked students are left out of matching; fix their answers or proceed with the eligible students.</p>
-        <div class="table-wrap"><table class="ready-table"><thead><tr><th>Student</th><th>Status</th><th>Reasons and warnings</th><th></th></tr></thead><tbody>${readyRows}</tbody></table></div>
+        <div class="table-wrap"><table class="ready-table"><thead><tr><th>Student</th><th>Status</th><th>Reasons and warnings</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>${readyRows}</tbody></table></div>
         <p class="small" id="cohort-eligible" style="margin:0"><b>${plan.eligible.length} of ${students.length}</b> eligible.${plan.blocked.length ? ` Not included: ${plan.blocked.map((c) => esc(c.st.name)).join(", ")}.` : ""}</p>
       </section>`;
       const rule = `<p class="rank-rule small" id="cohort-rule"><b>How options are ranked:</b> 1) soonest date that fits, 2) lowest total all-in cost for the group (examiner fee + ${FEES ? `${money(BOOKING_FEE)} booking fee + ` : ""}example aircraft and travel estimates from ${esc(sc.airport)}), 3) examiner name A–Z. ${P.together ? "With <b>Keep the cohort together</b> on, one-examiner, one-day options win when any fit everyone; otherwise" : "With <b>Keep the cohort together</b> off,"} each student is placed by the same rule, most constrained student first, and can be split across examiners and days. Example numbers, not quotes.</p>`;
@@ -1491,14 +1851,14 @@ const closeModal = () => {
       else if (plan.mode === "split") head = `<div class="fit-head warn"><b>${plan.options.length ? "Split chosen." : `No single examiner-day fits all ${plan.placeable.length}.`}</b> Best-fit split: ${plural(plan.split.dpCount, "examiner")}, ${plural(new Set(plan.assign.map((x) => x.date)).size, "day")}, ${plan.assign.length} of ${plan.eligible.length} eligible students placed, total all-in ${money(plan.split.total)} (example).${plan.unplaced.length ? ` ${plural(plan.unplaced.length, "student")} can\u2019t be placed (${plan.unplaced.map((x) => esc(x.name)).join(", ")}).` : ""}</div>`;
       else head = `<div class="fit-head bad"><b>No open slots fit.</b> Nothing open for the eligible students with ${where} in ${fmtDate(P.from)} to ${fmtDate(P.to)}${dp && isStale(dp.id) ? ` (${esc(dp.name)}\u2019s availability is not recently confirmed)` : ""}. Try another examiner or a wider window.</div>`;
       const warnList = [];
-      plan.noFit.forEach((st) => warnList.push(`${esc(st.name)}: no open slot for ${esc(certById(st.cert).name)} with ${where} before ${fmtDate(P.to < ktLimit(st) ? P.to : ktLimit(st))}${ktLimit(st) < P.to ? " (knowledge-test expiry)" : ""}`));
+      plan.noFit.forEach((st) => warnList.push(`${esc(st.name)}: no open slot for ${esc(certById(st.cert).name)} with ${where} before ${fmtDateA(P.to < ktLimit(st) ? P.to : ktLimit(st))}${ktLimit(st) < P.to ? " (knowledge-test expiry)" : ""}`));
       // Alternatives considered (ranked).
       const best = plan.chosen;
       const alts = [...plan.options.slice(0, 6)];
       const altRows = alts.map((o, n) => ({ o, rank: n + 1 }));
       if (plan.split && (!plan.options.length || plan.split.dpCount > 1 || plan.split.date !== plan.split.lastDate)) altRows.push({ o: plan.split, rank: null });
       const altTable = altRows.length ? `<div class="table-wrap"><table class="cohort-alts" id="cohort-alts"><caption class="small muted" style="text-align:left;padding:.4rem 0">Alternatives considered: ${plural(plan.options.length, "whole-cohort option")} out of ${plural(plan.examinerDays, "examiner-day")} with openings${plan.options.length > 6 ? ", top 6 shown" : ""}${altRows.some((x) => x.o.split) ? ", plus the per-student split" : ""}</caption>
-        <thead><tr><th>Rank</th><th>Option</th><th>Dates</th><th class="num">Students</th><th class="num">Total all-in</th><th class="num">vs. selected</th><th></th></tr></thead><tbody>${altRows.map(({ o, rank }) => {
+        <thead><tr><th>Rank</th><th>Option</th><th>Dates</th><th class="num">Students</th><th class="num">Total all-in</th><th class="num">vs. selected</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>${altRows.map(({ o, rank }) => {
           const isSel = best && optKey(o) === optKey(best);
           const d = best ? o.total - best.total : 0;
           const label = o.split ? `Split across ${plural(o.dpCount, "examiner")}` : `${esc(o.dp.name)} · ${o.dp.home}`;
@@ -1536,7 +1896,7 @@ const closeModal = () => {
     }
     const reqs = schoolBookings().slice().reverse();
     const reqSec = `<section class="card" id="cohort-requests"><h2>Cohort requests <span class="muted small" style="font-weight:400">(this browser, mock)</span></h2>
-      ${reqs.length ? reqs.map((b) => { const sl = S.slots.find((x) => x.id === b.slotId); const d2 = dpeById(b.dpeId); return `<div class="slot-row"><div style="flex:1;min-width:200px"><b>${esc(b.applicant)}</b> · ${esc(certById(b.cert).short)} ${statusPill(b.status)}<div class="small">${esc(d2.name)} · ${fmtDate(sl.date)} · ${slotTime(sl)} · ${sl.airport}</div><div class="small muted">Due if accepted ${money(b.depositUsd + b.bookingFeeUsd)} · actually charged $0${b.selfCheck && b.selfCheck.warn && b.selfCheck.warn.length ? ` · ${plural(b.selfCheck.warn.length, "readiness warning")}` : ""}</div></div>
+      ${reqs.length ? reqs.map((b) => { const sl = S.slots.find((x) => x.id === b.slotId); const d2 = dpeById(b.dpeId); return `<div class="slot-row"><div style="flex:1;min-width:200px"><b>${esc(b.applicant)}</b> · ${esc(certById(b.cert).short)} ${bookingPill(b)}<div class="small">${esc(d2.name)} · ${fmtDate(sl.date)} · ${slotTime(sl)} · ${sl.airport}</div><div class="small muted">Due if accepted ${money(b.depositUsd + b.bookingFeeUsd)} · actually charged $0${b.selfCheck && b.selfCheck.warn && b.selfCheck.warn.length ? ` · ${plural(b.selfCheck.warn.length, "readiness warning")}` : ""}</div></div>
         <div class="row">${b.status === "requested" ? `<button class="btn secondary sm" data-action="as-dpe" data-dpe="${d2.id}">Respond as ${esc(first(d2.name))} (demo)</button>` : ""}${b.status === "requested" || b.status === "confirmed" ? `<button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Cancel</button>` : ""}</div></div>`; }).join("") : emptyState({ id: "cohort-requests-empty", ic: "calendar", cls: "", title: "", body: "No cohort requests yet. Pick students and an option above, then request it (mock)." })}
     </section>`;
     return `<div class="page cohort-page">
@@ -1573,7 +1933,7 @@ const closeModal = () => {
     const scheduled = st.filter((s) => studentBooking(s) || s.status === "confirmed" || s.status === "requested").length;
     const status = (s) => {
       const sb = studentBooking(s);
-      if (sb) { const sl = S.slots.find((x) => x.id === sb.slotId); return `${statusPill(sb.status)} <span class="small">${fmtDate(sl.date)} · ${esc(dpeById(sb.dpeId).name)}</span>`; }
+      if (sb) { const sl = S.slots.find((x) => x.id === sb.slotId); return `${bookingPill(sb)} <span class="small">${fmtDate(sl.date)} · ${esc(dpeById(sb.dpeId).name)}</span>`; }
       if (s.status === "confirmed") return `<span class="pill good">Confirmed</span> <span class="small">${fmtDate(addDays(s.daysOut))} · ${esc(dpeById(s.dpe).name)}</span>`;
       if (s.status === "requested") return `<span class="pill warn">Awaiting examiner</span> <span class="small">${fmtDate(addDays(s.daysOut))} · ${esc(dpeById(s.dpe).name)}</span>`;
       if (s.status === "alert") return `<span class="pill accent">Mock alert active</span>`;
@@ -1604,13 +1964,13 @@ const closeModal = () => {
       <p class="eyebrow" id="roster-label">Your students · ${st.length}</p>
       <h2>Roster <span class="muted small" style="font-weight:400">(mock, fictional students)</span></h2>
       <section class="card"><div class="table-wrap"><table>
-        <thead><tr><th>Student</th><th>Checkride</th><th>CFI</th><th>Readiness</th><th>Endorsements</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Student</th><th>Checkride</th><th>CFI</th><th>Readiness</th><th>Endorsements</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead>
         <tbody>${st.map((s) => `<tr>
           <td><b>${esc(s.name)}</b></td><td>${esc(certById(s.cert).short)}</td><td class="small">${esc(s.cfi)}</td>
           <td><div class="row" style="gap:.5rem;flex-wrap:nowrap"><div style="width:90px">${seg9(of9(s.readiness))}</div>${countPill(of9(s.readiness))}</div></td>
           <td>${s.endorsed ? '<span class="pill good">Signed</span>' : '<span class="pill warn">Pending</span>'}</td>
           <td>${status(s)}</td>
-          <td class="num"><div class="row" style="justify-content:flex-end;flex-wrap:nowrap">${s.status === "none" && !studentBooking(s) ? `<a class="btn sm" href="#/search?cert=${s.cert}&near=${sc.airport}">Find slot</a>` : ""}<a class="btn ghost sm" href="#/checklists/${s.cert}">Checklist</a></div></td>
+          <td class="num"><div class="row" style="justify-content:flex-end;flex-wrap:nowrap">${s.status === "none" && !studentBooking(s) ? `<a class="btn sm" href="#/search?cert=${s.cert}&near=${sc.airport}" data-action="school-find" data-student="${esc(s.name)}">Find slot</a>` : ""}<a class="btn ghost sm" href="#/school/readiness">Checklist</a></div></td>
         </tr>`).join("")}</tbody>
       </table></div></section>
       <p class="muted small" style="margin-top:1rem">Planned${FEES ? " for school tiers" : ""} (not built): shared alerts for the roster, and one view of checklist progress.</p>
@@ -1682,7 +2042,7 @@ const closeModal = () => {
           <li>Sample profile and calendar</li><li>Booking requests: approve or decline</li><li>Curated checklists for approved students</li></ul>
           <a class="btn secondary" href="#" data-action="set-role" data-role="dpe">See the DPE view</a></div>
         <div class="card plan"><h3>Students · booking fee</h3><div class="p">${money(BOOKING_FEE)}<span class="muted small" style="font-weight:400"> / booking</span></div><ul class="small">
-          <li>Search, fee comparison and checklists are free</li><li>Plus the Deposit paid to your examiner (mock), credited toward their fee</li><li>Shown in the mock booking flow, never charged</li></ul>
+          <li>Search, fee comparison and checklists are free</li><li>Plus the deposit paid to your examiner (mock), credited toward their fee</li><li>Shown in the mock booking flow, never charged</li></ul>
           <a class="btn secondary" href="#/search">Try a mock request</a></div>
         <div class="card plan"><h3>Flight schools · proposed plans</h3><div class="p">$0 <span class="muted small" style="font-weight:400">to</span> $299<span class="muted small" style="font-weight:400"> / mo</span></div><ul class="small" id="pricing-tiers">
           ${TIERS.map((t) => `<li><b>${esc(t.name)}</b> ${t.price}${t.unit ? " " + esc(t.unit) : ""}</li>`).join("")}<li>Proposed pricing, not final. Selecting one is a mock.</li></ul>
@@ -1726,6 +2086,24 @@ const closeModal = () => {
   // Target month (ux-copy-v3 D9 "Target: Dec 2026 \u00b7 Change"). PM default, pending Drewbert: the month that contains today + 45 days.
   function defaultTarget() { return addDays(45).slice(0, 7); }
   const targetEnd = (ym) => { const [y, m] = ym.split("-").map(Number); return iso(new Date(y, m, 0)); };
+  // QA-037: feature-detect <input type=month>. An unsupported type falls back to "text" and doesn't sanitize values.
+  // window.CC_FORCE_MONTH_FALLBACK forces the fallback (tests).
+  const monthInputSupported = () => {
+    if (window.CC_FORCE_MONTH_FALLBACK) return false;
+    const i = document.createElement("input"); i.setAttribute("type", "month");
+    if (i.type !== "month") return false;
+    i.value = "not-a-month"; return i.value === "";
+  };
+  // Accepts 2027-03, 2027-3, 03/2027, 3/2027, "March 2027", "Mar 2027"; returns YYYY-MM or "".
+  const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+  const parseMonthText = (t) => {
+    t = String(t || "").trim().toLowerCase(); let y, m, r;
+    if ((r = t.match(/^(\d{4})[-/.](\d{1,2})$/))) { y = +r[1]; m = +r[2]; }
+    else if ((r = t.match(/^(\d{1,2})[-/.](\d{4})$/))) { y = +r[2]; m = +r[1]; }
+    else if ((r = t.match(/^([a-z]{3,9})\.?,?\s+(\d{4})$/)) && MONTHS.indexOf(r[1].slice(0, 3)) >= 0 && "january february march april may june july august september october november december".split(" ").some((n) => n.startsWith(r[1]))) { y = +r[2]; m = MONTHS.indexOf(r[1].slice(0, 3)) + 1; }
+    else return "";
+    return m >= 1 && m <= 12 && y >= 1900 && y <= 2999 ? `${y}-${String(m).padStart(2, "0")}` : "";
+  };
   const fmtMonth = (ym) => { const [y, m] = ym.split("-").map(Number); return new Date(y, m - 1, 1).toLocaleDateString("en-US", { month: "short", year: "numeric" }); };
   const targetChip = () => `<span class="pill" id="journey-target" data-target="${S.target}">Target: ${fmtMonth(S.target)} \u00b7 <button class="linkish" type="button" data-action="target-change" aria-haspopup="dialog">Change</button></span>`;
   const ROLL = { bad: ["bad", "Closed"], warn: ["warn", "Heads-up"], good: ["good", "On track"], none: ["", "Not set"] };
@@ -1739,9 +2117,9 @@ const closeModal = () => {
       const exp = ktExpiry(dates.kt), left = Math.round((parseIso(exp) - parseIso(ref)) / 864e5);
       const smp = S.ktSample ? " Sample date; change it on the readiness checklist." : "";
       if (exp < ref) { sigs.push("bad"); why.push(`Knowledge test result expired ${fmtDate(exp)} (draft rule).${smp}`); }
-      else if (left <= 90) { sigs.push("warn"); why.push(`Knowledge test result valid through ${fmtDate(exp)}, ${plural(left, "day")} after ${sl ? "your checkride date" : "today"} (draft rule).${smp}`); }
-      else if (!sl && exp < goal) { sigs.push("warn"); why.push(`Knowledge test result valid through ${fmtDate(exp)}, before the end of your target month (draft rule).${smp}`); }
-      else { sigs.push("good"); why.push(`Knowledge test result valid through ${fmtDate(exp)} (draft rule).${smp}`); }
+      else if (left <= 90) { sigs.push("warn"); why.push(`Knowledge test result valid through ${fmtDateY(exp)}, ${plural(left, "day")} after ${sl ? "your checkride date" : "today"} (draft rule).${smp}`); }
+      else if (!sl && exp < goal) { sigs.push("warn"); why.push(`Knowledge test result valid through ${fmtDateY(exp)}, before the end of your target month (draft rule).${smp}`); }
+      else { sigs.push("good"); why.push(`Knowledge test result valid through ${fmtDateY(exp)} (draft rule).${smp}`); }
     }
     const any = dates.kt || Object.values(r9).some(Boolean);
     const k = sigs.includes("bad") ? "bad" : sigs.includes("warn") ? "warn" : any ? "good" : "none";
@@ -1751,7 +2129,7 @@ const closeModal = () => {
   const ready9Count = () => { const r = S.ready9 || {}; return ["kt", "exp", "end", "med", "iacra", "docs", "id", "terms", "prep"].filter((k) => r[k]).length; };
 
   function viewLanding() {
-    const next = openSlots({ cert: "ppl" });
+    const next = openSlots({ cert: "ppl", state: "FL" });
     const s0 = next[0], dp = s0 && dpeById(s0.dpeId);
     const more = s0 ? openSlots({ dpeId: dp.id, cert: "ppl" }).slice(0, 2) : [];
     const x = s0 ? allIn(dp, "ppl", "KORL", s0.airport) : null;
@@ -1822,7 +2200,7 @@ const closeModal = () => {
     const roll = eligRollup();
     let state;
     if (cur && cur.status === "confirmed") state = `<p data-journey-state="confirmed">Confirmed: ${slotAt(s)} with ${esc(first(dp.name))}. Next: your readiness checklist. \u00b7 <a href="#/readiness">Open</a></p><p class="small muted">Checkride in ${plural(Math.max(daysUntil(s.date, slotTz(s)), 0), "day")} \u00b7 ${fmtDate(s.date)} with ${esc(first(dp.name))}</p>`;
-    else if (cur) state = `<p data-journey-state="requested">Request sent to ${esc(first(dp.name))} for ${slotAt(s)}. It\u2019s confirmed once ${esc(first(dp.name))} accepts. \u00b7 <a href="#/request/${cur.id}">View request</a></p>${(() => { const he = holdEnd(cur, s); return he && he > Date.now() ? `<p class="small muted" data-hold-end>Held for you until ${tsWhen(he, slotTz(s))} \u00b7 Not confirmed yet</p>` : ""; })()}`;
+    else if (cur) state = `<p data-journey-state="requested">Request sent to ${esc(first(dp.name))} for ${slotAt(s)}. It\u2019s confirmed once ${esc(first(dp.name))} accepts. \u00b7 <a href="#/request/${cur.id}">View request</a></p>${(() => { const he = holdEnd(cur, s); return he && he > Date.now() ? `<p class="small muted" data-hold-end>Held for you until ${tsWhen(he, slotTz(s))} \u00b7 Not confirmed yet</p>` : holdEnded(cur, s) ? holdEndedLine(cur) : ""; })()}`;
     else state = `<p data-journey-state="ready">${n === 9 ? "All set. " : ""}Time to request your examiner. \u00b7 <a href="#/search">Find an examiner</a></p>`;
     const cs = cur && cur.status === "confirmed" ? S.curated[cur.id] : null;
     const exam = cs && cs.sent ? (() => { const t = S.ticks[cur.id] || {}, it = cs.sent.items; return `<p>From your examiner \u00b7 ${esc(dp.name)} \u00b7 ${it.filter((i) => t[i.id]).length} of ${it.length} ready \u00b7 <a href="#/my-checklists">Open</a></p>`; })()
@@ -1866,7 +2244,7 @@ const closeModal = () => {
         <p class="muted small">${cur ? `For your ${esc(certById(cert).name)} checkride with ${esc(dp.name)} \u00b7 ${slotAt(s)}` : `For your ${esc(certById(cert).name)} checkride`}</p>
         ${cs && cs.sent ? `<p class="small">${esc(dp.name)} confirmed this list on ${fmtDate(iso(new Date(cs.sent.sentAt)), { month: "short", day: "numeric" })}.</p>` : ""}
         <div class="row" style="margin:.25rem 0 .5rem;gap:.75rem;align-items:end"><label class="field" style="max-width:240px"><span>Knowledge test date (optional)</span><input type="date" id="kt-date-r9" data-r9date="kt" value="${esc((S.ready9Dates || {}).kt || "")}" /></label>${rollChip(eligRollup())}</div>
-        <ol class="ready9">${items.map((it, i) => { const d = !!r9[it.id]; return `<li><label class="check-item ${d ? "done" : ""}"><input type="checkbox" data-r9="${it.id}" ${d ? "checked" : ""} /><div><div class="t"><span class="mono muted">${i + 1}</span> ${esc(it.t)}</div><div class="muted small">${it.h}</div>${it.lbl ? `<div class="small"><b>${it.lbl}</b></div>` : ""}${it.id === "prep" && cs && cs.sent ? `<a class="small" href="#/my-checklists">Open prep list</a>` : ""}</div></label></li>`; }).join("")}</ol>
+        <ol class="ready9">${items.map((it, i) => { const d = !!r9[it.id]; return `<li><label class="check-item ${d ? "done" : ""}"><input type="checkbox" data-r9="${it.id}" ${d ? "checked" : ""} /><div><div class="t"><span class="mono muted">${i + 1}</span> ${esc(it.t)}</div><div class="muted small">${it.h}</div>${it.lbl ? `<div class="small"><b>${it.lbl}</b></div>` : ""}${it.id === "prep" && cs && cs.sent ? `<a class="small" href="#/my-checklists">Open prep list</a>` : ""}</div></label>${it.id === "med" ? medicalBlock() : it.id === "prep" ? prepStudent(cur && cur.status === "confirmed" ? cur : null, dp) : ""}</li>`; }).join("")}</ol>
         <p class="small muted" style="margin:.75rem 0 0">A checklist to help you prepare, not an FAA requirement list. Your CFI and examiner have the final word.</p>
         <p class="small muted" style="margin:.25rem 0 0">Draft: verify with your CFI. Not legal or FAA advice. Ticks are saved in this browser only.</p>
       </section>
@@ -1912,7 +2290,7 @@ const closeModal = () => {
       <section class="card stack">
         <label class="field"><span>Theme</span><select id="more-theme" data-theme-select data-action-change="theme">${[["light", "Light"], ["dark", "Dark"], ["system", "System"]].map(([v, l]) => `<option value="${v}" ${v === theme ? "selected" : ""}>${l}</option>`).join("")}</select></label>
         <p class="small muted" style="margin:-.5rem 0 0">System follows your device\u2019s light or dark setting.</p>
-        <label class="field"><span>View as</span><select id="more-role" data-action-change="role">${ROLE_OPTS.map(([v, l]) => `<option value="${v}" ${v === S.role ? "selected" : ""}>${l}</option>`).join("")}</select></label>
+        <label class="field"><span>View as</span><select id="more-role" data-action-change="role">${ROLE_OPTS.map(([v, l]) => `<option value="${v}" ${v === S.role ? "selected" : ""}${v === "admin" ? " hidden disabled" : ""}>${l}</option>`).join("")}</select></label>
         <p class="small muted" style="margin:-.5rem 0 0">Prototype only: see the app as each role.</p>
       </section>
       ${groups.map(([g, rows]) => `<section class="card more-group"><h2 class="h3">${g}</h2>${rows.map(([h, t]) => L(h, t)).join("")}</section>`).join("")}
@@ -1929,7 +2307,7 @@ const closeModal = () => {
     const b = S.bookings.find((x) => x.id === id);
     if (!b) return `<div class="page">${emptyState({ id: "req-not-found", ic: "search", h: "h1", title: "Request not found", body: "This sample request isn\u2019t in this browser (links can go stale after a reset).", actions: `<a class="btn" href="#/journey">Go to Journey</a>` })}</div>`;
     const s = slotOf(b), dp = dpeById(b.dpeId), f = esc(first(dp.name));
-    const near = apt(b.near) ? b.near : "KORL";
+    const near = nearFor(b.near, dp);
     const travel = allIn(dp, b.cert, near, s.airport).travel;
     const fee = b.feeUsd ?? dp.fees[b.cert], dep = b.depositUsd ?? depositFor(dp, b.cert);
     const isDpe = S.role === "dpe";
@@ -1939,22 +2317,23 @@ const closeModal = () => {
         : cs && cs.sent ? `<p class="small" style="margin:0">${esc(dp.name)} confirmed this list on ${fmtDate(iso(new Date(cs.sent.sentAt)), { month: "short", day: "numeric" })}. <a href="#/my-checklists">Open</a></p>`
         : `<p class="small muted" style="margin:0">Confirmed. ${f}\u2019s checklist shows up here once it\u2019s sent. Meanwhile: <a href="#/readiness">your readiness checklist</a>.</p>`)
       : `<p class="small muted" style="margin:0">Once an examiner accepts your request, their checklist shows up here. Until then, here\u2019s a general draft to look over. <a href="#/readiness">See the draft</a></p>`;
-    const step2 = b.status === "requested" ? reqPill(b) : b.status === "confirmed" ? chip("good", "Accepted") : b.status === "declined" ? chip("bad", "Declined") : chip("", "Cancelled");
+    const step2 = b.status === "requested" ? reqPill(b) : b.status === "confirmed" ? chip("good", "Accepted") : b.status === "declined" ? chip("bad", "Declined") : isWithdrawn(b) ? chip("", "Withdrawn") : chip("", "Cancelled");
     return `<div class="page">
       ${head(isDpe ? "CHECKRIDE REQUEST" : "YOUR CHECKRIDE REQUEST", `${esc(isDpe ? b.applicant : dp.name)} \u00b7 ${esc(certById(b.cert).name)}`, "", "", "h1")}
       <div class="ws-grid">
         <div class="stack">
           <section class="card ws-when">
             <div class="row" style="gap:1rem;flex-wrap:nowrap">${dateTile(s.date)}<div><b>${slotWhenLong(s)}</b><div class="small muted">${s.airport}${s.airport !== dp.home ? ` \u00b7 examiner travels from ${dp.home}` : ""}${isDpe ? ` \u00b7 ${esc(b.aircraft)} \u00b7 CFI: ${esc(b.cfi)}` : ""}</div></div></div>
-            <div style="margin-top:.75rem" id="req-status">${reqPill(b)}</div>
+            <div style="margin-top:.75rem" id="req-status">${reqPill(b)}${holdEnded(b, slotOf(b)) ? holdEndedLine(b) : ""}${!isDpe && b.mine && b.status === "requested" ? `<p class="small muted" data-nodeposit style="margin:.4rem 0 0">No deposit until ${f} accepts</p>` : ""}${isDpe ? dpeHoldLine(b, s) + (b.status === "requested" ? dpeNoShowLine(b) : "") : ""}</div>
+            ${!isDpe ? noShowCard(b, s, dp) : b.noShow ? `<p class="small" data-ns-marked="${b.id}"><span class="pill bad">No-show</span></p>` : ""}
             ${b.status === "declined" && !isDpe ? `<p class="small" style="margin:.5rem 0 0">${f} couldn\u2019t take this request. Nothing was confirmed, so nothing changes on your side. <a href="#/search?cert=${b.cert}">See other openings</a></p>` : ""}
             ${b.status === "cancelled" ? `<div class="small cancel-outcome"><b>${cancelLine(b, s)}</b></div>` : ""}
           </section>
           <ol class="ws-steps">
-            <li class="card"><span class="step-n mono">01</span><div><h3>Request sent</h3><p class="small muted mono" style="margin:0">${tsWhen(b.createdAt, slotTz(s))}</p></div></li>
-            <li class="card"><span class="step-n mono">02</span><div><h3>${isDpe ? "You review this request" : `${f} reviews your request`}</h3>${step2}
+            <li class="card"><span class="step-n mono">01</span><div><h2 class="h3">Request sent</h2><p class="small muted mono" style="margin:0" data-sent-at>${tsReader(b.createdAt)}</p></div></li>
+            <li class="card"><span class="step-n mono">02</span><div><h2 class="h3">${isDpe ? "You review this request" : `${f} reviews your request`}</h2>${step2}
               ${isDpe ? `<div class="row small" style="margin-top:.6rem;gap:.5rem" data-dpe-ready><span class="muted">Applicant checklist</span> ${countPill(b.mine ? ready9Count() : of9(b.readiness || 0))}${b.selfCheck ? ` <span class="muted">\u00b7 self-attested readiness</span>` : ""}</div>` : ""}${isDpe && b.status === "requested" ? `<div class="row" style="margin-top:.6rem"><button class="btn good" data-action="accept" data-id="${b.id}">Accept request</button><button class="btn bad" data-action="decline" data-id="${b.id}">Decline</button></div>` : ""}</div></li>
-            <li class="card"><span class="step-n mono">03</span><div><h3>From your examiner</h3>${step3}</div></li>
+            <li class="card"><span class="step-n mono">03</span><div><h2 class="h3">From your examiner</h2>${step3}</div></li>
           </ol>
         </div>
         <aside class="card fee-card sticky" aria-labelledby="fee-h">
@@ -1970,11 +2349,13 @@ const closeModal = () => {
             <p style="margin:.35rem 0 0">Paid directly to ${f}, not through Checkride Connect. Nothing is taken until ${f} accepts your request. After that, ${f}\u2019s terms say when it\u2019s due. <i>(Proposed, pending legal review)</i></p>
             <p style="margin:.25rem 0 0">${PM_TAG}</p>
           </div>
+          ${isDpe ? "" : estimateMini(dp, b.cert, travel, fee)}
           ${examinerTerms(dp)}
           <div class="stack" style="margin-top:.75rem">
             ${b.note ? `<button class="btn secondary" data-action="view-note" data-id="${b.id}">${isDpe ? `See ${esc(first(b.applicant))}\u2019s note` : `See your note to ${f}`}</button>` : ""}
-            ${!isDpe && b.mine && b.status === "requested" ? `<button class="btn bad" data-action="pilot-cancel" data-id="${b.id}">Cancel request</button>` : ""}
-            ${!isDpe && b.mine && b.status === "confirmed" ? `<button class="btn bad" data-action="pilot-cancel" data-id="${b.id}">Cancel checkride</button>` : ""}
+            ${!isDpe && b.mine && b.status === "requested" ? `<button class="btn bad" data-action="pilot-cancel" data-id="${b.id}">Withdraw request</button>` : ""}
+            ${!isDpe && b.mine && b.status === "confirmed" && !b.noShow ? `<button class="btn bad" data-action="pilot-cancel" data-id="${b.id}">Cancel checkride</button>` : ""}
+            ${isDpe && b.status === "confirmed" && !b.noShow && slotStart(s) <= Date.now() ? `<button class="btn ghost" data-action="ns-mark" data-id="${b.id}">Mark no-show</button>` : ""}
             ${!isDpe && b.mine && b.status === "requested" ? `<button class="btn ghost sm" data-action="as-dpe" data-dpe="${dp.id}" data-to="#/request/${b.id}">Respond as ${f} (demo)</button>` : ""}
           </div>
           <p class="small muted" style="margin:.75rem 0 0">Prototype: nothing is charged. <a href="#/pricing#deposit-policy">How cancellations work</a></p>
@@ -2026,10 +2407,10 @@ const closeModal = () => {
       if (sb) { const sl = slotOf(sb); return [s, sb.status === "requested" ? chip("warn", `Awaiting ${esc(first(dpeById(sb.dpeId).name))}`) : chip("good", "Confirmed"), `${fmtDate(sl.date)} \u00b7 ${esc(dpeById(sb.dpeId).name)}`, `<a class="btn ghost sm" href="#/request/${sb.id}">Open</a>`]; }
       if (s.status === "confirmed") return [s, chip("good", "Confirmed"), `${fmtDate(addDays(s.daysOut))} \u00b7 ${esc(dpeById(s.dpe).name)}`, ""];
       if (s.status === "requested") return [s, chip("warn", `Awaiting ${esc(first(dpeById(s.dpe).name))}`), `${fmtDate(addDays(s.daysOut))} \u00b7 ${esc(dpeById(s.dpe).name)}`, ""];
-      return [s, `<span class="muted small">No request yet</span>`, "", `<a class="btn sm" href="#/search?cert=${s.cert}&near=${D.school.airport}">Find slot</a>`];
+      return [s, `<span class="muted small">No request yet</span>`, "", `<a class="btn sm" href="#/search?cert=${s.cert}&near=${D.school.airport}" data-action="school-find" data-student="${esc(s.name)}">Find slot</a>`];
     });
     return `<div class="page">${schoolHead()}${SCHOOL_TABS("#/school/requests")}
-      <section class="card"><div class="table-wrap"><table><thead><tr><th>Student</th><th>Checkride</th><th>Request</th><th>When</th><th></th></tr></thead>
+      <section class="card"><div class="table-wrap"><table><thead><tr><th>Student</th><th>Checkride</th><th>Request</th><th>When</th><th><span class="sr-only">Actions</span></th></tr></thead>
       <tbody>${rows.map(([s, p, w, a]) => `<tr><td><b>${esc(s.name)}</b></td><td>${esc(certById(s.cert).short)}</td><td>${p}</td><td class="small">${w}</td><td class="num">${a}</td></tr>`).join("")}</tbody></table></div></section>
       <p class="small muted">Requests, not bookings: a request is confirmed only once the examiner accepts. <a href="#/school/cohort">Schedule a cohort</a></p>
     </div>`;
@@ -2045,7 +2426,7 @@ const closeModal = () => {
 
   // ---------- router ----------
   const routes = [
-    [/^\/$/, viewLanding], [/^\/home$/, viewHome], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest],
+    [/^\/$/, viewLanding], [/^\/home$/, viewHome], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest], [/^\/offer\/(\w+)$/, viewOffer],
     [/^\/dpe-today$/, viewDpeToday], [/^\/dpe-applicants$/, viewDpeApplicants], [/^\/school\/requests$/, viewSchoolRequests], [/^\/school\/readiness$/, viewSchoolReadiness], [/^\/search$/, viewSearch], [/^\/dpe\/(\w+)$/, viewProfile], [/^\/compare$/, viewCompare],
     [/^\/alerts$/, viewAlerts], [/^\/checklists(?:\/(\w+))?$/, viewChecklists], [/^\/bookings$/, viewBookings], [/^\/my-checklists$/, viewMyChecklists], [/^\/dpe-checklist\/(\w+)$/, viewBuilder],
     [/^\/requests$/, viewDpeDash], [/^\/school$/, viewSchool], [/^\/school\/cohort$/, viewCohort], [/^\/dpe-openings$/, viewOpenings], [/^\/openings$/, viewPublish], [/^\/dpe-fees$/, viewDpeFees], [/^\/admin$/, viewAdmin], [/^\/pricing$/, viewPricing],
@@ -2069,7 +2450,7 @@ const closeModal = () => {
     const pend = S.bookings.filter((b) => b.dpeId === S.actingDpe && b.status === "requested").length;
     const unread = S.notifications.filter((n) => !n.read).length;
     return ({
-      pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
+      pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts", "/offer/"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
       dpe: [["#/dpe-today", "Today", "today", ["/dpe-today"]], ["#/requests", "Requests", "inbox", ["/requests", "/request/", "/openings"], pend], ["#/dpe-openings", "Calendar", "cal", ["/dpe-openings"]], ["#/dpe-applicants", "Applicants", "people", ["/dpe-applicants", "/dpe-checklist/"]], ["#/more", "More", "more", ["/more", "/faq", "/dpe-fees", "/dpe/", "/pricing"]]],
       school: [["#/school", "Roster", "people", ["/school", "/school/cohort"]], ["#/school/requests", "Checkride requests", "inbox", ["/school/requests", "/request/"]], ["#/school/readiness", "Readiness", "list", ["/school/readiness"]], ["#/more", "More", "more", ["/more", "/faq", "/search", "/compare", "/checklists", "/pricing", "/dpe/"]]],
       admin: [["#/admin", "Admin", "shield", ["/admin"]], ["#/search", "Listings", "search", ["/search", "/dpe/"]], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
@@ -2095,6 +2476,10 @@ const closeModal = () => {
     try { localStorage.setItem("cc-theme", t); } catch (e) { /* private mode */ }
     const r = t === "system" ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : t;
     document.documentElement.dataset.theme = r;
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
+      const k = m.getAttribute("content") === "#10141d" ? "dark" : "light";
+      m.setAttribute("media", t === "system" ? `(prefers-color-scheme: ${k})` : (k === r ? "all" : "not all"));
+    });
     document.querySelectorAll("[data-theme-select]").forEach((x) => { x.value = t; });
   };
   try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (getTheme() === "system") applyTheme("system"); }); } catch (e) { /* old browser */ }
@@ -2147,18 +2532,23 @@ const closeModal = () => {
     const unread = S.notifications.filter((n) => !n.read).length;
 ui.lastUnread = unread;
     try { if (navigator.setAppBadge) { unread && S.role === "pilot" ? navigator.setAppBadge(unread) : navigator.clearAppBadge(); } } catch (e) { /* optional */ }
-    if (ui.pendingReq) { const [sid, c] = ui.pendingReq; ui.pendingReq = null; setTimeout(() => { if ($("#modal-root form[data-form=request]")) return; const s = S.slots.find((x) => x.id === sid); if (s && s.status === "open") openRequest(sid, c); }, 60); }
+    if (ui.pendingReq) { const [sid, c] = ui.pendingReq; ui.pendingReq = null; setTimeout(() => { if ($("#modal-root form[data-form=request]")) return; const s = S.slots.find((x) => x.id === sid); if (slotLive(s)) openRequest(sid, c); }, 60); }
 if (ui.lastPath !== path) {
       // First paint is instant (no entrance animation): content is visible as soon as it renders (better LCP, no flash).
       const firstPaint = ui.lastPath === null;
       window.scrollTo(0, 0); ui.lastPath = path;
       if (!firstPaint) animateEnter();
+      if (path !== "/openings") ui.pubHighlight = null;
+      // QA-035: on #/openings, focus the h1 (tabindex=-1) so keyboard users don't restart from <body>.
+      if (path === "/openings") { const h = $("#app h1"); if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); } }
     }
     if (anchor && ui.lastAnchor !== location.hash) { ui.lastAnchor = location.hash; const t = document.getElementById(anchor); if (t) { const f = (anchor === "faq" && document.getElementById("faq-h")) || t; f.setAttribute("tabindex", "-1"); t.scrollIntoView({ block: "start" }); f.focus({ preventScroll: true });
       // Re-align once layout settles (late font swap / first-paint reflow can push the target down).
       const h = location.hash, again = () => { const e = document.getElementById(anchor); if (e && location.hash === h && Math.abs(e.getBoundingClientRect().top) > 40) e.scrollIntoView({ block: "start" }); };
       requestAnimationFrame(() => requestAnimationFrame(again)); setTimeout(again, 350); } }
     else if (!anchor) ui.lastAnchor = null;
+    // QA-041/042: a handler can ask for focus to land on a given element after this render.
+    if (ui.focusAfter) { const sel = ui.focusAfter; ui.focusAfter = null; const fe = $(sel); if (fe) { if (!/^(INPUT|SELECT|TEXTAREA|BUTTON|A)$/.test(fe.tagName) && !fe.hasAttribute("tabindex")) fe.setAttribute("tabindex", "-1"); fe.focus({ preventScroll: true }); } }
   }
 const rerender = () => { save(); render(); };
 
@@ -2264,9 +2654,9 @@ function countUp(root) {
       if (!A.ktPass) block.push("Knowledge test: not marked as passed");
       if (!d) block.push(`Knowledge test: enter the date ${opts.who ? "it was" : "you"} passed`);
       else if (d > iso(today0())) block.push("Knowledge test: the date is in the future");
-      else if (sd && ktExpiry(d) < sd) block.push(`Knowledge test: result from ${fmtDate(d)} expires ${fmtDate(ktExpiry(d))} (draft 24-calendar-month rule), before this checkride`);
-      else if (!sd && ktExpiry(d) < iso(today0())) block.push(`Knowledge test: result from ${fmtDate(d)} expired ${fmtDate(ktExpiry(d))} (draft 24-calendar-month rule)`);
-      else if (sd && daysUntil(ktExpiry(d)) - daysUntil(sd) < 60) warn.push(`Knowledge test result expires ${fmtDate(ktExpiry(d))}, soon after this checkride. A reschedule could push ${opts.who ? "the student" : "you"} past it.`);
+      else if (sd && ktExpiry(d) < sd) block.push(`Knowledge test: result from ${fmtDateY(d)} expires ${fmtDateY(ktExpiry(d))} (draft 24-calendar-month rule), before this checkride`);
+      else if (!sd && ktExpiry(d) < iso(today0())) block.push(`Knowledge test: result from ${fmtDateY(d)} expired ${fmtDateY(ktExpiry(d))} (draft 24-calendar-month rule)`);
+      else if (sd && daysUntil(ktExpiry(d)) - daysUntil(sd) < 60) warn.push(`Knowledge test result expires ${fmtDateY(ktExpiry(d))}, soon after this checkride. A reschedule could push ${opts.who ? "the student" : "you"} past it.`);
     }
     if (opts.iacra && !A.iacra) block.push("IACRA application: not confirmed as started");
     if (opts.pct !== undefined && of9(opts.pct) < of9(opts.pctMin || 50)) /* D12: compare counts, never percentages */ warn.push(`${opts.who ? opts.who + "\u2019s" : "Your"} ${certById(cert).short} checklist: ${opts.count || readyText(of9(opts.pct))}.`);
@@ -2293,29 +2683,34 @@ function countUp(root) {
 
   function openRequest(slotId, certHint) {
     const s = S.slots.find((x) => x.id === slotId);
+    if (!s) return;
+    if (slotPast(s)) { toast(PAST_SLOT); rerender(); return; } // QA-039
     const dp = dpeById(s.dpeId);
     const certs = s.certs.filter((c) => dp.fees[c]);
-    const cert = certs.includes(certHint) ? certHint : certs[0];
+    const rs = S.role === "school" && ui.forStudent ? D.school.students.find((x) => x.name === ui.forStudent) : null; // UF#7
+    const cert = certs.includes(rs && rs.cert) ? rs.cert : certs.includes(certHint) ? certHint : certs[0];
     openModal(`<h2>Request checkride <span class="pill warn" style="vertical-align:middle">Mock</span></h2>
       <p class="muted small" style="margin-bottom:.75rem">${esc(dp.name)} (sample examiner) · ${fmtDate(s.date, { weekday: "long", month: "long", day: "numeric" })} · ${slotTime(s)} · ${s.airport}</p>
       <div class="proto-strip small" style="margin-bottom:1rem"><b>Prototype – no real payments.</b> Nothing is charged or sent. <b>Prototype, not legal or FAA advice.</b></div>
       <form class="stack" data-form="request">
-        <input type="hidden" name="slot" value="${s.id}" /><input type="hidden" name="near" value="${apt(parseHash().q.near) ? parseHash().q.near : "KORL"}" />
+        <input type="hidden" name="slot" value="${s.id}" /><input type="hidden" name="near" value="${nearFor(parseHash().q.near, dp)}" />
         <label class="field"><span>Certificate / rating</span><select name="cert" data-action-change="req-cert">${certOptions(cert, certs)}</select></label>
-        <label class="field"><span>Your name (fictional is fine)</span><input name="name" required value="Alex Pilot" /></label>
-        <label class="field"><span>Aircraft (tail number & type)</span><input name="aircraft" required placeholder="N12345 · Cessna 172S" /></label>
-        <label class="field"><span>Recommending instructor</span><input name="cfi" required placeholder="Name, CFI" /></label>
+        <label class="field"><span>Your name (fictional is fine)</span><input name="name" required maxlength="80" autocomplete="off" value="${rs ? esc(rs.name) : ""}" placeholder="Alex Pilot" /></label>
+        <label class="field"><span>Aircraft (tail number & type)</span><input name="aircraft" required maxlength="60" placeholder="N12345 · Cessna 172S" /></label>
+        <label class="field"><span>Recommending instructor</span><input name="cfi" required maxlength="80" value="${rs && rs.cfi ? esc(rs.cfi) + ", CFI" : ""}" placeholder="Name, CFI" /></label>
         ${readinessFields(cert)}
         <label class="check-row small"><input type="checkbox" name="iacra" required /> <span>My IACRA application is started, and my instructor will sign the recommendation before the checkride.</span></label>
         <div class="small" id="req-ready">Your <a href="#/checklists/${cert}" data-action="close-modal">${esc(certById(cert).short)} checklist</a>: <b>${(() => { const k = checklistCount(cert); return readyText(k.n, k.total); })()}</b>. The examiner will see this.</div>
         <label class="field"><span>Note to examiner (optional)</span><textarea name="note" rows="2" maxlength="500" placeholder="Anything ${esc(first(dp.name))} should know"></textarea></label>
         <div class="summary small" id="req-summary">${requestSummary(dp, cert, s)}</div>
+        <p class="small muted" data-noshow-note style="margin:0">When you send a request, the examiner sees only how many no-shows you\u2019ve had in the last 12 months. A no-show you\u2019re disputing isn\u2019t counted until it\u2019s resolved.</p>
         <div class="row" style="justify-content:flex-end"><button type="button" class="btn ghost" data-action="close-modal">Cancel</button><button class="btn cta" type="submit">Send request (mock)</button></div>
+        <p class="small muted" data-hold-rule style="margin:0">We hold a requested slot while the examiner reviews it, until 48 hours after you send it or 12 hours before it starts, whichever comes first. No deposit is taken until the examiner accepts.</p>
       </form>`);  showGate($("#modal-root form[data-form=request]"));
   }
   const requestSummary = (dp, cert, sl) => {
     const fee = dp.fees[cert], dep = depositFor(dp, cert);
-    const near = apt(parseHash().q.near) ? parseHash().q.near : "KORL";
+    const near = nearFor(parseHash().q.near, dp);
     const x = sl ? allIn(dp, cert, near, sl.airport) : null;
     return `
     <div class="line"><span>Examiner fee, ${esc(certById(cert).short)} (sample)</span><b>${money(fee)}</b></div>
@@ -2368,8 +2763,16 @@ function countUp(root) {
     },
     "target-change": () => {
       const min = iso(today0()).slice(0, 7);
+      // QA-037: where <input type=month> isn't supported (e.g. Firefox desktop), it's a plain text box: show a YYYY-MM hint,
+      // pattern and our own validation instead. Feature-detected, never browser-sniffed.
+      const fb = !monthInputSupported();
+      const field = fb
+        ? `<label class="field"><span>Month (YYYY-MM)</span><input type="text" name="month" id="target-month" inputmode="numeric" autocomplete="off" placeholder="YYYY-MM" pattern="\\d{4}-(0?[1-9]|1[0-2])" title="Year and month as YYYY-MM, for example ${min}" value="${S.target}" required aria-describedby="target-month-hint target-month-err" data-month-fallback="1" /></label>
+          <p class="small muted" id="target-month-hint" style="margin:-.4rem 0 0">Type the year and month as YYYY-MM, for example ${min} for ${fmtMonth(min)}. ${fmtMonth(min)} or later.</p>
+          <p class="small" id="target-month-err" role="alert" style="margin:0;color:var(--bad, #b42318)"></p>`
+        : `<label class="field"><span>Month</span><input type="month" name="month" id="target-month" min="${min}" value="${S.target}" required /></label>`;
       openModal(`<h2 id="modal-title">Target month</h2><p class="muted small">When you hope to take your checkride. It only changes the heads-up on your journey; nothing is booked.</p>
-        <form class="stack" data-form="target"><label class="field"><span>Month</span><input type="month" name="month" id="target-month" min="${min}" value="${S.target}" required /></label>
+        <form class="stack" data-form="target"${fb ? " novalidate" : ""}>${field}
         <div class="row"><button class="btn cta" type="submit">Save</button><button class="btn ghost" type="button" data-action="close-modal">Cancel</button></div></form>`);
     },
     "close-modal": (el) => { closeModal(); return el.tagName === "A"; },
@@ -2379,10 +2782,73 @@ function countUp(root) {
       addAlert({ cert: f.cert, near: f.near, radius: f.radius, before: f.before || addDays(60), maxFee: f.maxFee, dpeId: el.dataset.dpe || "" });
     },
     "alert-dpe": (el) => addAlert({ cert: el.dataset.cert, near: dpeById(el.dataset.dpe).home, radius: 100, before: addDays(90), maxFee: 0, dpeId: el.dataset.dpe }),
-    "sim-open": (el) => { simulateOpening({ alertId: el.dataset.alert, dpeId: el.dataset.dpe }); },
+    "sim-open": (el) => {
+      // QA-050: a double-click adds one simulated opening, not two (same 1.2 s lock as Publish).
+      if (ui.simLock && Date.now() < ui.simLock) return;
+      ui.simLock = Date.now() + 1200;
+      simulateOpening({ alertId: el.dataset.alert, dpeId: el.dataset.dpe });
+    },
     "notif-perm": () => { try { Promise.resolve(Notification.requestPermission()).then(() => rerender()); } catch (e) { /* unsupported */ } },
     "del-alert": (el) => { S.alerts = S.alerts.filter((a) => a.id !== el.dataset.id); toast("Alert deleted."); rerender(); },
     "read-all": () => { S.notifications.forEach((n) => { n.read = true; }); rerender(); },
+    // ---- C: no-shows (D34/D36)
+    "ns-mark": (el) => {
+      const b = S.bookings.find((x) => x.id === el.dataset.id); if (!b || b.noShow) return;
+      const sl = slotOf(b), nm = esc(first(b.applicant));
+      openModal(`<h2>Mark ${nm} as a no-show for the confirmed checkride on ${slotAt(sl)}?</h2><p class="small">They\u2019ll be told (in-app, mock), and they can dispute it within 7 days. Your deposit terms apply as written.</p>
+        <div class="row" style="justify-content:flex-end"><button class="btn bad" data-action="ns-mark-confirm" data-id="${b.id}">Mark no-show</button><button class="btn secondary" data-action="close-modal" data-default>Cancel</button></div>`);
+      const k = $("#modal-root [data-default]"); if (k) k.focus();
+    },
+    "ns-mark-confirm": (el) => {
+      const b = S.bookings.find((x) => x.id === el.dataset.id); closeModal();
+      if (!b || b.noShow || b.status !== "confirmed") return; // lock: a double-click marks once
+      const sl = slotOf(b), dp = dpeById(b.dpeId), f = first(dp.name);
+      b.noShow = { at: Date.now(), by: dp.id };
+      if (b.mine) S.notifications.unshift({ id: uid("n"), ts: Date.now(), read: false, title: "No-show", bookingId: b.id, body: `Marked as a no-show by ${f} for your confirmed checkride on ${slotAt(sl)} \u00b7 The slot is closed \u00b7 Deposit: per ${f}\u2019s terms` });
+      toast(`Marked as a no-show. ${first(b.applicant)} has been told (in-app, mock).`);
+      rerender();
+    },
+    "ns-dispute": (el) => {
+      const b = S.bookings.find((x) => x.id === el.dataset.id); if (!b || !b.noShow || b.noShow.dispute) return;
+      const f = esc(first(dpeById(b.dpeId).name));
+      openModal(`<p class="eyebrow">YOUR RECORD</p><h2>Your side. Fairly heard.</h2>
+        <form class="stack" data-form="ns-dispute" id="ns-dispute-form"><input type="hidden" name="bid" value="${b.id}" />
+          <label class="field"><span>Tell us what happened.</span><textarea name="text" rows="3" maxlength="600" required></textarea></label>
+          <p class="small muted" style="margin:0">Checkride Connect reviews it and decides. We may ask ${f} for ${f}\u2019s side. A dispute only affects whether the no-show stays on your checkride record. While it\u2019s being reviewed, it isn\u2019t counted in what examiners see.</p>
+          <p class="small muted" style="margin:0">When you send a request, the examiner sees only how many no-shows you\u2019ve had in the last 12 months. A no-show you\u2019re disputing isn\u2019t counted until it\u2019s resolved.</p>
+          <div class="row" style="justify-content:flex-end"><button class="btn" type="submit" id="ns-dispute-send">Send dispute</button><button type="button" class="btn secondary" data-action="close-modal">Cancel</button></div>
+        </form>`);
+      const t = $("#ns-dispute-form textarea"); if (t) t.focus();
+    },
+    // ---- C: checkride-day prep editor (D35)
+    "prep-add": (el) => { prepSync(el.dataset.id); const pr = S.prep[el.dataset.id]; const it = { id: uid("pi"), t: "" }; pr.items.push(it); rerender(); const i = $(`#prep-${it.id}`); if (i) i.focus(); },
+    "prep-del": (el) => { prepSync(el.dataset.id); const pr = S.prep[el.dataset.id]; pr.items = pr.items.filter((x) => x.id !== el.dataset.item); rerender(); const b = $("#prep-form [data-action=\"prep-add\"]"); if (b) b.focus(); },
+    // ---- C: medical row
+    "med-edit": () => { const d = $("#med-date"); if (d) d.focus(); },
+    // ---- C: waitlist offer (wl.offer.*)
+    "offer-pass": (el) => {
+      const n = S.notifications.find((x) => x.id === el.dataset.id); if (!n) return;
+      const wl = wlOf(n.dpeId); S.offers = S.offers || {};
+      if ((S.offers[n.id] || {}).passed) return;
+      if (wl.passes >= 1) {
+        openModal(`<h2>Pass on this one too?</h2><p class="small">You\u2019ve passed once already, so this moves you to the back of the line (#${WL_BACK}).</p><p class="small muted">Pass once and you keep your place. Pass twice and you move to the back of the line. A hold that runs out overnight doesn\u2019t count as a pass.</p>
+          <div class="row" style="justify-content:flex-end"><button class="btn bad" data-action="offer-pass2" data-id="${n.id}">Pass and move to the back</button><button class="btn secondary" data-action="close-modal" data-default>Go back</button></div>`);
+        const k = $("#modal-root [data-default]"); if (k) k.focus();
+        return;
+      }
+      wl.passes = 1; S.offers[n.id] = { passed: true, at: Date.now() };
+      toast(`No problem. You\u2019re still #${wl.pos} in line for the next one.`);
+      rerender();
+    },
+    "offer-pass2": (el) => {
+      closeModal();
+      const n = S.notifications.find((x) => x.id === el.dataset.id); if (!n) return;
+      S.offers = S.offers || {}; if ((S.offers[n.id] || {}).passed) return;
+      const wl = wlOf(n.dpeId); wl.pos = WL_BACK; wl.passes = 0; S.offers[n.id] = { passed: true, at: Date.now() };
+      toast(`Done. You\u2019re now #${WL_BACK}, at the back of the line.`);
+      rerender();
+    },
+    "school-find": (el) => { ui.forStudent = el.dataset.student; return true; }, // UF#7: the request form opens prefilled for this student
     "read-notif": (el) => { const n = S.notifications.find((x) => x.id === el.dataset.id); if (n) n.read = true; save(); return true; },
     "cal-nav": (el) => { const [y, m] = ui.month.split("-").map(Number); const d = new Date(y, m - 1 + Number(el.dataset.dir), 1); ui.month = iso(d).slice(0, 7); render(); },
     "cal-day": (el) => { ui.sel = el.dataset.date; render(); },
@@ -2399,8 +2865,10 @@ function countUp(root) {
       const b = S.bookings.find((x) => x.id === el.dataset.id); if (!b) return;
       const s = S.slots.find((x) => x.id === b.slotId), dp = dpeById(b.dpeId);
       if (b.status !== "confirmed") {
-        openModal(`<h2>Cancel your request with ${esc(dp.name)}?</h2><p class="small" id="cancel-body">The examiner hasn\u2019t accepted it yet, so it isn\u2019t confirmed and nothing has been charged. The slot is released.</p>
-          <div class="row" style="justify-content:flex-end"><button class="btn bad" data-action="pilot-cancel-confirm" data-id="${b.id}">Cancel request</button><button class="btn secondary" data-action="close-modal" data-default>Keep my request</button></div>`);
+        // ux-copy-v3 §5.2a: req.withdraw.eyebrow / .headline / .body / .confirm / .keep ("Keep my request" is the default focus).
+        const f1 = esc(first(dp.name));
+        openModal(`<p class="eyebrow">CHANGE OF PLANS</p><h2>Your request. Your call.</h2><p class="small" id="cancel-body" data-withdraw>Your request to ${esc(dp.name)} for ${s ? slotAt(s) : "this checkride"} hasn\u2019t been accepted yet. If you withdraw it, the slot is freed and the next person in line can request it. No deposit is taken until ${f1} accepts, so there\u2019s nothing to get back. If you\u2019re on ${f1}\u2019s waitlist, you keep your place.</p>
+          <div class="row" style="justify-content:flex-end"><button class="btn bad" data-action="pilot-cancel-confirm" data-id="${b.id}">Withdraw request</button><button class="btn secondary" data-action="close-modal" data-default>Keep my request</button></div>`);
       } else {
         const ms = slotStart(s) - Date.now();
         openModal(`<h2>Cancel your checkride with ${esc(dp.name)}?</h2>
@@ -2424,6 +2892,7 @@ function countUp(root) {
       const onWl = S.alerts.some((a) => a.cert === b.cert && a.dpeId === b.dpeId); // D39: only this examiner's waitlist
       toast(!wasConfirmed ? `Request withdrawn. The ${fmtDate(s0.date, { weekday: "short", month: "short", day: "numeric" })} slot is free again.${onWl ? " Your waitlist place hasn\u2019t changed." : ""}` : !FEES ? `Cancelled. Your slot went back to ${first(dpeById(b.dpeId).name)}. Your deposit follows ${first(dpeById(b.dpeId).name)}\u2019s terms.` : ms >= H48 ? `Cancelled. Your $15 credit is ready, good for any booking until ${creditUntil(now)}.` : "Cancelled. The $15 booking fee was kept, since it was under 48 hours.");
       fireAlerts(s, "cancel", { skipMine: true, quiet: true });
+      if (!wasConfirmed) ui.focusAfter = "#req-status"; // QA-041: focus lands on the withdrawn status, never <body>
       rerender();
     },
     "as-dpe": (el) => { S.role = "dpe"; S.actingDpe = el.dataset.dpe; go(el.dataset.to || "#/requests"); },
@@ -2518,12 +2987,13 @@ function countUp(root) {
       c.items = c.items.filter((i) => i.t.trim());
       c.sent = { items: JSON.parse(JSON.stringify(c.items)), note: c.note, sentAt: Date.now() };
       if (b.mine) S.notifications.unshift({ id: uid("n"), ts: Date.now(), read: false, title: "Curated checklist received", body: `${dpeById(b.dpeId).name} sent a curated ${certById(b.cert).short} checklist (${c.items.length} items). Mock: nothing was emailed.` });
-      toast(b.mine ? "Checklist sent (mock). The student sees it under My checklists." : "Checklist saved as sent (mock). Sample applicant, so no student view exists for it.");
+      toast(`Checklist sent to ${first(b.applicant)}. Mock: it appears in their app; nothing is emailed.`);
       rerender();
     },
     "school-invite": () => toast("Mock only: no invite email is sent."),
     approve: (el) => {
       const p = S.pending.find((x) => x.id === el.dataset.id);
+      if (!p || p.status === "approved" || S.approvedDpes.some((x) => x.id === "n" + p.id)) return; // QA-007: a double-click lists once
       p.status = "approved";
       const defaults = { ppl: 1100, ir: 1050, cpl: 1200, cfi: 1700, sport: 750 };
       S.approvedDpes.push({ id: "n" + p.id, name: p.name, home: p.home, travelNm: 50, travelFee: 150, retestFee: 550, fsdo: p.fsdo, since: new Date().getFullYear(), languages: ["English"], rating: 0, reviews: 0, responseHours: 24,
@@ -2536,21 +3006,71 @@ function countUp(root) {
   };
 
   const forms = {
+    "ns-dispute": (f, fd) => {
+      const b = S.bookings.find((x) => x.id === fd.get("bid"));
+      if (!b || !b.noShow || b.noShow.dispute) { closeModal(); return; } // lock: one dispute
+      b.noShow.dispute = { status: "received", at: Date.now(), text: String(fd.get("text") || "").trim().slice(0, 600) };
+      closeModal(); toast("Got it. We\u2019ll show the outcome here."); rerender();
+    },
+    "prep-save": (f, fd) => {
+      const bid = fd.get("bid"), b = S.bookings.find((x) => x.id === bid); if (!b) return;
+      if (ui.prepLock && Date.now() < ui.prepLock) return; ui.prepLock = Date.now() + 1000;
+      prepSync(bid);
+      const pr = prepOf(b), dp = dpeById(b.dpeId);
+      pr.items = pr.items.filter((x) => String(x.t).trim()).map((x) => ({ ...x, t: String(x.t).trim() }));
+      const def = prepDefaults(dp.name);
+      const changed = JSON.stringify(pr.items.map((x) => x.t)) !== JSON.stringify(def.map((x) => x.t));
+      pr.sent = { items: JSON.parse(JSON.stringify(pr.items)), at: Date.now(), changed };
+      if (b.mine) S.notifications.unshift({ id: uid("n"), ts: Date.now(), read: false, title: "Checkride-day prep", body: `${dp.name} updated your checkride-day prep.`, link: "#/readiness", linkText: "Have a look" });
+      toast(`Saved. ${first(b.applicant)} sees the updated list (mock).`);
+      rerender();
+    },
     target: (f, fd) => {
-      const m = String(fd.get("month") || "");
-      if (!/^\d{4}-\d{2}$/.test(m) || m < iso(today0()).slice(0, 7)) { toast("Pick this month or a later one."); return; }
+      const raw = String(fd.get("month") || "").trim(), min = iso(today0()).slice(0, 7);
+      const inp = f.querySelector("#target-month"), fb = inp && inp.dataset.monthFallback === "1";
+      const m = fb ? parseMonthText(raw) : raw;
+      const fail = (msg) => {
+        if (fb) { const e = f.querySelector("#target-month-err"); if (e) e.textContent = msg; inp.setAttribute("aria-invalid", "true"); inp.focus(); }
+        toast(msg);
+      };
+      if (!/^\d{4}-\d{2}$/.test(m)) { fail(fb ? `Type the month as YYYY-MM, for example ${min}.` : "Pick a month."); return; }
+      if (m < min) { fail(`Pick ${fmtMonth(min)} or a later month.`); return; }
       S.target = m; save(); closeModal(); rerender(); toast(`Target set to ${fmtMonth(m)}.`);
       setTimeout(() => { const b = $('#journey-target [data-action="target-change"]'); if (b) b.focus(); }, 0);
     },
-    search: (f, fd) => {
+    search: (f, fd, t) => {
       const txt = fd.get("nearText");
-      let near = fd.get("near");
-      if (txt != null) {
-        const r = resolveAirport(txt);
-        if (!r) { toast(`Couldn't find "${String(txt).slice(0, 40)}". Pick an airport or city from the list.`); return; }
-        near = r;
+      let near = fd.get("near"), st = "";
+      const base = () => ({ cert: fd.get("cert"), radius: fd.get("radius"), before: fd.get("before") || "", maxFee: fd.get("maxFee") || "", sort: fd.get("sort") || "" });
+      if (t && t.name === "st") {
+        // B: switching state. A covered state goes to its sample airport; any other state shows the outside-coverage message.
+        st = String(fd.get("st") || "");
+        const covered = COVERED_STATES.some(([c]) => c === st);
+        ui.focusAfter = "[data-state-select]"; // QA-042: focus stays on the state selector
+        go("#/search?" + toQuery({ ...base(), near: covered ? (aptState(near) === st ? near : STATE_HOME[st]) : "", st: covered ? "" : st })); // QA-049: no stale near on the outside panel
+        return;
       }
-      go("#/search?" + toQuery({ cert: fd.get("cert"), near, radius: fd.get("radius"), before: fd.get("before") || "", maxFee: fd.get("maxFee") || "", sort: fd.get("sort") || "" }));
+      if (txt != null && String(txt).trim() !== "") {
+        const r = resolveAirport(txt);
+        if (!r) {
+          const m = String(txt).trim().toUpperCase().match(/,\s*([A-Z]{2})$/);
+          if (m && US_STATES[m[1]] && !COVERED_STATES.some(([c]) => c === m[1])) { go("#/search?" + toQuery({ ...base(), st: m[1] })); return; }
+          { const os = outsideStateFor(txt); if (os) { go("#/search?" + toQuery({ ...base(), st: os })); return; } } // QA-049
+          { const inp = f.querySelector('[name="nearText"]'); if (inp) { inp.setAttribute("aria-invalid", "true"); inp.focus(); } }
+          toast(`We couldn\u2019t find "${String(txt).slice(0, 40)}". Try the airport code (like KORL) or a nearby city.`); return;
+        }
+        near = r;
+      } else if (txt != null) { toast("Add your airport to see examiners near you."); return; }
+      go("#/search?" + toQuery({ ...base(), near }));
+    },
+    retest: (f, fd, t) => {
+      const raw = String(fd.get("p") ?? "").trim(), v = Number(raw), c = f.dataset.cert;
+      if (!certById(c) || raw === "" || !Number.isFinite(v) || v < 0 || v > 0.6) return; // QA-047: "" is not 0
+      S.retestP = { ...(S.retestP || {}), [c]: v }; save();
+      const id = (t && t.id) || (document.activeElement && document.activeElement.id);
+      rerender();
+      if (id) { const el = document.getElementById(id); if (el) el.focus({ preventScroll: true }); }
+      toast(v <= 0 ? `Retest risk left out of ${certById(c).short} estimates (stored in this browser).` : `Retest chance set to ${oneIn(v).toLowerCase()} for ${certById(c).short} estimates (stored in this browser).`); // QA-048
     },
     allin: (f, fd) => go("#/dpe/" + f.dataset.dpe + "?" + toQuery({ cert: fd.get("cert"), near: fd.get("near") })),
     compare: (f, fd) => go("#/compare?" + toQuery({ cert: fd.get("cert"), near: fd.get("near"), radius: fd.get("radius") })),
@@ -2585,7 +3105,12 @@ function countUp(root) {
     },
     request: (f, fd) => {
       const s = S.slots.find((x) => x.id === fd.get("slot"));
+      // QA-006: a rapid second submit of the same form is ignored; it is our own request, not someone else's.
+      if (ui.reqLock && Date.now() < ui.reqLock) return;
+      const own = s.bookingId && S.bookings.find((x) => x.id === s.bookingId && x.mine && Date.now() - x.createdAt < 5000);
+      if (own) { closeModal(); return; }
       if (s.status !== "open") { closeModal(); toast("Sorry, someone else just requested that slot."); rerender(); return; }
+      if (slotPast(s)) { closeModal(); toast(PAST_SLOT); rerender(); return; } // QA-039: the start time has passed
       const gate = showGate(f, true);
       if (gate.block.length) { toast("Readiness check: confirm the remaining items before submitting (mock, self-attested)."); $("#req-gate").scrollIntoView({ block: "nearest" }); $("#req-gate").setAttribute("tabindex", "-1"); $("#req-gate").focus(); return; }
       if (isStale(s.dpeId)) { closeModal(); toast("This examiner has not confirmed their availability recently. Contact the examiner."); rerender(); return; }
@@ -2597,6 +3122,7 @@ function countUp(root) {
       if (s.simulated) b.simulated = true;
       if (parseHash().q.slot === s.id) b.fromAlert = true;
       S.bookings.push(b);
+      ui.reqLock = Date.now() + 1500; { const sb = f.querySelector('button[type="submit"]'); if (sb) sb.disabled = true; }
       s.status = "held"; s.bookingId = b.id;
       S.notifications.forEach((n) => { if (n.slotId === s.id) n.read = true; });
       closeModal();
@@ -2613,14 +3139,22 @@ function countUp(root) {
       const last = $("#cl-items .cl-row:last-child input"); if (last) last.scrollIntoView({ block: "nearest" });
     },
     avail: (f, fd) => {
+      // C (Marlo): guard against a double submit of the weekly pattern.
+      if (ui.availLock && Date.now() < ui.availLock) return;
+      ui.availLock = Date.now() + 1200;
+      { const sb = $("#avail-save"); if (sb) { sb.disabled = true; setTimeout(() => { const x = $("#avail-save"); if (x) x.disabled = false; }, 1200); } }
       const dp = dpeById(S.actingDpe);
       const days = [...f.querySelectorAll("[data-date]")].map((r) => { const d = r.dataset.date; return { date: d, open: fd.get("open-" + d) === "on", cap: Number(fd.get("cap-" + d)) || 1, time: fd.get("time-" + d) || "08:00", airport: fd.get("airport-" + d) || dp.home, note: String(fd.get("note-" + d) || "").trim().slice(0, 80) }; });
       const r = applyAvailability(dp, days);
       touchAvail(dp.id);
       const bits = [];
       if (r.created.length) bits.push(`${plural(r.created.length, "new slot")} published`);
+      if (r.updated) bits.push(`${plural(r.updated, "opening")} updated`);
+      if (r.removed) bits.push(`${plural(r.removed, "opening")} removed`);
       if (r.closedDays) bits.push(`${plural(r.closedDays, "day")} closed`);
       if (r.keptDays) bits.push(`${plural(r.keptDays, "day")} kept open because of requests or bookings`);
+      if (r.skipped) bits.push(`${plural(r.skipped, "opening")} already published, skipped`);
+      if (r.oneOffs) bits.push(`${plural(r.oneOffs, "one-off opening")} left as published`);
       toast(`Saved. ${bits.length ? bits.join(", ") + ". " : "No slot changes. "}Students see the update now (mock: nobody was emailed).`);
       if (r.created.length) fireAlerts(r.created.sort((x, y) => (x.date + x.time).localeCompare(y.date + y.time))[0], "new");
       rerender();
@@ -2638,23 +3172,59 @@ function countUp(root) {
       rerender();
     },
     publish: (f, fd) => {
+      // QA-008: a double-click / double-submit right after a publish is ignored (one toast); the button is disabled meanwhile.
+      if (ui.publishLock && Date.now() < ui.publishLock) return;
       const certs = fd.getAll("certs");
       if (!certs.length) { toast("Pick at least one certificate."); return; }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(fd.get("date") || "") || fd.get("date") <= todayIn(aptTz(fd.get("airport")))) { toast("Pick a date after today at that airport."); return; }
-      const s = { id: uid("s"), dpeId: S.actingDpe, date: fd.get("date"), time: fd.get("time"), airport: fd.get("airport"), certs, status: "open", bookingId: null };
+      const date = fd.get("date"), time = fd.get("time");
+      const lock = () => {
+        ui.publishLock = Date.now() + 1200;
+        const btn = () => $("#publish-submit");
+        if (btn()) { btn().disabled = true; btn().setAttribute("aria-disabled", "true"); }
+        setTimeout(() => { ui.publishLock = 0; const b = btn(); if (b) { b.disabled = false; b.removeAttribute("aria-disabled"); } }, 1200);
+      };
+      const focusItem = (id) => { const e = document.getElementById("pub-" + id) || $("#app h1"); if (e) { if (!e.hasAttribute("tabindex")) e.setAttribute("tabindex", "-1"); e.scrollIntoView({ block: "nearest" }); e.focus({ preventScroll: true }); } };
+      // QA-008: the same examiner can't publish the same date and start time twice (any status except removed).
+      const dup = S.slots.find((x) => x.dpeId === S.actingDpe && x.date === date && x.time === time && x.status !== "removed");
+      if (dup) {
+        ui.pubHighlight = { id: dup.id, dup: true };
+        rerender(); lock();
+        toast(`Already published. You have an opening on ${slotWhenLong(dup)} at ${dup.airport}, so nothing new was added.`);
+        focusItem(dup.id);
+        return;
+      }
+      const s = { id: uid("s"), dpeId: S.actingDpe, date, time, airport: fd.get("airport"), certs, status: "open", bookingId: null, src: "oneoff" };
       S.slots.push(s);
       touchAvail(S.actingDpe);
       fireAlerts(s, "new");
-      rerender();
+      ui.pubHighlight = { id: s.id, dup: false };
+      rerender(); lock();
+      focusItem(s.id); // QA-035: focus moves to the new item, never to <body>
     },
   };
 
   // ---------- event wiring ----------
   document.addEventListener("click", (e) => {
+    const sk = e.target.closest && e.target.closest(".skip-link");
+    if (sk) { e.preventDefault(); const m = $("#app"); if (m) m.focus(); return; }
     const el = e.target.closest("[data-action]");
     if (!el || !actions[el.dataset.action]) return;
     const passThrough = actions[el.dataset.action](el, e);
     if (passThrough !== true && (el.tagName === "A" || el.tagName === "BUTTON")) e.preventDefault();
+  });
+  // QA-034: a keyboard-focused control that lands under the fixed mobile tab bar is scrolled clear of it
+  // (backs up the CSS scroll-padding / scroll-margin; some engines treat a 2 px sliver as "visible" and don't scroll).
+  document.addEventListener("focusin", (e) => {
+    const t = e.target, bar = document.getElementById("nav");
+    if (!t || !t.getBoundingClientRect || !bar || bar.hidden || t.closest("#nav, #modal-root, #toasts")) return;
+    // Keyboard focus only (:focus-visible): a tap or click must not scroll the page out from under the pointer.
+    try { if (!t.matches(":focus-visible")) return; } catch (err) { /* old engines: fall through */ }
+    const br = bar.getBoundingClientRect();
+    // Only the bottom tab bar (phone/tablet); the desktop rail/top bar never triggers this.
+    if (getComputedStyle(bar).position !== "fixed" || br.height === 0 || br.top >= window.innerHeight || br.top < window.innerHeight / 2 || br.bottom < window.innerHeight - 4) return;
+    const r = t.getBoundingClientRect();
+    if (r.bottom > br.top - 8 && r.top < br.bottom) window.scrollBy({ top: r.bottom - br.top + 16, behavior: "auto" });
   });
   document.addEventListener("submit", (e) => {
     const f = e.target;
@@ -2680,20 +3250,51 @@ function countUp(root) {
     if (t.dataset.actionChange === "avail-age") { availOf(S.actingDpe).confirmedAt = Date.now() - Number(t.value) * DAY; rerender(); return; }
     if (t.dataset.actionChange === "theme") { applyTheme(t.value); return; }
     if (t.dataset.actionChange === "role") { S.role = t.value; go(HOME[S.role]); return; }
+    if (t.dataset.med) {
+      S.medical = S.medical || {};
+      if (t.dataset.med === "type") { S.medical.type = t.value; if (!t.value || t.value === "unsure") S.medical.date = ""; }
+      else {
+        S.medical.date = t.value;
+        // D8/D13: an in-app reminder 60 days before the date as entered (once per date). Never blocks.
+        const o = MED_OPTS.find((x) => x[0] === S.medical.type);
+        S.medical.reminded = S.medical.reminded || {};
+        if (t.value && o && medDaysLeft(t.value) <= 60 && !S.medical.reminded[t.value]) {
+          S.medical.reminded[t.value] = 1;
+          S.notifications.unshift({ id: uid("n"), ts: Date.now(), read: false, title: "Heads-up", body: `Your ${o[1]} is valid through ${fmtDateY(t.value)} (as you entered it).` });
+        }
+      }
+      save(); rerender(); const back = $(t.dataset.med === "type" ? "#med-type" : "#med-date"); if (back) back.focus(); return;
+    }
     if (t.dataset.r9date) { S.ready9Dates = S.ready9Dates || {}; S.ready9Dates[t.dataset.r9date] = t.value; if (t.dataset.r9date === "kt") S.ktSample = false; save(); rerender(); return; }
     if (t.dataset.r9) { S.ready9 = S.ready9 || {}; S.ready9[t.dataset.r9] = t.checked; save(); rerender(); return; }
     if (t.dataset.actionChange === "acting-dpe") { S.actingDpe = t.value; rerender(); return; }
     if (t.dataset.actionChange === "req-cert") {
       const s = S.slots.find((x) => x.id === t.form.slot.value);
       const dp = dpeById(s.dpeId);
-      $("#req-summary").innerHTML = requestSummary(dp, t.value);
+      $("#req-summary").innerHTML = requestSummary(dp, t.value, s); // QA-009: keep the slot's all-in
       $("#req-check").outerHTML = readinessFields(t.value);
       showGate(t.form);
       $("#req-ready").innerHTML = `Your <a href="#/checklists/${t.value}" data-action="close-modal">${esc(certById(t.value).short)} checklist</a>: <b>${(() => { const k = checklistCount(t.value); return readyText(k.n, k.total); })()}</b>. The examiner will see this.`;
       return;
     }
+    // QA-042: a keyboard change of the state selector doesn't navigate at once; Enter or leaving the field applies it.
+    if (t.matches && t.matches("[data-state-select]") && t.dataset.kbd === "1") { t.dataset.pending = "1"; return; }
     const f = t.form;
-    if (f && f.dataset.auto !== undefined && forms[f.dataset.form]) forms[f.dataset.form](f, new FormData(f));
+    if (f && f.dataset.auto !== undefined && forms[f.dataset.form]) forms[f.dataset.form](f, new FormData(f), t);
+  });
+  const applyState = (sel, nextSel) => { delete sel.dataset.pending; forms.search(sel.form, new FormData(sel.form), sel); if (nextSel) ui.focusAfter = nextSel; };
+  document.addEventListener("keydown", (e) => {
+    const t = e.target;
+    if (!t.matches || !t.matches("[data-state-select]")) return;
+    if (e.key === "Enter") { if (t.dataset.pending === "1") { e.preventDefault(); applyState(t); } return; }
+    if (e.key !== "Tab" && e.key !== "Escape") t.dataset.kbd = "1";
+  });
+  document.addEventListener("pointerdown", (e) => { const t = e.target; if (t.matches && t.matches("[data-state-select]")) delete t.dataset.kbd; });
+  document.addEventListener("focusout", (e) => {
+    const t = e.target;
+    if (!t.matches || !t.matches("[data-state-select]") || t.dataset.pending !== "1") return;
+    const r = e.relatedTarget, nextSel = r ? (r.id ? "#" + CSS.escape(r.id) : r.name && r.form ? `[data-form="${r.form.dataset.form}"] [name="${r.name}"]` : null) : null;
+    setTimeout(() => { if (document.contains(t)) applyState(t, nextSel); }, 0);
   });
   // Builder inputs autosave without re-rendering (keeps focus while typing).
   document.addEventListener("input", (e) => {

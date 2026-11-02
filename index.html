@@ -1,16 +1,16 @@
-<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}:root[data-theme=dark]{color-scheme:dark}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#F6F9FC;color:#162941}:root[data-theme=dark] body{background:#0B1424;color:#EAF0F8}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#2b59ff">
+<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}:root[data-theme=dark]{color-scheme:dark}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#F6F9FC;color:#162941}:root[data-theme=dark] body{background:#0B1424;color:#EAF0F8}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#10141d" media="(prefers-color-scheme: dark)">
 <title>Checkride Connect (prototype)</title>
 <meta name="description" content="Checkride Connect prototype: find sample examiners by certificate, location, availability and price. Example data only, not real examiners; not affiliated with or endorsed by the FAA.">
-<meta name="claude:viewport-fit-sides" content="cover">
 <!-- Fully static: no external fonts, scripts or network calls. Fonts are self-hosted in fonts/. -->
-<link rel="preload" href="fonts/Manrope-Variable-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="styles.css">
-<script>(function(){try{var t=localStorage.getItem('cc-theme')||'system';if(t==='system')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();
+<!-- QA-051: no font preloads (Firefox warned they were unused on some routes); @font-face with font-display handles loading. --><link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('cc-theme')||'system';if(t==='system')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;if(localStorage.getItem('cc-theme')&&localStorage.getItem('cc-theme')!=='system'){var ms=document.querySelectorAll('meta[name=theme-color]');for(var i=0;i<ms.length;i++){ms[i].media=(ms[i].content==='#10141d')===(t==='dark')?'all':'not all';}}}catch(e){document.documentElement.dataset.theme='light';}})();
 try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf")}catch(e){}</script>
 </head><body>
 <script>(function(){var h=location.hash.slice(1).split("?")[0].split("#")[0];if(h===""||h==="/"||h==="faq")document.body.classList.add("is-landing");})();</script>
 
+<a class="skip-link" href="#app">Skip to content</a>
 <header class="topbar">
-  <div class="proto-banner" role="alert"><b>EXAMPLE DATA – not real examiners.</b> <span>Fictional sample data. Prototype, no real payments.</span></div>
+  <div class="proto-banner" role="note"><b>EXAMPLE DATA – not real examiners.</b> <span>Fictional sample data. Prototype, no real payments.</span></div>
   <div class="land-strip" role="note"><b>Private prototype</b> · Fictional demo data <span class="sep">No real requests are sent.</span></div>
   <div class="topbar-inner">
     <a class="brand" href="#/" aria-label="Checkride Connect, home">
@@ -33,7 +33,7 @@ try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf"
           <option value="pilot">Student pilot</option>
           <option value="dpe">Examiner</option>
           <option value="school">Flight school</option>
-          <option value="admin">Admin</option>
+          <option value="admin" hidden disabled>Admin</option>
         </select>
       </label>
       <a class="btn cta sm land-cta" href="#/home" data-action="set-role" data-role="pilot" data-to="#/home">Explore the demo</a>
@@ -60,6 +60,10 @@ try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf"
 <script defer src="demo-date.js"></script>
 <script defer src="data.js"></script>
 <script defer src="sample-fl-examiners.js"></script>
+<script defer src="sample-tx-examiners.js"></script>
+<script defer src="sample-ca-examiners.js"></script>
+<script defer src="sample-az-examiners.js"></script>
+<script defer src="cost-model.js"></script>
 <script defer src="app.js"></script>
 <script id="app-fallback">
 // Data load failure: if a script failed to load or the sample data is missing, show a recoverable error instead of a blank page.
@@ -68,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var app = document.getElementById("app");
   app.innerHTML = '<div class="page"><div class="card empty state" data-state="load-error" role="alert">' +
     '<svg class="state-ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4.2M12 17.2v.1"/></svg>' +
-    '<h1>Sample data didn\u2019t load</h1><p>' + (navigator.onLine === false ? "You\u2019re offline and this page isn\u2019t saved on this device yet. Connect once, then it works offline." : "Part of the prototype failed to load. Check that the local server is running, then try again.") + '</p>' +
+    '<h1>Sample data didn\u2019t load</h1><p>' + (navigator.onLine === false ? "You\u2019re offline and this page isn\u2019t saved on this device yet. Connect once, then it works offline." : "Part of the prototype failed to load. Try again.") + '</p>' +
     '<div class="empty-actions"><button class="btn" type="button" id="retry-load">Try again</button></div>' +
     '<p class="muted small">Prototype – no real payments. Prototype, not legal or FAA advice.</p></div></div>';
   document.getElementById("retry-load").addEventListener("click", function () { location.reload(); });
