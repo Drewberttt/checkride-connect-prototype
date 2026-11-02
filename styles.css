@@ -149,7 +149,7 @@ body::before {
 }
 .topbar-inner { display: flex; align-items: center; gap: 1.25rem; min-height: var(--header-h); flex-wrap: wrap; }
 .brand { display: flex; align-items: center; gap: .55rem; color: var(--brand); font-size: 1.02rem; white-space: nowrap; letter-spacing: -.01em; }
-.brand-mark { width: 32px; height: 32px; flex-shrink: 0; display: block; } /* Runway mark: brand rules say no recolor, rotate or effects */
+.brand-mark { width: 32px; height: 32px; flex-shrink: 0; display: block; } /* brand mark (D41: his logo by default, Runway behind the BRAND switch): no recolor, rotate or effects */
 .brand:hover { color: var(--brand); }
 .brand b { font-weight: 700; }
 .topbar-right { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
@@ -811,7 +811,8 @@ label.field > span { color: var(--label); font-size: .75rem; letter-spacing: .08
   padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
 }
 .brand { min-height: 44px; flex-shrink: 0; }
-.lockup { height: 26px; width: auto; display: block; }
+.lockup { height: 38px; width: auto; display: block; } /* D41: his Checkride Connect PNG lockup (370x106) */
+:root[data-brand="runway"] .lockup { height: 26px; } /* BRAND "runway" switch */
 .lockup-dark, :root[data-theme="dark"] .lockup-light { display: none; }
 :root[data-theme="dark"] .lockup-dark { display: block; }
 .crumb { font-size: .875rem; color: var(--subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
@@ -827,7 +828,8 @@ body.is-landing .land-cta { display: inline-flex; }
 body.is-landing .role, body.is-landing .crumb { display: none; }
 @media (max-width: 1023px) { .land-nav { display: none; } }
 @media (max-width: 640px) {
-  .lockup { height: 22px; }
+  .lockup { height: 32px; }
+  :root[data-brand="runway"] .lockup { height: 22px; }
   .crumb, .theme-pick, .role-label { display: none; }
   body.is-landing .theme-pick { display: none; }
   .topbar-inner { gap: .5rem; }

@@ -4,7 +4,7 @@
    - Versioned cache; old versions are deleted on activate.
    - Network first for same-origin GETs (so edits show up), cache fallback when offline; navigations fall back to index.html.
    - No push, no background sync, no third-party requests. Bump VERSION when the shell changes. */
-const VERSION = "cc-proto-v7.1.0"; // v4-rc2: QA-057..073 fixes (no auto-move of a started pick, bar vs tiles/nav, Find paging + filters, a11y focus, copy keys)
+const VERSION = "cc-proto-v7.3.0"; // rc3: QA-075/081 auth validation, QA-076/077/078/079/080 (v7.2.0 = D41 logo/NC/landing; v7.1.0 = v4-rc2)
 const CACHE = "checkride-connect-" + VERSION;
 const SHELL = [
   "./",
@@ -17,6 +17,7 @@ const SHELL = [
   "sample-tx-examiners.js",
   "sample-ca-examiners.js",
   "sample-az-examiners.js",
+  "sample-nc-examiners.js",
   "cost-model.js",
   "site.webmanifest",
   "favicon.ico",
@@ -29,6 +30,12 @@ const SHELL = [
   "icons/icon-512.png",
   "icons/icon-maskable-192.png",
   "icons/icon-maskable-512.png",
+  "icons/runway/favicon.ico",
+  "icons/runway/favicon.svg",
+  "icons/runway/apple-touch-icon.png",
+  "brand/checkride-connect-logo-light.png",
+  "brand/checkride-connect-logo-dark.png",
+  "brand/checkride-connect-icon.png",
   "brand/runway-icon.svg",
   "brand/runway-horizontal-light.svg",
   "brand/runway-horizontal-dark.svg",

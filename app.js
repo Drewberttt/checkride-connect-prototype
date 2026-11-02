@@ -6,6 +6,28 @@
   const D = window.CC_DATA;
   // Data load failure: data.js missing, blocked or broken. index.html shows the error state (see #app-fallback script).
   if (!D || !Array.isArray(D.dpes) || !D.dpes.length) { window.CC_APP_FAILED = "data"; return; }
+  // ===================== EASY SWITCH (D41): sample area, landing wording, logo =====================
+  // Drewbert D41 (Mon Nov 2, 2026): North Carolina fictional sample area, his landing copy and his logo are the defaults.
+  // window.CC_CONFIG (set before app.js) flips any of them back; the old data, copy and Runway files stay in the build:
+  //   SAMPLE_AREA: "NC" (default, sample-nc-examiners.js) | "legacy" (data.js + FL / TX / CA / AZ sample files, as in v4-rc2)
+  //   LANDING:     "site" (default, his landing copy adapted to our rules) | "v4" (v4-rc2 landing copy)
+  //   BRAND:       "site" (default, his Checkride Connect logo, stored locally in brand/) | "runway" (Runway lockups and icons)
+  const CFG0 = window.CC_CONFIG || {};
+  const AREA = CFG0.SAMPLE_AREA === "legacy" ? "legacy" : "NC";
+  const LANDING_SET = CFG0.LANDING === "v4" ? "v4" : "site";
+  const BRAND = CFG0.BRAND === "runway" ? "runway" : "site";
+  const NC = window.CC_SAMPLE_NC;
+  const MULTI_STATE = [];
+  if (AREA === "NC" && NC && NC.fictional && Array.isArray(NC.dpes) && NC.dpes.length) {
+    // D41: the NC set REPLACES the sample examiners, airports, pending sign-ups and the school's home field. Ids d1..d13
+    // match data.js, so the seeded bookings, the school roster and the capacity demo keep working. No cost data.
+    D.dpes = NC.dpes.map((d) => ({ ...d }));
+    D.airports = NC.airports.map((a) => ({ ...a, state: "NC" }));
+    D.airportTz = {};
+    if (Array.isArray(NC.pendingDpes)) D.pendingDpes = NC.pendingDpes;
+    D.school = { ...D.school, ...(NC.school || {}) };
+    D.region = NC.region;
+  } else {
   // Fictional Florida sample set (fl01-fl50): appended to the original examiners (demo bookings and school data use d1..d13).
   // Its airport list is a superset of data.js airports, so it replaces them.
   const FL = window.CC_SAMPLE_FL;
@@ -18,26 +40,34 @@
   // so d1, d2, d9 (referenced by seeded bookings, the school and the capacity days) keep their ids and positions.
   // Every airport carries a US state and an IANA time zone (D38): airport.tz, else data.js airportTz, else the region zone.
   D.airports.forEach((a) => { if (!a.state) a.state = "FL"; });
-  const MULTI_STATE = [];
   [window.CC_SAMPLE_TX, window.CC_SAMPLE_CA, window.CC_SAMPLE_AZ].forEach((X) => {
     if (!X || !X.fictional || !Array.isArray(X.dpes) || !X.region) return;
     const st = X.region.short, haveA = new Set(D.airports.map((a) => a.id)), haveD = new Set(D.dpes.map((d) => d.id));
     (X.airports || []).filter((a) => !haveA.has(a.id)).forEach((a) => D.airports.push({ ...a, state: st, tz: a.tz || (D.airportTz && D.airportTz[a.id]) || undefined }));
     X.dpes.filter((d) => !haveD.has(d.id)).forEach((d) => { D.dpes.push(d); MULTI_STATE.push(d.id); });
   });
-  // EASY SWITCH (rc2): the example states. Edit this one list; Find/landing copy reads it through coveredList().
-  const COVERED_STATES = [["FL", "Florida"], ["TX", "Texas"], ["CA", "California"], ["AZ", "Arizona"]];
-  // EASY SWITCH (rc2): the logo lockups (currently Runway). app.js uses this everywhere and syncs the header at boot;
-  // index.html (first paint) and sw.js (precache) list the same two files.
-  const BRAND_LOGO = { light: "brand/runway-horizontal-light.svg", dark: "brand/runway-horizontal-dark.svg" };
+  }
+  const IS_NC = AREA === "NC" && D.region && D.region.short === "NC";
+  // EASY SWITCH (rc2, D41): the example states. Find/landing copy reads it through coveredList().
+  const COVERED_STATES = IS_NC ? [["NC", "North Carolina"]] : [["FL", "Florida"], ["TX", "Texas"], ["CA", "California"], ["AZ", "Arizona"]];
+  // EASY SWITCH (rc2, D41): the logo lockups. Default: his Checkride Connect logo (brand/checkride-connect-logo-*.png,
+  // from checkride-connect.vercel.app/logo-full.png, stored locally). BRAND "runway" brings back the Runway lockups:
+  //   { light: "brand/runway-horizontal-light.svg", dark: "brand/runway-horizontal-dark.svg" }
+  // app.js syncs the header and favicons at boot; index.html (first paint) and sw.js (precache) list the files.
+  const BRAND_LOGO = BRAND === "runway" ? { light: "brand/runway-horizontal-light.svg", dark: "brand/runway-horizontal-dark.svg" }
+    : { light: "brand/checkride-connect-logo-light.png", dark: "brand/checkride-connect-logo-dark.png" };
+  const BRAND_WH = BRAND === "runway" ? [164, 26] : [133, 38];
   const coveredList = () => { const n = COVERED_STATES.map(([, x]) => x); return n.length > 1 ? n.slice(0, -1).join(", ") + " and " + n[n.length - 1] : n.join(""); };
+  const coveredCodes = () => { const n = COVERED_STATES.map(([c]) => c); return n.length > 1 ? n.slice(0, -1).join(", ") + " and " + n[n.length - 1] : n.join(""); };
   const US_STATES = { AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming" };
-  const STATE_HOME = { FL: "KORL", TX: "KADS", CA: "KVNY", AZ: "KDVT" }; // default "near" airport when you switch state
-  const aptState = (id) => { const a = D.airports.find((x) => x.id === id); return (a && a.state) || "FL"; };
+  const STATE_HOME = IS_NC ? { NC: "XNC01" } : { FL: "KORL", TX: "KADS", CA: "KVNY", AZ: "KDVT" }; // default "near" airport when you switch state
+  // D41: the demo pilot's home field and state (Tarwick XNC01, NC; legacy: Orlando Executive KORL, FL).
+  const DEFAULT_STATE = COVERED_STATES[0][0], DEFAULT_NEAR = STATE_HOME[DEFAULT_STATE];
+  const aptState = (id) => { const a = D.airports.find((x) => x.id === id); return (a && a.state) || DEFAULT_STATE; };
   const dpeState = (dp) => aptState(dp.home);
-  // B: the pilot's "near" airport for an examiner. A near airport in another state (the KORL default on a TX profile) would
-  // price a 900 nm trip, so out-of-state falls back to the examiner's home airport. Florida keeps the old KORL default.
-  const nearFor = (n, dp) => { const st = dp ? dpeState(dp) : "FL"; if (apt(n) && aptState(n) === st) return n; return st === "FL" ? (apt(n) ? n : "KORL") : dp.home; };
+  // B: the pilot's "near" airport for an examiner. A near airport in another state (the legacy KORL default on a TX profile) would
+  // price a 900 nm trip, so out-of-state falls back to the examiner's home airport. The home state keeps the DEFAULT_NEAR default.
+  const nearFor = (n, dp) => { const st = dp ? dpeState(dp) : DEFAULT_STATE; if (apt(n) && aptState(n) === st) return n; return st === DEFAULT_STATE ? (apt(n) ? n : DEFAULT_NEAR) : dp.home; };
   // ===================== PROTOTYPE CONFIG: the one switch for fees =====================
   // Owner decision (Oct 29, 2026): Checkride Connect is FREE during the prototype.
   // FEES_ENABLED: false  -> no $15 student booking fee anywhere (pricing, request, all-in, cohort, credits,
@@ -51,7 +81,8 @@
   const FREE_LINE = "Checkride Connect is free during the prototype.";
   const ALERT_LIMIT = 5; // prototype cap on saved mock alerts (alerts are free, email-only, mock)
   // Demo date mode (demo-date.js) keeps its own state so pinned screenshots always start from fresh sample data.
-  const KEY = "cc-connect-proto-v3" + (window.CC_DEMO_DATE ? ":demo-" + window.CC_DEMO_DATE : "");
+  // D41: the NC sample area keeps its own saved demo (":nc"), so a saved FL / TX / CA / AZ demo never mixes with NC data.
+  const KEY = "cc-connect-proto-v3" + (IS_NC ? ":nc" : "") + (window.CC_DEMO_DATE ? ":demo-" + window.CC_DEMO_DATE : "");
   // Every saved-state key this prototype writes: cc-connect-proto-v3 and its demo-date variants (cc-connect-proto-v3:demo-YYYY-MM-DD).
   // The theme (cc-theme) and the fonts-loaded flag (cc-wf) are kept.
   const clearDemoData = () => { try { Object.keys(localStorage).filter((k) => k.startsWith("cc-connect-proto-v3")).forEach((k) => localStorage.removeItem(k)); } catch (e) { /* private mode */ } };
@@ -163,7 +194,13 @@
   // QA-039: one shared rule. A slot whose start instant (airport zone) has passed is never listed, alerted, offered or requestable.
   const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
   // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
-  const COPY = { "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state" };
+  const COPY = { "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state",
+    // D41 (new key for Customer Discovery): the NC sample area has no cost data, so no estimate is shown and nothing is invented.
+    "estimate.no_area_data": `No estimate yet for ${IS_NC ? "North Carolina" : "this area"}. This prototype has no sample aircraft, instructor or travel cost data here, so we don\u2019t guess. Fees shown are each examiner\u2019s own (sample).` };
+  // D41: areas without cost data (NC) never get aircraft / CFI / travel / retest estimates. Only examiner-published sample fees show.
+  const NO_EST_AREA = IS_NC;
+  const noEstFor = (dp) => NO_EST_AREA && !(dp && dp.costModel);
+  const NO_EST = `<span data-no-estimate="area">No estimate yet</span>`;
   const PAST_SLOT = COPY["slot.started"]; // QA-039 / QA-070: the stale-slot refusal uses the slot.started key
   const slotLive = (sl) => !!sl && sl.status === "open" && !slotPast(sl);
   const slotTime = (sl) => `${fmtTime(sl.time)} ${zoneLabel(slotTz(sl))}`;
@@ -219,6 +256,14 @@
   const allIn = (dp, cert, near, at) => {
     const M = D.allInModel, sm = sampleOf(dp);
     const fee = dp.fees[cert], dep = depositFor(dp, cert);
+    if (noEstFor(dp)) {
+      // D41: no cost data for this area. Only the examiner's own sample travel fee (when it applies) is counted; no estimate.
+      const dist = distNm(dp.home, near), away = at && apt(at) ? at !== dp.home : false;
+      const tf = at && apt(at) ? (away ? dp.travelFee : 0) : (dist > 10 && dist <= dp.travelNm ? dp.travelFee : 0);
+      const offer = at && apt(at) && !away && dist > 10 && dist <= dp.travelNm ? `Listed openings are at ${dp.home}; ${first(dp.name)} can travel to ${near} for +${money(dp.travelFee)} on request.` : "";
+      return { noEst: true, fee, dep, aircraft: 0, aircraftNote: "", travel: tf, travelLabel: "Examiner travel fee (sample)", travelNote: tf ? `Examiner travel fee (sample)` : "No examiner travel fee", offer, at: at && apt(at) ? at : undefined,
+        studentFee: BOOKING_FEE, total: fee + BOOKING_FEE + tf, retest: dp.retestFee, noShow: null, dist };
+    }
     // B: a sample examiner's own costModel (TX/CA/AZ) wins, so this card and the expected all-in estimate agree.
     const cmx = dp.costModel || {}, own = cmx.byCert && cmx.byCert[cert];
     const hrs = (own && own.rentalHoursTest) || M.hours[cert] || 1.5;
@@ -249,6 +294,22 @@
   };
   const allInCard = (dp, cert, near, at) => {
     const x = allIn(dp, cert, near, at);
+    if (x.noEst) return `<section class="card" id="cost-estimate" data-no-estimate="area" data-estimate-area="${esc(dpeState(dp))}">
+      <p class="eyebrow">What this slot would cost</p>
+      <div class="row spread"><h2 style="margin:0">All-in cost</h2><span class="pill">No estimate yet</span></div>
+      <form class="row" data-form="allin" data-auto data-dpe="${dp.id}" style="margin:.75rem 0 0;gap:.75rem;align-items:flex-end;flex-wrap:wrap">
+        ${certSelect("cert", cert, Object.keys(dp.fees))}${airportSelect("near", near, "Your airport")}
+      </form>
+      <div class="summary small" style="margin-top:.9rem">
+        <div class="line"><span>Examiner fee, ${esc(certById(cert).short)} (sample)</span><b>${money(x.fee)}</b></div>
+        ${FEES ? `<div class="line"><span>Student booking fee (flat, mock)</span><b>${money(x.studentFee)}</b></div>` : ""}
+        ${x.travel ? `<div class="line"><span>Examiner travel fee (sample)</span><b>${money(x.travel)}</b></div>` : ""}
+        <div class="line"><span>Aircraft, instructor, travel and retest costs</span><b class="muted">${NO_EST}</b></div>
+      </div>
+      ${x.offer ? `<p class="small" id="travel-offer" style="margin:.6rem 0 0">${esc(x.offer)}</p>` : ""}
+      <p class="muted small" style="margin:.6rem 0 0" data-copy-key="estimate.no_area_data">${COPY["estimate.no_area_data"]}</p>
+      <p class="warn-note small" style="margin:.75rem 0 0"><b>ASSUMPTION:</b> Deposit paid to your examiner (mock): ${money(x.dep)}, ${depositRule(dp)}. It is <b>part of</b> the examiner fee, not an extra; Checkride Connect never holds it.</p>
+    </section>`;
     return `<section class="card" id="all-in">
       <p class="eyebrow">What this slot would cost</p>
       <div class="row spread"><h2 style="margin:0">All-in cost</h2><span class="pill warn">Example numbers, not a quote</span></div>
@@ -280,7 +341,7 @@
   // TX / CA / AZ sample examiners ship a fictional costModel. Older sample examiners (d1.., fl01..) get one built from their own
   // sample fee, sample rental rate and the shared cost-model.js defaults, so every profile can show the same estimate.
   function costModelFor(dp, cert) {
-    if (!CM) return null;
+    if (!CM || noEstFor(dp)) return null;
     const own = dp.costModel && dp.costModel.byCert && dp.costModel.byCert[cert];
     if (own) return { ...dp.costModel, byCert: { ...dp.costModel.byCert, [cert]: { ...own, examinerFee: dp.fees[cert] ?? own.examinerFee } } };
     const d = CM.byCert[cert];
@@ -333,6 +394,7 @@
   const retestNote = (cert) => `The retest chance is a shared default for every ${esc(certById(cert).short)} checkride, from FAA-wide statistics, and you can change it. It is not this examiner\u2019s pass rate. ${VERIFY}`;
   // Profile card ("Expected all-in, including retest risk").
   const estimateCard = (dp, cert, near, at) => {
+    if (noEstFor(dp)) return ""; // D41: allInCard already shows "No estimate yet" for this area
     const travel = allIn(dp, cert, near, at).travel, e = estimateFor(dp, cert, travel);
     if (!e) return "";
     const L = (k, v, note) => `<div class="line"><span>${k}${note ? `<div class="muted small">${note}</div>` : ""}</span><b class="mono">${v}</b></div>`;
@@ -355,6 +417,7 @@
   };
   // Compact version for the request workspace's fee card.
   const estimateMini = (dp, cert, travel, fee) => {
+    if (noEstFor(dp)) return `<div class="inset small" id="fee-estimate" data-no-estimate="area" style="margin-top:.75rem"><div class="line"><span><b>Expected all-in</b></span><b>${NO_EST}</b></div><p class="muted" style="margin:.25rem 0 0" data-copy-key="estimate.no_area_data">${COPY["estimate.no_area_data"]}</p></div>`;
     const e = estimateFor(dp, cert, travel, fee);
     if (!e) return "";
     return `<div class="inset small" id="fee-estimate" data-estimate="${dp.id}:${cert}" style="margin-top:.75rem">
@@ -458,8 +521,8 @@
     D.dpes.forEach((dp, i) => { const ts = Date.now() - ((i % 4) * 24 + i + 2) * 3600e3; avail[dp.id] = { confirmedAt: ts, updatedAt: ts, reminderDay: 0, pauseReminders: false }; });
     return {
       v: 3, fl: 1, ms: 1, role: "pilot", nextId: 1000, slots, bookings, avail,
-      alerts: [{ id: "a1", cert: "ppl", near: "KORL", radius: 75, before: addDays(45), maxFee: 1300, dpeId: "", channels: ["email"], createdAt: Date.now() }],
-      notifications: [{ id: "n1", ts: Date.now(), title: "Your first sample alert is active", body: "Mock alert, nothing is emailed. In a real version we would tell you when a Private Pilot checkride opens within 75 nm of KORL in the next 45 days for $1,300 or less.", read: false }],
+      alerts: [{ id: "a1", cert: "ppl", near: DEFAULT_NEAR, radius: 75, before: addDays(45), maxFee: 1300, dpeId: "", channels: ["email"], createdAt: Date.now() }],
+      notifications: [{ id: "n1", ts: Date.now(), title: "Your first sample alert is active", body: "Mock alert, nothing is emailed. In a real version we would tell you when a Private Pilot checkride opens within 75 nm of ${DEFAULT_NEAR} in the next 45 days for $1,300 or less.", read: false }],
       checklist: {}, curated: {}, ticks: {}, tier: "free",
       // QA-026 / D38 #7: a fresh profile shows a target month and a dated roll-up. Sample KT date (about 10 months ago), example data only.
       target: defaultTarget(), ready9Dates: { kt: addDays(-300) }, ktSample: true,
@@ -846,7 +909,7 @@ const closeModal = () => {
   // B: state = the state of the search airport. ?st= picks a state: a covered one (FL/TX/CA/AZ) moves the search to that state's
   // sample airport unless the airport is already there; any other US state shows the outside-coverage message (ux-copy-v3, D16).
   function searchFilters(q) {
-    let near = apt(q.near) ? q.near : "KORL";
+    let near = apt(q.near) ? q.near : DEFAULT_NEAR;
     const st = String(q.st || "").toUpperCase();
     let outside = "";
     if (st && COVERED_STATES.some(([c]) => c === st)) { if (aptState(near) !== st) near = STATE_HOME[st]; }
@@ -855,7 +918,7 @@ const closeModal = () => {
   }
   const US_TERR = { PR: "Puerto Rico", GU: "Guam", VI: "the U.S. Virgin Islands", AS: "American Samoa", MP: "the Northern Mariana Islands" };
   const stateName = (c) => (COVERED_STATES.find(([k]) => k === c) || [c, US_STATES[c] || US_TERR[c] || "this state"])[1]; // QA-055: never the raw code
-  const OUTSIDE_COPY = "This prototype only has sample examiners in FL, TX, CA and AZ so far. Pick an airport there to try it out.";
+  const OUTSIDE_COPY = `This prototype only has sample examiners in ${coveredCodes()} so far. Pick an airport there to try it out.`;
   const stateSelect = (cur) => `<label class="field"><span>State</span><select name="st" data-state-select>
       ${!COVERED_STATES.some(([k]) => k === cur) && !US_STATES[cur] && !US_TERR[cur] ? `<option value="" selected disabled>${COPY["search.state.placeholder"]}</option>` : ""}
       <optgroup label="Sample examiners">${COVERED_STATES.map(([c, n]) => `<option value="${c}" ${c === cur ? "selected" : ""}>${c} · ${n}</option>`).join("")}</optgroup>
@@ -871,7 +934,7 @@ const closeModal = () => {
 
   // ---------- views ----------
   function viewHome() {
-    const next = openSlots({ cert: "ppl", state: "FL" }); // B: the demo pilot flies from KORL, so Home shows Florida openings
+    const next = openSlots({ cert: "ppl", state: DEFAULT_STATE }); // B / D41: the demo pilot flies from DEFAULT_NEAR, so Home shows that state's openings
     const rows = next.slice(0, 5).map((s, i) => {
       const dp = dpeById(s.dpeId);
       return `<a class="board-row" style="--i:${i}" href="#/dpe/${dp.id}?cert=ppl&date=${s.date}">
@@ -890,7 +953,7 @@ const closeModal = () => {
           ${head("FOR STUDENT PILOTS", "Find your checkride.", "Sooner.", "Compare openings, fees and wait times across examiners near you.")}
           <form class="card search-box stack" data-form="search">
             ${certSelect("cert", "ppl")}
-            ${locationField("KORL", "loc-h")}
+            ${locationField(DEFAULT_NEAR, "loc-h")}
             ${radiusSelect(75)}
             <label class="field"><span>Before (optional)</span><input type="date" name="before" min="${addDays(1)}" /></label>
             <button class="btn cta" type="submit">Search openings</button>
@@ -977,7 +1040,7 @@ const closeModal = () => {
       <div class="avatar">${initials(dp.name)}</div>
       <div>
         <div class="row" style="gap:.5rem"><h3 style="margin:0"><a href="#/dpe/${dp.id}?cert=${f.cert}">${esc(dp.name)}</a></h3>${sampleBadge()}</div>
-        <div class="muted small">${esc(apt(dp.home).city)} · ${dp.home} · replies in ~${dp.responseHours}h${sampleOf(dp).avgDaysToNext != null ? ` · avg wait ${plural(sampleOf(dp).avgDaysToNext, "day")} (sample)` : ""}</div>
+        <div class="muted small">${esc(apt(dp.home).city)} · ${dp.home}${dp.responseHours != null ? ` · replies in ~${dp.responseHours}h` : ""}${sampleOf(dp).avgDaysToNext != null ? ` · avg wait ${plural(sampleOf(dp).avgDaysToNext, "day")} (sample)` : ""}</div>
         <div class="small">${where}${r.soonest ? ` · next opening ${r.slotDist <= 2 ? "at " + r.soonest.airport : r.slotDist + " nm away at " + r.soonest.airport}` : ""}</div>
         ${freshOf(dp.id).level === "ok" ? "" : `<div class="small" style="margin-top:.25rem">${freshBadge(dp.id)}</div>`}
         ${r.slots.length
@@ -1114,31 +1177,32 @@ const closeModal = () => {
     const rows = allDpes().filter((dp) => dp.fees[f.cert] && reachable(dp, f.near, f.radius)).map((dp) => {
       const x = allIn(dp, f.cert, f.near);
       const soon = openSlots({ dpeId: dp.id, cert: f.cert })[0];
-      return { dp, x, soon, fee: x.fee, total: x.total, dist: x.dist };
-    }).sort((a, b) => a.total - b.total);
-    const fees = rows.map((r) => r.fee), totals = rows.map((r) => r.total);
+      return { dp, x, soon, fee: x.fee, total: x.total, dist: x.dist, no: !!x.noEst };
+    }).sort((a, b) => (a.no - b.no) || (a.no ? a.fee - b.fee : a.total - b.total)); // D41: no-estimate rows sort by examiner fee, after estimated rows
+    const fees = rows.map((r) => r.fee), totals = rows.filter((r) => !r.no).map((r) => r.total);
+    const allNo = rows.length > 0 && !totals.length;
     const max = Math.max(...totals, 1);
     return `<div class="page">
-      <div class="page-head"><h1>Checkride cost comparison <span class="pill warn" style="vertical-align:middle">Example numbers</span></h1><p class="muted">The same checkride across sample examiners: the examiner fee, plus our flat ${money(BOOKING_FEE)} student fee and example aircraft and travel estimates, so you can compare the all-in total. Sorted by all-in total.</p></div>
+      <div class="page-head"><h1>Checkride cost comparison <span class="pill warn" style="vertical-align:middle">Example numbers</span></h1><p class="muted">${allNo ? `The same checkride across sample examiners. ${COPY["estimate.no_area_data"]} Sorted by examiner fee.` : `The same checkride across sample examiners: the examiner fee, plus our flat ${money(BOOKING_FEE)} student fee and example aircraft and travel estimates, so you can compare the all-in total. Sorted by all-in total.`}</p></div>
       <form class="card search-box" data-form="compare" data-auto style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:1rem">
         ${certSelect("cert", f.cert)}${airportSelect("near", f.near, "Your airport")}${radiusSelect(f.radius)}
       </form>
-      ${rows.length ? `<section class="grid g4" style="margin-bottom:1rem">
-        ${statCard(money(Math.min(...totals)), `Lowest all-in ${esc(c.short)} total (example)`)}
+      ${rows.length ? `<section class="grid g4" style="margin-bottom:1rem"${allNo ? ' data-no-estimate="area"' : ""}>
+        ${allNo ? statCard("No estimate yet", `All-in ${esc(c.short)} total`) : `${statCard(money(Math.min(...totals)), `Lowest all-in ${esc(c.short)} total (example)`)}
         ${statCard(money(median(totals)), "Median all-in total (example)")}
-        ${statCard(money(Math.max(...totals)), "Highest all-in total (example)")}
+        ${statCard(money(Math.max(...totals)), "Highest all-in total (example)")}`}
         ${statCard(money(Math.min(...fees)) + "–" + money(Math.max(...fees)), "Examiner fee range (sample)")}
       </section>
       <section class="card"><div class="table-wrap tight"><table class="cmp">
         <thead><tr><th>Examiner</th><th>Based at</th><th class="num">Exam fee</th>${FEES ? `<th class="num">Student fee</th>` : ""}<th class="num">Aircraft (est.)</th><th class="num">Travel / lodging (est.)</th><th class="num">All-in total (example)</th><th>Avg wait (sample)</th><th>Soonest opening</th></tr></thead>
-        <tbody>${rows.map((r, i) => `<tr ${i === 0 ? 'class="best"' : ""}>
-          <td><a href="#/dpe/${r.dp.id}?${toQuery({ cert: f.cert, near: f.near })}"><b>${esc(r.dp.name)}</b></a>${i === 0 ? ' <span class="pill good">Lowest all-in</span>' : ""}</td>
+        <tbody>${rows.map((r, i) => `<tr ${i === 0 && !r.no ? 'class="best"' : ""}>
+          <td><a href="#/dpe/${r.dp.id}?${toQuery({ cert: f.cert, near: f.near })}"><b>${esc(r.dp.name)}</b></a>${i === 0 && !r.no ? ' <span class="pill good">Lowest all-in</span>' : ""}</td>
           <td>${r.dp.home} <span class="muted small">${r.dist} nm</span></td>
           <td class="num">${money(r.fee)}</td>
           ${FEES ? `<td class="num">${money(r.x.studentFee)}</td>` : ""}
-          <td class="num">${money(r.x.aircraft)}</td>
-          <td class="num">${r.x.travel ? money(r.x.travel) : "—"}</td>
-          <td class="num"><b>${money(r.total)}</b></td>
+          <td class="num">${r.no ? NO_EST : money(r.x.aircraft)}</td>
+          <td class="num">${r.no ? NO_EST : r.x.travel ? money(r.x.travel) : "—"}</td>
+          <td class="num">${r.no ? NO_EST : `<b>${money(r.total)}</b>`}</td>
           <td>${sampleOf(r.dp).avgDaysToNext != null ? plural(sampleOf(r.dp).avgDaysToNext, "day") : '<span class="muted small">n/a</span>'}</td>
           <td>${r.soon ? `${fmtDate(r.soon.date)} <span class="muted small">${relDays(r.soon.date, slotTz(r.soon))}</span>` : '<span class="muted small">None open</span>'}</td>
         </tr>`).join("")}</tbody>
@@ -1170,7 +1234,7 @@ const closeModal = () => {
           <section class="card">
             <h2>New alert <span class="muted small" style="font-weight:400">(${S.alerts.length}/${ALERT_LIMIT} saved)</span></h2>
             <form class="grid g2" data-form="alert">
-              ${certSelect("cert", "ppl")}${airportSelect("near", "KORL")}${radiusSelect(75)}
+              ${certSelect("cert", "ppl")}${airportSelect("near", DEFAULT_NEAR)}${radiusSelect(75)}
               <label class="field"><span>Checkride before</span><input type="date" name="before" value="${addDays(45)}" min="${addDays(1)}" /></label>
               ${feeSelect(0)}
               <label class="field"><span>Examiner</span><select name="dpeId"><option value="">Any sample examiner</option>${allDpes().map((d) => `<option value="${d.id}">${esc(d.name)} (${d.home})</option>`).join("")}</select></label>
@@ -1184,7 +1248,7 @@ const closeModal = () => {
         </div>
         <aside class="card sticky" id="inbox">
           <div class="row spread"><h2 style="margin:0">Inbox</h2>${unread ? `<button class="btn ghost sm" data-action="read-all">Mark all read</button>` : ""}</div>
-          <p class="muted small">Mock inbox. Tip: tap <b>Simulate a matching opening</b> on an alert, or switch to <b>DPE view</b> and publish an opening or mark a cancellation near KORL, to see a mock alert arrive here.</p>
+          <p class="muted small">Mock inbox. Tip: tap <b>Simulate a matching opening</b> on an alert, or switch to <b>DPE view</b> and publish an opening or mark a cancellation near ${DEFAULT_NEAR}, to see a mock alert arrive here.</p>
           ${"Notification" in window ? `<div class="small" id="notif-perm" style="margin-bottom:.75rem">${Notification.permission === "granted" ? `<span class="pill good">Browser notifications on</span> <span class="muted">Shown by this page only. Nothing is emailed or texted.</span>` : Notification.permission === "denied" ? `<span class="muted">Browser notifications are blocked in this browser. The inbox still works.</span>` : `<button class="btn ghost sm" data-action="notif-perm">Also show browser notifications (optional)</button> <span class="muted">Shown by this page only, never email or SMS.</span>`}</div>` : ""}
           ${S.notifications.length ? S.notifications.slice(0, 25).map((n) => {
             const slot = n.slotId ? S.slots.find((s) => s.id === n.slotId) : null;
@@ -1333,7 +1397,7 @@ const closeModal = () => {
     const cert = n.cert, fee = dp.fees[cert], dep = depositFor(dp, cert);
     const al = S.alerts.find((a) => a.cert === cert) || {};
     const travel = allIn(dp, cert, nearFor(al.near, dp), sl.airport).travel;
-    const allin = `Examiner fee ${money(fee)} \u00b7 Checkride Connect: ${FEES ? `${money(BOOKING_FEE)} student booking fee (mock) <span class="pill warn">Proposed pricing</span>` : "free"} \u00b7 deposit ${money(dep)}, paid directly to ${f} under ${f}\u2019s terms \u00b7 travel: ${sl.airport === dp.home && !travel ? "none, this slot is at the examiner\u2019s home airport" : money(travel)}`;
+    const allin = `Examiner fee ${money(fee)} \u00b7 Checkride Connect: ${FEES ? `${money(BOOKING_FEE)} student booking fee (mock) <span class="pill warn">Proposed pricing</span>` : "free"} \u00b7 deposit ${money(dep)}, paid directly to ${f} under ${f}\u2019s terms \u00b7 travel: ${sl.airport === dp.home && !travel ? "none, this slot is at the examiner\u2019s home airport" : noEstFor(dp) ? `examiner travel fee ${money(travel)} (sample)` : money(travel)}${noEstFor(dp) ? ` \u00b7 aircraft and other travel: ${NO_EST}` : ""}`;
     const endedText = (!o.passed && quietHour(h.end)) ? `That opening\u2019s hold ended overnight, so it went to the next person. No pass counted. You\u2019re still #${wl.pos}.`
       : o.passed ? "" : wl.passes >= 1 ? `That hold ended, so the slot went to the next person. We counted it as a pass. You\u2019re now #${WL_BACK}, at the back of the line.` : `That hold ended, so the slot went to the next person. We counted it as a pass. You\u2019re still #${wl.pos}.`;
     return `<div class="page">
@@ -1882,12 +1946,12 @@ const closeModal = () => {
         <div class="table-wrap"><table class="ready-table"><thead><tr><th>Student</th><th>Status</th><th>Reasons and warnings</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>${readyRows}</tbody></table></div>
         <p class="small" id="cohort-eligible" style="margin:0"><b>${plan.eligible.length} of ${students.length}</b> eligible.${plan.blocked.length ? ` Not included: ${plan.blocked.map((c) => esc(c.st.name)).join(", ")}.` : ""}</p>
       </section>`;
-      const rule = `<p class="rank-rule small" id="cohort-rule"><b>How options are ranked:</b> 1) soonest date that fits, 2) lowest total all-in cost for the group (examiner fee + ${FEES ? `${money(BOOKING_FEE)} booking fee + ` : ""}example aircraft and travel estimates from ${esc(sc.airport)}), 3) examiner name A–Z. ${P.together ? "With <b>Keep the cohort together</b> on, one-examiner, one-day options win when any fit everyone; otherwise" : "With <b>Keep the cohort together</b> off,"} each student is placed by the same rule, most constrained student first, and can be split across examiners and days. Example numbers, not quotes.</p>`;
+      const rule = `<p class="rank-rule small" id="cohort-rule"><b>How options are ranked:</b> 1) soonest date that fits, 2) ${NO_EST_AREA ? `lowest total of the listed sample fees for the group (examiner fee + ${FEES ? `${money(BOOKING_FEE)} booking fee + ` : ""}the examiner\u2019s own travel fee to ${esc(sc.airport)}; no aircraft or travel estimate yet for this area)` : `lowest total all-in cost for the group (examiner fee + ${FEES ? `${money(BOOKING_FEE)} booking fee + ` : ""}example aircraft and travel estimates from ${esc(sc.airport)})`}, 3) examiner name A–Z. ${P.together ? "With <b>Keep the cohort together</b> on, one-examiner, one-day options win when any fit everyone; otherwise" : "With <b>Keep the cohort together</b> off,"} each student is placed by the same rule, most constrained student first, and can be split across examiners and days. Example numbers, not quotes.</p>`;
       const where = P.anyDpe ? `${plural(plan.dpeCount, "sample examiner")}` : esc(dp.name);
       let head;
       if (!plan.eligible.length) head = `<div class="fit-head bad"><b>No eligible students.</b> Every selected student is blocked by the readiness check. Fix their answers above.</div>`;
-      else if (plan.mode === "whole") head = `<div class="fit-head good"><b>Whole cohort fits on ${fmtDate(plan.chosen.date, { weekday: "long", month: "long", day: "numeric" })} with ${esc(plan.chosen.dp.name)}.</b> ${plural(plan.assign.length, "student")}, total all-in ${money(plan.chosen.total)} (example). ${optKey(plan.chosen) === optKey(plan.options[0]) ? "Ranked #1." : "Your pick, not the top-ranked option."}</div>`;
-      else if (plan.mode === "split") head = `<div class="fit-head warn"><b>${plan.options.length ? "Split chosen." : `No single examiner-day fits all ${plan.placeable.length}.`}</b> Best-fit split: ${plural(plan.split.dpCount, "examiner")}, ${plural(new Set(plan.assign.map((x) => x.date)).size, "day")}, ${plan.assign.length} of ${plan.eligible.length} eligible students placed, total all-in ${money(plan.split.total)} (example).${plan.unplaced.length ? ` ${plural(plan.unplaced.length, "student")} can\u2019t be placed (${plan.unplaced.map((x) => esc(x.name)).join(", ")}).` : ""}</div>`;
+      else if (plan.mode === "whole") head = `<div class="fit-head good"><b>Whole cohort fits on ${fmtDate(plan.chosen.date, { weekday: "long", month: "long", day: "numeric" })} with ${esc(plan.chosen.dp.name)}.</b> ${plural(plan.assign.length, "student")}, ${NO_EST_AREA ? `listed sample fees ${money(plan.chosen.total)}` : `total all-in ${money(plan.chosen.total)} (example)`}. ${optKey(plan.chosen) === optKey(plan.options[0]) ? "Ranked #1." : "Your pick, not the top-ranked option."}</div>`;
+      else if (plan.mode === "split") head = `<div class="fit-head warn"><b>${plan.options.length ? "Split chosen." : `No single examiner-day fits all ${plan.placeable.length}.`}</b> Best-fit split: ${plural(plan.split.dpCount, "examiner")}, ${plural(new Set(plan.assign.map((x) => x.date)).size, "day")}, ${plan.assign.length} of ${plan.eligible.length} eligible students placed, ${NO_EST_AREA ? `listed sample fees ${money(plan.split.total)}` : `total all-in ${money(plan.split.total)} (example)`}.${plan.unplaced.length ? ` ${plural(plan.unplaced.length, "student")} can\u2019t be placed (${plan.unplaced.map((x) => esc(x.name)).join(", ")}).` : ""}</div>`;
       else head = `<div class="fit-head bad"><b>No open slots fit.</b> Nothing open for the eligible students with ${where} in ${fmtDate(P.from)} to ${fmtDate(P.to)}${dp && isStale(dp.id) ? ` (${esc(dp.name)}\u2019s availability is not recently confirmed)` : ""}. Try another examiner or a wider window.</div>`;
       const warnList = [];
       plan.noFit.forEach((st) => warnList.push(`${esc(st.name)}: no open slot for ${esc(certById(st.cert).name)} with ${where} before ${fmtDateA(P.to < ktLimit(st) ? P.to : ktLimit(st))}${ktLimit(st) < P.to ? " (knowledge-test expiry)" : ""}`));
@@ -1897,7 +1961,7 @@ const closeModal = () => {
       const altRows = alts.map((o, n) => ({ o, rank: n + 1 }));
       if (plan.split && (!plan.options.length || plan.split.dpCount > 1 || plan.split.date !== plan.split.lastDate)) altRows.push({ o: plan.split, rank: null });
       const altTable = altRows.length ? `<div class="table-wrap"><table class="cohort-alts" id="cohort-alts"><caption class="small muted" style="text-align:left;padding:.4rem 0">Alternatives considered: ${plural(plan.options.length, "whole-cohort option")} out of ${plural(plan.examinerDays, "examiner-day")} with openings${plan.options.length > 6 ? ", top 6 shown" : ""}${altRows.some((x) => x.o.split) ? ", plus the per-student split" : ""}</caption>
-        <thead><tr><th>Rank</th><th>Option</th><th>Dates</th><th class="num">Students</th><th class="num">Total all-in</th><th class="num">vs. selected</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>${altRows.map(({ o, rank }) => {
+        <thead><tr><th>Rank</th><th>Option</th><th>Dates</th><th class="num">Students</th><th class="num">${NO_EST_AREA ? "Listed fees (sample)" : "Total all-in"}</th><th class="num">vs. selected</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>${altRows.map(({ o, rank }) => {
           const isSel = best && optKey(o) === optKey(best);
           const d = best ? o.total - best.total : 0;
           const label = o.split ? `Split across ${plural(o.dpCount, "examiner")}` : `${esc(o.dp.name)} · ${o.dp.home}`;
@@ -1913,8 +1977,8 @@ const closeModal = () => {
         fees = `<section class="card" id="cohort-fees">
           <h2>3. Proposed requests <span class="pill warn" style="vertical-align:middle">Mock</span></h2>
           <div class="table-wrap"><table><thead><tr><th>Student</th><th>Examiner and slot</th><th class="num">Examiner fee</th><th class="num">Deposit (ASSUMPTION)</th>${FEES ? `<th class="num">Booking fee</th>` : ""}<th class="num">Due if accepted</th><th class="num">All-in (example)</th></tr></thead>
-          <tbody>${rows.map((r) => `<tr><td><b>${esc(r.st.name)}</b><div class="small muted">${esc(certById(r.st.cert).short)}${r.chk.warn.length ? ` · ${plural(r.chk.warn.length, "warning")}` : ""}</div></td><td class="small">${esc(r.dp.name)}<div>${fmtDate(r.slot.date)} · ${slotTime(r.slot)} · ${r.slot.airport}</div></td><td class="num">${money(r.fee)}</td><td class="num">${money(r.dep)}</td>${FEES ? `<td class="num">${money(BOOKING_FEE)}</td>` : ""}<td class="num"><b>${money(r.due)}</b></td><td class="num">${money(r.allIn)}</td></tr>`).join("")}</tbody>
-          <tfoot><tr><td colspan="2"><b>Totals for ${plural(rows.length, "student")}</b></td><td class="num">${money(tot.fee)}</td><td class="num">${money(tot.dep)}</td>${FEES ? `<td class="num">${money(BOOKING_FEE * rows.length)} <span class="small muted">(${money(BOOKING_FEE)} × ${rows.length})</span></td>` : ""}<td class="num"><b id="cohort-total">${money(tot.due)}</b></td><td class="num" id="cohort-allin">${money(tot.allIn)}</td></tr></tfoot></table></div>
+          <tbody>${rows.map((r) => `<tr><td><b>${esc(r.st.name)}</b><div class="small muted">${esc(certById(r.st.cert).short)}${r.chk.warn.length ? ` · ${plural(r.chk.warn.length, "warning")}` : ""}</div></td><td class="small">${esc(r.dp.name)}<div>${fmtDate(r.slot.date)} · ${slotTime(r.slot)} · ${r.slot.airport}</div></td><td class="num">${money(r.fee)}</td><td class="num">${money(r.dep)}</td>${FEES ? `<td class="num">${money(BOOKING_FEE)}</td>` : ""}<td class="num"><b>${money(r.due)}</b></td><td class="num">${NO_EST_AREA ? NO_EST : money(r.allIn)}</td></tr>`).join("")}</tbody>
+          <tfoot><tr><td colspan="2"><b>Totals for ${plural(rows.length, "student")}</b></td><td class="num">${money(tot.fee)}</td><td class="num">${money(tot.dep)}</td>${FEES ? `<td class="num">${money(BOOKING_FEE * rows.length)} <span class="small muted">(${money(BOOKING_FEE)} × ${rows.length})</span></td>` : ""}<td class="num"><b id="cohort-total">${money(tot.due)}</b></td><td class="num" id="cohort-allin">${NO_EST_AREA ? NO_EST : money(tot.allIn)}</td></tr></tfoot></table></div>
           <div class="summary small" style="margin-top:.75rem">
             <div class="line"><span>Examiner fees, due at the test (deposits are credited toward these)</span><b>${money(tot.fee)}</b></div>
             <div class="line"><span>Deposits, <b>ASSUMPTION</b>, paid to each examiner (mock) if the request is accepted</span><b>${money(tot.dep)}</b></div>
@@ -1922,7 +1986,7 @@ const closeModal = () => {
             <div class="line" style="border-top:1px solid var(--border-strong);margin-top:.3rem;padding-top:.5rem"><span><b>Total due if all are accepted</b></span><b>${money(tot.due)}</b></div>
             <div class="line muted"><span>Actually charged in this prototype</span><b id="cohort-charged">$0</b></div>
           </div>
-          <div class="warn-note small" style="margin:.75rem 0"><b>ASSUMPTION, not a policy:</b> the deposit is about 20% of the examiner fee, rounded to $25, minimum $100, and is part of the fee, not an extra. Real deposit rules are set by each examiner. All-in adds example aircraft and travel estimates used only for ranking.</div>
+          <div class="warn-note small" style="margin:.75rem 0"><b>ASSUMPTION, not a policy:</b> the deposit is about 20% of the examiner fee, rounded to $25, minimum $100, and is part of the fee, not an extra. Real deposit rules are set by each examiner. ${NO_EST_AREA ? `All-in: ${COPY["estimate.no_area_data"]}` : "All-in adds example aircraft and travel estimates used only for ranking."}</div>
           ${plan.blocked.length ? `<p class="small" style="margin:0 0 .5rem">Proceeding with the eligible students only. Not included: ${plan.blocked.map((c) => esc(c.st.name)).join(", ")}.</p>` : ""}
           <button class="btn" data-action="cohort-create" id="cohort-create">Create ${plural(rows.length, "mock request")}</button>
           <span class="small muted" style="margin-left:.5rem">Creates requests in this browser only. Each examiner sees the readiness answers. Nothing is sent or charged.</span>
@@ -2062,8 +2126,12 @@ const closeModal = () => {
         <p class="eyebrow">Example checkride cost \u00b7 Fictional numbers</p>
         <div class="summary">
           <div class="line"><span>Examiner fee</span><b>${money(exFee)}</b></div>
-          <div class="line"><span>Travel to KORL <span class="muted small">Estimate</span></span><b>${money(exTravel)}</b></div>
-          <div class="line total"><span><b>Total (est.)</b></span><b>${money(exFee + exTravel)}</b></div>
+          ${NO_EST_AREA ? `<div class="line"><span>Examiner travel fee to ${DEFAULT_NEAR} <span class="muted small">Sample</span></span><b>${money(exTravel)}</b></div>
+          <div class="line"><span>Aircraft, instructor and other travel</span><b class="muted" data-no-estimate="area">No estimate yet</b></div>
+          <div class="line total"><span><b>Examiner fees (sample)</b></span><b>${money(exFee + exTravel)}</b></div>
+          <p class="muted small" style="margin:.4rem 0 0" data-copy-key="estimate.no_area_data">${COPY["estimate.no_area_data"]}</p>`
+          : `<div class="line"><span>Travel to ${DEFAULT_NEAR} <span class="muted small">Estimate</span></span><b>${money(exTravel)}</b></div>
+          <div class="line total"><span><b>Total (est.)</b></span><b>${money(exFee + exTravel)}</b></div>`}
         </div>
         <div class="inset small"><div class="line"><span>Deposit paid to your examiner</span><b class="mono">${money(depositFor(ex, "ppl"))}</b></div></div>
         <p class="muted small" style="margin:.6rem 0 0">Sample, fictional figures.</p>
@@ -2318,9 +2386,10 @@ const closeModal = () => {
           <h2 id="fee-h" class="h3">Fee breakdown</h2>
           <div class="summary small">
             <div class="line"><span>Examiner fee</span><b class="mono">${money(fee)}</b></div>
-            <div class="line"><span>Travel (estimate)</span><b class="mono">${money(travel)}</b></div>
+            ${noEstFor(dp) ? `<div class="line"><span>Examiner travel fee (sample)</span><b class="mono">${money(travel)}</b></div>
+            <div class="line"><span>Aircraft and other travel</span><b class="muted">${NO_EST}</b></div>` : `<div class="line"><span>Travel (estimate)</span><b class="mono">${money(travel)}</b></div>`}
             ${FEES ? `<div class="line"><span>Student booking fee</span><b class="mono">${money(BOOKING_FEE)}</b></div>` : ""}
-            <div class="line total"><span><b>Total (est.)</b></span><b class="mono">${money(fee + travel + BOOKING_FEE)}</b></div>
+            <div class="line total"><span><b>${noEstFor(dp) ? "Total of listed fees (sample)" : "Total (est.)"}</b></span><b class="mono">${money(fee + travel + BOOKING_FEE)}</b></div>
           </div>
           <div class="inset small">
             <div class="line"><span>Deposit paid to your examiner</span><b class="mono">${money(dep)}</b></div>
@@ -2417,17 +2486,28 @@ const closeModal = () => {
     if (cur && aptState(cur) === c && !ids.includes(cur)) ids.unshift(cur);
     return `<optgroup label="${n}">${ids.map((id) => `<option value="${id}" ${id === cur ? "selected" : ""}>${id} \u00b7 ${esc(apt(id).city)}</option>`).join("")}</optgroup>`;
   }).join("");
-  function v4FindFilters(q) {
-    const cert = certById(q.cert) && q.cert !== "sport" ? q.cert : "ppl";
-    const near = apt(q.near) ? q.near : "KORL";
-    const radius = V4_RADII.includes(+q.radius) ? +q.radius : 50;
+  function v4FindFilters(q, dup) {
+    dup = dup || {};
+    // QA-077: a repeated key uses its first value (noted below); QA-076: case doesn't matter (korl = KORL, PPL = ppl).
+    const raw = (k) => (dup[k] ? dup[k][0] : q[k]);
+    const rc = raw("cert"), rn = raw("near"), rr = raw("radius");
+    const qc = rc == null ? rc : String(rc).trim().toLowerCase(), qn = rn == null ? rn : String(rn).trim().toUpperCase();
+    const cert = qc && certById(qc) && qc !== "sport" ? qc : "ppl";
+    const near = qn && apt(qn) ? qn : DEFAULT_NEAR;
+    const radius = V4_RADII.includes(+rr) ? +rr : 50;
     // QA-069: a link with a value we can't use says what it fell back to instead of switching silently.
     const fixed = [];
-    if (q.cert && cert !== q.cert) fixed.push(`checkride “${q.cert}” isn’t in the sample data, showing ${certById(cert).name}`);
-    if (q.near && near !== q.near) fixed.push(`airport “${q.near}” has no sample examiners, showing ${near}`);
-    if (q.radius != null && q.radius !== "" && radius !== +q.radius) fixed.push(`distance “${q.radius}” isn’t one of 25, 50 or 100 nm, showing ${radius} nm`);
-    return { cert, near, state: aptState(near), outside: "", radius, before: "", maxFee: 0, sort: "soonest", fixed };
+    if (qc && cert !== qc) fixed.push(`the checkride \u201c${rc}\u201d isn\u2019t in the sample data, so it shows ${certById(cert).name}`);
+    if (qn && near !== qn) fixed.push(`the airport \u201c${rn}\u201d has no sample examiners, so it shows ${near}`);
+    if (rr != null && rr !== "" && radius !== +rr) fixed.push(`the distance \u201c${rr}\u201d isn\u2019t 25, 50 or 100 nm, so it shows ${radius} nm`);
+    for (const [k, lbl] of [["cert", "checkride"], ["near", "airport"], ["radius", "distance"]]) if (dup[k]) fixed.push(`the link gave more than one ${lbl} (${dup[k].join(", ")}), so it uses the first one`);
+    return { cert, near, state: aptState(near), outside: "", radius, before: "", maxFee: 0, sort: "soonest", fixed, dup: Object.keys(dup).some((k) => ["cert", "near", "radius"].includes(k)) };
   }
+  // QA-078: the #/find history entry keeps its scroll position and "Show more" depth (history.state, same URL), so Back
+  // returns to the same card. A fresh link to #/find has no state and starts at the top.
+  const findState = () => { try { const st = history.state && history.state.ccFind; return st && typeof st === "object" ? st : null; } catch (e) { return null; } };
+  const saveFindState = () => { try { if (location.hash.slice(1).split("?")[0].split("#")[0] !== "/find" || !ui.findKey) return; history.replaceState({ ...(history.state || {}), ccFind: { key: ui.findKey, shown: ui.findShown || FIND_PAGE, y: Math.round(window.scrollY) } }, ""); } catch (e) { /* ignore */ } };
+  { let tm = 0; window.addEventListener("scroll", () => { if (ui.lastPath !== "/find" || tm) return; tm = setTimeout(() => { tm = 0; saveFindState(); }, 150); }, { passive: true }); }
   const FIND_PAGE = 20; // QA-066 (PM-approved): #/find shows 20 cards at a time with "Show more".
   const v4FindHref = (f, o = {}) => { const g = { ...f, ...o }; return `#/find?cert=${g.cert}&near=${g.near}&radius=${g.radius}`; };
 
@@ -2455,19 +2535,23 @@ const closeModal = () => {
   }
 
   function viewFind(q) {
-    const f = v4FindFilters(q);
+    const f = v4FindFilters(q, ui.hashDup);
     const res = searchDpes(f);
     const c = certById(f.cert);
     const firstOpen = res.findIndex((r) => r.soonest && !isStale(r.dp.id));
     const key = v4FindHref(f);
+    // QA-077: a link with a repeated setting is tidied in place (one value each; no new history entry).
+    if (f.dup) { try { history.replaceState(history.state, "", location.pathname + location.search + key); } catch (e) { /* file:// */ } ui.hashDup = {}; }
     if (ui.findKey !== key) { ui.findKey = key; ui.findShown = FIND_PAGE; }
+    // QA-078: Back to this list restores how far it was expanded (the scroll position is restored after render).
+    { const st = findState(); if (st && st.key === key && st.shown > (ui.findShown || FIND_PAGE)) ui.findShown = st.shown; }
     const shown = Math.min(res.length, ui.findShown || FIND_PAGE);
     const nTravel = res.filter((r) => r.dist > f.radius).length;
     return `<div class="page v4-find">
       <div class="v4-col">
         <div class="v4-find-head"><span class="v4-ic" aria-hidden="true">${V4_PLANE}</span><div><p class="eyebrow">FIND A DPE</p><h1>Find a DPE</h1></div></div>
         <p class="muted small" style="margin:.25rem 0 1rem">Fictional sample examiners in ${coveredList()}. Fees are each examiner\u2019s own; you pay them directly.</p>
-        ${f.fixed.length ? `<p class="v4-note" id="find-param-note" role="status">Some link settings couldn\u2019t be used: ${esc(f.fixed.join("; "))}.</p>` : ""}
+        ${f.fixed.length ? `<p class="v4-note" id="find-param-note" role="status">We adjusted this link: ${esc(f.fixed.join("; "))}.</p>` : ""}
         <form class="v4-filters" data-form="find" data-auto aria-label="Find a DPE filters">
           <label class="field v4-f-cert"><span class="v4-lbl">Checkride</span><select name="cert" id="find-cert">${D.certs.filter((x) => x.id !== "sport").map((x) => `<option value="${x.id}" ${x.id === f.cert ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
           <label class="field v4-f-near"><span class="v4-lbl">Near</span><select name="near" id="find-near">${v4NearOpts(f.near)}</select></label>
@@ -2527,7 +2611,7 @@ const closeModal = () => {
   const V4_ROLES = [["pilot", "Student pilot", "Find an examiner and request a checkride."], ["dpe", "Examiner (DPE)", "Post openings and answer requests."], ["school", "Flight school", "Request checkrides for your students."]];
   function v4AuthShell(inner) {
     return `<div class="page v4-auth"><div class="v4-auth-card card">
-      <a class="v4-auth-logo" href="#/" aria-label="Checkride Connect, home"><img class="lockup lockup-light" src="${BRAND_LOGO.light}" width="164" height="26" alt=""><img class="lockup lockup-dark" src="${BRAND_LOGO.dark}" width="164" height="26" alt=""></a>
+      <a class="v4-auth-logo" href="#/" aria-label="Checkride Connect, home"><img class="lockup lockup-light" src="${BRAND_LOGO.light}" width="${BRAND_WH[0]}" height="${BRAND_WH[1]}" alt=""><img class="lockup lockup-dark" src="${BRAND_LOGO.dark}" width="${BRAND_WH[0]}" height="${BRAND_WH[1]}" alt=""></a>
       ${inner}</div></div>`;
   }
   function viewLogin() {
@@ -2537,6 +2621,7 @@ const closeModal = () => {
         <label class="field"><span>Email</span><input type="email" name="email" id="login-email" autocomplete="off" placeholder="you@example.com" required></label>
         <label class="field"><span>Password</span><input type="password" name="password" id="login-password" autocomplete="off" required><span class="small muted">Demo: never stored or sent.</span></label>
         <fieldset class="field v4-role-mini"><legend class="small">Open the demo as</legend><div class="row" style="gap:.5rem;flex-wrap:wrap">${V4_ROLES.map(([r, l]) => `<label class="v4-radio sm"><input type="radio" name="role" value="${r}" ${(u ? u.role : S.role) === r ? "checked" : ""}> ${l}</label>`).join("")}</div></fieldset>
+        <p class="small muted" id="login-err" role="alert" style="margin:0"></p>
         <button class="btn cta v4-wide" type="submit" id="login-submit">Log in (demo)</button>
       </form>
       <p class="small" style="margin:1rem 0 0;text-align:center">New here? <a href="#/signup">Create a demo account</a></p>`);
@@ -2550,7 +2635,7 @@ const closeModal = () => {
       <form class="stack" data-form="demo-signup" autocomplete="off" novalidate>
         <fieldset class="v4-roles"><legend>I am a\u2026</legend>${V4_ROLES.map(([r, l, d]) => `<label class="v4-radio card"><input type="radio" name="role" value="${r}" ${r === role ? "checked" : ""} data-signup-role><span><b>${l}</b><span class="muted small">${d}</span></span></label>`).join("")}</fieldset>
         <label class="field"><span>Full name</span><input name="name" id="signup-name" autocomplete="off" required></label>
-        <label class="field"><span>${aptLbl}</span><select name="airport" id="signup-airport">${v4NearOpts(STATE_HOME.FL)}</select></label>
+        <label class="field"><span>${aptLbl}</span><select name="airport" id="signup-airport">${v4NearOpts(DEFAULT_NEAR)}</select></label>
         ${goal}
         <label class="field"><span>Phone <span class="muted">(optional)</span></span><input type="tel" name="phone" id="signup-phone" autocomplete="off"><span class="small muted">Demo: not stored, nothing is texted.</span></label>
         <label class="field"><span>Email</span><input type="email" name="email" id="signup-email" autocomplete="off" required><span class="small muted">Demo: not stored, nothing is emailed.</span></label>
@@ -2562,35 +2647,103 @@ const closeModal = () => {
       <p class="small" style="margin:1rem 0 0;text-align:center">Already have one? <a href="#/login">Log in</a></p>`);
   }
 
-  // Landing (v4): reference-site section order; keyed ux-copy-v3 copy kept for hero, #who, #how, #free and #faq.
-  // EASY SWITCH (rc2): landing wording lives here (copy keys). Text is unchanged from v4-rc1.
-  const LANDING_COPY = {
+  // Landing (v4): reference-site section order; keyed copy for every section.
+  // EASY SWITCH (rc2, D41): landing wording lives here (copy keys), in two sets:
+  //   LANDING "site" (default, D41): Drewbert's checkride-connect.vercel.app landing copy (vercel-ref/inventory.md), with the
+  //     lines our product rules required changed (FREE during the prototype, request not booking, example data, no
+  //     verification or launch claims, the prototype / not-FAA-advice notes). Each changed line is marked "D41 changed".
+  //   LANDING "v4": the v4-rc2 wording, unchanged.
+  const LANDING_V4 = {
     "hero.eyebrow": "EARLY PROTOTYPE \u00b7 CHECKRIDE SCHEDULING",
     "hero.h1": "Your next checkride.", "hero.h1b": "A clearer path.",
     "hero.lead": "Finding an examiner shouldn\u2019t feel like another test. See openings and fees upfront, send a request, and get ready in one place. This is an early prototype, so every examiner, school and opening shown is fictional.",
+    "hero.cta2": ["Explore the demo", "#/home", "pilot"],
+    "hero.note": `Built for students, examiners and flight schools. Free during the prototype. No fees from us. <a href="#/#how">See how it works</a> \u00b7 <a href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">I\u2019m an examiner</a>`,
+    "how.h2": "Requests, not guesswork.", "how.h2b": "Preparation in one place.",
+    "how.steps": [["01", "Find and request", "Choose an opening and send a request with your readiness details and an optional note to the examiner. It\u2019s a request, not a booking.", "Awaiting your examiner", "warn"],
+      ["02", "Review and accept", "The examiner reviews your request and decides. Only an accepted request becomes a confirmed checkride.", "Confirmed after acceptance", "good"],
+      ["03", "Prepare together", "Once your request is accepted, the examiner\u2019s readiness checklist shows up in your workspace, and you track your prep there.", "Your next step", "accent"]],
+    "who.eyebrow": "ONE CONNECTION. THREE PERSPECTIVES.", "who.h2": "Built for the people", "who.h2b": "behind every checkride.",
+    "who.lead": "Less chasing down information. More clarity for everyone involved.",
+    "students.h2": "Stop chasing examiners. Start requesting checkrides.",
+    "students.body": "You\u2019ve done the training. Skip the week of phone calls and voicemails between sign-off and test day.",
+    "students.feat": [["Every sample DPE near you, in one search", "Filter by checkride and airport, and see who has openings."], ["Fees and policies upfront", "Published examiner fees, retest fees and cancellation rules."], ["Request a real opening, not a callback", "Pick an open time. It\u2019s held while the examiner reviews, and confirmed only once they accept."], ["Show up prepared", "Your examiner\u2019s own checklist says what to finish and what to bring."]],
+    "examiners.h2": "Spend your time examining, not scheduling.",
+    "examiners.body": "Post your openings once. Requests arrive that already match your checkrides and airports, with the details you need to decide.",
+    "examiners.feat": [["Requests that already fit", "Students only see checkrides you give, at airports you fly from."], ["Every detail upfront", "Slot, aircraft, recommending CFI and the applicant\u2019s self-attested readiness arrive with each request."], ["Checklists in one tap", "Accept + checklist opens your prep list for that applicant, ready to edit and send."], ["Your rules, published", "You set fees, airports and cancellation terms. Everyone sees them before asking."]],
+    "examiners.note": "",
+    "schools.h2": "Get signed-off students tested sooner.",
+    "schools.body": "Compare the sample examiners near your field and request slots for your students in one place.",
+    "schools.feat": [["Examiners at a glance", "Airports, fees per checkride and next opening for nearby examiners, in one table."], ["Request for your students", "Send a request on a student\u2019s behalf, with the aircraft and recommending CFI."], ["Every request, one list", "See which requests are waiting, accepted or declined."], ["Fewer phone chains", "Less back and forth between students, CFIs and examiners."]],
+    "free.eyebrow": "WHAT IT COSTS", "free.h2": "Free during the prototype.", "free.h2b": "No fees from us.",
+    "free.body": "Students, examiners and flight schools pay Checkride Connect nothing while we test this prototype. You pay your examiner directly for the checkride, under the examiner\u2019s own terms.",
     "final.h2": "Ready for your checkride?",
     "final.body": () => `Sample examiners in ${coveredList()}. Find one near your field.`,
+    "footer.copy": "\u00a9 2026 Checkride Connect \u00b7 Prototype, not legal or FAA advice.",
   };
+  const LANDING_SITE = {
+    ...LANDING_V4,
+    // D41 changed: prefixed "EARLY PROTOTYPE" (prototype note up top). His: "CHECKRIDE SCHEDULING WITHOUT THE PHONE TAG".
+    "hero.eyebrow": "EARLY PROTOTYPE \u00b7 CHECKRIDE SCHEDULING WITHOUT THE PHONE TAG",
+    "hero.h1": "Checkride ready?", "hero.h1b": "Find your examiner.",
+    // D41 changed: "every nearby DPE's" -> "nearby sample DPEs'", plus the fictional-data sentence (example data rule).
+    "hero.lead": "See nearby sample DPEs\u2019 fees, airports and open dates in one place. Request a slot in minutes, not weeks of calls and texts. This is an early prototype, so every examiner, school and opening shown is fictional.",
+    "hero.cta2": ["I\u2019m an examiner", "#/requests", "dpe"],
+    // D41 changed: his "Free for students, examiners and flight schools." -> free during the prototype, no fees from us (FREE rule).
+    "hero.note": `Free for students, examiners and flight schools during the prototype. No fees from us. <a href="#/#how">See how it works</a> \u00b7 <a href="#/home" data-action="set-role" data-role="pilot" data-to="#/home">Explore the demo</a>`,
+    "how.h2": "From signed off to checkride", "how.h2b": "in three steps",
+    // D41 changed: step 02 adds "(self-attested)" and the request-not-booking sentence; chips are ours (status meaning).
+    "how.steps": [["01", "Search nearby examiners", "Filter by checkride and airport. Fees, policies and open dates are published upfront.", "Example data", "accent"],
+      ["02", "Request a slot", "Pick an opening, confirm you\u2019re ready (self-attested), and send your aircraft and CFI details. The slot is held while the DPE reviews. It\u2019s a request, not a booking, until the examiner accepts.", "Confirmed after acceptance", "good"],
+      ["03", "Prep with their checklist", "Once accepted, your examiner sends exactly what to finish and what to bring. Tick it off and go fly.", "Your next step", "accent"]],
+    "who.eyebrow": "BUILT FOR EVERYONE IN THE CHECKRIDE", "who.h2": "One place for students,", "who.h2b": "examiners and flight schools",
+    "who.lead": "",
+    // D41 changed: "Start booking checkrides." -> "Start requesting checkrides." (requests, not real bookings).
+    "students.h2": "Stop chasing examiners. Start requesting checkrides.",
+    "students.body": "You\u2019ve done the training. Checkride Connect cuts out the week of phone calls, voicemails and word-of-mouth guesswork between sign-off and test day.",
+    // D41 changed: "Every DPE" -> "Every sample DPE"; "Published prices ... No surprises on test day." -> examiner fees, no
+    // surprise promise (no all-in estimate for NC yet); "Book a real slot" -> "Request a real opening" + confirmed on accept.
+    "students.feat": [["Every sample DPE near you, in one search", "Filter by checkride and airport, and see who actually has openings."], ["Fees and policies upfront", "Published examiner fees, retest fees and cancellation rules, before you ask."], ["Request a real opening, not a callback", "Request an open time. It\u2019s held for you while the DPE reviews, and confirmed only once they accept."], ["Show up prepared", "Your examiner\u2019s own checklist says what to finish and what to bring."]],
+    // D41 changed: "everything you need to say yes" -> "to decide" (the examiner may decline).
+    "examiners.body": "Post your openings once. Checkride Connect sends you requests that already match your checkrides and airports, with everything you need to decide.",
+    // D41 changed: "readiness confirmations" -> self-attested readiness, tail number dropped (not collected); checklist line
+    // describes what the prototype does (no saved templates yet).
+    "examiners.feat": [["Requests that already fit", "Students only see checkrides you give, at airports you fly from."], ["Every detail upfront", "Slot, aircraft, recommending CFI and the applicant\u2019s self-attested readiness arrive with each request."], ["Checklists in one tap", "Accept + checklist opens your prep list for that applicant, ready to edit and send."], ["Your rules, published", "You set fees, airports and cancellation policy. Everyone sees them before asking."]],
+    // D41 changed: "Every examiner is verified by hand." -> sample-only note (nothing is verified in the prototype; no FAA implication).
+    "examiners.note": "Sample examiners only. Nobody is verified in this prototype.",
+    "schools.h2": "Get signed-off students tested faster.",
+    // D41 changed: "Compare every examiner" -> "Compare the sample examiners" (example data).
+    "schools.body": "Every day a ready student waits on a checkride is momentum lost. Compare the sample examiners near your field and request slots for your students in one place.",
+    // D41 changed: "every nearby DPE" -> "nearby sample DPEs"; "No more phone chains" -> "Fewer phone chains" (no absolute promise).
+    "schools.feat": [["Examiners at a glance", "Airports, fees per checkride and next opening for nearby sample DPEs, in one table."], ["Request for your students", "Send a request on a student\u2019s behalf, with the aircraft and recommending CFI."], ["Every request, one list", "See which requests are waiting, accepted or declined."], ["Fewer admin hours", "Fewer phone chains between students, CFIs and examiners."]],
+    // D41 changed: his "Every core feature, free for everyone. ... No paywalls and no locked features." is a permanent pricing
+    // promise; our rule is free during the prototype (fees switch off), so it reads "Free during the prototype".
+    "free.eyebrow": "OUR PROMISE", "free.h2": "Free during the prototype.", "free.h2b": "No fees from us.",
+    "free.body": "Search, scheduling, requests and checklists are free for students, examiners and flight schools while we test this prototype. You pay your examiner directly for the checkride, under the examiner\u2019s own terms.",
+    // D41 changed: "Launching first in North Carolina." -> sample-area wording (no launch claim in a prototype).
+    "final.body": () => `Sample examiners in ${coveredList()} for now. Find an examiner near your field.`,
+    // D41 changed: kept "Built by a CFI, for pilots" and added the prototype / not-FAA-advice note.
+    "footer.copy": "\u00a9 2026 Checkride Connect \u00b7 Built by a CFI, for pilots \u00b7 Prototype, not legal or FAA advice.",
+  };
+  const LANDING_COPY = LANDING_SET === "site" ? LANDING_SITE : LANDING_V4;
   const LC = (k) => { const v = LANDING_COPY[k]; return typeof v === "function" ? v() : v; };
   function viewLanding() {
-    const f = { cert: "ppl", near: "KORL", state: "FL", outside: "", radius: 50, before: "", maxFee: 0, sort: "soonest" };
+    const f = { cert: "ppl", near: DEFAULT_NEAR, state: DEFAULT_STATE, outside: "", radius: 50, before: "", maxFee: 0, sort: "soonest" };
     const res = searchDpes(f).filter((r) => r.soonest && !isStale(r.dp.id));
     const dayN = (r) => r.slots.filter((s) => s.date === r.soonest.date).length;
     const top = res.find((r) => dayN(r) >= 3) || res.find((r) => dayN(r) >= 2) || res[0];
     const heroDay = top ? top.slots.filter((s) => s.date === top.soonest.date).slice(0, 3) : [];
     const hs = heroDay[1] || heroDay[0];
     const hero = top ? `<div class="v4-hero-panel" aria-hidden="false"><article class="v4-card v4-mock" aria-label="Sample request card">
-        <div class="v4-card-top"><div class="avatar">${initials(top.dp.name)}</div><div class="v4-who"><b>${esc(top.dp.name)}</b><div class="muted small">Example examiner \u00b7 ${esc(apt(top.dp.home).city)}, FL \u00b7 ${top.dist} nm</div></div><div class="v4-fee"><b class="mono">${money(top.fee)}</b><span class="muted small">Private Pilot</span></div></div>
+        <div class="v4-card-top"><div class="avatar">${initials(top.dp.name)}</div><div class="v4-who"><b>${esc(top.dp.name)}</b><div class="muted small">Example examiner \u00b7 ${esc(apt(top.dp.home).city)}, ${dpeState(top.dp)} \u00b7 ${top.dist} nm</div></div><div class="v4-fee"><b class="mono">${money(top.fee)}</b><span class="muted small">Private Pilot</span></div></div>
         <p class="v4-lbl" style="margin:.9rem 0 .5rem">${v4DateCap(top.soonest.date)} \u00b7 ${top.soonest.airport}</p>
         <div class="v4-times">${heroDay.map((s) => `<span class="v4-time${s === hs ? " is-on" : ""}"><span class="mono">${slotTime(s)}</span></span>`).join("")}</div>
-        <a class="btn cta v4-wide" href="#/dpe/${top.dp.id}?cert=ppl&near=KORL&date=${hs.date}&pick=${hs.id}" data-action="set-role" data-role="pilot" data-to="#/dpe/${top.dp.id}?cert=ppl&near=KORL&date=${hs.date}&pick=${hs.id}">Request ${slotTime(hs)} slot</a>
+        <a class="btn cta v4-wide" href="#/dpe/${top.dp.id}?cert=ppl&near=${DEFAULT_NEAR}&date=${hs.date}&pick=${hs.id}" data-action="set-role" data-role="pilot" data-to="#/dpe/${top.dp.id}?cert=ppl&near=${DEFAULT_NEAR}&date=${hs.date}&pick=${hs.id}">Request ${slotTime(hs)} slot</a>
       </article><p class="v4-toast-mock">${V4_CHECK} Accepted \u00b7 prep checklist sent <span class="muted">(mock)</span></p></div>` : "";
     const aud = [["01 / Students", "Find the right fit.", "Not just a phone number.", "Compare examiners\u2019 certificates, airports, published fees and openings, then send a request. It\u2019s confirmed only when the examiner accepts.", "pilot", "#/#students"],
       ["02 / Examiners", "Your calendar.", "Your decisions.", "Set your availability and terms, then accept or decline requests that arrive with the details attached. Nothing is confirmed until you accept.", "dpe", "#/#examiners"],
       ["03 / Flight schools", "Every student.", "One clear view.", "See each student\u2019s readiness, eligibility clock and checkride requests in one place.", "school", "#/#schools"]];
-    const how = [["01", "Find and request", "Choose an opening and send a request with your readiness details and an optional note to the examiner. It\u2019s a request, not a booking.", "Awaiting your examiner", "warn"],
-      ["02", "Review and accept", "The examiner reviews your request and decides. Only an accepted request becomes a confirmed checkride.", "Confirmed after acceptance", "good"],
-      ["03", "Prepare together", "Once your request is accepted, the examiner\u2019s readiness checklist shows up in your workspace, and you track your prep there.", "Your next step", "accent"]];
+    const how = LC("how.steps");
     const feat = (items) => `<ul class="v4-feats">${items.map(([t, b]) => `<li><span class="v4-tick">${V4_CHECK}</span><div><b>${t}</b><p class="muted small">${b}</p></div></li>`).join("")}</ul>`;
     // Examiner inbox mock from the first sample examiner's own requests.
     const dp0 = D.dpes[0], bk = S.bookings.filter((b) => b.dpeId === dp0.id);
@@ -2613,7 +2766,7 @@ const closeModal = () => {
         <a class="btn v4-wide" href="#/school/requests" data-action="set-role" data-role="school" data-to="#/school/requests" style="margin-top:.75rem">Request for a student</a>
       </div>`;
     const findMock = `<div class="v4-card v4-findmock" aria-label="Sample search">
-        <div class="row" style="gap:.5rem;flex-wrap:wrap"><span class="v4-apt"><span class="mono">KORL</span></span><span class="v4-apt">Private Pilot</span><span class="v4-apt">50 nm</span><span class="v4-apt">Next 2 weeks</span></div>
+        <div class="row" style="gap:.5rem;flex-wrap:wrap"><span class="v4-apt"><span class="mono">${DEFAULT_NEAR}</span></span><span class="v4-apt">Private Pilot</span><span class="v4-apt">50 nm</span><span class="v4-apt">Next 2 weeks</span></div>
         ${near3.slice(0, 3).map((r) => `<div class="v4-req-row"><div class="row" style="gap:.6rem;flex-wrap:nowrap"><div class="avatar sm">${initials(r.dp.name)}</div><div><b>${esc(r.dp.name)}</b><div class="muted small">${r.dist} nm${r.soonest && !isStale(r.dp.id) ? ` \u00b7 Next open ${v4Short(r.soonest.date)}` : ""}</div></div></div><b class="mono">${money(r.fee)}</b></div>`).join("")}
         <a class="btn v4-wide" href="#/find" data-action="set-role" data-role="pilot" data-to="#/find" style="margin-top:.75rem">Request a slot</a>
       </div>`;
@@ -2624,48 +2777,48 @@ const closeModal = () => {
           <p class="eyebrow">${LC("hero.eyebrow")}</p>
           <h1 class="display paired">${LC("hero.h1")} <span class="b">${LC("hero.h1b")}</span></h1>
           <p class="lead muted">${LC("hero.lead")}</p>
-          <div class="row"><a class="btn cta" href="#/find" data-action="set-role" data-role="pilot" data-to="#/find" id="land-find">Find a DPE \u2192</a><a class="btn secondary" href="#/home" data-action="set-role" data-role="pilot" data-to="#/home">Explore the demo</a></div>
-          <p class="small muted" style="margin-top:1rem">Built for students, examiners and flight schools. Free during the prototype. No fees from us. <a href="#/#how">See how it works</a> \u00b7 <a href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">I\u2019m an examiner</a></p>
+          <div class="row"><a class="btn cta" href="#/find" data-action="set-role" data-role="pilot" data-to="#/find" id="land-find">Find a DPE \u2192</a><a class="btn secondary" href="${LC("hero.cta2")[1]}" data-action="set-role" data-role="${LC("hero.cta2")[2]}" data-to="${LC("hero.cta2")[1]}">${LC("hero.cta2")[0]}</a></div>
+          <p class="small muted" style="margin-top:1rem" id="land-free-note">${LC("hero.note")}</p>
         </div>
         ${hero}
       </div>
     </section>
     <section class="land-sec" id="how">
       <p class="eyebrow">HOW IT WORKS</p>
-      <h2 class="paired">Requests, not guesswork. <span class="b">Preparation in one place.</span></h2>
+      <h2 class="paired">${LC("how.h2")} <span class="b">${LC("how.h2b")}</span></h2>
       <ol class="grid g3 steps-v3">${how.map(([n, t, b, c, v]) => `<li class="card"><span class="step-n mono">${n}</span><h3>${t}</h3><p class="muted small">${b}</p>${chip(v, c)}</li>`).join("")}</ol>
     </section>
     <section class="land-sec" id="who">
-      <p class="eyebrow">ONE CONNECTION. THREE PERSPECTIVES.</p>
-      <h2 class="paired">Built for the people <span class="b">behind every checkride.</span></h2>
-      <p class="lead muted">Less chasing down information. More clarity for everyone involved.</p>
+      <p class="eyebrow">${LC("who.eyebrow")}</p>
+      <h2 class="paired">${LC("who.h2")} <span class="b">${LC("who.h2b")}</span></h2>
+      ${LC("who.lead") ? `<p class="lead muted">${LC("who.lead")}</p>` : ""}
       <div class="grid g3">${aud.map(([l, a, b, line, role, href]) => `<a class="card aud-card" href="${href}"><p class="eyebrow">${l}</p><h3 class="paired h-card">${a} <span class="b">${b}</span></h3><p class="muted small" style="margin:0">${line}</p></a>`).join("")}</div>
     </section>
     <section class="land-sec v4-split" id="students" aria-labelledby="students-h">
-      <div><p class="eyebrow">FOR STUDENT PILOTS</p><h2 id="students-h">Stop chasing examiners. Start requesting checkrides.</h2>
-        <p class="muted">You\u2019ve done the training. Skip the week of phone calls and voicemails between sign-off and test day.</p>
-        ${feat([["Every sample DPE near you, in one search", "Filter by checkride and airport, and see who has openings."], ["Fees and policies upfront", "Published examiner fees, retest fees and cancellation rules."], ["Request a real opening, not a callback", "Pick an open time. It\u2019s held while the examiner reviews, and confirmed only once they accept."], ["Show up prepared", "Your examiner\u2019s own checklist says what to finish and what to bring."]])}
+      <div><p class="eyebrow">FOR STUDENT PILOTS</p><h2 id="students-h">${LC("students.h2")}</h2>
+        <p class="muted">${LC("students.body")}</p>
+        ${feat(LC("students.feat"))}
         <a class="btn" href="#/find" data-action="set-role" data-role="pilot" data-to="#/find">Find a DPE near you</a></div>
       ${findMock}
     </section>
     <section class="land-sec v4-split rev" id="examiners" aria-labelledby="examiners-h">
       ${inbox}
-      <div><p class="eyebrow">FOR EXAMINERS</p><h2 id="examiners-h">Spend your time examining, not scheduling.</h2>
-        <p class="muted">Post your openings once. Requests arrive that already match your checkrides and airports, with the details you need to decide.</p>
-        ${feat([["Requests that already fit", "Students only see checkrides you give, at airports you fly from."], ["Every detail upfront", "Slot, aircraft, recommending CFI and the applicant\u2019s self-attested readiness arrive with each request."], ["Checklists in one tap", "Accept + checklist opens your prep list for that applicant, ready to edit and send."], ["Your rules, published", "You set fees, airports and cancellation terms. Everyone sees them before asking."]])}
-        <a class="btn" href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">Open the examiner demo</a></div>
+      <div><p class="eyebrow">FOR EXAMINERS</p><h2 id="examiners-h">${LC("examiners.h2")}</h2>
+        <p class="muted">${LC("examiners.body")}</p>
+        ${feat(LC("examiners.feat"))}
+        <a class="btn" href="#/requests" data-action="set-role" data-role="dpe" data-to="#/requests">Open the examiner demo</a>${LC("examiners.note") ? `<p class="small muted" id="examiners-note" style="margin:.5rem 0 0">${LC("examiners.note")}</p>` : ""}</div>
     </section>
     <section class="land-sec v4-split" id="schools" aria-labelledby="schools-h">
-      <div><p class="eyebrow">FOR FLIGHT SCHOOLS</p><h2 id="schools-h">Get signed-off students tested sooner.</h2>
-        <p class="muted">Compare the sample examiners near your field and request slots for your students in one place.</p>
-        ${feat([["Examiners at a glance", "Airports, fees per checkride and next opening for nearby examiners, in one table."], ["Request for your students", "Send a request on a student\u2019s behalf, with the aircraft and recommending CFI."], ["Every request, one list", "See which requests are waiting, accepted or declined."], ["Fewer phone chains", "Less back and forth between students, CFIs and examiners."]])}
+      <div><p class="eyebrow">FOR FLIGHT SCHOOLS</p><h2 id="schools-h">${LC("schools.h2")}</h2>
+        <p class="muted">${LC("schools.body")}</p>
+        ${feat(LC("schools.feat"))}
         <a class="btn" href="#/school" data-action="set-role" data-role="school" data-to="#/school">Browse examiners</a></div>
       ${table}
     </section>
     <section class="land-sec v4-promise free-note" id="free">
-      <p class="eyebrow">${FEES ? "PROPOSED PRICING" : "WHAT IT COSTS"}</p>
+      <p class="eyebrow">${FEES ? "PROPOSED PRICING" : LC("free.eyebrow")}</p>
       ${FEES ? `<h2>Proposed pricing</h2><p><span class="pill warn">Proposed pricing</span> A flat ${money(BOOKING_FEE)} student booking fee and optional school plans are proposed. Nothing is charged in this prototype; you pay your examiner directly.</p>`
-        : `<h2 class="paired">Free during the prototype. <span class="b">No fees from us.</span></h2><p>Students, examiners and flight schools pay Checkride Connect nothing while we test this prototype. You pay your examiner directly for the checkride, under the examiner\u2019s own terms.</p>`}
+        : `<h2 class="paired">${LC("free.h2")} <span class="b">${LC("free.h2b")}</span></h2><p>${LC("free.body")}</p>`}
       <a class="btn secondary" href="#/pricing">See pricing</a>
     </section>
     <section class="land-sec v4-final" aria-labelledby="final-h">
@@ -2679,7 +2832,7 @@ const closeModal = () => {
     </section>
     <p class="small muted land-footer">Early prototype. All names, schools, openings and prices are fictional. Nothing is charged, and no real requests are sent. Not affiliated with or endorsed by the FAA.</p>
     <p class="small muted land-footer"><b>Prototype – no real payments.</b> Nothing is charged, emailed or texted.</p>
-    <p class="small muted land-footer">\u00a9 2026 Checkride Connect \u00b7 Prototype, not legal or FAA advice.</p>
+    <p class="small muted land-footer">${LC("footer.copy")}</p>
     </div>`;
   }
 
@@ -2700,7 +2853,7 @@ const closeModal = () => {
   const V4_ACTIONS = {
     "day-next": (el, e) => { if (e) e.preventDefault(); ui.sel = el.dataset.date; ui.selFixed = true; ui.month = ui.sel.slice(0, 7); ui.dateMoved = null; ui.v4lost = null; ui.v4pick = el.dataset.slot || null; ui.v4needPick = true; ui.focusAfter = `[data-action="v4-pick"][aria-pressed="true"] || [data-action="v4-day"][aria-pressed="true"] || #v4-op-h`; render(); },
     // QA-066: show the next 20 cards; focus stays on "Show more" (or lands on the first new card when the list is complete).
-    "find-more": () => { const prev = ui.findShown || FIND_PAGE; ui.findShown = prev + FIND_PAGE; ui.focusAfter = `#find-more || #find-results > article:nth-child(${prev + 1}) h2 a`; render(); },
+    "find-more": () => { const prev = ui.findShown || FIND_PAGE; ui.findShown = prev + FIND_PAGE; ui.focusAfter = `#find-more || #find-results > article:nth-child(${prev + 1}) h2 a`; render(); saveFindState(); },
     "v4-day": (el) => { ui.dateMoved = null; ui.v4lost = null; ui.selFixed = true; ui.sel = el.dataset.date; ui.month = ui.sel.slice(0, 7); ui.v4pick = null; ui.focusAfter = `[data-action="v4-day"][data-date="${ui.sel}"]`; render(); },
     "v4-pick": (el) => { ui.v4pick = el.dataset.slot; ui.v4lost = null; ui.focusAfter = `[data-action="v4-pick"][data-slot="${ui.v4pick}"]`; render(); },
     // QA-061 (conflicts.md #15, D34): accept, then open the builder already prefilled with the default list; the examiner
@@ -2715,26 +2868,50 @@ const closeModal = () => {
     },
     "demo-logout": () => { S.demoUser = null; save(); toast("Logged out of the demo. Nothing was sent."); go("#/"); },
   };
+  // QA-075 / QA-081: one validation pattern for the demo auth forms (signup and login). Each submit re-checks every field:
+  // the first problem gets the message (role=alert), aria-invalid and aria-describedby, and focus. A field that is fixed
+  // drops aria-invalid (and the red border) as soon as its value is valid, on input or change.
+  const AUTH_CHECKS = {
+    "demo-signup": ["signup-err", [
+      ["signup-name", (f) => !!String(f.elements.name.value).trim(), "Add your name."],
+      ["signup-email", (f) => String(f.elements.email.value).includes("@"), "Add an email (it isn\u2019t stored)."],
+      ["signup-password", (f) => String(f.elements.password.value).length >= 8, "Use at least 8 characters for the password (it isn\u2019t stored)."],
+      ["signup-age", (f) => !!f.elements.age.checked, "Confirm you\u2019re 16 or older."]]],
+    "demo-login": ["login-err", [
+      ["login-email", (f) => String(f.elements.email.value).trim().includes("@"), "Add an email. Any email works: this is a demo and nothing is checked."],
+      ["login-password", (f) => !!String(f.elements.password.value), "Add a password. Any password works: it isn\u2019t stored or sent."]]],
+  };
+  const authClear = (el, errId) => { el.removeAttribute("aria-invalid"); const d = (el.getAttribute("aria-describedby") || "").split(/\s+/).filter((x) => x && x !== errId); if (d.length) el.setAttribute("aria-describedby", d.join(" ")); else el.removeAttribute("aria-describedby"); };
+  function authValidate(f) {
+    const [errId, checks] = AUTH_CHECKS[f.dataset.form];
+    let bad = null;
+    for (const [id, ok, msg] of checks) { const el = f.querySelector("#" + id); if (!el) continue; authClear(el, errId); if (!bad && !ok(f)) bad = [el, msg]; }
+    const e = f.querySelector("#" + errId);
+    if (!bad) { if (e) e.textContent = ""; return true; }
+    if (e) e.textContent = bad[1];
+    bad[0].setAttribute("aria-invalid", "true"); bad[0].setAttribute("aria-describedby", ((bad[0].getAttribute("aria-describedby") || "") + " " + errId).trim()); bad[0].focus();
+    return false;
+  }
+  function authLive(t) {
+    const f = t && t.form; if (!f || !AUTH_CHECKS[f.dataset.form] || t.getAttribute("aria-invalid") !== "true") return;
+    const [errId, checks] = AUTH_CHECKS[f.dataset.form], c = checks.find(([id]) => id === t.id);
+    if (!c || !c[1](f)) return;
+    authClear(t, errId);
+    const e = f.querySelector("#" + errId); if (e && e.textContent === c[2]) e.textContent = "";
+  }
   const V4_FORMS = {
     find: (f, fd) => { const q = new URLSearchParams({ cert: fd.get("cert"), near: fd.get("near"), radius: fd.get("radius") || 50 }); location.hash = "#/find?" + q.toString(); },
     "demo-login": (f, fd) => {
-      const email = String(fd.get("email") || "").trim(), role = fd.get("role") || "pilot";
-      if (!email || !String(fd.get("password") || "")) { toast("Enter any email and password: this is a demo, nothing is checked."); return; }
+      const role = fd.get("role") || "pilot";
+      if (!authValidate(f)) return; // QA-081 (X04): inline message, aria-invalid, focus on the first empty field
       const name = (S.demoUser && S.demoUser.name) || "Demo user";
       S.demoUser = { name, role, airport: (S.demoUser && S.demoUser.airport) || "" }; S.role = role;
       f.reset(); save(); toast(`Logged in to the demo as ${name}. No account was checked and nothing was sent.`); go(HOME[role]);
     },
     "demo-signup": (f, fd) => {
       const name = String(fd.get("name") || "").trim(), role = fd.get("role") || "pilot", pw = String(fd.get("password") || "");
-      const err = !name ? "Add your name." : !String(fd.get("email") || "").includes("@") ? "Add an email (it isn\u2019t stored)." : pw.length < 8 ? "Use at least 8 characters for the password (it isn\u2019t stored)." : !fd.get("age") ? "Confirm you\u2019re 16 or older." : "";
-      if (err) {
-        const e = $("#signup-err"); if (e) e.textContent = err;
-        // QA-068: move focus to the first field with a problem, and tie the message to it.
-        const id = !name ? "signup-name" : !String(fd.get("email") || "").includes("@") ? "signup-email" : pw.length < 8 ? "signup-password" : "signup-age";
-        f.querySelectorAll("[aria-describedby~='signup-err']").forEach((x) => { if (x.id !== id) x.removeAttribute("aria-describedby"); });
-        const fe = document.getElementById(id); if (fe) { fe.setAttribute("aria-invalid", "true"); fe.setAttribute("aria-describedby", "signup-err"); fe.focus(); }
-        return;
-      }
+      // QA-068 + QA-075: focus and the message go to the first field with a problem; fields already fixed are not invalid.
+      if (!authValidate(f)) return;
       const airport = fd.get("airport") || "";
       S.demoUser = { name: name.slice(0, 60), role, airport }; S.role = role; ui.signupRole = null;
       f.reset(); save(); toast(`Demo account for ${S.demoUser.name}. Nothing was sent; your email, phone and password weren\u2019t kept.`); go(HOME[role]);
@@ -2805,7 +2982,10 @@ const closeModal = () => {
     const h = location.hash.slice(1) || "/";
     const [pa, qs] = h.split("?");
     const [path, anchor] = pa.split("#");
-    return { path: path || "/", anchor: anchor || "", q: Object.fromEntries(new URLSearchParams(qs || "")) };
+    // QA-077: remember keys that appear more than once (#/find uses the first value and tidies the link).
+    const sp = new URLSearchParams(qs || ""); ui.hashDup = {};
+    for (const k of new Set(sp.keys())) { const all = sp.getAll(k); if (all.length > 1) ui.hashDup[k] = all; }
+    return { path: path || "/", anchor: anchor || "", q: Object.fromEntries(sp) };
   }
 
   const PROTO_STRIP = `<div class="proto-strip" role="note"><span class="ps-main"><b>Private prototype</b> \u00b7 Fictional demo data \u00b7 No real requests are sent.</span><span><b>Prototype – no real payments.</b> Nothing is charged, emailed, texted or sent; everything stays in this browser.</span><span><b>Prototype, not legal or FAA advice.</b> Fees, deposits and checklists are fictional examples.</span></div>`;
@@ -2813,7 +2993,7 @@ const closeModal = () => {
   function notFound(path) {
     return `<div class="page">${emptyState({ id: "not-found", ic: "compass", h: "h1", title: "Page not found",
       body: `There is no page at <code>#${esc(path)}</code> in this prototype. It may have been renamed, or the link is mistyped.`,
-      actions: `<a class="btn" href="${HOME[S.role]}">Go to ${S.role === "pilot" ? "home" : "your dashboard"}</a><a class="btn secondary" href="#/search">Search examiners</a><a class="btn ghost" href="#/pricing">Pricing</a>` })}</div>`;
+      actions: `<a class="btn" href="${HOME[S.role]}">Go to ${S.role === "pilot" ? "home" : "your dashboard"}</a><a class="btn secondary" href="#/find">Find a DPE</a><a class="btn ghost" href="#/pricing">Pricing</a>` })}</div>`; // QA-080: Find a DPE, not the v3 search
   }
   // A view that throws (e.g. odd saved state) shows a recoverable error instead of a blank page.
   function renderError(err) {
@@ -2857,6 +3037,8 @@ if (ui.lastPath !== path) {
       // First paint is instant (no entrance animation): content is visible as soon as it renders (better LCP, no flash).
       const firstPaint = ui.lastPath === null;
       window.scrollTo(0, 0); ui.lastPath = path;
+      // QA-078: Back to #/find returns to the saved scroll position (and depth, restored in viewFind).
+      if (path === "/find") { const st = findState(); if (st && st.key === ui.findKey && st.y > 0) { const y = st.y; window.scrollTo(0, y); requestAnimationFrame(() => { if (ui.lastPath === "/find" && Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y); }); } }
       if (!firstPaint) animateEnter();
       if (path !== "/openings") ui.pubHighlight = null;
       // QA-035: on #/openings, focus the h1 (tabindex=-1) so keyboard users don't restart from <body>.
@@ -3059,7 +3241,11 @@ function countUp(root) {
     <div class="line" style="border-top:1px solid var(--border-strong);margin-top:.3rem;padding-top:.5rem"><span><b>Total due if the examiner accepts</b></span><b>${money(dep + BOOKING_FEE)}</b></div>
     <div class="line muted"><span>Remaining examiner fee at the test</span><b>${money(fee - dep)}</b></div>
     <div class="line muted"><span>Actually charged in this prototype</span><b>$0</b></div>
-    ${x ? `<div id="req-allin" style="margin-top:.6rem;border-top:1px dashed var(--border-strong);padding-top:.5rem">
+    ${x && x.noEst ? `<div id="req-allin" data-no-estimate="area" style="margin-top:.6rem;border-top:1px dashed var(--border-strong);padding-top:.5rem">
+      ${x.travel ? `<div class="line"><span>Examiner travel fee for an opening at ${x.at} (sample)</span><b>${money(x.travel)}</b></div>` : ""}
+      <div class="line"><span>Aircraft, instructor, travel and retest costs</span><b class="muted">${NO_EST}</b></div>
+      ${x.offer ? `<div class="small">${esc(x.offer)}</div>` : ""}
+      <div class="muted small" data-copy-key="estimate.no_area_data">${COPY["estimate.no_area_data"]}</div></div>` : x ? `<div id="req-allin" style="margin-top:.6rem;border-top:1px dashed var(--border-strong);padding-top:.5rem">
       <div class="line"><span>Aircraft rental + fuel estimate<div class="muted small">${esc(x.aircraftNote)}</div></span><b>${money(x.aircraft)}</b></div>
       <div class="line"><span>Travel / lodging estimate<div class="muted small" data-travel-note>${esc(x.travelNote)}</div></span><b>${money(x.travel)}</b></div>
       <div class="line"><span><b>Example all-in for this opening at ${x.at}</b> (examiner fee + ${FEES ? "$15 + " : ""}aircraft + travel)</span><b>${money(x.total)}</b></div>
@@ -3254,7 +3440,7 @@ function countUp(root) {
     },
     "sample-location": (el) => {
       // Mock "use my location": no geolocation API, no network. Cycles through a few sample airports.
-      const picks = ["KORL", "KTPA", "KDAB", "KFXE", "KGNV", "KFMY", "KMLB", "KJAX", "KPNS", "KSRQ"].filter((id) => apt(id));
+      const picks = (IS_NC ? ["XNC01", "XNC02", "XNC12", "XNC04", "XNC05", "XNC07", "XNC09", "XNC11"] : ["KORL", "KTPA", "KDAB", "KFXE", "KGNV", "KFMY", "KMLB", "KJAX", "KPNS", "KSRQ"]).filter((id) => apt(id));
       ui.locIdx = ((ui.locIdx ?? -1) + 1) % picks.length;
       const near = picks[ui.locIdx];
       const f = el.closest("form"); const fd = f ? new FormData(f) : new FormData();
@@ -3400,7 +3586,7 @@ function countUp(root) {
           if (m && US_STATES[m[1]] && !COVERED_STATES.some(([c]) => c === m[1])) { go("#/search?" + toQuery({ ...base(), st: m[1] })); return; }
           { const os = outsideStateFor(txt); if (os) { go("#/search?" + toQuery({ ...base(), st: os })); return; } } // QA-049
           { const inp = f.querySelector('[name="nearText"]'); if (inp) { inp.setAttribute("aria-invalid", "true"); inp.focus(); } }
-          toast(`We couldn\u2019t find "${String(txt).slice(0, 40)}". Try the airport code (like KORL) or a nearby city.`); return;
+          toast(`We couldn\u2019t find "${String(txt).slice(0, 40)}". Try the airport code (like ${DEFAULT_NEAR}) or a nearby city.`); return;
         }
         near = r;
       } else if (txt != null) { toast("Add your airport to see examiners near you."); return; }
@@ -3461,7 +3647,7 @@ function countUp(root) {
       const dpx = dpeById(s.dpeId);
       const b = { id: uid("b"), slotId: s.id, dpeId: s.dpeId, applicant: fd.get("name").trim() || "Alex Pilot", mine: true, cert, aircraft: fd.get("aircraft").trim(), cfi: fd.get("cfi").trim(), readiness: checklistPct(cert), selfCheck: { attested: true, by: "student", warnings: gate.warn.length, warn: gate.warn, answers: { ...answersFromForm(f), iacra: true }, ktDate: fd.get("kt-date") || "", hours: Object.fromEntries([...fd.entries()].filter(([k]) => k.startsWith("h-")).map(([k, v]) => [k.slice(2), +v])) }, status: "requested", createdAt: Date.now(), feeUsd: dpx.fees[cert], depositUsd: depositFor(dpx, cert), bookingFeeUsd: BOOKING_FEE };
       const note = (fd.get("note") || "").trim(); if (note) b.note = note;
-      b.near = fd.get("near") || "KORL";
+      b.near = fd.get("near") || DEFAULT_NEAR;
       if (s.simulated) b.simulated = true;
       if (parseHash().q.slot === s.id) b.fromAlert = true;
       S.bookings.push(b);
@@ -3574,6 +3760,11 @@ function countUp(root) {
     if (b.classList.contains("is-tucked") !== tuck) b.classList.toggle("is-tucked", tuck);
   }
   window.CC_BAR_FIT = barFit;
+  // QA-079: --bar-h follows the bar's real height. The first measurement can run before the web fonts swap in (Chromium
+  // wraps the bar to an extra line in the fallback font), so re-measure whenever the bar resizes and once fonts are ready.
+  if (window.ResizeObserver) { let seen = null; const ro = new ResizeObserver(() => barFit());
+    new MutationObserver(() => { const b = document.getElementById("v4-bar"); if (b !== seen) { if (seen) ro.unobserve(seen); seen = b; if (b) ro.observe(b); } }).observe(document.getElementById("app") || document.body, { childList: true, subtree: true }); }
+  try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => barFit()); } catch (e) { /* optional */ }
   { let raf = 0; const kick = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; barFit(); }); };
     window.addEventListener("scroll", kick, { passive: true }); window.addEventListener("resize", kick); }
   // QA-034: a keyboard-focused control that lands under the fixed mobile tab bar is scrolled clear of it
@@ -3602,6 +3793,7 @@ function countUp(root) {
   });
   document.addEventListener("change", (e) => {
     const t = e.target;
+    authLive(t); // QA-075
     if (t.hasAttribute && t.hasAttribute("data-signup-role")) { const nm = ($("#signup-name") || {}).value || ""; ui.signupRole = t.value; render(); const n2 = $("#signup-name"); if (n2) n2.value = nm; const r2 = document.querySelector(`[data-signup-role][value="${t.value}"]`); if (r2) r2.focus(); return; }
     if (t.dataset.ctick) {
       S.ticks[t.dataset.ctick] = S.ticks[t.dataset.ctick] || {};
@@ -3667,6 +3859,7 @@ function countUp(root) {
   });
   // Builder inputs autosave without re-rendering (keeps focus while typing).
   document.addEventListener("input", (e) => {
+    authLive(e.target); // QA-075
     if (e.target.form && (e.target.form.dataset.form === "request" || e.target.form.dataset.form === "cohort-ready") && e.target.name !== "cert") showGate(e.target.form);
     const t = e.target;
     if (t.form && t.form.id === "dpe-fees-form") {
@@ -3699,7 +3892,10 @@ function countUp(root) {
   });
   $("#role-select").addEventListener("change", (e) => { S.role = e.target.value; go(HOME[S.role]); });
   // BRAND_LOGO: keep the static header lockups in step with the one constant.
-  document.querySelectorAll(".brand img.lockup-light, .brand img.lockup-dark").forEach((im) => { const v = im.classList.contains("lockup-dark") ? BRAND_LOGO.dark : BRAND_LOGO.light; if (im.getAttribute("src") !== v) im.setAttribute("src", v); });
+  document.querySelectorAll(".brand img.lockup-light, .brand img.lockup-dark").forEach((im) => { const v = im.classList.contains("lockup-dark") ? BRAND_LOGO.dark : BRAND_LOGO.light; if (im.getAttribute("src") !== v) { im.setAttribute("src", v); im.setAttribute("width", BRAND_WH[0]); im.setAttribute("height", BRAND_WH[1]); } });
+  // D41: BRAND "runway" also brings back the Runway favicons (kept in icons/runway/). Default icons are his logo mark.
+  document.documentElement.dataset.brand = BRAND;
+  if (BRAND === "runway") document.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"]').forEach((l) => { const h = l.getAttribute("href") || ""; if (/^icons\/(favicon|apple-touch)/.test(h)) l.setAttribute("href", h.replace(/^icons\//, "icons/runway/")); else if (h === "favicon.ico") l.setAttribute("href", "icons/runway/favicon.ico"); });
   window.addEventListener("hashchange", () => { closeModal(); render(); });
 
   // Offline banner: the app keeps working from the SW cache; nothing is ever sent, online or not.
