@@ -200,16 +200,16 @@
     // NC cost data (Marlo, Nov 2; new keys for Customer Discovery). National figures used where NC has none are labelled "national average".
     "estimate.national_tag": "national average",
     "estimate.nc_fee_ppl": "This sample fee is within one North Carolina school\u2019s published range for a private pilot checkride: $700 to $900, typically $750.",
-    "estimate.nc_fee_national": "No North Carolina figure for this checkride, so the sample fee sits inside the national average range.",
+    "estimate.nc_fee_national": "We have no North Carolina figure for this checkride. The sample fee is within the national range.",
     "estimate.national_hours": "Test-day flight hours:",
     "estimate.national_prep": "Prep hours:",
     // Two lines each (Customer Discovery, Nov 2): "\n" splits them; the point comes first.
     "estimate.nc_retest_note": "Retest chance: the national average for {cert} checkrides, from FAA-wide statistics. You can change it.\nNorth Carolina has no figure of its own, and it isn\u2019t this examiner\u2019s pass rate.",
-    "estimate.nc_basis": "North Carolina inputs (public sources, Nov 2, 2026): trainer $185/h, twin $428/h, instructor $60/h, hotel $113 a night.\nWhere North Carolina has no figure, we use national averages: fees for checkrides other than private pilot, test-day and prep hours, retest odds, and the IRS driving rate ($0.76 a mile).",
+    "estimate.nc_basis": "North Carolina inputs (public sources, Nov 2, 2026): trainer $185/h, instructor $60/h, hotel $113 a night, twin $428/h.\nWhere North Carolina has no figure, we use national averages: fees for checkrides other than private pilot, test-day and prep hours, retest odds, and the IRS driving rate ($0.76 a mile).",
     // Marlo, Nov 2: shown only beside the two thin NC lines (the private-DPE fee range and the twin rental rate).
     "estimate.limited_data": "Based on limited public data.",
     // Rules 5/6 clock (Marlo, Nov 2; new keys for Customer Discovery). Status messages live in elig-clock.js under clock.prep.* / clock.retest.*.
-    "clock.heading": "Prep and retest checks", "clock.chip.review": "CFI review", "clock.chip.confirm": "Confirm with CFI",
+    "clock.heading": "Prep and retest checks", "clock.chip.review": "CFI review", "clock.chip.confirm": "Confirm with CFI", "clock.chip.not_needed": "Not needed for this checkride",
     "clock.needs_check.note": "Confirm this with your CFI.",
     // D42 (Mon Nov 2, 2026): optional request-step tick, shown only when Journey has a warn or fails row. Never blocks.
     "request.cfi_reviewed": "Your CFI has reviewed the items flagged on your Journey.",
@@ -220,10 +220,11 @@
     "clock.prep.label": "Practical-test prep ({amount} {unit})", "clock.prep.label_na": "Practical-test prep",
     "clock.retest.label": "Retest after a test you didn\u2019t pass (\u00a761.49)",
     "clock.retest.need_failure_date": "Add the date of the test you didn\u2019t pass to check the retest steps.",
-    "clock.retest.recheck_note": "Your prep hours are checked against this retest date, so hours logged before your last test may fall outside the window. Your knowledge test and medical dates keep running.",
+    "clock.retest.recheck_note": "We re-check your prep hours against the retest date. Hours from before your last test may fall outside the window.\nYour knowledge test and medical dates keep running.",
     "clock.more.summary": "More clock dates (optional): practical-test prep and retests",
     "clock.more.prep_legend": "Practical-test prep with your instructor", "clock.more.sim_note": "Simulator or FTD time doesn\u2019t count toward this.",
     "clock.more.prep_none": "No prep dates to log for this certificate.", "clock.more.prep_exempt": "No prep dates to log when adding a class rating (\u00a761.63(c)(3)).", "clock.more.grad": "Part 141 graduation date (optional)",
+    "clock.more.hours_invalid": "Enter hours from 0.1 to 24. This entry isn\u2019t counted.", "clock.prep.ignored": "Not counted: {n} of your prep entries. Hours must be a number from 0.1 to 24.",
     "clock.more.retest_legend": "Retesting", "clock.more.retest_toggle": "I\u2019m retaking a checkride I didn\u2019t pass",
     "clock.more.fail_date": "Date of the test you didn\u2019t pass", "clock.more.end_date": "Retest endorsement date",
     "clock.more.trainer": "Did the instructor who endorsed you give the extra training?", "clock.more.rec": "Does your new application have a new instructor recommendation?",
@@ -430,9 +431,11 @@
   const retestNote = (cert, dp) => natOf(dp, cert) && natOf(dp, cert).retest ? `<span data-copy-key="estimate.nc_retest_note">${COPY["estimate.nc_retest_note"].replace("{cert}", esc(certById(cert).short)).replace("\n", "<br>")}</span> ${NAT_TAG("retest")} ${VERIFY}` : `The retest chance is a shared default for every ${esc(certById(cert).short)} checkride, from FAA-wide statistics, and you can change it. It is not this examiner\u2019s pass rate. ${VERIFY}`;
   // Customer Discovery, Nov 2: [VERIFY] on each NC claim; "Based on limited public data." only beside the two thin lines.
   const VCLAIM = (c) => VERIFY.replace('<span class="pill verify"', `<span class="pill verify" data-verify-claim="${c}"`);
+  // post-rc4 (CD): one FSDO label everywhere: drop the data's leading "Sample ", add "(fictional)" once.
+  const fsdoLabel = (v) => `${esc(String(v || "").replace(/^Sample /, ""))} (fictional)`;
   const LIMITED = () => `<span class="limited-data" data-copy-key="estimate.limited_data">${COPY["estimate.limited_data"]}</span>`;
   const ncBasis = () => { const [l1, l2] = COPY["estimate.nc_basis"].split("\n");
-    return `<span data-basis-line="1">${l1.replace("twin $428/h", `twin $428/h (${LIMITED()}) ${VCLAIM("nc-twin")}`)} ${VCLAIM("nc-inputs")}</span><br><span data-basis-line="2">${l2} ${VCLAIM("irs-mileage")}</span>`; };
+    return `<span data-basis-line="1">${l1.replace("twin $428/h.", `twin $428/h. ${LIMITED()} ${VCLAIM("nc-twin")}`)} ${VCLAIM("nc-inputs")}</span><br><span data-basis-line="2">${l2} ${VCLAIM("irs-mileage")}</span>`; };
   // Profile card ("Expected all-in, including retest risk").
   const estimateCard = (dp, cert, near, at) => {
     if (noEstFor(dp)) return ""; // D41: allInCard already shows "No estimate yet" for this area
@@ -1150,7 +1153,7 @@ const closeModal = () => {
               <div style="flex:1;min-width:200px">
                 <p class="eyebrow">Examiner profile</p>
                 <h1 style="margin-bottom:.2rem">${esc(dp.name)}</h1>
-                <div class="row" style="gap:.6rem">${sampleBadge()}<span class="muted small">Sample DPE since ${dp.since} · ${esc(dp.fsdo)} (fictional)</span></div>
+                <div class="row" style="gap:.6rem">${sampleBadge()}<span class="muted small">Sample DPE since ${dp.since} · ${fsdoLabel(dp.fsdo)}</span></div>
                 <div class="muted small" style="margin-top:.3rem">${dp.home} · ${esc(apt(dp.home).name)}, ${esc(apt(dp.home).city)} · travels up to ${dp.travelNm} nm · Speaks ${dp.languages.map(esc).join(", ")}${dp.languages.length > 1 ? " (practical tests are conducted in English)" : ""}</div>
               </div>
             </div>
@@ -2142,7 +2145,7 @@ const closeModal = () => {
       <span class="pill">Fictional locator lookup: ${p.locatorMatch ? "name found" : "name not found"}</span></div>
       <div class="grid g3 small" style="margin:.8rem 0">
         <div><div class="muted">Sample designee number</div><b>${esc(p.designee)}</b></div>
-        <div><div class="muted">Managing office</div><b>${esc(p.fsdo)}</b></div>
+        <div><div class="muted">Managing office</div><b>${fsdoLabel(p.fsdo)}</b></div>
         <div><div class="muted">Authorizations requested</div>${p.certs.map((c) => `<span class="pill">${esc(certById(c).short)}</span>`).join(" ")}</div>
       </div>
       <p class="small muted">${esc(p.note)}</p>
@@ -2277,7 +2280,7 @@ const closeModal = () => {
     if (dates.kt) {
       const exp = ktExpiry(dates.kt), left = Math.round((parseIso(exp) - parseIso(ref)) / 864e5);
       const smp = S.ktSample ? " Sample date; change it on the readiness checklist." : "";
-      if (exp < ref) { sigs.push("bad"); why.push(`Knowledge test result expired ${fmtDate(exp)} (draft rule).${smp}`); }
+      if (exp < ref) { sigs.push("bad"); why.push(`Knowledge test result expired ${fmtDateY(exp)} (draft rule).${smp}`); }
       else if (left <= 90) { sigs.push("warn"); why.push(`Knowledge test result valid through ${fmtDateY(exp)}, ${plural(left, "day")} after ${sl ? "your checkride date" : "today"} (draft rule).${smp}`); }
       else if (!sl && exp < goal) { sigs.push("warn"); why.push(`Knowledge test result valid through ${fmtDateY(exp)}, before the end of your target month (draft rule).${smp}`); }
       else { sigs.push("good"); why.push(`Knowledge test result valid through ${fmtDateY(exp)} (draft rule).${smp}`); }
@@ -2289,8 +2292,11 @@ const closeModal = () => {
     const k = ["bad", "review", "warn", "check"].find((x) => sigs.includes(x)) || (any ? "good" : "none");
     return { k, cls: ROLL[k][0], label: ROLL[k][1], why: why.join(" ") };
   };
-  // D42: Journey has a warn or fails row (knowledge-test "Closed"/"Heads-up", or a Rules 5/6 "CFI review" row).
-  const journeyFlagged = () => ["bad", "review", "warn"].includes(eligRollup().k);
+  // D42 / ER v2.1 (L77, L80, case C5): the request-step CFI tick is for warn/fails only, i.e. an expired knowledge test
+  // ("Closed") or a Rules 5/6 "CFI review" row (cfiAckRequired). A knowledge-test heads-up (warn/at-risk) or a
+  // needs-check row never asks for it (QA-090, rc5). The roll-up order is bad > review > warn > check, so k is "bad" or
+  // "review" exactly when such a row exists.
+  const journeyFlagged = () => ["bad", "review"].includes(eligRollup().k);
   const rollChip = (r) => `<span class="pill ${r.cls}" data-rollup="${r.k}">${r.label}</span>`;
   // ---- Eligibility clock, Rules 5 (3 h practical-test prep) and 6 (retest after a failure, §61.49): elig-clock.js.
   // Informational labels only; warn, never block (decision #18). Dates are document dates; the checkride date is the
@@ -2305,7 +2311,12 @@ const closeModal = () => {
     const ym = S.target || defaultTarget();
     return { planned: ym, key: "clock.when.target", text: COPY["clock.when.target"].replace("{month}", parseIso(ym + "-01").toLocaleDateString("en-US", { month: "long", year: "numeric" })) };
   };
-  const clockEntries = () => { const rows = (CK().prep || []).filter((e) => e && E_OK(e.date) && +e.hours > 0); return rows.length ? rows.map((e) => ({ date: e.date, hours: +e.hours, qualifies: !e.sim })) : null; };
+  // QA-091 (rc5): hours per entry must be a number from 0.1 to 24 (the input is min=0 max=24 step=0.1). Anything else
+  // (not a number, 0 or less, over 24) is flagged on the field and left out of the count; warn, never block. The engine
+  // compares the unrounded total, so 2.996 h stays short of 3.
+  const prepHoursBad = (e) => { if (!e) return false; if (e.hoursBad) return true; const h = e.hours; if (h === undefined || h === null || String(h).trim() === "") return false; const n = Number(h); return !Number.isFinite(n) || n <= 0 || n > 24; };
+  const prepIgnored = () => (CK().prep || []).filter((e) => e && prepHoursBad(e)).length;
+  const clockEntries = () => { const rows = (CK().prep || []).filter((e) => e && E_OK(e.date) && !prepHoursBad(e) && +e.hours > 0); return rows.length ? rows.map((e) => ({ date: e.date, hours: +e.hours, qualifies: !e.sim })) : null; };
   const E_OK = (d) => !!(window.CC_ELIG && window.CC_ELIG.cal.isYmd(d));
   const clockResults = () => {
     const E = window.CC_ELIG; if (!E) return [];
@@ -2320,8 +2331,9 @@ const closeModal = () => {
     return out;
   };
   const clockChip = (r) => {
+    // QA-093 (rc5): an exempt or not-applicable prep rule gets a neutral chip, never "On track".
     const [cls, t, k] = r.status === "warn" && r.reason === "fails" ? ["warn", COPY["clock.chip.review"], "review"] : r.reason === "missing" ? ["", "Not set", "none"]
-      : r.status === "needs-check" ? ["", COPY["clock.chip.confirm"], "check"] : ["good", "On track", "good"];
+      : r.status === "needs-check" ? ["", COPY["clock.chip.confirm"], "check"] : ["exempt", "not-applicable"].includes(r.reason) ? ["", COPY["clock.chip.not_needed"], "not-needed"] : ["good", "On track", "good"];
     return `<span class="pill ${cls}" data-clock-chip="${k}">${t}</span>`;
   };
   const verifyFor = (nums) => nums && nums.length ? `<span class="pill verify" data-verify-flags="${nums.join(",")}" title="${esc(nums.map((n) => `#${n} ${window.CC_ELIG.VERIFY_FLAGS[n]}`).join(" \u2022 "))}">[VERIFY]</span>` : "";
@@ -2334,9 +2346,10 @@ const closeModal = () => {
       <ul class="clock-rows">${rows.map(({ r, label }) => `<li class="clock-row" data-rule="${r.rule}" data-status="${r.status}" data-reason="${r.reason}" data-copy-key="${r.key}"${r.cfiAckRequired ? ` data-cfi-ack="required"` : ""}>
         <div class="row" style="gap:.4rem;flex-wrap:wrap"><b>${esc(label)}</b> ${clockChip(r)} ${verifyFor(r.verify)}</div>
         <p class="small" style="margin:.2rem 0 0">${esc(r.message)}</p>
+        ${r.rule === "prep_3h" && prepIgnored() && !["exempt", "not-applicable"].includes(r.reason) ? `<p class="small" style="margin:.15rem 0 0" data-prep-ignored="${prepIgnored()}" data-copy-key="clock.prep.ignored">${COPY["clock.prep.ignored"].replace("{n}", prepIgnored())}</p>` : ""}
         ${r.cfiNote ? `<p class="small muted" style="margin:.15rem 0 0" data-cfi-note data-copy-key="clock.needs_check.note">${COPY["clock.needs_check.note"]}</p>` : ""}
         ${r.cite ? `<p class="small muted" style="margin:.15rem 0 0">Basis: ${esc(r.cite)} (draft reading)</p>` : ""}</li>`).join("")}</ul>
-      ${retest ? `<p class="small muted" style="margin:.35rem 0 0" data-copy-key="clock.retest.recheck_note">${COPY["clock.retest.recheck_note"]} ${verifyFor([5])}</p>` : ""}
+      ${retest ? `<p class="small muted" style="margin:.35rem 0 0" data-copy-key="clock.retest.recheck_note">${COPY["clock.retest.recheck_note"].split("\n")[0]} ${verifyFor([5])}<br>${COPY["clock.retest.recheck_note"].split("\n")[1]}</p>` : ""}
       <p class="small muted" style="margin:.35rem 0 0" data-copy-key="clock.disclaimer">${COPY["clock.disclaimer"]}</p>
     </div>`;
   }
@@ -2348,7 +2361,7 @@ const closeModal = () => {
     const dt = (id, key, label, val) => `<label class="field" style="max-width:240px"><span>${label}</span><input type="date" id="${id}" data-clock="${key}" value="${esc(val || "")}" /></label>`;
     return `<details class="clock-more" id="clock-more" ${has || ui.clockOpen ? "open" : ""}><summary data-copy-key="clock.more.summary">${COPY["clock.more.summary"]}</summary>
       <fieldset class="clock-fs"><legend data-copy-key="clock.more.prep_legend">${COPY["clock.more.prep_legend"]}</legend>
-        ${rule && cert !== "me" ? `${[0, 1, 2].map((i) => { const e = prep[i] || {}; return `<div class="row clock-prep-row" style="gap:.6rem;align-items:end;flex-wrap:wrap">${dt(`clock-prep-d${i}`, `prep.${i}.date`, `Date ${i + 1}`, e.date)}<label class="field" style="max-width:110px"><span>Hours</span><input type="number" inputmode="decimal" min="0" max="24" step="0.1" id="clock-prep-h${i}" data-clock="prep.${i}.hours" value="${esc(e.hours || "")}" /></label><label class="row" style="gap:.35rem;min-height:44px"><input type="checkbox" id="clock-prep-s${i}" data-clock="prep.${i}.sim" ${e.sim ? "checked" : ""} /> <span class="small">Simulator or FTD</span></label></div>`; }).join("")}
+        ${rule && cert !== "me" ? `${[0, 1, 2].map((i) => { const e = prep[i] || {}; return `<div class="row clock-prep-row" style="gap:.6rem;align-items:end;flex-wrap:wrap">${dt(`clock-prep-d${i}`, `prep.${i}.date`, `Date ${i + 1}`, e.date)}<label class="field" style="max-width:110px"><span>Hours</span><input type="number" inputmode="decimal" min="0" max="24" step="0.1" id="clock-prep-h${i}" data-clock="prep.${i}.hours" value="${esc(e.hoursBad ? "" : e.hours || "")}"${prepHoursBad(e) ? ` aria-invalid="true" aria-describedby="clock-prep-h${i}-err"` : ""} /></label>${prepHoursBad(e) ? `<p class="small" id="clock-prep-h${i}-err" data-prep-hours-err style="margin:0;flex-basis:100%;color:var(--bad-text)" data-copy-key="clock.more.hours_invalid">${COPY["clock.more.hours_invalid"]}</p>` : ""}<label class="row" style="gap:.35rem;min-height:44px"><input type="checkbox" id="clock-prep-s${i}" data-clock="prep.${i}.sim" ${e.sim ? "checked" : ""} /> <span class="small">Simulator or FTD</span></label></div>`; }).join("")}
         <p class="small muted" style="margin:.25rem 0" data-copy-key="clock.more.sim_note">${COPY["clock.more.sim_note"]} ${verifyFor([16])}</p>
         ${dt("clock-grad", "grad", COPY["clock.more.grad"], c.grad)}` : cert === "me" ? `<p class="small muted" style="margin:0" data-copy-key="clock.more.prep_exempt">${COPY["clock.more.prep_exempt"]} ${verifyFor([17])}</p>` : `<p class="small muted" style="margin:0" data-copy-key="clock.more.prep_none">${COPY["clock.more.prep_none"]} ${VERIFY}</p>`}
       </fieldset>
@@ -3961,7 +3974,7 @@ function countUp(root) {
     }
     if (t.dataset.clock) { // Rules 5/6 inputs: save, rerender, keep focus (labels only, never blocks)
       const c = S.clock = S.clock || {}, p = t.dataset.clock.split("."), v = t.type === "checkbox" ? t.checked : t.value;
-      if (p[0] === "prep") { c.prep = c.prep || []; c.prep[+p[1]] = c.prep[+p[1]] || {}; c.prep[+p[1]][p[2]] = v; } else c[p[0]] = v;
+      if (p[0] === "prep") { c.prep = c.prep || []; c.prep[+p[1]] = c.prep[+p[1]] || {}; c.prep[+p[1]][p[2]] = v; if (p[2] === "hours") c.prep[+p[1]].hoursBad = !!(t.validity && t.validity.badInput); } else c[p[0]] = v;
       ui.clockOpen = true; save(); const id = t.id; rerender(); const back = id && document.getElementById(id); if (back) back.focus(); return;
     }
     if (t.dataset.r9date) { S.ready9Dates = S.ready9Dates || {}; S.ready9Dates[t.dataset.r9date] = t.value; if (t.dataset.r9date === "kt") S.ktSample = false; save(); rerender(); return; }

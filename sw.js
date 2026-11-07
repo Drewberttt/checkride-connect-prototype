@@ -4,7 +4,7 @@
    - Versioned cache; old versions are deleted on activate.
    - Network first for same-origin GETs (so edits show up), cache fallback when offline; navigations fall back to index.html.
    - No push, no background sync, no third-party requests. Bump VERSION when the shell changes. */
-const VERSION = "cc-proto-v7.5.0"; // v4-rc4: QA-082 search link note, QA-083 runway manifest + precache, QA-084 dark favicon, QA-089 icon cache-first, D42, CD copy (v7.4.0 = v4 dev: eligibility Rules 5/6 (elig-clock.js), home "Next openings" card fix (v7.3.0 = rc3: QA-075/081 auth validation, QA-076/077/078/079/080 (v7.2.0 = D41 logo/NC/landing; v7.1.0 = v4-rc2)
+const VERSION = "cc-proto-v7.6.0"; // v4-rc5: QA-089 respondWith guard (Firefox interrupted reloads), QA-090..094, empty prep entries (v7.5.0 = v4-rc4: QA-082 search link note, QA-083 runway manifest + precache, QA-084 dark favicon, QA-089 icon cache-first, D42, CD copy (v7.4.0 = v4 dev: eligibility Rules 5/6 (elig-clock.js), home "Next openings" card fix (v7.3.0 = rc3: QA-075/081 auth validation, QA-076/077/078/079/080 (v7.2.0 = D41 logo/NC/landing; v7.1.0 = v4-rc2)
 const CACHE = "checkride-connect-" + VERSION;
 const SHELL = [
   "./",
@@ -80,23 +80,44 @@ self.addEventListener("fetch", (event) => {
   // precache first. They only change with a VERSION bump, and answering at once means a page that is torn down mid-load
   // (Firefox test runs that freeze the page clock) no longer leaves a pending network fetch inside respondWith.
   const ICON = /\/(favicon[^/]*|apple-touch-icon\.png|icon-[^/]*\.png)$/.test(url.pathname);
-  event.respondWith((async () => {
-    const cache = await caches.open(CACHE);
-    const key = url.href.split("#")[0];
-    if (ICON) { const hit = await cache.match(key, { ignoreSearch: true }); if (hit) return hit; }
-    try {
-      const res = await fetch(req);
+  event.respondWith(answer(req, url, ICON).catch(() => offline(req)));
+});
+
+// rc5 (QA-089 re-scoped): Firefox logged "A ServiceWorker intercepted the request and encountered an unexpected error"
+// for app.js (and other scripts) during rapid, interrupted reloads. Two guards:
+// 1. The network fetch no longer carries the page's abort signal, and its body is read in full before we answer, so
+//    an aborted page load can't hand respondWith a half-read stream; a failed read falls back to the cache.
+// 2. Every step (caches.open, match, fetch, body read) sits inside one promise with a final .catch, so respondWith
+//    always gets a Response (cached copy, index.html for navigations, or a plain 503), never a rejection.
+async function answer(req, url, icon) {
+  const cache = await caches.open(CACHE);
+  const key = url.href.split("#")[0];
+  if (icon) { const hit = await cache.match(key, { ignoreSearch: true }); if (hit) return hit; }
+  try {
+    const res = await fetch(req.mode === "navigate" ? req : new Request(req.url, { credentials: req.credentials, cache: req.cache === "only-if-cached" ? "default" : req.cache, redirect: req.redirect }));
+    if (!res || res.type !== "basic" || req.mode === "navigate") {
       // Cache under the URL without its #fragment so "./" and "./#/..." share one entry.
       if (res && res.ok && res.type === "basic") cache.put(key, res.clone()).catch(() => {});
       return res;
-    } catch (e) {
-      const hit = await cache.match(key, { ignoreSearch: true });
-      if (hit) return hit;
-      if (req.mode === "navigate") return (await cache.match(new URL("index.html", self.registration.scope))) || (await cache.match(self.registration.scope));
-      return new Response("Offline and not cached (prototype).", { status: 503, headers: { "Content-Type": "text/plain" } });
     }
-  })());
-});
+    const body = await res.blob(); // whole body in memory (small static files), so the answer can't break mid-stream
+    const out = new Response(body, { status: res.status, statusText: res.statusText, headers: res.headers });
+    if (res.ok) cache.put(key, out.clone()).catch(() => {});
+    return out;
+  } catch (e) {
+    return offline(req, cache, key);
+  }
+}
+async function offline(req, cache, key) {
+  try {
+    cache = cache || (await caches.open(CACHE));
+    key = key || req.url.split("#")[0];
+    const hit = await cache.match(key, { ignoreSearch: true });
+    if (hit) return hit;
+    if (req.mode === "navigate") { const shell = (await cache.match(new URL("index.html", self.registration.scope))) || (await cache.match(self.registration.scope)); if (shell) return shell; }
+  } catch (e) { /* fall through to the plain 503 */ }
+  return new Response("Offline and not cached (prototype).", { status: 503, headers: { "Content-Type": "text/plain" } });
+}
 
 // Optional OS notification taps (only used if the user granted permission on the Alerts page).
 self.addEventListener("notificationclick", (event) => {

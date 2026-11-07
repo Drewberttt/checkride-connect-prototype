@@ -31,7 +31,8 @@
   const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const monthName = (s) => MONTH_NAMES[parts(s)[1] - 1];
   const monthYear = (p) => `${monthName(p.first)} ${parts(p.first)[0]}`;
-  const num = (x) => String(Math.round(x * 100) / 100);
+  // rc5 (QA-091): shown figures round DOWN to 0.01 so a short total never reads as the full amount (2.996 -> "2.99").
+  const num = (x) => String(Math.floor(x * 100 + 1e-7) / 100);
 
   const OK = "ok", WARN = "warn", CHECK = "needs-check";
   const CFI_NOTE = "Confirm this with your CFI."; // ux-copy-v3 clock.needs_check.note (D32, v2.1)
@@ -66,7 +67,10 @@
   const NO_PREP_RULE = ["cfi", "cfi-instrument", "cfi-sport", "atp", "type-rating"];
   // entries: [{ date, hours, qualifies }] (qualifies = with an authorized instructor, in the aircraft, not a simulator/FTD, flag #16).
   // "flights" rules count qualifying entries.
-  const sumIn = (entries, start, end, unit) => { const sel = entries.filter((e) => e.qualifies !== false && e.date >= start && e.date <= end); return unit === "flights" ? sel.length : Math.round(sel.reduce((a, e) => a + (+e.hours || 0), 0) * 100) / 100; };
+  // rc5 (QA-091): the hours total is compared unrounded (only float noise below 1e-6 is removed), so 2.996 h < 3 h.
+  // Hours outside 0 < h <= 24 (or not a number) are not counted; the app flags them on the field.
+  const hoursOk = (h) => { const n = Number(h); return h !== null && h !== "" && Number.isFinite(n) && n > 0 && n <= 24; };
+  const sumIn = (entries, start, end, unit) => { const sel = entries.filter((e) => e.qualifies !== false && e.date >= start && e.date <= end && (unit === "flights" || hoursOk(e.hours))); return unit === "flights" ? sel.length : Math.round(sel.reduce((a, e) => a + Number(e.hours), 0) * 1e6) / 1e6; };
 
   // o: { rating, entries (null = not entered), testStart, testEnd?, pathway ("part61"|"part141"), graduationDate?, addedClass, balloonToAirship, fmt? }
   function checkPrep(o) {
@@ -78,7 +82,8 @@
     const base = { cite, amount, unit, anchor, verify: anchor === "test-date" ? [3, 12, 15, 16] : [3, 15, 16] };
     if (o.addedClass && !o.balloonToAirship)
       return result(R, OK, "exempt", "clock.prep.exempt", "Not required when adding a class rating (\u00a761.63(c)(3)).", { ...base, cite: cite + "; 61.63(c)(3)", verify: [17] });
-    const s = planned(o.testStart), e = planned(o.testEnd || o.testStart), entries = o.entries;
+    // rc5 (QA U21): an empty list is "missing" like null (ER §5.6 L395 "if entries missing").
+    const s = planned(o.testStart), e = planned(o.testEnd || o.testStart), entries = o.entries && o.entries.length ? o.entries : null;
     if (o.pathway === "part141" && o.graduationDate) {
       const gradDl = addDays(o.graduationDate, 60);
       if (position(gradDl, e) === "in") {
