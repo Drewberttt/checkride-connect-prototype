@@ -1,0 +1,30 @@
+{
+  "/workspace/checkride-connect-shots/v4-rc7/chromium-precision-invalid.png": {
+    "sha256": "29e4f0ec817dd21c1b78539a5fb593ea2f8ede7e77dc37193b1d2f85f0b32b08",
+    "size": 132306
+  },
+  "/workspace/checkride-connect-shots/v4-rc7/chromium-mixed-precision.png": {
+    "sha256": "e039948515364721017a37f5422e1325567bf6a2627cc1a1e652f83fec0070b4",
+    "size": 132589
+  },
+  "/workspace/checkride-connect-shots/v4-rc7/chromium-optional-tick-false.png": {
+    "sha256": "f802057cdc9fca863fe2b057bd5bd18ca8d83445e9935bdd2784653d6fe8bf5d",
+    "size": 207360
+  },
+  "/workspace/checkride-connect-shots/v4-rc7/chromium-corrected/chromium-optional-tick-true.png": {
+    "sha256": "05718cafb7d8bd5c393c811446cc807a9c831ade8149a1db2c68c9590b57edb2",
+    "size": 245079
+  },
+  "/workspace/checkride-connect-shots/v4-rc7/chromium-corrected/chromium-precision-invalid.png": {
+    "sha256": "e56525b57b7843d7cebc540bd99315b99769a2d7d0d69bd4f5928b50ff74e60f",
+    "size": 132244
+  },
+  "/workspace/checkride-connect-shots/v4-rc7/chromium-corrected/chromium-mixed-precision.png": {
+    "sha256": "b66d7224120d2c11a04c84b466258d30b4ef045d455de0c8efe498673426a4c5",
+    "size": 132685
+  },
+  "/workspace/checkride-connect-shots/v4-rc7/chromium-corrected/chromium-optional-tick-false.png": {
+    "sha256": "f802057cdc9fca863fe2b057bd5bd18ca8d83445e9935bdd2784653d6fe8bf5d",
+    "size": 207360
+  }
+}

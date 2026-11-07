@@ -1,0 +1,18 @@
+PASS new canonical key exact
+PASS static header keyed canonical
+PASS index change limited to header short disclaimer
+PASS D41 landing template unchanged except key wiring, existing footer text unchanged
+PASS mandatory app strip unchanged
+PASS mandatory modal strip unchanged
+PASS examiner settings mandatory escaped dash retained
+PASS fallback mandatory dash/legal unchanged
+PASS dev next SW version v7.9.0
+PASS fees remain false
+PASS font bytes README.md
+PASS font bytes Manrope-Variable-latin.woff2
+PASS font bytes Manrope-Variable-latin-ext.woff2
+PASS font bytes GeistMono-Variable.woff2
+PASS font bytes Geist-Variable.woff2
+PASS font bytes OFL-Manrope.txt
+PASS font bytes OFL-Geist-and-GeistMono.txt
+SCOPE AUDIT 17 PASS

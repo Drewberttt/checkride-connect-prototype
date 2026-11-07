@@ -1,0 +1,174 @@
+K1	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	KT 2024-03-15, completed 2026-03-31
+K2	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	KT 2024-03-15, completed 2026-04-01
+K3	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	KT 2024-03-15, began 03-31 completed 2026-04-02
+K4	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	KT 2026-02-28, completed 2028-02-29
+K5	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	KT 2026-02-28, completed 2028-03-01
+K6	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	ATP-CTP 60 mo: KT 2022-01-10, completed 2026-12-31
+K7	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	ATP-CTP 60 mo: KT 2022-01-10, completed 2027-02-01
+K8	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	KT 2024-01-31, completed 2026-01-01
+K9	PASS	got=('needs-check', 'exemption-claimed')	exp=('needs-check', 'exemption-claimed')	K7 + 61.39(b) employment exemption claimed
+K10	PASS	got=('warn', 'at-risk')	exp=('warn', 'at-risk')	At-risk: deadline 2026-03-31, today 2026-01-01 (89 days), planned 2026-03
+K11	PASS	got=(('warn', 'at-risk'), ('ok', 'ok'))	exp=(('warn', 'at-risk'), ('ok', 'ok'))	At-risk boundary: today 2025-12-31 (90 days -> at risk), 2025-12-30 (91 days -> ok)
+K12	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Month-only target 2026-04 vs KT deadline 2026-03-31
+K13	PASS	got=('needs-check', 'missing')	exp=('needs-check', 'missing')	No KT date entered
+E1	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Training 2026-01-02, application 2026-03-31
+E2	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Training 2026-01-31, application 2026-04-01
+E3	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Training 2026-12-15, application 2027-02-28
+E4	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Training 2026-10-28, application 2026-10-29 (same month)
+E5	PASS	got=('warn', 'at-risk')	exp=('warn', 'at-risk')	At-risk: deadline 2026-03-31, today 2026-03-10 (21 days)
+E6	PASS	got=('ok', 'exempt')	exp=('ok', 'exempt')	Type rating only: exempt 61.39(f)
+E7	PASS	got=('needs-check', 'interpretation')	exp=('needs-check', 'interpretation')	Applied 2026-03-20 (training 01-05), LoD, resume 2026-04-02
+E8	PASS	got=('needs-check', 'missing')	exp=('needs-check', 'missing')	No endorsement yet
+D1	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Start/disc 2026-01-31, resume 2026-03-31
+D2	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Start/disc 2026-01-31, resume 2026-04-01 (61.39(h))
+D3	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Start/disc 2026-01-01, resume 2026-03-02 (D+60)
+D4	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Start/disc 2026-01-01, resume 2026-03-03 (D+61)
+D5	PASS	got=2028-03-15	exp=2028-03-15	Leap: credit deadline after 2028-01-15
+D6	PASS	got=2027-03-16	exp=2027-03-16	Non-leap: credit deadline after 2027-01-15
+D7	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	First disc 2026-05-10, 2nd disc 06-20, resume 2026-07-09
+D8	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Same, resume 2026-07-15
+D9	PASS	got=('warn', 'at-risk')	exp=('warn', 'at-risk')	Interrupted at-risk: deadline 2026-03-02, today 2026-02-16 (14 days)
+D10	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Interrupted not at risk: today 2026-02-15 (15 days)
+D11	PASS	got=('needs-check', 'month-only')	exp=('needs-check', 'month-only')	Month-only resume target 2026-03 vs deadline 2026-03-02
+M1	PASS	got=2031-03-31	exp=2031-03-31	REF 3rd class exam 2026-03-01 age 39 -> 2031-03-31
+M2	PASS	got=2031-03-31	exp=2031-03-31	REF 3rd class exam 2026-03-31 age 39 -> 2031-03-31
+M3	PASS	got=2031-05-31	exp=2031-05-31	REF exam day before 40th bday
+M4	PASS	got=2028-06-30	exp=2028-06-30	REF exam on 40th bday
+M5	PASS	got=2026-07-31	exp=2026-07-31	REF 1st class age 45 exam 2026-01-10: ATP PIC
+M6	PASS	got=2027-01-31	exp=2027-01-31	REF same: commercial
+M7	PASS	got=2028-01-31	exp=2028-01-31	REF same: practical test (third-class level)
+M8	PASS	got=(datetime.date(2027, 1, 31), datetime.date(2031, 1, 31))	exp=(datetime.date(2027, 1, 31), datetime.date(2031, 1, 31))	REF 2nd class age 30: commercial / private
+M9	PASS	got=None	exp=None	REF 3rd class for commercial privileges
+M10	PASS	got=2028-02-29	exp=2028-02-29	REF leap: 3rd class age 50 exam 2026-02-10
+M11	PASS	got=(True, False)	exp=(True, False)	REF BasicMed course 2025-01-15, CMEC 2023-01-20 on 2027-01-31 / 2027-02-01
+M12	PASS	got=(True, False)	exp=(True, False)	REF BasicMed course 2026-06-01, CMEC 2022-10-05 on 2026-10-31 / 2026-11-01
+MS1	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Class 3, entered 2027-05-31, checkride 2027-05-31
+MS2	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Class 3, entered 2027-05-31, checkride 2027-06-01
+MS3	PASS	got=('warn', 'at-risk')	exp=('warn', 'at-risk')	Class 2, entered 2026-12-31, today 2026-11-01 (60 days)
+MS4	PASS	got=('needs-check', 'missing')	exp=('needs-check', 'missing')	Class 1, no date entered
+MS5	PASS	got=('ok', 'not-applicable')	exp=('ok', 'not-applicable')	Glider checkride, no medical
+MS6	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Driver's license, private checkride
+MS7	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Driver's license, sport checkride
+MS8	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	BasicMed entered 2027-01-31, checkride month 2027-01
+MS9	PASS	got=('needs-check', 'month-only')	exp=('needs-check', 'month-only')	Entered 2027-01-15, checkride month 2027-01
+MS10	PASS	got=('needs-check', 'missing')	exp=('needs-check', 'missing')	No type selected
+P1	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Private ASEL, 3.0 h on 2026-01-02, test 2026-03-31
+P2	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Private ASEL, 3.0 h on 2026-01-31, test 2026-04-01
+P3	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Private ASEL, 1.5 h 2026-02-20 + 1.5 h 2026-03-05, test 2026-03-10
+P4	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Private ASEL, 2.0 h in window (+1.0 h in Dec, outside), test 2026-02-15
+P5	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Private ASEL, 3.0 h but 1.0 h was in a simulator (not qualifying)
+P6	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Prep logged after the test date doesn't count
+P7	PASS	got=('needs-check', 'spans-months')	exp=('needs-check', 'spans-months')	Spans months: 3 h on 2026-01-10, test 2026-03-31 to 2026-04-01
+P8	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Spans months, both OK: 3 h on 2026-02-10, test 03-31 to 04-01
+P9	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Year boundary: commercial AMEL 3 h on 2026-11-15, test 2027-01-20
+P10	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Instrument airplane: 3 h on 2026-01-20, test 2026-03-15 (both readings OK)
+P11	PASS	got=('needs-check', 'interpretation')	exp=('needs-check', 'interpretation')	Instrument airplane: 3 h on 2026-01-05, test 2026-03-15 (calendar OK, strict day reading not)
+P12	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Instrument airplane: 3 h on 2025-12-30, test 2026-03-01
+P13	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Private glider: 3 training flights in window
+P14	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Private hot-air balloon: only 1 of 2 flights
+P15	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Sport airplane: 2.0 h in window
+P16	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Recreational: 2.5 h only
+P17	PASS	got=('ok', 'exempt')	exp=('ok', 'exempt')	Added class rating (private AMEL on ASEL cert), nothing logged
+P18	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Added class balloon->airship: rule applies (3 h on 2026-06-01, outside the window; rc5: [] now means missing)
+P19	PASS	got=('ok', 'not-applicable')	exp=('ok', 'not-applicable')	CFI initial: no timed prep rule
+P20	PASS	got=('ok', 'part141-graduate')	exp=('ok', 'part141-graduate')	Part 141 grad 2026-09-01, test 2026-10-15, 3 h on 2026-09-20
+P21	PASS	got=('needs-check', 'part141-graduate')	exp=('needs-check', 'part141-graduate')	Part 141 grad 2026-09-01, test 2026-10-15, no entries
+P22	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Part 141 grad 2026-07-01, test 2026-10-15 (>60 days): Part 61 rule, 3 h on 2026-07-20 too old
+P23	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Month-only test 2026-12, 3 h on 2026-10-05
+P24	PASS	got=('needs-check', 'missing')	exp=('needs-check', 'missing')	No prep entered yet
+P25	PASS	got=('needs-check', 'missing')	exp=('needs-check', 'missing')	rc5 (QA U21) Empty entry list [] is missing, like None
+P26	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc5 (QA-091) 2.996 h does not round up to 3 h
+P27	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc5 (QA-091) 1000000 h and -5 h entries are not counted
+P28	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	rc5 (QA-091) 1.1 h + 1.9 h = 3 h exactly is ok (no float noise)
+P29	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc6 0.05 h + 2.95 h: 0.05 below 0.1 not counted
+P30	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc6 0.09 h + 2.95 h: 0.09 not counted
+P31	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc6 0.099999 h + 2.900001 h: first not counted
+P32	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	rc6 exactly 0.1 h counts: 0.1 + 2.9 = 3
+P33	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	rc6 decimal sum 0.3 + 2.3 + 0.4 = 3 exactly
+P34	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	rc6 decimal sum 0.7 + 1.4 + 0.9 = 3 exactly
+P35	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	rc6 0.1 h x 30 = 3 exactly (float accumulation 0.1+0.1+... drifts; Decimal exact)
+P36	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc6 slightly below: 2.9999999 h
+P37	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc6 slightly below: 1.4 + 1.5999 = 2.9999
+P38	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc6 invalid: 0, None, 'abc', NaN not counted
+P39	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	rc6 upper bound: 24 h counts
+P40	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc6 upper bound: 24.1 h not counted
+P41	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	rc6 invalid ignored alongside valid: 3 + (-5)
+P42	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	rc6 numeric strings parsed: '1.5' + '1.5'
+P43	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	rc6 only invalid entries ([0.05]) -> fails, not missing
+P44	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.3 bool True alone is invalid (not counted, no crash)
+P45	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.3 bool False alone is invalid
+P46	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.3 True + False only
+P47	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.3 True + 2.9 h: True not counted, below threshold
+P48	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.3 True + 3 h: exactly threshold ok
+P49	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.3 False + 0.1 + 2.9 = 3 exactly ok
+P50	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.3 True + 2.9999999 h still short
+P51	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.3 True + False + '1.5' + '1.5' strings still parsed = 3
+P52	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.4 flights: private-glider [True,True,True]
+P53	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.4 flights: private-glider [False,False,False]
+P54	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.4 flights: private-glider [True,0.3,0.3]
+P55	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.4 flights: private-hot-air-balloon [True,True]
+P56	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.4 flights: private-hot-air-balloon [False,False]
+P57	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.4 flights: private-hot-air-balloon [True,0.3]
+P58	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.4 flights: private-glider [False,0.3,0.3,0.3]
+P59	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.4 flights: private-hot-air-balloon [False,0.3,0.3]
+P60	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.4 flights: private-glider [True]
+P61	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.4 flights: private-glider [True,False,0.3,0.3,0.3]
+P62	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.4 flights: private-glider [0.3,0.3]
+P63	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.4 flights: private-glider ['0.3','0.3','0.3']
+P64	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.4 flights: private-hot-air-balloon [1.0,'1.0',True]
+P65	PASS	got=('needs-check', 'missing')	exp=('needs-check', 'missing')	v2.4 flights: private-glider []
+P66	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: raw text '2.9999999999999999' invalid (not rounded to 3)
+P67	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: '1.00' + '1.9999999999999999': second invalid, 1.00 < 3
+P68	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: float literal 2.9999999999999999 is 3.0 before entry: counted as 3 (known limitation)
+P69	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: numeric 0.1 + 2.9 = 3
+P70	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: numeric 0.01 (2 dp, below 0.1) not counted
+P71	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: numeric 0.001 (3 dp) not counted
+P72	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: numeric 2.99 valid but short
+P73	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: numeric 1.01 + 1.99 = 3
+P74	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: numeric 1.005 (3 dp) invalid: 1.005 + 1.995 not counted
+P75	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: text trailing zeros: '1.50' + '1.50' ok
+P76	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: text '3.000' (3 fractional digits incl. zeros) invalid
+P77	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: text trimmed: ' 1.5 ' + tab/newline '1.5' ok
+P78	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: text exponent '3e0', '3E0', '0.3e1' invalid
+P79	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: text '.5' + '2.5' ok
+P80	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: text '3.' trailing dot invalid
+P81	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: text sign '+3', '-3', comma '1,5', '', 'inf', 'nan', '1 .5' invalid
+P82	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: non-finite floats inf/-inf/nan invalid
+P83	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: Decimal('1.50') x2 ok; Decimal('1.500') invalid
+P84	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: Decimal('1.500') + 1.5: first invalid
+P85	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: int 3 ok
+P86	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: booleans still rejected before precision check, with 2.9
+P87	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: mixed valid '1.25' + 1.75 + invalid '1.999' = 3 ok
+P88	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: upper bound '24.00' ok; '24.01' invalid
+P89	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: only precision-invalid entries -> fails, not missing
+P90	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: sport-airplane 2 h: '1.995' + '0.005' invalid
+P91	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	v2.5 precision: flights unchanged: glider 3 entries with 3-dp hours still count
+P92	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	v2.5 precision: flights unchanged: bool still excluded, glider [True,'1.234','1.234']
+R1	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Failed 2026-05-10; endorsement 2026-05-20 by trainer; recommendation yes; apply 2026-05-25
+R2	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Endorsement 2026-05-01 predates failure 2026-05-10
+R3	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	No retest endorsement
+R4	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	Endorsement same day as failure
+R5	PASS	got=('needs-check', 'confirm')	exp=('needs-check', 'confirm')	Endorser / recommendation unknown
+R6	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Endorser didn't give the training
+R7	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	CFI airplane spin failure, no spin-certificated aircraft
+R8	PASS	got=('needs-check', 'confirm')	exp=('needs-check', 'confirm')	CFI spin failure, aircraft unknown
+R9	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	Endorsement dated after planned application
+R12	PASS	got=('ok', 'ok')	exp=('ok', 'ok')	D42 Month-only plan 2026-05, endorsement 2026-05-31 (last day) -> ok
+R13	PASS	got=('warn', 'fails')	exp=('warn', 'fails')	D42 Month-only plan 2026-05, endorsement 2026-06-01 (after the month) -> fails
+R14	PASS	got=(True, True, True, True, True, True)	exp=(True, True, True, True, True, True)	D42 Every Rule 6 warn/fails message ends with 'Ask your CFI to review this.' (no endorsement, before failure, after application, spin, trainer, 8710)
+R15	PASS	got=((True, False), (True, False))	exp=((True, False), (True, False))	D42 Spin and 8710 messages use 'likely', not 'you must' / 'needs'
+R10	PASS	got=(('ok', 'ok'), ('ok', 'ok'), ('ok', 'ok'))	exp=(('ok', 'ok'), ('ok', 'ok'), ('ok', 'ok'))	Retest scenario: failed 2026-05-10 (test began 05-10); 61.49 endorsement 05-20 as (a)(6) training date; apply 2026-07-09
+R11	PASS	got=(('warn', 'fails'), ('warn', 'fails'))	exp=(('warn', 'fails'), ('warn', 'fails'))	Retest after credit lapses: failed 2026-05-10, retest 2026-08-03; old prep 2026-05-01 only
+C1	PASS	got=('warn', True, True, 2)	exp=('warn', True, True, 2)	Combined: one fail + one needs-check -> warn, can book, CFI tick, 2 DPE flags
+C2	PASS	got=('warn', True, False, 0)	exp=('warn', True, False, 0)	Combined: all ok, at-risk only -> warn, no tick, no DPE flag
+C3	PASS	got=('knowledge_test', datetime.date(2026, 3, 31))	exp=('knowledge_test', datetime.date(2026, 3, 31))	Combined: binding deadline is the earliest
+C4	PASS	got=('needs-check', True, False, 1, ['endorsement'])	exp=('needs-check', True, False, 1, ['endorsement'])	v2.1 Combined: needs-check only -> needs-check, can book, NO tick, 1 DPE flag, 1 CFI note
+C5	PASS	got=('warn', False, ['medical'], ['medical'])	exp=('warn', False, ['medical'], ['medical'])	v2.1 Combined: at-risk + needs-check -> warn overall but NO tick; note only on the needs-check item
+C6	PASS	got=(True, ['endorsement'], ['endorsement', 'knowledge_test'])	exp=(True, ['endorsement'], ['endorsement', 'knowledge_test'])	v2.1 Combined: fails + needs-check -> tick (from the fail) and note (from the needs-check)
+C7	PASS	got=((True, None), (False, None), (False, 'Confirm this with your CFI.'), (False, None))	exp=((True, None), (False, None), (False, 'Confirm this with your CFI.'), (False, None))	v2.1 Per result: (tick, note) for warn/fails, warn/at-risk, needs-check, ok
+C8	PASS	got=('confirm', 'exemption-claimed', 'interpretation', 'missing', 'month-only', 'order', 'part141-graduate', 'spans-months')	exp=('confirm', 'exemption-claimed', 'interpretation', 'missing', 'month-only', 'order', 'part141-graduate', 'spans-months')	v2.1 Every needs-check reason gets the note and never the tick (8 reasons, calls reused from K9/K13/E7/D11/P7/P21/R5 + order)
+169/169 PASS; failures: 0
+MSG knowledge_test warn | Your knowledge test report covers a checkride completed by 2026-03-31. Your checkride is planned for 2026-04-01, so you'd likely need to retake the knowledge test unless an exception applies (§61.39(b)/(c), §61.40). If any part of the test slips past 2026-03-31, the same applies. Ask your CFI to review this.
+MSG prep_3h warn | You've logged 0.0 of 3 hours of practical-test prep with your instructor since 2026-02-01. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.
+MSG retest_61_49 warn | After a failed test you need more training and a new endorsement from the instructor who gave it before you reapply (§61.49). Ask your CFI to review this.
+MSG resume_credit warn | Credit for the areas you passed ends 2026-03-02 (§61.43(f)(1) 60-day limit). A checkride after that is likely the full test again. Check your knowledge test, endorsements and medical for a new test too. Ask your CFI to review this.

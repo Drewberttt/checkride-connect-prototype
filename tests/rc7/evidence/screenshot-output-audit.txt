@@ -1,0 +1,9 @@
+2:const fs=require('fs');const ROOT='/tmp/t5/rc7-20261107/logs/';const SH='/workspace/checkride-connect-shots/v4-rc7/';
+22:const shot=async name=>{if(!/^[a-z0-9-]+$/.test(name))throw Error('bad screenshot name');const s=await c('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync(SH+name+'.png',Buffer.from(s.data,'base64'))};
+37:fs.writeFileSync(ROOT+'chromium-native.json',JSON.stringify({pass,fail,results,pasteFailure},null,2));console.log(`CHROMIUM NATIVE RESULT ${pass} passed, ${fail} failed`);ws.close();process.exitCode=fail?1:0;
+2:const fs=require('fs');const ROOT='/tmp/t5/rc7-20261107/logs/';const SH='/workspace/checkride-connect-shots/v4-rc7/chromium-corrected/';
+23:const shot=async name=>{if(!/^[a-z0-9-]+$/.test(name))throw Error('bad screenshot name');const s=await c('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync(SH+name+'.png',Buffer.from(s.data,'base64'))};
+38:fs.writeFileSync(ROOT+'chromium-native.json',JSON.stringify({pass,fail,results,pasteFailure},null,2));console.log(`CHROMIUM NATIVE RESULT ${pass} passed, ${fail} failed`);ws.close();process.exitCode=fail?1:0;
+2:const fs=require('fs');const ROOT='/tmp/t5/rc7-20261107/logs/';const SH='/workspace/checkride-connect-shots/v4-rc7/chromium-booleans/';
+23:const shot=async name=>{if(!/^[a-z0-9-]+$/.test(name))throw Error('bad screenshot name');const s=await c('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync(SH+name+'.png',Buffer.from(s.data,'base64'))};
+31:ok('saved boolean normal page exceptions/external requests',!errors.length&&!external.length,{errors,external});fs.writeFileSync(ROOT+'chromium-booleans.json',JSON.stringify({pass,fail,results},null,2));console.log(`CHROMIUM BOOLEAN RESULT ${pass} passed, ${fail} failed`);ws.close();process.exitCode=fail?1:0;

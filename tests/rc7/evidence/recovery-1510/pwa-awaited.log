@@ -1,0 +1,73 @@
+PASS chromium root old rc6 SW controlled 
+PASS chromium root upgraded single v7.9 cache 
+PASS chromium root prep array byte-for-byte preserved 
+PASS chromium root new engine invalid precision/boolean excluded 
+PASS chromium root native correction/Tab/node identity 
+PASS chromium root subpath-scoped precache assets 
+PASS chromium root manifest/icons available 
+PASS chromium root normal Find NC selection renders 
+PASS chromium root legacy search link/filters render 
+PASS chromium root offline route / 
+PASS chromium root offline route /home 
+PASS chromium root offline route /find 
+PASS chromium root offline route /readiness 
+PASS chromium root offline route /alerts 
+PASS chromium root offline route /dpe/d1?cert=ppl 
+PASS chromium root offline optional tick and Send enabled 
+PASS chromium root offline mock Send persists unchecked CFI 
+PASS chromium root reconnect normal no crash/external request 
+PASS chromium checkride/ old rc6 SW controlled 
+PASS chromium checkride/ upgraded single v7.9 cache 
+PASS chromium checkride/ prep array byte-for-byte preserved 
+PASS chromium checkride/ new engine invalid precision/boolean excluded 
+PASS chromium checkride/ native correction/Tab/node identity 
+PASS chromium checkride/ subpath-scoped precache assets 
+PASS chromium checkride/ manifest/icons available 
+PASS chromium checkride/ normal Find NC selection renders 
+PASS chromium checkride/ legacy search link/filters render 
+PASS chromium checkride/ offline route / 
+PASS chromium checkride/ offline route /home 
+PASS chromium checkride/ offline route /find 
+PASS chromium checkride/ offline route /readiness 
+PASS chromium checkride/ offline route /alerts 
+PASS chromium checkride/ offline route /dpe/d1?cert=ppl 
+PASS chromium checkride/ offline optional tick and Send enabled 
+PASS chromium checkride/ offline mock Send persists unchecked CFI 
+PASS chromium checkride/ reconnect normal no crash/external request 
+PASS firefox root old rc6 SW controlled 
+PASS firefox root upgraded single v7.9 cache 
+PASS firefox root prep array byte-for-byte preserved 
+PASS firefox root new engine invalid precision/boolean excluded 
+PASS firefox root native correction/Tab/node identity 
+PASS firefox root subpath-scoped precache assets 
+PASS firefox root manifest/icons available 
+PASS firefox root normal Find NC selection renders 
+PASS firefox root legacy search link/filters render 
+PASS firefox root offline route / 
+PASS firefox root offline route /home 
+PASS firefox root offline route /find 
+PASS firefox root offline route /readiness 
+PASS firefox root offline route /alerts 
+PASS firefox root offline route /dpe/d1?cert=ppl 
+PASS firefox root offline optional tick and Send enabled 
+PASS firefox root offline mock Send persists unchecked CFI 
+PASS firefox root reconnect normal no crash/external request 
+PASS firefox checkride/ old rc6 SW controlled 
+PASS firefox checkride/ upgraded single v7.9 cache 
+PASS firefox checkride/ prep array byte-for-byte preserved 
+PASS firefox checkride/ new engine invalid precision/boolean excluded 
+PASS firefox checkride/ native correction/Tab/node identity 
+PASS firefox checkride/ subpath-scoped precache assets 
+PASS firefox checkride/ manifest/icons available 
+PASS firefox checkride/ normal Find NC selection renders 
+PASS firefox checkride/ legacy search link/filters render 
+PASS firefox checkride/ offline route / 
+PASS firefox checkride/ offline route /home 
+PASS firefox checkride/ offline route /find 
+PASS firefox checkride/ offline route /readiness 
+PASS firefox checkride/ offline route /alerts 
+PASS firefox checkride/ offline route /dpe/d1?cert=ppl 
+PASS firefox checkride/ offline optional tick and Send enabled 
+PASS firefox checkride/ offline mock Send persists unchecked CFI 
+PASS firefox checkride/ reconnect normal no crash/external request 
+PWA LEGACY RESULT 72 passed, 0 failed

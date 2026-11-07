@@ -1,0 +1,9 @@
+PASS chromium settled light landing axe 
+PASS chromium landing desktop no horizontal overflow 
+PASS chromium settled light nc-find axe 
+PASS chromium nc-find desktop no horizontal overflow 
+PASS firefox settled light landing axe 
+PASS firefox landing desktop no horizontal overflow 
+PASS firefox settled light nc-find axe 
+PASS firefox nc-find desktop no horizontal overflow 
+SETTLED PAGES RESULT 8 passed, 0 failed

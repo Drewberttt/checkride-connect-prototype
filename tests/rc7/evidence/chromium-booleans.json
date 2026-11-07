@@ -1,0 +1,571 @@
+{
+  "pass": 26,
+  "fail": 0,
+  "results": [
+    {
+      "name": "saved boolean raw invalid [true]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": true,
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean reload/no crash [true]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": true,
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean optional/nonblocking [true]",
+      "pass": true,
+      "data": {
+        "present": true,
+        "required": false,
+        "disabled": false
+      }
+    },
+    {
+      "name": "saved boolean correction [true]",
+      "pass": true,
+      "data": {
+        "value": "3.00",
+        "number": 3,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "3.00",
+            "sim": false,
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean cleared -> missing [true]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "",
+            "sim": false,
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean raw invalid [false]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": false,
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean reload/no crash [false]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": false,
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean optional/nonblocking [false]",
+      "pass": true,
+      "data": {
+        "present": true,
+        "required": false,
+        "disabled": false
+      }
+    },
+    {
+      "name": "saved boolean correction [false]",
+      "pass": true,
+      "data": {
+        "value": "3.00",
+        "number": 3,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "3.00",
+            "sim": false,
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean cleared -> missing [false]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "",
+            "sim": false,
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean raw invalid [true,\"2.90\"]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 2.9 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": true,
+            "sim": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "2.90",
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean reload/no crash [true,\"2.90\"]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 2.9 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": true,
+            "sim": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "2.90",
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean optional/nonblocking [true,\"2.90\"]",
+      "pass": true,
+      "data": {
+        "present": true,
+        "required": false,
+        "disabled": false
+      }
+    },
+    {
+      "name": "saved boolean correction [true,\"2.90\"]",
+      "pass": true,
+      "data": {
+        "value": "3.00",
+        "number": 3,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n5.9 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "3.00",
+            "sim": false,
+            "hoursBad": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "2.90",
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean cleared -> missing [true,\"2.90\"]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "",
+            "sim": false,
+            "hoursBad": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "",
+            "sim": false,
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean raw invalid [true,\"3.00\"]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": true,
+            "sim": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "3.00",
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean reload/no crash [true,\"3.00\"]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": true,
+            "sim": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "3.00",
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean optional/nonblocking [true,\"3.00\"]",
+      "pass": true,
+      "data": {
+        "present": false,
+        "disabled": false
+      }
+    },
+    {
+      "name": "saved boolean correction [true,\"3.00\"]",
+      "pass": true,
+      "data": {
+        "value": "3.00",
+        "number": 3,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n6 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "3.00",
+            "sim": false,
+            "hoursBad": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "3.00",
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean cleared -> missing [true,\"3.00\"]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "",
+            "sim": false,
+            "hoursBad": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "",
+            "sim": false,
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean raw invalid [true,false]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 2 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "2",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": true,
+            "sim": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": false,
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean reload/no crash [true,false]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 2 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "2",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": true,
+            "sim": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": false,
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean optional/nonblocking [true,false]",
+      "pass": true,
+      "data": {
+        "present": true,
+        "required": false,
+        "disabled": false
+      }
+    },
+    {
+      "name": "saved boolean correction [true,false]",
+      "pass": true,
+      "data": {
+        "value": "3.00",
+        "number": 3,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "3.00",
+            "sim": false,
+            "hoursBad": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": false,
+            "sim": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean cleared -> missing [true,false]",
+      "pass": true,
+      "data": {
+        "value": "",
+        "number": null,
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-10-20",
+            "hours": "",
+            "sim": false,
+            "hoursBad": false
+          },
+          {
+            "date": "2026-10-20",
+            "hours": "",
+            "sim": false,
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "saved boolean normal page exceptions/external requests",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": []
+      }
+    }
+  ]
+}

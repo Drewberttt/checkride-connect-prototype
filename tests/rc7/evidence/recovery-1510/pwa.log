@@ -1,0 +1,9 @@
+PASS chromium root old rc6 SW controlled 
+page.evaluate: SyntaxError: "undefined" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at eval (eval at evaluate (:370:30), <anonymous>:1:100)
+    at UtilityScript.evaluate (<anonymous>:372:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /workspace/checkride-v4/tests/rc7/pwa-legacy.js:6:143 {
+  log: []
+}

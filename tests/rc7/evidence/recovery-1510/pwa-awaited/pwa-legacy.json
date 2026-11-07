@@ -1,0 +1,406 @@
+{
+  "pass": 72,
+  "fail": 0,
+  "results": [
+    {
+      "name": "chromium root old rc6 SW controlled",
+      "pass": true
+    },
+    {
+      "name": "chromium root upgraded single v7.9 cache",
+      "pass": true,
+      "data": [
+        "checkride-connect-cc-proto-v7.9.0"
+      ]
+    },
+    {
+      "name": "chromium root prep array byte-for-byte preserved",
+      "pass": true
+    },
+    {
+      "name": "chromium root new engine invalid precision/boolean excluded",
+      "pass": true
+    },
+    {
+      "name": "chromium root native correction/Tab/node identity",
+      "pass": true
+    },
+    {
+      "name": "chromium root subpath-scoped precache assets",
+      "pass": true,
+      "data": 51
+    },
+    {
+      "name": "chromium root manifest/icons available",
+      "pass": true,
+      "data": [
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        },
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "chromium root normal Find NC selection renders",
+      "pass": true
+    },
+    {
+      "name": "chromium root legacy search link/filters render",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /home",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /find",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /readiness",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /alerts",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /dpe/d1?cert=ppl",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline optional tick and Send enabled",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline mock Send persists unchecked CFI",
+      "pass": true
+    },
+    {
+      "name": "chromium root reconnect normal no crash/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "consoleErrors": []
+      }
+    },
+    {
+      "name": "chromium checkride/ old rc6 SW controlled",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ upgraded single v7.9 cache",
+      "pass": true,
+      "data": [
+        "checkride-connect-cc-proto-v7.9.0"
+      ]
+    },
+    {
+      "name": "chromium checkride/ prep array byte-for-byte preserved",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ new engine invalid precision/boolean excluded",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ native correction/Tab/node identity",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ subpath-scoped precache assets",
+      "pass": true,
+      "data": 51
+    },
+    {
+      "name": "chromium checkride/ manifest/icons available",
+      "pass": true,
+      "data": [
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        },
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "chromium checkride/ normal Find NC selection renders",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ legacy search link/filters render",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /home",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /find",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /readiness",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /alerts",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /dpe/d1?cert=ppl",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline optional tick and Send enabled",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline mock Send persists unchecked CFI",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ reconnect normal no crash/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "consoleErrors": []
+      }
+    },
+    {
+      "name": "firefox root old rc6 SW controlled",
+      "pass": true
+    },
+    {
+      "name": "firefox root upgraded single v7.9 cache",
+      "pass": true,
+      "data": [
+        "checkride-connect-cc-proto-v7.9.0"
+      ]
+    },
+    {
+      "name": "firefox root prep array byte-for-byte preserved",
+      "pass": true
+    },
+    {
+      "name": "firefox root new engine invalid precision/boolean excluded",
+      "pass": true
+    },
+    {
+      "name": "firefox root native correction/Tab/node identity",
+      "pass": true
+    },
+    {
+      "name": "firefox root subpath-scoped precache assets",
+      "pass": true,
+      "data": 51
+    },
+    {
+      "name": "firefox root manifest/icons available",
+      "pass": true,
+      "data": [
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        },
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "firefox root normal Find NC selection renders",
+      "pass": true
+    },
+    {
+      "name": "firefox root legacy search link/filters render",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /home",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /find",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /readiness",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /alerts",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /dpe/d1?cert=ppl",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline optional tick and Send enabled",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline mock Send persists unchecked CFI",
+      "pass": true
+    },
+    {
+      "name": "firefox root reconnect normal no crash/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "consoleErrors": []
+      }
+    },
+    {
+      "name": "firefox checkride/ old rc6 SW controlled",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ upgraded single v7.9 cache",
+      "pass": true,
+      "data": [
+        "checkride-connect-cc-proto-v7.9.0"
+      ]
+    },
+    {
+      "name": "firefox checkride/ prep array byte-for-byte preserved",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ new engine invalid precision/boolean excluded",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ native correction/Tab/node identity",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ subpath-scoped precache assets",
+      "pass": true,
+      "data": 51
+    },
+    {
+      "name": "firefox checkride/ manifest/icons available",
+      "pass": true,
+      "data": [
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        },
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "firefox checkride/ normal Find NC selection renders",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ legacy search link/filters render",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /home",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /find",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /readiness",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /alerts",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /dpe/d1?cert=ppl",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline optional tick and Send enabled",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline mock Send persists unchecked CFI",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ reconnect normal no crash/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "consoleErrors": []
+      }
+    }
+  ],
+  "versions": {
+    "chromium": "158.0.8127.18",
+    "firefox": "159.0"
+  }
+}

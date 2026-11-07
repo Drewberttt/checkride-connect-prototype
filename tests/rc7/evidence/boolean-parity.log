@@ -1,0 +1,3 @@
+BOOLEAN PARITY 32/32 PASS (local reference / JS; no crash, optional flag and canBook)
+CANONICAL PARITY 32/32 cases; hourly=24 flights=8 gaps=0 []
+CANONICAL STATUS/REASON/CFI/CAN-BOOK PARITY PASS

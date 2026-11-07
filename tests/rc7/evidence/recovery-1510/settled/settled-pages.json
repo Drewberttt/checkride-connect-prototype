@@ -1,0 +1,42 @@
+{
+  "pass": 8,
+  "fail": 0,
+  "results": [
+    {
+      "name": "chromium settled light landing axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "name": "chromium landing desktop no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "chromium settled light nc-find axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "name": "chromium nc-find desktop no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "firefox settled light landing axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "name": "firefox landing desktop no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "firefox settled light nc-find axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "name": "firefox nc-find desktop no horizontal overflow",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,2411 @@
+{
+  "/workspace/checkride-rc2-base": {
+    "app.js": {
+      "sha256": "7e4a72e6f5fbd580eb6e7fc95fa199ec22a94151f9c396e5dcc439c2bb81392b",
+      "size": 258179,
+      "mtime_ns": 1794081651381183342
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647337154581
+    },
+    "favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081645889142271
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081645889142271
+    },
+    "PLAN.md": {
+      "sha256": "95692b26336983da653d9ba0f7a9a7f25c483e0beb195fead91c77eae9bcfcca",
+      "size": 34234,
+      "mtime_ns": 1794081651261182598
+    },
+    "sw.js": {
+      "sha256": "17befd58aa07401f94b38e79d20052cf1b8bfc3fb0e250493dd85b0b3089f49d",
+      "size": 3477,
+      "mtime_ns": 1794081651229182400
+    },
+    "site.webmanifest": {
+      "sha256": "ae8904645b02f800128bd3cf689bb35f56c18a65602da2898bafc8146f985fa6",
+      "size": 1010,
+      "mtime_ns": 1794081646281145717
+    },
+    "index.html": {
+      "sha256": "78eadeb467241991149dfec2ed77eac0b8698d39ad28172350320e0903098081",
+      "size": 6905,
+      "mtime_ns": 1794081651229182400
+    },
+    "styles.css": {
+      "sha256": "47560046bda566c98e75c532cf79fa166f9102b6d3b450e10e744eef8485b7c8",
+      "size": 67684,
+      "mtime_ns": 1794081651233182425
+    },
+    "data.js": {
+      "sha256": "f4a7c95bb4a7e3df5e68bfb4ce7902519e44a8f564f1431bd5f1016d0da2a27c",
+      "size": 29171,
+      "mtime_ns": 1794081649609171672
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081645905142420
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081645901142383
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081645901142383
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646677149116
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648749165502
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648649164751
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646717149459
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646697149287
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081645881142197
+    },
+    "icons/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081645893142308
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081645909142457
+    },
+    "icons/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646573148223
+    },
+    "icons/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081645893142308
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646725149527
+    }
+  },
+  "/workspace/checkride-v3-rc": {
+    "app.js": {
+      "sha256": "83dc6530cfcc03e84a783defcd79ecf86788e5ecfdc3602022ff8f6a7da14aa7",
+      "size": 251993,
+      "mtime_ns": 1794081649569171390
+    },
+    "demo-date.js": {
+      "sha256": "9bdb2e779780631927285620425f534352ad5a7f54217672d863308aa300a7ab",
+      "size": 3969,
+      "mtime_ns": 1794081649569171390
+    },
+    "favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081645649140039
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081645649140039
+    },
+    "PLAN.md": {
+      "sha256": "0fe7cff973328a066d5292b0dde7cb6e391a49846d2ba1732f249cfee0d5b41a",
+      "size": 29804,
+      "mtime_ns": 1794081649569171390
+    },
+    "sw.js": {
+      "sha256": "5cae71b15b42ff83c0ea9a4cc5d90d06e89d03672fac34b70e0a0171873906bb",
+      "size": 3477,
+      "mtime_ns": 1794081649569171390
+    },
+    "site.webmanifest": {
+      "sha256": "ae8904645b02f800128bd3cf689bb35f56c18a65602da2898bafc8146f985fa6",
+      "size": 1010,
+      "mtime_ns": 1794081646273145648
+    },
+    "index.html": {
+      "sha256": "3b761f2dbea8e64d5323b421ebafd5b818e5d1646d24e83b2cbc9f5f3f2a25d4",
+      "size": 6896,
+      "mtime_ns": 1794081649569171390
+    },
+    "styles.css": {
+      "sha256": "052452037e52db7b74863718b3cfa096b7c1c1f6410420ad8aba3311e3b6f620",
+      "size": 67215,
+      "mtime_ns": 1794081649569171390
+    },
+    "data.js": {
+      "sha256": "f4a7c95bb4a7e3df5e68bfb4ce7902519e44a8f564f1431bd5f1016d0da2a27c",
+      "size": 29171,
+      "mtime_ns": 1794081649569171390
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081645869142085
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081645721140709
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081645705140560
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646677149116
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648661164841
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648649164751
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646713149424
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646697149287
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081645861142011
+    },
+    "icons/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081645641139965
+    },
+    "icons/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081645689140411
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081645845141862
+    },
+    "icons/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081645845141862
+    },
+    "icons/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081645893142308
+    },
+    "icons/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081645845141862
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646569148189
+    },
+    "icons/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081645689140411
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646725149527
+    }
+  },
+  "/workspace/checkride-v3-rc2": {
+    "app.js": {
+      "sha256": "7e4a72e6f5fbd580eb6e7fc95fa199ec22a94151f9c396e5dcc439c2bb81392b",
+      "size": 258179,
+      "mtime_ns": 1794081651321182970
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647325154485
+    },
+    "favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081645845141862
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081645845141862
+    },
+    "PLAN.md": {
+      "sha256": "95692b26336983da653d9ba0f7a9a7f25c483e0beb195fead91c77eae9bcfcca",
+      "size": 34234,
+      "mtime_ns": 1794081651237182449
+    },
+    "sw.js": {
+      "sha256": "17befd58aa07401f94b38e79d20052cf1b8bfc3fb0e250493dd85b0b3089f49d",
+      "size": 3477,
+      "mtime_ns": 1794081651225182375
+    },
+    "site.webmanifest": {
+      "sha256": "ae8904645b02f800128bd3cf689bb35f56c18a65602da2898bafc8146f985fa6",
+      "size": 1010,
+      "mtime_ns": 1794081646281145717
+    },
+    "index.html": {
+      "sha256": "78eadeb467241991149dfec2ed77eac0b8698d39ad28172350320e0903098081",
+      "size": 6905,
+      "mtime_ns": 1794081651225182375
+    },
+    "READY.txt": {
+      "sha256": "71240813c6571a64ac7ba28af3e9c6fc3aadd7616b5964b961d97a037d589457",
+      "size": 4020,
+      "mtime_ns": 1794081651225182375
+    },
+    "styles.css": {
+      "sha256": "47560046bda566c98e75c532cf79fa166f9102b6d3b450e10e744eef8485b7c8",
+      "size": 67684,
+      "mtime_ns": 1794081651225182375
+    },
+    "data.js": {
+      "sha256": "f4a7c95bb4a7e3df5e68bfb4ce7902519e44a8f564f1431bd5f1016d0da2a27c",
+      "size": 29171,
+      "mtime_ns": 1794081649605171644
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081645901142383
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081645873142122
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081645869142085
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646677149116
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648665164872
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648649164751
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646717149459
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646697149287
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081645893142308
+    },
+    "icons/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081645829141713
+    },
+    "icons/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081645861142011
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081645889142271
+    },
+    "icons/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081645889142271
+    },
+    "icons/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081645889142271
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646569148189
+    },
+    "icons/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081645861142011
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646725149527
+    }
+  },
+  "/workspace/checkride-v3-rc3": {
+    "app.js": {
+      "sha256": "5abb1e82980bd0764e505c085904cae4d1f9489a5fa722116088155bbcaffecb",
+      "size": 283901,
+      "mtime_ns": 1794081651277182697
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647337154581
+    },
+    "favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081645905142420
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081645905142420
+    },
+    "PLAN.md": {
+      "sha256": "0a96e14250f3b6dafc4c6470fe126a76ef24b892225780a20bd42db492bde0da",
+      "size": 40680,
+      "mtime_ns": 1794081651241182474
+    },
+    "sw.js": {
+      "sha256": "7fc4296c655dba00a6551ba3e006942f119fc62006a4730f19c099d07dbfa08c",
+      "size": 3659,
+      "mtime_ns": 1794081651273182673
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651317182945
+    },
+    "site.webmanifest": {
+      "sha256": "ae8904645b02f800128bd3cf689bb35f56c18a65602da2898bafc8146f985fa6",
+      "size": 1010,
+      "mtime_ns": 1794081646281145717
+    },
+    "index.html": {
+      "sha256": "1c9e01ca403602eae05de39f816ef18a2d499da0b921f3b4282cb6b610f1d0d4",
+      "size": 7108,
+      "mtime_ns": 1794081651241182474
+    },
+    "READY.txt": {
+      "sha256": "3cf1fc348c25ef542512032b9c067859cd1c2d56f12766be38eb7956da6f2ca4",
+      "size": 4286,
+      "mtime_ns": 1794081651233182425
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647321154453
+    },
+    "styles.css": {
+      "sha256": "7892f95dae979486e4553491472fea232d23286d188b068ed49b4b90ff6a5d33",
+      "size": 68948,
+      "mtime_ns": 1794081651321182970
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651365183243
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081645649140039
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651369183268
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081645909142457
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081645909142457
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081645909142457
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646681149150
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648653164781
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646721149493
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646701149321
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081645909142457
+    },
+    "icons/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081645913142494
+    },
+    "icons/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646573148223
+    },
+    "icons/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081645905142420
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646725149527
+    }
+  },
+  "/workspace/checkride-v3-rc3-1": {
+    "app.js": {
+      "sha256": "cef2976cef07b4c3d0dbcd0a196ab13233d3b20dd7eb94b46490023027a9efb8",
+      "size": 291454,
+      "mtime_ns": 1794081652733191549
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647341154613
+    },
+    "favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081645905142420
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081645909142457
+    },
+    "PLAN.md": {
+      "sha256": "457c4f5fad409a9283f4d6c8b44f7b05c8382ebcb26691613c4f09406d93ef72",
+      "size": 43317,
+      "mtime_ns": 1794081652641191000
+    },
+    "sw.js": {
+      "sha256": "92fe5906ea2a93bdb12a0f0e77e512603c24025d8152162669c072454ae9d18e",
+      "size": 3729,
+      "mtime_ns": 1794081652685191263
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651381183342
+    },
+    "site.webmanifest": {
+      "sha256": "ae8904645b02f800128bd3cf689bb35f56c18a65602da2898bafc8146f985fa6",
+      "size": 1010,
+      "mtime_ns": 1794081646281145717
+    },
+    "index.html": {
+      "sha256": "720eedcb524fd1e80464845b37918ffbba7c117953da0afff2faff7200e59c8c",
+      "size": 7115,
+      "mtime_ns": 1794081652645191024
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647337154581
+    },
+    "styles.css": {
+      "sha256": "7892f95dae979486e4553491472fea232d23286d188b068ed49b4b90ff6a5d33",
+      "size": 68948,
+      "mtime_ns": 1794081651381183342
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651389183392
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081645845141862
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651389183392
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081645917142531
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081645917142531
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081645917142531
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646681149150
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648653164781
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646721149493
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646701149321
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081645913142494
+    },
+    "icons/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081645905142420
+    },
+    "icons/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081645909142457
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081645909142457
+    },
+    "icons/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081645909142457
+    },
+    "icons/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081645921142569
+    },
+    "icons/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081645909142457
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646573148223
+    },
+    "icons/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081645909142457
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646725149527
+    }
+  },
+  "/workspace/checkride-v3-rc4": {
+    "app.js": {
+      "sha256": "051e83a98867d2aaa0ef524ef9789c3aabbee6a894f366ba5a77e38920c5e8d3",
+      "size": 319647,
+      "mtime_ns": 1794081644993133933
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647341154613
+    },
+    "favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081645909142457
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081645909142457
+    },
+    "PLAN.md": {
+      "sha256": "215d029a68756b4644e1b56aaf9aa6dd9882a44cbe2f5cde2e066e291621d5b9",
+      "size": 46760,
+      "mtime_ns": 1794081644793131930
+    },
+    "sw.js": {
+      "sha256": "7afb286a4c2c80660870de5c28388bd9cc4275e36557bf92db4b0b5102ccff50",
+      "size": 3719,
+      "mtime_ns": 1794081646661148978
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651393183416
+    },
+    "site.webmanifest": {
+      "sha256": "ae8904645b02f800128bd3cf689bb35f56c18a65602da2898bafc8146f985fa6",
+      "size": 1010,
+      "mtime_ns": 1794081646281145717
+    },
+    "index.html": {
+      "sha256": "b770ac47f59ea5179ba4d4d08e0d39e52f10a97e0f135f411b90d1e4f0804c06",
+      "size": 7369,
+      "mtime_ns": 1794081644809132091
+    },
+    "READY.txt": {
+      "sha256": "66e45eee1174cf04a3632f87e29c33b1b914d64e7f71a42d736f267e32a0c970",
+      "size": 3679,
+      "mtime_ns": 1794081652841192192
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647337154581
+    },
+    "styles.css": {
+      "sha256": "3c3360c49d014cb0cc7dc94de8ae2a79f88d7dbb9013b2de358135800e2a307e",
+      "size": 70764,
+      "mtime_ns": 1794081644905133052
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651397183441
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081645889142271
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651397183441
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081646005143348
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081646005143348
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081646005143348
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646681149150
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648653164781
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646721149493
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646701149321
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081645921142569
+    },
+    "icons/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081645909142457
+    },
+    "icons/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081645913142494
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081645917142531
+    },
+    "icons/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081645917142531
+    },
+    "icons/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081646005143348
+    },
+    "icons/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081645917142531
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646573148223
+    },
+    "icons/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081645909142457
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646733149596
+    }
+  },
+  "/workspace/checkride-v4-rc1": {
+    "app.js": {
+      "sha256": "b5ebc8fd576c54ba35e8c4909033acae7a88a803761f9365fa31f9383e8c384e",
+      "size": 354000,
+      "mtime_ns": 1794081654269200338
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647341154613
+    },
+    "favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081645917142531
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081646105144206
+    },
+    "PLAN.md": {
+      "sha256": "272a18dbde971b394f9f7d9bead6c780b1df0251bceac52eb6e281ca41fab784",
+      "size": 52996,
+      "mtime_ns": 1794081654153199702
+    },
+    "sw.js": {
+      "sha256": "3f85fd81a5d09d464d590cef0c110d6228d1a5f554ed252fd1458c19e642c0a1",
+      "size": 3744,
+      "mtime_ns": 1794081654145199658
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651413183540
+    },
+    "site.webmanifest": {
+      "sha256": "62d2b2ec0ca97bb363d1923f03169969944d638800c5872ab7eb9f9918aee491",
+      "size": 1010,
+      "mtime_ns": 1794081646361146403
+    },
+    "index.html": {
+      "sha256": "73816d62c8a58ab55360747de7e739e9f312443bd443c304c8ab4ef62d9c5964",
+      "size": 7632,
+      "mtime_ns": 1794081654145199658
+    },
+    "READY.txt": {
+      "sha256": "7abe476bee3701c13ab135a8867ea53122521d63ac3a51d8beaefd1122a5ecc6",
+      "size": 5470,
+      "mtime_ns": 1794081654161199746
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647341154613
+    },
+    "styles.css": {
+      "sha256": "7a347825c717cbed1d681b2902c10d87671470b0c5e6fe351caceb437c3494db",
+      "size": 81702,
+      "mtime_ns": 1794081654193199922
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651413183540
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081645909142457
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651413183540
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081646113144275
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081646113144275
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081646113144275
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646681149150
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648653164781
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646721149493
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646701149321
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081646097144137
+    },
+    "icons/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081645917142531
+    },
+    "icons/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081645921142569
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081646001143313
+    },
+    "icons/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081646005143348
+    },
+    "icons/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081646109144240
+    },
+    "icons/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081646001143313
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646573148223
+    },
+    "icons/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081645921142569
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646733149596
+    }
+  },
+  "/workspace/checkride-v4-rc2": {
+    "app.js": {
+      "sha256": "f15cf581f8d1c1c74acd87e70ac31bcf651ed7112f2a1879dd3823abc88c2687",
+      "size": 365084,
+      "mtime_ns": 1794081655405206472
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647341154613
+    },
+    "favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081646001143313
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081646113144275
+    },
+    "PLAN.md": {
+      "sha256": "aafa61fcde1adf117845ff1c1b00dde32b60af6471f0749d5c24354779238bde",
+      "size": 59005,
+      "mtime_ns": 1794081655285205842
+    },
+    "sw.js": {
+      "sha256": "1c3c17e6da8ed14fc48ba3b3b05651dcfb891b2958ca6f66ddf460a28b2a9267",
+      "size": 3706,
+      "mtime_ns": 1794081655277205800
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651413183540
+    },
+    "site.webmanifest": {
+      "sha256": "62d2b2ec0ca97bb363d1923f03169969944d638800c5872ab7eb9f9918aee491",
+      "size": 1010,
+      "mtime_ns": 1794081646361146403
+    },
+    "index.html": {
+      "sha256": "73816d62c8a58ab55360747de7e739e9f312443bd443c304c8ab4ef62d9c5964",
+      "size": 7632,
+      "mtime_ns": 1794081654145199658
+    },
+    "READY.txt": {
+      "sha256": "846c551816ca48c3a76879922fd1c6eca0c1912af88f37b08066892951a12116",
+      "size": 6233,
+      "mtime_ns": 1794081655353206199
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647341154613
+    },
+    "styles.css": {
+      "sha256": "e6b7c95aa5b6e6a1e17f63a2f3a61a7917d74405da8e37f0861456918d9d6722",
+      "size": 85916,
+      "mtime_ns": 1794081655381206346
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651413183540
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081645909142457
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651413183540
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081646133144446
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081646133144446
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081646133144446
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646685149184
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648653164781
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646721149493
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646705149356
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081646109144240
+    },
+    "icons/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081646001143313
+    },
+    "icons/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081646097144137
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081646109144240
+    },
+    "icons/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081646109144240
+    },
+    "icons/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081646113144275
+    },
+    "icons/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081646109144240
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646573148223
+    },
+    "icons/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081646005143348
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646737149630
+    }
+  },
+  "/workspace/checkride-v4-rc3": {
+    "app.js": {
+      "sha256": "d0b370e48ac80d911c648f2f0b41d14c8158a9fd6e0775339fbf8ba19649659b",
+      "size": 388133,
+      "mtime_ns": 1794081658213220504
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647341154613
+    },
+    "sample-nc-examiners.js": {
+      "sha256": "ab8ff20dbda1a22855beb7bf6f6f15a43de73c99b0c5fce99e3bddc6cd7a545b",
+      "size": 27089,
+      "mtime_ns": 1794081658053219741
+    },
+    "MD5SUMS.txt": {
+      "sha256": "8da2069521fec219d3915f4f9add977562437946338a965f11e672b8ed682347",
+      "size": 2905,
+      "mtime_ns": 1794081658037219664
+    },
+    "favicon.ico": {
+      "sha256": "00594d06c0b418ef5aed94ede92c8291dd4659bc726505200b6915da64eff4b8",
+      "size": 6839,
+      "mtime_ns": 1794081646353146335
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081646113144275
+    },
+    "PLAN.md": {
+      "sha256": "6ac124c553e4b442aa540cea4199e20aafb14a443d15ad9101e4a1c8ff57a583",
+      "size": 62251,
+      "mtime_ns": 1794081658213220504
+    },
+    "sw.js": {
+      "sha256": "42177b9ded3c697f081f4fa418a68c1f805557b415b9a78e3ea7ca9a5926bd29",
+      "size": 3939,
+      "mtime_ns": 1794081658041219683
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651413183540
+    },
+    "site.webmanifest": {
+      "sha256": "62d2b2ec0ca97bb363d1923f03169969944d638800c5872ab7eb9f9918aee491",
+      "size": 1010,
+      "mtime_ns": 1794081646361146403
+    },
+    "index.html": {
+      "sha256": "65504cc10f194679d39ddafcda6a6ec2cfeff66133af81879c038a07ac240071",
+      "size": 7695,
+      "mtime_ns": 1794081658053219741
+    },
+    "READY.txt": {
+      "sha256": "23b6c202d69af800e8f537d6e94ca0c8146a15b7a80e9a2275743e5a18636b6c",
+      "size": 7836,
+      "mtime_ns": 1794081658033219645
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647341154613
+    },
+    "styles.css": {
+      "sha256": "deeddd87e90174c76d90f632ad0f5a73248a63097dc30b2ad84c77271e02ea0d",
+      "size": 86148,
+      "mtime_ns": 1794081658125220084
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651413183540
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081645917142531
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651413183540
+    },
+    "brand/checkride-connect-icon.png": {
+      "sha256": "d97b64b4a3f30420683b8193a9ca46bae0b6b1d27727ac2475a220a3463e0db9",
+      "size": 35470,
+      "mtime_ns": 1794081656597212582
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081646137144481
+    },
+    "brand/checkride-connect-logo-light.png": {
+      "sha256": "47b293c5434e1c650776948e63d1ea9d61f8cd316b7faf423694ba635b5483ea",
+      "size": 20508,
+      "mtime_ns": 1794081656593212562
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081646137144481
+    },
+    "brand/checkride-connect-logo-original.png": {
+      "sha256": "07e6352f25af03fdf905cdedaa7f3158b4a62f746ebd15a118862e070a281b9c",
+      "size": 45754,
+      "mtime_ns": 1794081656597212582
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081646137144481
+    },
+    "brand/checkride-connect-logo-dark.png": {
+      "sha256": "7ea62f0bec12786333529c93c65102f8533b696253e8fb194607a226a2792e65",
+      "size": 20483,
+      "mtime_ns": 1794081656593212562
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646685149184
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648653164781
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646725149527
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646705149356
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "37ff847dd569adfbf3382ebc66303162909cbfdad29be32691c6af14468a684e",
+      "size": 57217,
+      "mtime_ns": 1794081646349146300
+    },
+    "icons/favicon-16.png": {
+      "sha256": "c428796966467019b0c649396bedf0398e05aa0eb6bc82dd92e9a3647be6b554",
+      "size": 754,
+      "mtime_ns": 1794081646349146300
+    },
+    "icons/favicon-32.png": {
+      "sha256": "1e2c25ef247c4547e65d317c95fd88d01ab00d67361bb9afc0f9589c1a4e51d0",
+      "size": 2048,
+      "mtime_ns": 1794081646369146472
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "130244151939c18df867b2e06f2f20289b31a43a5ee473b83bfdcc50a455382d",
+      "size": 14441,
+      "mtime_ns": 1794081646365146438
+    },
+    "icons/icon-192.png": {
+      "sha256": "e42ce610b560ef6c1cfd527d8c5023d8ee01c4d4f0ca056bf0e31ac5985fc998",
+      "size": 20917,
+      "mtime_ns": 1794081646353146335
+    },
+    "icons/icon-512.png": {
+      "sha256": "e8c63eef64adb218acfd48906834253d1eaa342cfd85274a381d585dddc2bf32",
+      "size": 92476,
+      "mtime_ns": 1794081646373146506
+    },
+    "icons/favicon-48.png": {
+      "sha256": "a40fb97b30d86ddad901be4ff800e9aab56d7f65cf4181a980db71fe22f47a24",
+      "size": 3773,
+      "mtime_ns": 1794081646389146644
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "2cca4ca8fd56c558d6dd408eefdce88c2baaacf24f5d9b8b4c97cb69f776a546",
+      "size": 12146,
+      "mtime_ns": 1794081647757157935
+    },
+    "icons/favicon.svg": {
+      "sha256": "e1cbef45142a468f034366e3cd36df1e143cf1c5913e5538222ffd5ef15006e7",
+      "size": 7883,
+      "mtime_ns": 1794081658721222926
+    },
+    "icons/runway/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081646129144412
+    },
+    "icons/runway/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081646113144275
+    },
+    "icons/runway/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081646113144275
+    },
+    "icons/runway/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081646129144412
+    },
+    "icons/runway/favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081646113144275
+    },
+    "icons/runway/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081646129144412
+    },
+    "icons/runway/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081646133144446
+    },
+    "icons/runway/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081646129144412
+    },
+    "icons/runway/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646577148257
+    },
+    "icons/runway/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081646113144275
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646741149665
+    }
+  },
+  "/workspace/checkride-v4-rc4": {
+    "app.js": {
+      "sha256": "480476a1bb46a520e38c734de13da8bcead4d93d3c1e4dc97fe0b4c840490dc9",
+      "size": 407208,
+      "mtime_ns": 1794081661101233882
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647349154677
+    },
+    "sample-nc-examiners.js": {
+      "sha256": "d341cc589fb34e474f2d2833ded4d0dd3c98f21cd028fede0d9f9b947769dc1f",
+      "size": 78161,
+      "mtime_ns": 1794081661033233582
+    },
+    "MD5SUMS.txt": {
+      "sha256": "556d6296a0fee368051d9b9cd3bbe5c6dbbad0051b6110d27ae6ed275cc99ea4",
+      "size": 3242,
+      "mtime_ns": 1794081661033233582
+    },
+    "favicon.ico": {
+      "sha256": "00594d06c0b418ef5aed94ede92c8291dd4659bc726505200b6915da64eff4b8",
+      "size": 6839,
+      "mtime_ns": 1794081646353146335
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081646133144446
+    },
+    "PLAN.md": {
+      "sha256": "c5c740f78b1b1309248ed80766e41471c4166bb9bf10768efb83412e77d3191d",
+      "size": 67733,
+      "mtime_ns": 1794081660929233114
+    },
+    "sw.js": {
+      "sha256": "b31d5c68e3a6e7e69be7f54ee7120897ee9fe78b980b919d526aab8d6066872c",
+      "size": 5102,
+      "mtime_ns": 1794081661029233564
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651413183540
+    },
+    "site.webmanifest": {
+      "sha256": "62d2b2ec0ca97bb363d1923f03169969944d638800c5872ab7eb9f9918aee491",
+      "size": 1010,
+      "mtime_ns": 1794081646361146403
+    },
+    "index.html": {
+      "sha256": "b9350e92e11e4aef43c7bb30b94f329523f094f44e448e31cf6b2fb4aabf6e99",
+      "size": 7857,
+      "mtime_ns": 1794081646369146472
+    },
+    "READY.txt": {
+      "sha256": "6a774080b7793b44220feb0694aa1a77c90a5ca556efc2ba5c42913aaa963564",
+      "size": 8129,
+      "mtime_ns": 1794081660981233350
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647349154677
+    },
+    "styles.css": {
+      "sha256": "e68bd70163132b1159b4d9d6e505d7f510770af2934f2643b6507b5a78c3909b",
+      "size": 88189,
+      "mtime_ns": 1794081646405146781
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651413183540
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081646001143313
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651413183540
+    },
+    "runway.webmanifest": {
+      "sha256": "8991c1b13872f87bd3e23c0274cb52f38830a746ae3db33bddb79214dc2e7656",
+      "size": 1038,
+      "mtime_ns": 1794081661157234129
+    },
+    "elig-clock.js": {
+      "sha256": "3ff3d82edf152592ffbaefb021928376734c05d1ef161b554db39036e8eb6cf3",
+      "size": 16880,
+      "mtime_ns": 1794081660921233078
+    },
+    "brand/checkride-connect-icon.png": {
+      "sha256": "d97b64b4a3f30420683b8193a9ca46bae0b6b1d27727ac2475a220a3463e0db9",
+      "size": 35470,
+      "mtime_ns": 1794081656601212602
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081646137144481
+    },
+    "brand/checkride-connect-logo-light.png": {
+      "sha256": "47b293c5434e1c650776948e63d1ea9d61f8cd316b7faf423694ba635b5483ea",
+      "size": 20508,
+      "mtime_ns": 1794081656601212602
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081646137144481
+    },
+    "brand/checkride-connect-logo-original.png": {
+      "sha256": "07e6352f25af03fdf905cdedaa7f3158b4a62f746ebd15a118862e070a281b9c",
+      "size": 45754,
+      "mtime_ns": 1794081656601212602
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081646137144481
+    },
+    "brand/checkride-connect-logo-dark.png": {
+      "sha256": "7ea62f0bec12786333529c93c65102f8533b696253e8fb194607a226a2792e65",
+      "size": 20483,
+      "mtime_ns": 1794081656601212602
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646689149219
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648657164811
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646725149527
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646709149390
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "37ff847dd569adfbf3382ebc66303162909cbfdad29be32691c6af14468a684e",
+      "size": 57217,
+      "mtime_ns": 1794081646349146300
+    },
+    "icons/favicon-16.png": {
+      "sha256": "c428796966467019b0c649396bedf0398e05aa0eb6bc82dd92e9a3647be6b554",
+      "size": 754,
+      "mtime_ns": 1794081646349146300
+    },
+    "icons/favicon-32.png": {
+      "sha256": "1e2c25ef247c4547e65d317c95fd88d01ab00d67361bb9afc0f9589c1a4e51d0",
+      "size": 2048,
+      "mtime_ns": 1794081646369146472
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "130244151939c18df867b2e06f2f20289b31a43a5ee473b83bfdcc50a455382d",
+      "size": 14441,
+      "mtime_ns": 1794081646365146438
+    },
+    "icons/favicon-dark-16.png": {
+      "sha256": "084653f87aad069f33435df3c3cf85f7df738cf30243b48ce6c41ed33015096b",
+      "size": 686,
+      "mtime_ns": 1794081661261234587
+    },
+    "icons/favicon-dark-32.png": {
+      "sha256": "4cbf66b32a4dc711b1526f7b7a86ad959eff4d214c9957cd54af1563a39efc18",
+      "size": 1768,
+      "mtime_ns": 1794081661293234729
+    },
+    "icons/icon-192.png": {
+      "sha256": "e42ce610b560ef6c1cfd527d8c5023d8ee01c4d4f0ca056bf0e31ac5985fc998",
+      "size": 20917,
+      "mtime_ns": 1794081646353146335
+    },
+    "icons/icon-512.png": {
+      "sha256": "e8c63eef64adb218acfd48906834253d1eaa342cfd85274a381d585dddc2bf32",
+      "size": 92476,
+      "mtime_ns": 1794081646373146506
+    },
+    "icons/favicon-48.png": {
+      "sha256": "a40fb97b30d86ddad901be4ff800e9aab56d7f65cf4181a980db71fe22f47a24",
+      "size": 3773,
+      "mtime_ns": 1794081646393146678
+    },
+    "icons/favicon-dark-48.png": {
+      "sha256": "4776114d9f2e3cb83b258b3743ff06e97e8516cf72275db741b50ba9dd50659c",
+      "size": 3241,
+      "mtime_ns": 1794081661285234693
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "2cca4ca8fd56c558d6dd408eefdce88c2baaacf24f5d9b8b4c97cb69f776a546",
+      "size": 12146,
+      "mtime_ns": 1794081647757157935
+    },
+    "icons/favicon.svg": {
+      "sha256": "707c5f92a296262f6cdead76b153311ec28c5d0394b84c2ca754ca3ef9315172",
+      "size": 14736,
+      "mtime_ns": 1794081646365146438
+    },
+    "icons/runway/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081646133144446
+    },
+    "icons/runway/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081646133144446
+    },
+    "icons/runway/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081646133144446
+    },
+    "icons/runway/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081646141144515
+    },
+    "icons/runway/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646581148292
+    },
+    "icons/runway/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081646133144446
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646741149665
+    }
+  },
+  "/workspace/checkride-v4-rc5": {
+    "app.js": {
+      "sha256": "ce6d84c3a88f7d324020fc42d6e484133f218720ebc5150f76f92e1c5b398ad1",
+      "size": 409570,
+      "mtime_ns": 1794081646509147674
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647349154677
+    },
+    "sample-nc-examiners.js": {
+      "sha256": "f7eef0031502fef943f7a1668f6925ff4a26fa6ed58b9bf6810e4007a12e6704",
+      "size": 78287,
+      "mtime_ns": 1794081656005209618
+    },
+    "MD5SUMS.txt": {
+      "sha256": "8ce8c7bf598990f2ec0c71fc44c9fae95fa1e8884d8fa8258a4546bcab51353f",
+      "size": 3242,
+      "mtime_ns": 1794081659597227032
+    },
+    "favicon.ico": {
+      "sha256": "00594d06c0b418ef5aed94ede92c8291dd4659bc726505200b6915da64eff4b8",
+      "size": 6839,
+      "mtime_ns": 1794081646353146335
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081646137144481
+    },
+    "PLAN.md": {
+      "sha256": "8cf9f53eea3b3811787f5b377850af7a31b7068fcd8ef79a0915216281b5644c",
+      "size": 71598,
+      "mtime_ns": 1794081662381239527
+    },
+    "sw.js": {
+      "sha256": "a7bc48073cd834a74e5631bd0c1e5aafd96c2fd25302bdd5524ab56c9ab229b0",
+      "size": 6720,
+      "mtime_ns": 1794081647157153143
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651413183540
+    },
+    "site.webmanifest": {
+      "sha256": "62d2b2ec0ca97bb363d1923f03169969944d638800c5872ab7eb9f9918aee491",
+      "size": 1010,
+      "mtime_ns": 1794081646361146403
+    },
+    "index.html": {
+      "sha256": "b9350e92e11e4aef43c7bb30b94f329523f094f44e448e31cf6b2fb4aabf6e99",
+      "size": 7857,
+      "mtime_ns": 1794081646373146506
+    },
+    "READY.txt": {
+      "sha256": "37826835f864b801ce3c30462c8230b0b3583252fc83ca8a03d1e5b449ffcc60",
+      "size": 7836,
+      "mtime_ns": 1794081662337239333
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647349154677
+    },
+    "styles.css": {
+      "sha256": "e68bd70163132b1159b4d9d6e505d7f510770af2934f2643b6507b5a78c3909b",
+      "size": 88189,
+      "mtime_ns": 1794081646417146884
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651413183540
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081646109144240
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651413183540
+    },
+    "runway.webmanifest": {
+      "sha256": "8991c1b13872f87bd3e23c0274cb52f38830a746ae3db33bddb79214dc2e7656",
+      "size": 1038,
+      "mtime_ns": 1794081661181234235
+    },
+    "elig-clock.js": {
+      "sha256": "c056641675643a42afad078ae29c01f6a8f5b7b28d883f213e8b40f66bbbec9f",
+      "size": 17525,
+      "mtime_ns": 1794081662369239475
+    },
+    "brand/checkride-connect-icon.png": {
+      "sha256": "d97b64b4a3f30420683b8193a9ca46bae0b6b1d27727ac2475a220a3463e0db9",
+      "size": 35470,
+      "mtime_ns": 1794081656601212602
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081646141144515
+    },
+    "brand/checkride-connect-logo-light.png": {
+      "sha256": "47b293c5434e1c650776948e63d1ea9d61f8cd316b7faf423694ba635b5483ea",
+      "size": 20508,
+      "mtime_ns": 1794081656601212602
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081646141144515
+    },
+    "brand/checkride-connect-logo-original.png": {
+      "sha256": "07e6352f25af03fdf905cdedaa7f3158b4a62f746ebd15a118862e070a281b9c",
+      "size": 45754,
+      "mtime_ns": 1794081656601212602
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081646141144515
+    },
+    "brand/checkride-connect-logo-dark.png": {
+      "sha256": "7ea62f0bec12786333529c93c65102f8533b696253e8fb194607a226a2792e65",
+      "size": 20483,
+      "mtime_ns": 1794081656601212602
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646689149219
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648657164811
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646725149527
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646709149390
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "37ff847dd569adfbf3382ebc66303162909cbfdad29be32691c6af14468a684e",
+      "size": 57217,
+      "mtime_ns": 1794081646349146300
+    },
+    "icons/favicon-16.png": {
+      "sha256": "c428796966467019b0c649396bedf0398e05aa0eb6bc82dd92e9a3647be6b554",
+      "size": 754,
+      "mtime_ns": 1794081646349146300
+    },
+    "icons/favicon-32.png": {
+      "sha256": "1e2c25ef247c4547e65d317c95fd88d01ab00d67361bb9afc0f9589c1a4e51d0",
+      "size": 2048,
+      "mtime_ns": 1794081646373146506
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "130244151939c18df867b2e06f2f20289b31a43a5ee473b83bfdcc50a455382d",
+      "size": 14441,
+      "mtime_ns": 1794081646369146472
+    },
+    "icons/favicon-dark-16.png": {
+      "sha256": "084653f87aad069f33435df3c3cf85f7df738cf30243b48ce6c41ed33015096b",
+      "size": 686,
+      "mtime_ns": 1794081661261234587
+    },
+    "icons/favicon-dark-32.png": {
+      "sha256": "4cbf66b32a4dc711b1526f7b7a86ad959eff4d214c9957cd54af1563a39efc18",
+      "size": 1768,
+      "mtime_ns": 1794081661293234729
+    },
+    "icons/icon-192.png": {
+      "sha256": "e42ce610b560ef6c1cfd527d8c5023d8ee01c4d4f0ca056bf0e31ac5985fc998",
+      "size": 20917,
+      "mtime_ns": 1794081646353146335
+    },
+    "icons/icon-512.png": {
+      "sha256": "e8c63eef64adb218acfd48906834253d1eaa342cfd85274a381d585dddc2bf32",
+      "size": 92476,
+      "mtime_ns": 1794081646377146541
+    },
+    "icons/favicon-48.png": {
+      "sha256": "a40fb97b30d86ddad901be4ff800e9aab56d7f65cf4181a980db71fe22f47a24",
+      "size": 3773,
+      "mtime_ns": 1794081646397146712
+    },
+    "icons/favicon-dark-48.png": {
+      "sha256": "4776114d9f2e3cb83b258b3743ff06e97e8516cf72275db741b50ba9dd50659c",
+      "size": 3241,
+      "mtime_ns": 1794081661285234693
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "2cca4ca8fd56c558d6dd408eefdce88c2baaacf24f5d9b8b4c97cb69f776a546",
+      "size": 12146,
+      "mtime_ns": 1794081647757157935
+    },
+    "icons/favicon.svg": {
+      "sha256": "707c5f92a296262f6cdead76b153311ec28c5d0394b84c2ca754ca3ef9315172",
+      "size": 14736,
+      "mtime_ns": 1794081646365146438
+    },
+    "icons/runway/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081646141144515
+    },
+    "icons/runway/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081646141144515
+    },
+    "icons/runway/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081646137144481
+    },
+    "icons/runway/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646585148326
+    },
+    "icons/runway/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081646137144481
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646741149665
+    }
+  },
+  "/workspace/checkride-v4-rc6": {
+    "app.js": {
+      "sha256": "a6a0b347172af6b046c9e532656ea47d7604a53329e5b34f398bf65ae5a83edc",
+      "size": 411222,
+      "mtime_ns": 1794081664393254642
+    },
+    "demo-date.js": {
+      "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+      "size": 4017,
+      "mtime_ns": 1794081647353154709
+    },
+    "sample-nc-examiners.js": {
+      "sha256": "f7eef0031502fef943f7a1668f6925ff4a26fa6ed58b9bf6810e4007a12e6704",
+      "size": 78287,
+      "mtime_ns": 1794081656005209618
+    },
+    "MD5SUMS.txt": {
+      "sha256": "28bef2467ea413b97b182d0fd7e5412c3bd6d857de603a05089a11d734eb4f49",
+      "size": 3413,
+      "mtime_ns": 1794081664357254002
+    },
+    "favicon.ico": {
+      "sha256": "00594d06c0b418ef5aed94ede92c8291dd4659bc726505200b6915da64eff4b8",
+      "size": 6839,
+      "mtime_ns": 1794081646353146335
+    },
+    "sample-fl-examiners.js": {
+      "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+      "size": 77394,
+      "mtime_ns": 1794081646153144618
+    },
+    "PLAN.md": {
+      "sha256": "f677cf29db7ee24f93866794e8e8d75e7e5bfb4ac5dd780cb461b8d9566666d4",
+      "size": 76720,
+      "mtime_ns": 1794081664369254215
+    },
+    "sw.js": {
+      "sha256": "83f83855467e499cf582e951fa7a4cf72e152617a41f9b39384137627cf8cd0a",
+      "size": 6794,
+      "mtime_ns": 1794081664357254002
+    },
+    "sample-az-examiners.js": {
+      "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+      "size": 99082,
+      "mtime_ns": 1794081651417183565
+    },
+    "site.webmanifest": {
+      "sha256": "62d2b2ec0ca97bb363d1923f03169969944d638800c5872ab7eb9f9918aee491",
+      "size": 1010,
+      "mtime_ns": 1794081646369146472
+    },
+    "QA-HANDOFF-RC6.md": {
+      "sha256": "627327800ac219fc469ca2ffbf533b7fc4e6ba04d26bd546b8a89a8f11ad8e08",
+      "size": 8531,
+      "mtime_ns": 1794081664525256986
+    },
+    "index.html": {
+      "sha256": "b9350e92e11e4aef43c7bb30b94f329523f094f44e448e31cf6b2fb4aabf6e99",
+      "size": 7857,
+      "mtime_ns": 1794081646377146541
+    },
+    "READY.txt": {
+      "sha256": "b5469d497bfb41d142d675bcfa56897a548c76bb3c2de7e9372de6d8c08199d0",
+      "size": 3204,
+      "mtime_ns": 1794081664357254002
+    },
+    "cost-model.js": {
+      "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+      "size": 8380,
+      "mtime_ns": 1794081647353154709
+    },
+    "styles.css": {
+      "sha256": "e68bd70163132b1159b4d9d6e505d7f510770af2934f2643b6507b5a78c3909b",
+      "size": 88189,
+      "mtime_ns": 1794081646421146918
+    },
+    "sample-tx-examiners.js": {
+      "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+      "size": 102126,
+      "mtime_ns": 1794081651417183565
+    },
+    "data.js": {
+      "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+      "size": 29319,
+      "mtime_ns": 1794081646141144515
+    },
+    "sample-ca-examiners.js": {
+      "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+      "size": 96370,
+      "mtime_ns": 1794081651417183565
+    },
+    "runway.webmanifest": {
+      "sha256": "8991c1b13872f87bd3e23c0274cb52f38830a746ae3db33bddb79214dc2e7656",
+      "size": 1038,
+      "mtime_ns": 1794081661205234340
+    },
+    "elig-clock.js": {
+      "sha256": "2f4bc1d1500aec8a1df84ec0b63da3c14b92d2013c480506b0cdd65019cd08d7",
+      "size": 18085,
+      "mtime_ns": 1794081664409254926
+    },
+    "brand/checkride-connect-icon.png": {
+      "sha256": "d97b64b4a3f30420683b8193a9ca46bae0b6b1d27727ac2475a220a3463e0db9",
+      "size": 35470,
+      "mtime_ns": 1794081656605212622
+    },
+    "brand/runway-icon.svg": {
+      "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+      "size": 977,
+      "mtime_ns": 1794081646169144755
+    },
+    "brand/checkride-connect-logo-light.png": {
+      "sha256": "47b293c5434e1c650776948e63d1ea9d61f8cd316b7faf423694ba635b5483ea",
+      "size": 20508,
+      "mtime_ns": 1794081656605212622
+    },
+    "brand/runway-horizontal-light.svg": {
+      "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+      "size": 10308,
+      "mtime_ns": 1794081646169144755
+    },
+    "brand/checkride-connect-logo-original.png": {
+      "sha256": "07e6352f25af03fdf905cdedaa7f3158b4a62f746ebd15a118862e070a281b9c",
+      "size": 45754,
+      "mtime_ns": 1794081656605212622
+    },
+    "brand/runway-horizontal-dark.svg": {
+      "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+      "size": 10308,
+      "mtime_ns": 1794081646169144755
+    },
+    "brand/checkride-connect-logo-dark.png": {
+      "sha256": "7ea62f0bec12786333529c93c65102f8533b696253e8fb194607a226a2792e65",
+      "size": 20483,
+      "mtime_ns": 1794081656605212622
+    },
+    "fonts/README.md": {
+      "sha256": "6e61017b8f99d7c80ced9d72a315d216e86922b4eb032796cf2a76e39c14836a",
+      "size": 2938,
+      "mtime_ns": 1794081646697149287
+    },
+    "fonts/Manrope-Variable-latin.woff2": {
+      "sha256": "8c2def024c1bf31aacf3624ae3c4d701269b4ec3dc765c04830839f0d36b2d9e",
+      "size": 24532,
+      "mtime_ns": 1794081648909166704
+    },
+    "fonts/Manrope-Variable-latin-ext.woff2": {
+      "sha256": "2f7335119075b2079f1d882530bbc18728461612bf90743203d73a74a48f4d9b",
+      "size": 15160,
+      "mtime_ns": 1794081648905166674
+    },
+    "fonts/GeistMono-Variable.woff2": {
+      "sha256": "55419aa06f58adcd7f145c6c920e56936416f17e528f60efc6032ffa4269972b",
+      "size": 71104,
+      "mtime_ns": 1794081646733149596
+    },
+    "fonts/Geist-Variable.woff2": {
+      "sha256": "206f01ed08e05c98a51daa7472331c3c71bbb8c1f9d55ea8c70074f3c528a706",
+      "size": 69560,
+      "mtime_ns": 1794081646717149459
+    },
+    "icons/icon-maskable-512.png": {
+      "sha256": "37ff847dd569adfbf3382ebc66303162909cbfdad29be32691c6af14468a684e",
+      "size": 57217,
+      "mtime_ns": 1794081646353146335
+    },
+    "icons/favicon-16.png": {
+      "sha256": "c428796966467019b0c649396bedf0398e05aa0eb6bc82dd92e9a3647be6b554",
+      "size": 754,
+      "mtime_ns": 1794081646353146335
+    },
+    "icons/favicon-32.png": {
+      "sha256": "1e2c25ef247c4547e65d317c95fd88d01ab00d67361bb9afc0f9589c1a4e51d0",
+      "size": 2048,
+      "mtime_ns": 1794081646381146575
+    },
+    "icons/apple-touch-icon.png": {
+      "sha256": "130244151939c18df867b2e06f2f20289b31a43a5ee473b83bfdcc50a455382d",
+      "size": 14441,
+      "mtime_ns": 1794081646377146541
+    },
+    "icons/favicon-dark-16.png": {
+      "sha256": "084653f87aad069f33435df3c3cf85f7df738cf30243b48ce6c41ed33015096b",
+      "size": 686,
+      "mtime_ns": 1794081661261234587
+    },
+    "icons/favicon-dark-32.png": {
+      "sha256": "4cbf66b32a4dc711b1526f7b7a86ad959eff4d214c9957cd54af1563a39efc18",
+      "size": 1768,
+      "mtime_ns": 1794081661297234746
+    },
+    "icons/icon-192.png": {
+      "sha256": "e42ce610b560ef6c1cfd527d8c5023d8ee01c4d4f0ca056bf0e31ac5985fc998",
+      "size": 20917,
+      "mtime_ns": 1794081646353146335
+    },
+    "icons/icon-512.png": {
+      "sha256": "e8c63eef64adb218acfd48906834253d1eaa342cfd85274a381d585dddc2bf32",
+      "size": 92476,
+      "mtime_ns": 1794081646393146678
+    },
+    "icons/favicon-48.png": {
+      "sha256": "a40fb97b30d86ddad901be4ff800e9aab56d7f65cf4181a980db71fe22f47a24",
+      "size": 3773,
+      "mtime_ns": 1794081646421146918
+    },
+    "icons/favicon-dark-48.png": {
+      "sha256": "4776114d9f2e3cb83b258b3743ff06e97e8516cf72275db741b50ba9dd50659c",
+      "size": 3241,
+      "mtime_ns": 1794081661289234711
+    },
+    "icons/icon-maskable-192.png": {
+      "sha256": "2cca4ca8fd56c558d6dd408eefdce88c2baaacf24f5d9b8b4c97cb69f776a546",
+      "size": 12146,
+      "mtime_ns": 1794081647761157967
+    },
+    "icons/favicon.svg": {
+      "sha256": "707c5f92a296262f6cdead76b153311ec28c5d0394b84c2ca754ca3ef9315172",
+      "size": 14736,
+      "mtime_ns": 1794081646373146506
+    },
+    "icons/runway/icon-maskable-512.png": {
+      "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+      "size": 11309,
+      "mtime_ns": 1794081646161144687
+    },
+    "icons/runway/favicon-16.png": {
+      "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+      "size": 432,
+      "mtime_ns": 1794081646161144687
+    },
+    "icons/runway/favicon-32.png": {
+      "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+      "size": 796,
+      "mtime_ns": 1794081646161144687
+    },
+    "icons/runway/apple-touch-icon.png": {
+      "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+      "size": 3485,
+      "mtime_ns": 1794081646161144687
+    },
+    "icons/runway/favicon.ico": {
+      "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+      "size": 2731,
+      "mtime_ns": 1794081646161144687
+    },
+    "icons/runway/icon-192.png": {
+      "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+      "size": 5753,
+      "mtime_ns": 1794081646161144687
+    },
+    "icons/runway/icon-512.png": {
+      "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+      "size": 16863,
+      "mtime_ns": 1794081646165144721
+    },
+    "icons/runway/favicon-48.png": {
+      "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+      "size": 1502,
+      "mtime_ns": 1794081646161144687
+    },
+    "icons/runway/icon-maskable-192.png": {
+      "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+      "size": 7352,
+      "mtime_ns": 1794081646593148395
+    },
+    "icons/runway/favicon.svg": {
+      "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+      "size": 513,
+      "mtime_ns": 1794081646161144687
+    },
+    "fonts/licenses/OFL-Manrope.txt": {
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
+      "size": 4387,
+      "mtime_ns": 1794081648913166734
+    },
+    "fonts/licenses/OFL-Geist-and-GeistMono.txt": {
+      "sha256": "930853ee1daa68554d9e35c8a9175affb74f699fad9a5da6ee5ebe76379d9137",
+      "size": 4368,
+      "mtime_ns": 1794081646749149733
+    },
+    "tests/rc6/README.md": {
+      "sha256": "a03e2c5d435ec5d7ca32f212ba12dc0686923bee02b650924ba27b0dc5605915",
+      "size": 1798,
+      "mtime_ns": 1794081665145267897
+    },
+    "tests/rc6/reference.py": {
+      "sha256": "7a1e87d3eaa71c4658bdf56087556fb82d7babe16cdefbd37f1def13211fa381",
+      "size": 44665,
+      "mtime_ns": 1794081665009265578
+    },
+    "tests/rc6/boundaries.py": {
+      "sha256": "fdc01bfa01be89f3a24295d6384c53d786a063723ac91e9f02aac84fa6d94ec5",
+      "size": 1340,
+      "mtime_ns": 1794081665137267760
+    },
+    "tests/rc6/typed-prep.js": {
+      "sha256": "f5da4ba6f0079cd4aad5c45382cf10d1a6008bc78dd6fe18af109a06fb78d042",
+      "size": 9591,
+      "mtime_ns": 1794081665153268033
+    }
+  }
+}

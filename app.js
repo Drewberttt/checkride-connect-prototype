@@ -194,7 +194,7 @@
   // QA-039: one shared rule. A slot whose start instant (airport zone) has passed is never listed, alerted, offered or requestable.
   const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
   // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
-  const COPY = { "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state",
+  const COPY = { "proto.payments": "Prototype: no real payments.", "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state",
     // D41 (new key for Customer Discovery): the NC sample area has no cost data, so no estimate is shown and nothing is invented.
     "estimate.no_area_data": `No estimate yet for ${IS_NC ? "North Carolina" : "this area"}. This prototype has no sample aircraft, instructor or travel cost data here, so we don\u2019t guess. Fees shown are each examiner\u2019s own (sample).`,
     // NC cost data (Marlo, Nov 2; new keys for Customer Discovery). National figures used where NC has none are labelled "national average".
@@ -2311,12 +2311,29 @@ const closeModal = () => {
     const ym = S.target || defaultTarget();
     return { planned: ym, key: "clock.when.target", text: COPY["clock.when.target"].replace("{month}", parseIso(ym + "-01").toLocaleDateString("en-US", { month: "long", year: "numeric" })) };
   };
-  // QA-091 (rc5): hours per entry must be a number from 0.1 to 24 (the input is min=0 max=24 step=0.1). Anything else
-  // (not a number, 0 or less, over 24) is flagged on the field and left out of the count; warn, never block. The engine
-  // compares the unrounded total, so 2.996 h stays short of 3.
-  const prepHoursBad = (e) => { if (!e) return false; if (e.hoursBad) return true; const h = e.hours; if (h === undefined || h === null || String(h).trim() === "") return false; const n = Number(h); return !Number.isFinite(n) || n <= 0 || n > 24; };
+  // D44 / QA-099: preserve native raw text and validate through the shared engine before coercion.
+  // Unsupported precision stays invalid evidence, never missing; this advisory never blocks booking.
+  const prepHoursBad = (e) => { if (!e) return false; if (e.hoursBad) return true; const h = e.hours; if (typeof h === "boolean") return true; if (h === undefined || h === null || String(h).trim() === "") return false; return !(window.CC_ELIG && window.CC_ELIG.prepHoursValid && window.CC_ELIG.prepHoursValid(h)); };
   const prepIgnored = () => (CK().prep || []).filter((e) => e && prepHoursBad(e)).length;
-  const clockEntries = () => { const rows = (CK().prep || []).filter((e) => e && E_OK(e.date) && !prepHoursBad(e) && +e.hours > 0); return rows.length ? rows.map((e) => ({ date: e.date, hours: +e.hours, qualifies: !e.sim })) : null; };
+  // Preserve nonempty invalid evidence for the engine: zero qualifying hours is fails, not missing (QA-098).
+  // A date-only row or intentionally blank hours is still no evidence. Bad native input is evidence even when value=="".
+  const clockEntries = () => { const rows = (CK().prep || []).filter((e) => e && (prepHoursBad(e) || E_OK(e.date) && String(e.hours ?? "").trim() !== "")); return rows.length ? rows.map((e) => ({ date: E_OK(e.date) ? e.date : "", hours: prepHoursBad(e) ? null : e.hours, qualifies: !e.sim })) : null; };
+  function savePrepHours(t) {
+    const i = +t.dataset.clock.split(".")[1], c = S.clock = S.clock || {};
+    c.prep = c.prep || []; const e = c.prep[i] = c.prep[i] || {};
+    e.hours = t.value; e.hoursBad = !!(t.validity && t.validity.badInput);
+    ui.clockOpen = true; save();
+    const id = t.id + "-err", bad = prepHoursBad(e); let err = document.getElementById(id);
+    if (bad) {
+      t.setAttribute("aria-invalid", "true"); t.setAttribute("aria-describedby", id);
+      if (!err) { err = document.createElement("p"); err.id = id; err.className = "small";
+        err.dataset.prepHoursErr = ""; err.dataset.copyKey = "clock.more.hours_invalid";
+        err.style.cssText = "margin:0;flex-basis:100%;color:var(--bad-text)"; t.closest("label").after(err); }
+      err.textContent = COPY["clock.more.hours_invalid"];
+    } else { t.removeAttribute("aria-invalid"); t.removeAttribute("aria-describedby"); if (err) err.remove(); }
+    // Refresh advisory output only, never replace the native number input while it is being edited.
+    document.querySelectorAll("[data-elig-clock]").forEach((el) => { el.outerHTML = clockBlock(el.id); });
+  }
   const E_OK = (d) => !!(window.CC_ELIG && window.CC_ELIG.cal.isYmd(d));
   const clockResults = () => {
     const E = window.CC_ELIG; if (!E) return [];
@@ -2361,7 +2378,7 @@ const closeModal = () => {
     const dt = (id, key, label, val) => `<label class="field" style="max-width:240px"><span>${label}</span><input type="date" id="${id}" data-clock="${key}" value="${esc(val || "")}" /></label>`;
     return `<details class="clock-more" id="clock-more" ${has || ui.clockOpen ? "open" : ""}><summary data-copy-key="clock.more.summary">${COPY["clock.more.summary"]}</summary>
       <fieldset class="clock-fs"><legend data-copy-key="clock.more.prep_legend">${COPY["clock.more.prep_legend"]}</legend>
-        ${rule && cert !== "me" ? `${[0, 1, 2].map((i) => { const e = prep[i] || {}; return `<div class="row clock-prep-row" style="gap:.6rem;align-items:end;flex-wrap:wrap">${dt(`clock-prep-d${i}`, `prep.${i}.date`, `Date ${i + 1}`, e.date)}<label class="field" style="max-width:110px"><span>Hours</span><input type="number" inputmode="decimal" min="0" max="24" step="0.1" id="clock-prep-h${i}" data-clock="prep.${i}.hours" value="${esc(e.hoursBad ? "" : e.hours || "")}"${prepHoursBad(e) ? ` aria-invalid="true" aria-describedby="clock-prep-h${i}-err"` : ""} /></label>${prepHoursBad(e) ? `<p class="small" id="clock-prep-h${i}-err" data-prep-hours-err style="margin:0;flex-basis:100%;color:var(--bad-text)" data-copy-key="clock.more.hours_invalid">${COPY["clock.more.hours_invalid"]}</p>` : ""}<label class="row" style="gap:.35rem;min-height:44px"><input type="checkbox" id="clock-prep-s${i}" data-clock="prep.${i}.sim" ${e.sim ? "checked" : ""} /> <span class="small">Simulator or FTD</span></label></div>`; }).join("")}
+        ${rule && cert !== "me" ? `${[0, 1, 2].map((i) => { const e = prep[i] || {}; return `<div class="row clock-prep-row" style="gap:.6rem;align-items:end;flex-wrap:wrap">${dt(`clock-prep-d${i}`, `prep.${i}.date`, `Date ${i + 1}`, e.date)}<label class="field" style="max-width:110px"><span>Hours</span><input type="number" inputmode="decimal" min="0.1" max="24" step="0.01" id="clock-prep-h${i}" data-clock="prep.${i}.hours" value="${esc(e.hoursBad || typeof e.hours === "boolean" ? "" : e.hours || "")}"${prepHoursBad(e) ? ` aria-invalid="true" aria-describedby="clock-prep-h${i}-err"` : ""} /></label>${prepHoursBad(e) ? `<p class="small" id="clock-prep-h${i}-err" data-prep-hours-err style="margin:0;flex-basis:100%;color:var(--bad-text)" data-copy-key="clock.more.hours_invalid">${COPY["clock.more.hours_invalid"]}</p>` : ""}<label class="row" style="gap:.35rem;min-height:44px"><input type="checkbox" id="clock-prep-s${i}" data-clock="prep.${i}.sim" ${e.sim ? "checked" : ""} /> <span class="small">Simulator or FTD</span></label></div>`; }).join("")}
         <p class="small muted" style="margin:.25rem 0" data-copy-key="clock.more.sim_note">${COPY["clock.more.sim_note"]} ${verifyFor([16])}</p>
         ${dt("clock-grad", "grad", COPY["clock.more.grad"], c.grad)}` : cert === "me" ? `<p class="small muted" style="margin:0" data-copy-key="clock.more.prep_exempt">${COPY["clock.more.prep_exempt"]} ${verifyFor([17])}</p>` : `<p class="small muted" style="margin:0" data-copy-key="clock.more.prep_none">${COPY["clock.more.prep_none"]} ${VERIFY}</p>`}
       </fieldset>
@@ -2974,7 +2991,7 @@ const closeModal = () => {
       ${faqAccordion("faq")}
     </section>
     <p class="small muted land-footer">Early prototype. All names, schools, openings and prices are fictional. Nothing is charged, emailed or texted, and no real requests are sent. Not affiliated with or endorsed by the FAA.</p>
-    <p class="small muted land-footer"><b>Prototype: no real payments.</b></p>
+    <p class="small muted land-footer"><b data-copy-key="proto.payments">${COPY["proto.payments"]}</b></p>
     <p class="small muted land-footer">${LC("footer.copy")}</p>
     </div>`;
   }
@@ -3972,6 +3989,7 @@ function countUp(root) {
       }
       save(); rerender(); const back = $(t.dataset.med === "type" ? "#med-type" : "#med-date"); if (back) back.focus(); return;
     }
+    if (t.dataset.clock && /^prep\.\d+\.hours$/.test(t.dataset.clock)) { savePrepHours(t); return; }
     if (t.dataset.clock) { // Rules 5/6 inputs: save, rerender, keep focus (labels only, never blocks)
       const c = S.clock = S.clock || {}, p = t.dataset.clock.split("."), v = t.type === "checkbox" ? t.checked : t.value;
       if (p[0] === "prep") { c.prep = c.prep || []; c.prep[+p[1]] = c.prep[+p[1]] || {}; c.prep[+p[1]][p[2]] = v; if (p[2] === "hours") c.prep[+p[1]].hoursBad = !!(t.validity && t.validity.badInput); } else c[p[0]] = v;
@@ -3997,6 +4015,12 @@ function countUp(root) {
   const applyState = (sel, nextSel) => { delete sel.dataset.pending; forms.search(sel.form, new FormData(sel.form), sel); if (nextSel) ui.focusAfter = nextSel; };
   document.addEventListener("keydown", (e) => {
     const t = e.target;
+    // A saved boolean cannot be displayed by a native number input. An explicit Delete/Backspace
+    // on that empty field clears the imported invalid evidence; merely focusing/blurring never clears it.
+    if (t.dataset && /^prep\.\d+\.hours$/.test(t.dataset.clock || "") && ["Backspace", "Delete"].includes(e.key) && t.value === "" && !t.validity.badInput) {
+      const row = (CK().prep || [])[+t.dataset.clock.split(".")[1]];
+      if (row && typeof row.hours === "boolean") savePrepHours(t);
+    }
     if (!t.matches || !t.matches("[data-state-select]")) return;
     if (e.key === "Enter") { if (t.dataset.pending === "1") { e.preventDefault(); applyState(t); } return; }
     if (e.key !== "Tab" && e.key !== "Escape") t.dataset.kbd = "1";
@@ -4014,6 +4038,7 @@ function countUp(root) {
     authLive(e.target); // QA-075
     if (e.target.form && (e.target.form.dataset.form === "request" || e.target.form.dataset.form === "cohort-ready") && e.target.name !== "cert") showGate(e.target.form);
     const t = e.target;
+    if (t.dataset && /^prep\.\d+\.hours$/.test(t.dataset.clock || "")) { savePrepHours(t); return; }
     if (t.form && t.form.id === "dpe-fees-form") {
       // Live preview of the public profile while the examiner types (nothing saved until submit).
       const m = /^fee-(.+)$/.exec(t.name || ""); const v = Number(t.value);

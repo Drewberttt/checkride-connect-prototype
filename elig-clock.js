@@ -69,8 +69,19 @@
   // "flights" rules count qualifying entries.
   // rc5 (QA-091): the hours total is compared unrounded (only float noise below 1e-6 is removed), so 2.996 h < 3 h.
   // Hours outside 0 < h <= 24 (or not a number) are not counted; the app flags them on the field.
-  const hoursOk = (h) => { const n = Number(h); return h !== null && h !== "" && Number.isFinite(n) && n > 0 && n <= 24; };
-  const sumIn = (entries, start, end, unit) => { const sel = entries.filter((e) => e.qualifies !== false && e.date >= start && e.date <= end && (unit === "flights" || hoursOk(e.hours))); return unit === "flights" ? sel.length : Math.round(sel.reduce((a, e) => a + Number(e.hours), 0) * 1e6) / 1e6; };
+  // D44 (Marlo): validate raw text BEFORE numeric conversion; at most two fractional digits.
+  // Trailing zeros count; signs, exponent notation and trailing dots are unsupported.
+  // Already-coerced numbers cannot reveal original text (P68: a numeric literal may already be 3).
+  const hoursOk = (h) => {
+    if (typeof h !== "string" && typeof h !== "number") return false;
+    if (typeof h === "number" && !Number.isFinite(h)) return false;
+    const text = String(h).replace(/^[ \t\n\r]+|[ \t\n\r]+$/g, "");
+    if (!/^(?:[0-9]+(?:\.[0-9]{1,2})?|\.[0-9]{1,2})$/.test(text)) return false;
+    const n = Number(text); return Number.isFinite(n) && n >= 0.1 && n <= 24;
+  };
+  // Bounded supported quantities sum as integer hundredths; no unlimited text-arithmetic feature.
+  const sumHours = (entries) => entries.reduce((n, e) => n + Math.round(Number(e.hours) * 100), 0) / 100;
+  const sumIn = (entries, start, end, unit) => { const sel = entries.filter((e) => typeof e.hours !== "boolean" && e.qualifies !== false && e.date >= start && e.date <= end && (unit === "flights" || hoursOk(e.hours))); return unit === "flights" ? sel.length : sumHours(sel); };
 
   // o: { rating, entries (null = not entered), testStart, testEnd?, pathway ("part61"|"part141"), graduationDate?, addedClass, balloonToAirship, fmt? }
   function checkPrep(o) {
@@ -170,6 +181,6 @@
     "Rule 6: the doc checks endorsement <= reapplication for any plan; the reference checks it only for an exact date. A month-only plan is compared with the month's last day.",
     "Rule 6 spin and 8710 messages use 'likely' wording (doc §0); the reference says 'you must' / 'needs'.",
   ];
-  root.CC_ELIG = { checkPrep, checkRetest, combine, PREP_RULES, NO_PREP_RULE, VERIFY_FLAGS, DOC_VS_REF, CFI_NOTE,
+  root.CC_ELIG = { prepHoursValid: hoursOk, checkPrep, checkRetest, combine, PREP_RULES, NO_PREP_RULE, VERIFY_FLAGS, DOC_VS_REF, CFI_NOTE,
     cal: { monthIndex, endOfMonthAfter, startOfMonthBefore, sameDayMonthsBefore, addDays, firstOfMi, endOfMi, planned, isYmd, isYm } };
 })(typeof window !== "undefined" ? window : globalThis);

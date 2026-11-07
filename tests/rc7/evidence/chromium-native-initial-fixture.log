@@ -1,0 +1,27 @@
+PASS native typed 2.9999999999999999 
+PASS native raw survives even though valueAsNumber is 3 
+PASS precision raw/ARIA/fails persist on reload 
+PASS native typed 2.996 
+PASS native typed 3.000 
+PASS native typed 3e0 
+PASS native typed 2.99 
+PASS native typed 3.00 
+PASS native typed 1.00 
+PASS native typed .5 
+PASS native typed 24.00 
+PASS native typed 0.09 
+PASS native typed 24.01 
+PASS native badInput empty stays explicit fails 
+PASS native clear malformed -> missing 
+PASS no native node replacement; Tab advances 
+PASS clear precision-only -> missing/no ignored/error 
+PASS mixed 1.00 + excessive precision -> logged 1, never 3 
+PASS correction mixed -> 3 / ok / error removed 
+PASS actual clipboard paste precise raw invalid/ARIA 
+PASS precision-only optional tick present false 
+PASS precision advisory never blocks Send false 
+PASS mock Send persistence false 
+Error: timed out !!document.querySelector("#clock-more")
+    at until (/workspace/checkride-v4/tests/rc7/chromium-native.js:9:155)
+    at async reset (/workspace/checkride-v4/tests/rc7/chromium-native.js:21:140)
+    at async /workspace/checkride-v4/tests/rc7/chromium-native.js:34:35
