@@ -1,0 +1,11 @@
+PASS chromium native signup goal keyboard and Tab 
+PASS chromium signup narrow settled axe light 
+PASS chromium signup narrow overflow light 
+PASS chromium signup narrow settled axe dark 
+PASS chromium signup narrow overflow dark 
+PASS firefox native signup goal keyboard and Tab 
+PASS firefox signup narrow settled axe light 
+PASS firefox signup narrow overflow light 
+PASS firefox signup narrow settled axe dark 
+PASS firefox signup narrow overflow dark 
+SIGNUP ACCESSIBILITY RESULT 10 passed, 0 failed

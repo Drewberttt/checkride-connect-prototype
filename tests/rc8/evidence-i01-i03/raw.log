@@ -1,0 +1,58 @@
+PASS chromium I03 supported padded import visible and counts3 
+PASS chromium I03 actual Ctrl+A/Backspace/Tab uncounts -> missing 
+PASS chromium I03 cleared empty persists reload 
+PASS chromium control explicitly text/mobile decimal, not native number 
+PASS chromium I01 actual typing 3. retained/invalid/uncounted 
+PASS chromium typed 3. route/reload persistence 
+PASS chromium I01 actual clipboard 3. exact paste/invalid 
+PASS chromium pasted 3. reload persists raw rejection 
+PASS chromium I01 actual typing +3 retained/invalid/uncounted 
+PASS chromium typed +3 route/reload persistence 
+PASS chromium I01 actual clipboard +3 exact paste/invalid 
+PASS chromium pasted +3 reload persists raw rejection 
+PASS chromium I02 exact padded clipboard valid0.5 no malformed feedback 
+PASS chromium I02 reload trimmed visible .50 still valid0.5 
+PASS chromium I02 supported padded state clears normally 
+PASS chromium cursor moves without control replacement 
+PASS chromium correction removes dot without replacing input 
+PASS chromium Hours Tab advances to simulator 
+PASS chromium mixed invalid dot +1.00 counts only1 
+PASS chromium legacy saved native-badInput explicit empty clear 
+locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-action=request],.slot-row button').first()
+    - locator resolved to <button data-slot="s2" class="btn cta" data-cert="ppl" id="v4-request" data-action="request">Request slot</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    58 × waiting for element to be visible, enabled and stable
+       - element is not visible
+     - retrying click action
+       - waiting 500ms
+
+    at /workspace/checkride-v4/tests/rc8/raw-hours.js:10:166 {
+  log: [
+    "  - waiting for locator('[data-action=request],.slot-row button').first()",
+    '    - locator resolved to <button data-slot="s2" class="btn cta" data-cert="ppl" id="v4-request" data-action="request">Request slot</button>',
+    '  - attempting click action',
+    '    2 × waiting for element to be visible, enabled and stable',
+    '      - element is not visible',
+    '    - retrying click action',
+    '    - waiting 20ms',
+    '    2 × waiting for element to be visible, enabled and stable',
+    '      - element is not visible',
+    '    - retrying click action',
+    '      - waiting 100ms',
+    '    58 × waiting for element to be visible, enabled and stable',
+    '       - element is not visible',
+    '     - retrying click action',
+    '       - waiting 500ms'
+  ],
+  name: 'TimeoutError'
+}

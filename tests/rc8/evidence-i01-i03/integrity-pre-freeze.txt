@@ -1,0 +1,1 @@
+PASS protected 13 trees / 630 files SHA256,size,mtime_ns; prior rc3–rc7 MD5 manifests and 51+53 historical screenshots unchanged. Canonical SHA256 verified.

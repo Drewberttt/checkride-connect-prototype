@@ -1,0 +1,97 @@
+PASS chromium fresh goal is unset 
+PASS chromium unsaved goal survives role toggle 
+PASS chromium actual signup persists supported goal only, no private fields 
+PASS chromium fresh Find uses signup IR 
+PASS chromium fresh readiness uses IR without checks/approval 
+PASS chromium airport edit does not pin an untouched goal-derived certificate 
+PASS chromium explicit Find selection saved on bare navigation/reload 
+PASS chromium Find selection persists reload 
+PASS chromium explicit URL wins saved/goal 
+PASS chromium explicit cleared query uses legacy PPL not goal 
+PASS chromium goal change applies when no readiness evidence/override 
+PASS chromium goal change never overwrites saved Find choice 
+PASS chromium cleared goal fallback coherent 
+PASS chromium unsupported info-only ATP never becomes bookable readiness 
+PASS chromium first actual edit pins current IR default 
+PASS chromium goal change preserves pinned readiness and exact evidence 
+PASS chromium explicit readiness change keeps evidence and focus 
+PASS chromium readiness override persists 
+PASS chromium legacy evidence retains prior PPL interpretation 
+PASS chromium native keyboard readiness selection works 
+PASS chromium actual active request certificate outranks signup/default selection 
+PASS chromium not joined initially with explicit fictional notice 
+PASS chromium keyboard join saves exactly one and illustrative position4 
+PASS chromium join returns keyboard focus to leave control 
+PASS chromium joined position stable on reload 
+PASS chromium duplicate join through actual alert form is idempotent 
+PASS chromium Alerts shows same membership/position 
+PASS chromium second examiner isolated 
+PASS chromium leave isolates examiner/checkride; keeps other cert and examiner 
+PASS chromium leave persists 
+PASS chromium rejoin retains only illustrative stable position 
+PASS chromium legacy duplicate state not silently deleted on render 
+PASS chromium intentional leave removes legacy duplicates, rejoin once and retains example position 
+PASS chromium existing simulated offer uses same local joined/illustrative position disclosure 
+PASS chromium Alerts leave and profile membership agree 
+PASS chromium settled light readiness axe 
+PASS chromium narrow light readiness no overflow 
+PASS chromium settled light dpe/d1?cert=ppl axe 
+PASS chromium narrow light dpe/d1?cert=ppl no overflow 
+PASS chromium settled light alerts axe 
+PASS chromium narrow light alerts no overflow 
+PASS chromium settled dark readiness axe 
+PASS chromium narrow dark readiness no overflow 
+PASS chromium settled dark dpe/d1?cert=ppl axe 
+PASS chromium narrow dark dpe/d1?cert=ppl no overflow 
+PASS chromium settled dark alerts axe 
+PASS chromium narrow dark alerts no overflow 
+PASS chromium normal no crash/console/external request 
+PASS firefox fresh goal is unset 
+PASS firefox unsaved goal survives role toggle 
+PASS firefox actual signup persists supported goal only, no private fields 
+PASS firefox fresh Find uses signup IR 
+PASS firefox fresh readiness uses IR without checks/approval 
+PASS firefox airport edit does not pin an untouched goal-derived certificate 
+PASS firefox explicit Find selection saved on bare navigation/reload 
+PASS firefox Find selection persists reload 
+PASS firefox explicit URL wins saved/goal 
+PASS firefox explicit cleared query uses legacy PPL not goal 
+PASS firefox goal change applies when no readiness evidence/override 
+PASS firefox goal change never overwrites saved Find choice 
+PASS firefox cleared goal fallback coherent 
+PASS firefox unsupported info-only ATP never becomes bookable readiness 
+PASS firefox first actual edit pins current IR default 
+PASS firefox goal change preserves pinned readiness and exact evidence 
+PASS firefox explicit readiness change keeps evidence and focus 
+PASS firefox readiness override persists 
+PASS firefox legacy evidence retains prior PPL interpretation 
+PASS firefox native keyboard readiness selection works 
+PASS firefox actual active request certificate outranks signup/default selection 
+PASS firefox not joined initially with explicit fictional notice 
+PASS firefox keyboard join saves exactly one and illustrative position4 
+PASS firefox join returns keyboard focus to leave control 
+PASS firefox joined position stable on reload 
+PASS firefox duplicate join through actual alert form is idempotent 
+PASS firefox Alerts shows same membership/position 
+PASS firefox second examiner isolated 
+PASS firefox leave isolates examiner/checkride; keeps other cert and examiner 
+PASS firefox leave persists 
+PASS firefox rejoin retains only illustrative stable position 
+PASS firefox legacy duplicate state not silently deleted on render 
+PASS firefox intentional leave removes legacy duplicates, rejoin once and retains example position 
+PASS firefox existing simulated offer uses same local joined/illustrative position disclosure 
+PASS firefox Alerts leave and profile membership agree 
+PASS firefox settled light readiness axe 
+PASS firefox narrow light readiness no overflow 
+PASS firefox settled light dpe/d1?cert=ppl axe 
+PASS firefox narrow light dpe/d1?cert=ppl no overflow 
+PASS firefox settled light alerts axe 
+PASS firefox narrow light alerts no overflow 
+PASS firefox settled dark readiness axe 
+PASS firefox narrow dark readiness no overflow 
+PASS firefox settled dark dpe/d1?cert=ppl axe 
+PASS firefox narrow dark dpe/d1?cert=ppl no overflow 
+PASS firefox settled dark alerts axe 
+PASS firefox narrow dark alerts no overflow 
+PASS firefox normal no crash/console/external request 
+RC8 MAIN RESULT 96 passed, 0 failed

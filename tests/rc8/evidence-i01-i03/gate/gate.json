@@ -1,0 +1,91 @@
+{
+  "when": "2026-11-07T20:49:03.987Z",
+  "results": [
+    {
+      "id": "G01-syntax",
+      "name": "node --check app.js and sw.js",
+      "pass": true,
+      "notes": [
+        "ok: node --check app.js",
+        "ok: node --check sw.js"
+      ]
+    },
+    {
+      "id": "G02-precache",
+      "name": "every sw.js precache URL returns 200",
+      "pass": true,
+      "notes": [
+        "precache list SHELL: 50 URLs",
+        "ok: 200 ./",
+        "ok: 200 index.html",
+        "ok: 200 styles.css",
+        "ok: 200 app.js",
+        "ok: 200 demo-date.js",
+        "ok: 200 data.js",
+        "ok: 200 sample-fl-examiners.js",
+        "ok: 200 sample-tx-examiners.js",
+        "ok: 200 sample-ca-examiners.js",
+        "ok: 200 sample-az-examiners.js",
+        "ok: 200 sample-nc-examiners.js",
+        "ok: 200 cost-model.js",
+        "ok: 200 elig-clock.js",
+        "ok: 200 site.webmanifest",
+        "ok: 200 favicon.ico",
+        "ok: 200 icons/favicon.svg",
+        "ok: 200 icons/favicon-16.png",
+        "ok: 200 icons/favicon-32.png",
+        "ok: 200 icons/favicon-48.png",
+        "ok: 200 icons/apple-touch-icon.png",
+        "ok: 200 icons/icon-192.png",
+        "ok: 200 icons/icon-512.png",
+        "ok: 200 icons/icon-maskable-192.png",
+        "ok: 200 icons/icon-maskable-512.png",
+        "ok: 200 icons/favicon-dark-16.png",
+        "ok: 200 icons/favicon-dark-32.png",
+        "ok: 200 icons/favicon-dark-48.png",
+        "ok: 200 runway.webmanifest",
+        "ok: 200 icons/runway/favicon.ico",
+        "ok: 200 icons/runway/favicon.svg",
+        "ok: 200 icons/runway/apple-touch-icon.png",
+        "ok: 200 icons/runway/favicon-16.png",
+        "ok: 200 icons/runway/favicon-32.png",
+        "ok: 200 icons/runway/favicon-48.png",
+        "ok: 200 icons/runway/icon-192.png",
+        "ok: 200 icons/runway/icon-512.png",
+        "ok: 200 icons/runway/icon-maskable-192.png",
+        "ok: 200 icons/runway/icon-maskable-512.png",
+        "ok: 200 brand/checkride-connect-logo-light.png",
+        "ok: 200 brand/checkride-connect-logo-dark.png",
+        "ok: 200 brand/checkride-connect-icon.png",
+        "ok: 200 brand/runway-icon.svg",
+        "ok: 200 brand/runway-horizontal-light.svg",
+        "ok: 200 brand/runway-horizontal-dark.svg",
+        "ok: 200 fonts/Manrope-Variable-latin.woff2",
+        "ok: 200 fonts/Manrope-Variable-latin-ext.woff2",
+        "ok: 200 fonts/Geist-Variable.woff2",
+        "ok: 200 fonts/GeistMono-Variable.woff2",
+        "ok: 200 fonts/licenses/OFL-Manrope.txt",
+        "ok: 200 fonts/licenses/OFL-Geist-and-GeistMono.txt"
+      ]
+    },
+    {
+      "id": "G03-airport-tz",
+      "name": "every airport has an IANA tz; AZ = America/Phoenix (D38 #3)",
+      "pass": true,
+      "notes": [
+        "99 airports (99 used by the app) from data.js + sample-fl-examiners.js + sample-tx-examiners.js + sample-ca-examiners.js + sample-az-examiners.js",
+        "ok: every airport has a tz field (0 missing)",
+        "ok: every tz is a valid IANA zone name (0 invalid)",
+        "ok: Arizona airports use America/Phoenix (no DST): KDVT=America/Phoenix, KSDL=America/Phoenix, KFFZ=America/Phoenix, KIWA=America/Phoenix, KCHD=America/Phoenix, KGEU=America/Phoenix, KGYR=America/Phoenix, KPHX=America/Phoenix, KCGZ=America/Phoenix, KTUS=America/Phoenix, KRYN=America/Phoenix, KAVQ=America/Phoenix, KPRC=America/Phoenix, KFLG=America/Phoenix, KSEZ=America/Phoenix, KSOW=America/Phoenix, KIFP=America/Phoenix, KNYL=America/Phoenix",
+        "ok: tz matches the reference zone for known airports (none wrong)",
+        "info: Central-time airports in the data: KECP (Panama City) tz=America/Chicago, KPNS (Pensacola) tz=America/Chicago, KADS (Addison) tz=America/Chicago, KDAL (Dallas) tz=America/Chicago, KTKI (McKinney) tz=America/Chicago, KTYR (Tyler) tz=America/Chicago, KFTW (Fort Worth) tz=America/Chicago, KAFW (Fort Worth) tz=America/Chicago, KGKY (Arlington) tz=America/Chicago, KGPM (Grand Prairie) tz=America/Chicago, KDTO (Denton) tz=America/Chicago, KACT (Waco) tz=America/Chicago, KHOU (Houston) tz=America/Chicago, KDWH (Spring) tz=America/Chicago, KSGR (Sugar Land) tz=America/Chicago, KCXO (Conroe) tz=America/Chicago, KEFD (Houston) tz=America/Chicago, KAUS (Austin) tz=America/Chicago, KEDC (Austin) tz=America/Chicago, KGTU (Georgetown) tz=America/Chicago, KHYI (San Marcos) tz=America/Chicago, KSAT (San Antonio) tz=America/Chicago, KSSF (San Antonio) tz=America/Chicago, KCRP (Corpus Christi) tz=America/Chicago, KLBB (Lubbock) tz=America/Chicago, KAMA (Amarillo) tz=America/Chicago, KMAF (Midland) tz=America/Chicago, KELP (El Paso) tz=America/Denver",
+        "ok: KELP El Paso tz=America/Denver (want America/Denver)",
+        "ok: app ZONE_ABBR America/Phoenix = MST (want MST)",
+        "ok: app ZONE_ABBR America/Denver = MT (want generic MT)",
+        "ok: every zone in the data has an app label (America/New_York, America/Chicago, America/Denver, America/Los_Angeles, America/Phoenix)",
+        "info: state/zone {\"FL America/New_York\":27,\"FL America/Chicago\":2,\"TX America/Chicago\":25,\"TX America/Denver\":1,\"CA America/Los_Angeles\":26,\"AZ America/Phoenix\":18}",
+        "info: zones {\"America/New_York\":27,\"America/Chicago\":27,\"America/Denver\":1,\"America/Los_Angeles\":26,\"America/Phoenix\":18}"
+      ]
+    }
+  ]
+}

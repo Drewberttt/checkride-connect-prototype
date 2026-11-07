@@ -1,0 +1,95 @@
+PASS chromium saved true is still boolean and visibly invalid, 0 hours 
+PASS chromium saved true persists across reload 
+PASS chromium saved true tick true 
+PASS chromium saved true optional/enabled 
+PASS chromium correct true -> typed 3 clears error and counts 
+PASS chromium correction true persists 
+PASS chromium corrected true tick false 
+PASS chromium explicit keyboard clear imported true = missing 
+PASS chromium cleared true tick false 
+PASS chromium cleared true persists missing 
+PASS chromium saved false is still boolean and visibly invalid, 0 hours 
+PASS chromium saved false persists across reload 
+PASS chromium saved false tick true 
+PASS chromium saved false optional/enabled 
+PASS chromium correct false -> typed 3 clears error and counts 
+PASS chromium correction false persists 
+PASS chromium corrected false tick false 
+PASS chromium explicit keyboard clear imported false = missing 
+PASS chromium cleared false tick false 
+PASS chromium cleared false persists missing 
+PASS chromium [true,true,true] mixed evidence classification 
+PASS chromium [true,true,true] tick true 
+PASS chromium [true,true,true] optional/enabled 
+PASS chromium [true,false] mixed evidence classification 
+PASS chromium [true,false] tick true 
+PASS chromium [true,false] optional/enabled 
+PASS chromium [true,false,2.9] mixed evidence classification 
+PASS chromium [true,false,2.9] tick true 
+PASS chromium [true,false,2.9] optional/enabled 
+PASS chromium [true,false,3] mixed evidence classification 
+PASS chromium [true,false,3] tick false 
+PASS chromium Send boolean false tick present 
+PASS chromium Send boolean false not blocked 
+PASS chromium Send boolean false completes; optional flag + malformed evidence persists 
+PASS chromium Send boolean true tick present 
+PASS chromium Send boolean true not blocked 
+PASS chromium Send boolean true completes; optional flag + malformed evidence persists 
+PASS chromium landing key exactly twice with canonical text 
+PASS chromium EXAMPLE DATA and FAA nonaffiliation kept 
+PASS chromium notice landing 390 no horizontal overflow 
+PASS chromium mandatory app strip dash + legal notice retained 
+PASS chromium mandatory modal dash + legal retained 
+PASS chromium mandatory examiner settings dash retained 
+PASS chromium saved bool invalid form axe light 
+PASS chromium saved bool invalid form axe dark 
+PASS chromium no normal crashes/console errors/external runtime requests 
+PASS chromium forced-load fallback keeps mandatory dash/legal, header uses canonical key 
+PASS firefox saved true is still boolean and visibly invalid, 0 hours 
+PASS firefox saved true persists across reload 
+PASS firefox saved true tick true 
+PASS firefox saved true optional/enabled 
+PASS firefox correct true -> typed 3 clears error and counts 
+PASS firefox correction true persists 
+PASS firefox corrected true tick false 
+PASS firefox explicit keyboard clear imported true = missing 
+PASS firefox cleared true tick false 
+PASS firefox cleared true persists missing 
+PASS firefox saved false is still boolean and visibly invalid, 0 hours 
+PASS firefox saved false persists across reload 
+PASS firefox saved false tick true 
+PASS firefox saved false optional/enabled 
+PASS firefox correct false -> typed 3 clears error and counts 
+PASS firefox correction false persists 
+PASS firefox corrected false tick false 
+PASS firefox explicit keyboard clear imported false = missing 
+PASS firefox cleared false tick false 
+PASS firefox cleared false persists missing 
+PASS firefox [true,true,true] mixed evidence classification 
+PASS firefox [true,true,true] tick true 
+PASS firefox [true,true,true] optional/enabled 
+PASS firefox [true,false] mixed evidence classification 
+PASS firefox [true,false] tick true 
+PASS firefox [true,false] optional/enabled 
+PASS firefox [true,false,2.9] mixed evidence classification 
+PASS firefox [true,false,2.9] tick true 
+PASS firefox [true,false,2.9] optional/enabled 
+PASS firefox [true,false,3] mixed evidence classification 
+PASS firefox [true,false,3] tick false 
+PASS firefox Send boolean false tick present 
+PASS firefox Send boolean false not blocked 
+PASS firefox Send boolean false completes; optional flag + malformed evidence persists 
+PASS firefox Send boolean true tick present 
+PASS firefox Send boolean true not blocked 
+PASS firefox Send boolean true completes; optional flag + malformed evidence persists 
+PASS firefox landing key exactly twice with canonical text 
+PASS firefox EXAMPLE DATA and FAA nonaffiliation kept 
+PASS firefox notice landing 390 no horizontal overflow 
+PASS firefox mandatory app strip dash + legal notice retained 
+PASS firefox mandatory modal dash + legal retained 
+PASS firefox mandatory examiner settings dash retained 
+PASS firefox saved bool invalid form axe light 
+PASS firefox saved bool invalid form axe dark 
+PASS firefox no normal crashes/console errors/external runtime requests 
+PASS firefox forced-load fallback keeps mandatory dash/legal, header uses canonical key 
+SAVED BOOL/NOTICE RESULT 94 passed, 0 failed

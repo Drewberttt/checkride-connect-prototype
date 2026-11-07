@@ -1,0 +1,14 @@
+{
+  "goal.blank": "No default checkride",
+  "goal.label": "Planning checkride",
+  "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",
+  "wl.status.joined": "Joined locally · illustrative position #{position}.",
+  "wl.status.not_joined": "Not joined for this checkride.",
+  "wl.sample": "Fictional sample only. Positions are illustrative, not live demand or priority. No notifications are sent; no slot is reserved.",
+  "wl.join": "Join sample waitlist",
+  "wl.leave": "Leave sample waitlist",
+  "wl.already": "Already joined locally for this examiner and checkride. Nothing was sent.",
+  "wl.joined": "Sample waitlist joined in this browser. Nothing was sent.",
+  "wl.left": "Sample waitlist left for this checkride. Nothing was sent.",
+  "wl.leave_note": "Leaving removes this examiner/checkride’s local alerts."
+}

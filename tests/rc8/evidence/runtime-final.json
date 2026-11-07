@@ -1,0 +1,14 @@
+{
+  "checked_et": "2026-11-07T15:36:54.083758-05:00",
+  "state": "READY IN DEV ONLY; rc8 freeze prohibited pending independent rc7 verdict + explicit user continuation",
+  "version": "cc-proto-v7.10.0",
+  "runtime_sha256": {
+    "app.js": "134eb532c1ccf5339dfda2bac8788097788a90b316fdd59966c1d477e35f8b4c",
+    "sw.js": "795b5e2e2aa77e67e229882e977c3b12dd9df9a66708c34d4a99b984fed31a7b",
+    "index.html": "b4434ad789dd16a866153c957d3c94389dc885decf51054e54708ca87b84599b",
+    "styles.css": "e68bd70163132b1159b4d9d6e505d7f510770af2934f2643b6507b5a78c3909b",
+    "elig-clock.js": "8aff2a1393b51f1682a6a2f88d6808f270605f393972c1df6a92fa78ab0fe9d9"
+  },
+  "frozen13_trees630_files_unchanged": true,
+  "engine_reference_unchanged": true
+}

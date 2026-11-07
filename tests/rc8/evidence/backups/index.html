@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}:root[data-theme=dark]{color-scheme:dark}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#F6F9FC;color:#162941}:root[data-theme=dark] body{background:#0B1424;color:#EAF0F8}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" href="icons/favicon.svg" type="image/svg+xml"><link rel="icon" href="icons/favicon-dark-32.png" sizes="32x32" type="image/png" media="(prefers-color-scheme: dark)"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest"><meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#10141d" media="(prefers-color-scheme: dark)">
+<title>Checkride Connect (prototype)</title>
+<meta name="description" content="Checkride Connect prototype: find sample examiners by certificate, location, availability and price. Example data only, not real examiners; not affiliated with or endorsed by the FAA.">
+<!-- Fully static: no external fonts, scripts or network calls. Fonts are self-hosted in fonts/. -->
+<!-- QA-051: no font preloads (Firefox warned they were unused on some routes); @font-face with font-display handles loading. --><link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('cc-theme')||'system';if(t==='system')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;if(localStorage.getItem('cc-theme')&&localStorage.getItem('cc-theme')!=='system'){var ms=document.querySelectorAll('meta[name=theme-color]');for(var i=0;i<ms.length;i++){ms[i].media=(ms[i].content==='#10141d')===(t==='dark')?'all':'not all';}}}catch(e){document.documentElement.dataset.theme='light';}})();
+try{if(localStorage.getItem("cc-wf"))document.documentElement.classList.add("wf")}catch(e){}</script>
+</head><body>
+<script>(function(){var h=location.hash.slice(1).split("?")[0].split("#")[0];if(h===""||h==="/"||h==="faq"||h==="/login"||h==="/signup")document.body.classList.add("is-landing");})();</script>
+
+<a class="skip-link" href="#app">Skip to content</a>
+<header class="topbar">
+  <div class="proto-banner" role="note"><b>EXAMPLE DATA – not real examiners.</b> <span>Fictional sample data. <span data-copy-key="proto.payments">Prototype: no real payments.</span></span></div>
+  <div class="land-strip" role="note"><b>Private prototype</b> · Fictional demo data <span class="sep">No real requests are sent.</span></div>
+  <div class="topbar-inner">
+    <a class="brand" href="#/" aria-label="Checkride Connect, home">
+      <img class="lockup lockup-light" src="brand/checkride-connect-logo-light.png" width="133" height="38" alt="Checkride Connect">
+      <img class="lockup lockup-dark" src="brand/checkride-connect-logo-dark.png" width="133" height="38" alt="Checkride Connect">
+    </a>
+    <nav id="crumb" class="crumb" aria-label="Breadcrumb"></nav>
+    <nav id="land-nav" class="land-nav" aria-label="Landing" hidden><a href="#/#how">How it works</a><a href="#/#students">Students</a><a href="#/#examiners">Examiners</a><a href="#/#schools">Flight schools</a><a href="#/#faq">FAQs</a></nav>
+    <div class="topbar-right">
+      <label class="theme-pick"><span class="sr-only">Theme</span>
+        <select id="theme-select" data-theme-select data-action-change="theme" aria-label="Theme">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="system">System</option>
+        </select>
+      </label>
+      <label class="role">
+        <span class="role-label">View as</span>
+        <select id="role-select" aria-label="View the app as">
+          <option value="pilot">Student pilot</option>
+          <option value="dpe">Examiner</option>
+          <option value="school">Flight school</option>
+          <option value="admin" hidden disabled>Admin</option>
+        </select>
+      </label>
+      <div id="v4-auth" class="v4-authbar land-cta-auth"><a class="btn ghost sm" href="#/login">Log in</a><a class="btn sm" href="#/signup">Sign up</a></div>
+      <a class="btn cta sm land-cta" href="#/home" data-action="set-role" data-role="pilot" data-to="#/home">Explore the demo</a>
+    </div>
+  </div>
+</header>
+<nav id="nav" class="tabbar" aria-label="Main"></nav>
+
+<main id="app" class="wrap" tabindex="-1"><div class="page app-loading" data-state="loading" role="status" aria-live="polite">
+  <p class="app-loading-msg"><span class="spinner" aria-hidden="true"></span> Loading sample examiners…</p>
+  <div class="sk sk-title" aria-hidden="true"></div><div class="sk sk-line" aria-hidden="true"></div><div class="sk sk-line short" aria-hidden="true"></div>
+  <div class="sk sk-card" aria-hidden="true"></div><div class="sk sk-card" aria-hidden="true"></div>
+</div></main>
+
+<footer class="footer wrap">
+  <p><b>EXAMPLE DATA – not real examiners.</b> Prototype, not legal or FAA advice. All examiners, applicants, schools and prices are fictional sample data. No payments are processed and nothing is emailed or texted; data stays in this browser.</p>
+  <p class="faa-disclaimer"><b>Not affiliated with or endorsed by the FAA.</b></p>
+  <button class="btn ghost sm" data-action="reset-data-ask" id="footer-reset-data">Reset demo data</button>
+</footer>
+
+<div id="modal-root"></div>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+
+<script defer src="demo-date.js"></script>
+<script defer src="data.js"></script>
+<script defer src="sample-fl-examiners.js"></script>
+<script defer src="sample-tx-examiners.js"></script>
+<script defer src="sample-ca-examiners.js"></script>
+<script defer src="sample-az-examiners.js"></script>
+<script defer src="sample-nc-examiners.js"></script>
+<script defer src="cost-model.js"></script>
+<script defer src="elig-clock.js"></script>
+<script defer src="app.js"></script>
+<script id="app-fallback">
+// Data load failure: if a script failed to load or the sample data is missing, show a recoverable error instead of a blank page.
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.CC_APP_READY) return;
+  var app = document.getElementById("app");
+  app.innerHTML = '<div class="page"><div class="card empty state" data-state="load-error" role="alert">' +
+    '<svg class="state-ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 2.8 19.5h18.4z"/><path d="M12 10v4.2M12 17.2v.1"/></svg>' +
+    '<h1>Sample data didn\u2019t load</h1><p>' + (navigator.onLine === false ? "You\u2019re offline and this page isn\u2019t saved on this device yet. Connect once, then it works offline." : "Part of the prototype failed to load. Try again.") + '</p>' +
+    '<div class="empty-actions"><button class="btn" type="button" id="retry-load">Try again</button></div>' +
+    '<p class="muted small">Prototype – no real payments. Prototype, not legal or FAA advice.</p></div></div>';
+  document.getElementById("retry-load").addEventListener("click", function () { location.reload(); });
+});
+</script>
+<script>
+// Offline support: a small service worker caches the app shell and sample data (relative paths, works under a subpath).
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js", { scope: "./" }).catch(function () {}); });
+}
+</script>
+
+</body></html>

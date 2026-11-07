@@ -1,0 +1,130 @@
+PASS chromium date-only is missing 
+PASS chromium tick=false 
+PASS chromium typed 0.05: bound/error/status 
+PASS chromium typed 0.09: bound/error/status 
+PASS chromium typed 0.099999: bound/error/status 
+PASS chromium typed 0.1: bound/error/status 
+PASS chromium typed 0: bound/error/status 
+PASS chromium typed -5: bound/error/status 
+PASS chromium typed 24: bound/error/status 
+PASS chromium typed 24.1: bound/error/status 
+PASS chromium tick=true 
+PASS chromium tick optional; send not disabled 
+PASS chromium typed 1000000: bound/error/status 
+PASS chromium typed 2.996: bound/error/status 
+PASS chromium 2.996 excluded with precision error 
+PASS chromium typed 2.9999999: bound/error/status 
+PASS chromium typed 2.9999999999999999: bound/error/status 
+PASS chromium typed 3.000: bound/error/status 
+PASS chromium typed 3e0: bound/error/status 
+PASS chromium typed 3.00: bound/error/status 
+PASS chromium typed 1.00: bound/error/status 
+PASS chromium typed 3: bound/error/status 
+PASS chromium actual precision clipboard paste/ARIA 
+PASS chromium precision clipboard persistence 
+PASS chromium typed e: native badInput captured immediately 
+PASS chromium malformed e survives reload 
+PASS chromium tick=true 
+PASS chromium tick optional; send not disabled 
+PASS chromium corrected e clears error 
+PASS chromium typed 1e: native badInput captured immediately 
+PASS chromium malformed 1e survives reload 
+PASS chromium tick=true 
+PASS chromium tick optional; send not disabled 
+PASS chromium corrected 1e clears error 
+PASS chromium native comma filtering observed (NOT app rejection) 
+PASS chromium corrected 1,5 clears error 
+PASS chromium intentionally cleared = missing, error removed 
+PASS chromium tick=false 
+PASS chromium 0.09+2.95 = 2.95 fails 
+PASS chromium tick=true 
+PASS chromium tick optional; send not disabled 
+PASS chromium 0.1+2.9 = 3 ok 
+PASS chromium 3 valid + invalid 30 = ok with ignored note 
+PASS chromium tick=false 
+PASS chromium two invalid = fails, 2 ignored 
+PASS chromium tick=true 
+PASS chromium tick optional; send not disabled 
+PASS chromium invalid-only numeric state survives reload 
+PASS chromium raw mixed precision is logged 1 not 3 
+PASS chromium raw mixed corrected =3 
+PASS chromium decimal triple 0.3+2.3+0.4 = exactly 3 
+PASS chromium decimal triple 0.7+1.4+0.9 = exactly 3 
+PASS chromium settled invalid form axe light 
+PASS chromium settled invalid form axe dark 
+PASS chromium all blank after correcting invalid = missing 
+PASS chromium blank persists as missing 
+PASS chromium invalid-only Send false: tick present 
+PASS chromium invalid-only Send false: Send enabled 
+PASS chromium invalid-only Send false: completed and stored 
+PASS chromium invalid-only Send true: tick present 
+PASS chromium invalid-only Send true: Send enabled 
+PASS chromium invalid-only Send true: completed and stored 
+PASS chromium normal usage page exceptions / external runtime requests 
+PASS firefox date-only is missing 
+PASS firefox tick=false 
+PASS firefox typed 0.05: bound/error/status 
+PASS firefox typed 0.09: bound/error/status 
+PASS firefox typed 0.099999: bound/error/status 
+PASS firefox typed 0.1: bound/error/status 
+PASS firefox typed 0: bound/error/status 
+PASS firefox typed -5: bound/error/status 
+PASS firefox typed 24: bound/error/status 
+PASS firefox typed 24.1: bound/error/status 
+PASS firefox tick=true 
+PASS firefox tick optional; send not disabled 
+PASS firefox typed 1000000: bound/error/status 
+PASS firefox typed 2.996: bound/error/status 
+PASS firefox 2.996 excluded with precision error 
+PASS firefox typed 2.9999999: bound/error/status 
+PASS firefox typed 2.9999999999999999: bound/error/status 
+PASS firefox typed 3.000: bound/error/status 
+PASS firefox typed 3e0: bound/error/status 
+PASS firefox typed 3.00: bound/error/status 
+PASS firefox typed 1.00: bound/error/status 
+PASS firefox typed 3: bound/error/status 
+PASS firefox actual precision clipboard paste/ARIA 
+PASS firefox precision clipboard persistence 
+PASS firefox typed e: native badInput captured immediately 
+PASS firefox malformed e survives reload 
+PASS firefox tick=true 
+PASS firefox tick optional; send not disabled 
+PASS firefox corrected e clears error 
+PASS firefox typed 1e: native badInput captured immediately 
+PASS firefox malformed 1e survives reload 
+PASS firefox tick=true 
+PASS firefox tick optional; send not disabled 
+PASS firefox corrected 1e clears error 
+PASS firefox typed 1,5: native badInput captured immediately 
+PASS firefox malformed 1,5 survives reload 
+PASS firefox tick=true 
+PASS firefox tick optional; send not disabled 
+PASS firefox corrected 1,5 clears error 
+PASS firefox intentionally cleared = missing, error removed 
+PASS firefox tick=false 
+PASS firefox 0.09+2.95 = 2.95 fails 
+PASS firefox tick=true 
+PASS firefox tick optional; send not disabled 
+PASS firefox 0.1+2.9 = 3 ok 
+PASS firefox 3 valid + invalid 30 = ok with ignored note 
+PASS firefox tick=false 
+PASS firefox two invalid = fails, 2 ignored 
+PASS firefox tick=true 
+PASS firefox tick optional; send not disabled 
+PASS firefox invalid-only numeric state survives reload 
+PASS firefox raw mixed precision is logged 1 not 3 
+PASS firefox raw mixed corrected =3 
+PASS firefox decimal triple 0.3+2.3+0.4 = exactly 3 
+PASS firefox decimal triple 0.7+1.4+0.9 = exactly 3 
+PASS firefox settled invalid form axe light 
+PASS firefox settled invalid form axe dark 
+PASS firefox all blank after correcting invalid = missing 
+PASS firefox blank persists as missing 
+PASS firefox invalid-only Send false: tick present 
+PASS firefox invalid-only Send false: Send enabled 
+PASS firefox invalid-only Send false: completed and stored 
+PASS firefox invalid-only Send true: tick present 
+PASS firefox invalid-only Send true: Send enabled 
+PASS firefox invalid-only Send true: completed and stored 
+PASS firefox normal usage page exceptions / external runtime requests 
+TYPED RESULT 129 passed, 0 failed

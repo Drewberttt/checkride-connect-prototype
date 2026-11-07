@@ -194,7 +194,12 @@
   // QA-039: one shared rule. A slot whose start instant (airport zone) has passed is never listed, alerted, offered or requestable.
   const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
   // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
-  const COPY = { "proto.payments": "Prototype: no real payments.", "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state",
+  const COPY = { "goal.blank": "No default checkride", "goal.label": "Planning checkride", "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",
+    "wl.status.joined": "Joined locally · illustrative position #{position}.", "wl.status.not_joined": "Not joined for this checkride.",
+    "wl.sample": "Fictional sample only. Positions are illustrative, not live demand or priority. No notifications are sent; no slot is reserved.",
+    "wl.join": "Join sample waitlist", "wl.leave": "Leave sample waitlist", "wl.already": "Already joined locally for this examiner and checkride. Nothing was sent.",
+    "wl.joined": "Sample waitlist joined in this browser. Nothing was sent.", "wl.left": "Sample waitlist left for this checkride. Nothing was sent.",
+    "wl.leave_note": "Leaving removes this examiner/checkride’s local alerts.", "proto.payments": "Prototype: no real payments.", "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state",
     // D41 (new key for Customer Discovery): the NC sample area has no cost data, so no estimate is shown and nothing is invented.
     "estimate.no_area_data": `No estimate yet for ${IS_NC ? "North Carolina" : "this area"}. This prototype has no sample aircraft, instructor or travel cost data here, so we don\u2019t guess. Fees shown are each examiner\u2019s own (sample).`,
     // NC cost data (Marlo, Nov 2; new keys for Customer Discovery). National figures used where NC has none are labelled "national average".
@@ -1274,8 +1279,9 @@ const closeModal = () => {
       const matches = openSlots({ cert: a.cert }).filter((s) => alertMatches(a, s)).length;
       const dp = a.dpeId ? dpeById(a.dpeId) : null;
       return `<div class="card">
-        <div class="row spread"><h3 style="margin:0">${esc(c.name)}</h3><button class="btn ghost sm" data-action="del-alert" data-id="${a.id}">Delete</button></div>
+        <div class="row spread"><h3 style="margin:0">${esc(c.name)}</h3><button class="btn ghost sm" data-action="del-alert" data-id="${a.id}">${dp ? COPY["wl.leave"] : "Delete"}</button></div>
         <p class="muted small" style="margin:.3rem 0">Within ${a.radius} nm of ${a.near}${a.before ? ` · before ${fmtDateA(a.before)}` : ""}${a.maxFee ? ` · up to ${money(a.maxFee)}` : ""}${dp ? ` · only ${esc(dp.name)}` : ""}</p>
+        ${dp ? waitlistControl(dp, a.cert, a.id, false) : ""}
         <div class="row small"><span class="pill">Mock: email only (not sent)</span>
         <a href="#/search?${toQuery({ cert: a.cert, near: a.near, radius: a.radius, before: a.before, maxFee: a.maxFee })}">${plural(matches, "matching opening")} now →</a></div>
         <div class="row small" style="margin-top:.6rem"><button class="btn ghost sm" data-action="sim-open" data-alert="${a.id}">Simulate a matching opening</button><span class="muted">Demo only: adds a labelled simulated slot and runs this alert.</span></div>
@@ -1427,6 +1433,12 @@ const closeModal = () => {
 
   // ---- C (wl.offer.*, D5/D14/D19/D23): the waitlist-offer screen. Hold end in the student's own zone (D19).
   const wlOf = (dpeId) => { S.wl = S.wl || {}; return S.wl[dpeId] || (S.wl[dpeId] = { pos: 4, passes: 0 }); }; // mock place in line
+  const wlJoined = (dpeId, cert) => S.alerts.some(a => a.dpeId === dpeId && a.cert === cert);
+  const wlPosition = (dpeId) => { const p = S.wl && S.wl[dpeId] && S.wl[dpeId].pos; return Number.isInteger(p) && p > 0 ? p : 4; };
+  function waitlistControl(dp, cert, where = "profile", buttons = true) {
+    const joined = wlJoined(dp.id, cert), id = `wl-note-${where}-${dp.id}-${cert}`;
+    return `<div class="small" data-wl-control="${dp.id}" data-wl-cert="${cert}" style="margin-top:.7rem"><p role="status" data-wl-state="${joined ? "joined" : "not-joined"}"${joined ? ` data-wl-position="${wlPosition(dp.id)}"` : ""} style="margin:.25rem 0" data-copy-key="wl.status.${joined ? "joined" : "not_joined"}">${joined ? COPY["wl.status.joined"].replace("{position}", wlPosition(dp.id)) : COPY["wl.status.not_joined"]}</p><p id="${id}" class="muted" data-copy-key="wl.sample">${COPY["wl.sample"]}</p>${buttons ? `<button type="button" class="btn secondary sm" data-action="${joined ? "leave-waitlist" : "alert-dpe"}" data-dpe="${dp.id}" data-cert="${cert}" aria-describedby="${id}">${COPY[joined ? "wl.leave" : "wl.join"]}</button>` : ""}${joined ? `<p class="muted" data-copy-key="wl.leave_note">${COPY["wl.leave_note"]}</p>` : ""}</div>`;
+  }
   const WL_BACK = 12; // mock "back of the line"
   const quietHour = (ts) => { const h = new Date(ts).getHours(); return h >= 21 || h < 8; };
   function offerHold(n, sl) {
@@ -1459,6 +1471,7 @@ const closeModal = () => {
       ${head("OPENING AVAILABLE", "A slot opened.", "Your call.")}
       <section class="card" id="wl-offer" data-offer-kind="${h.kind}">
         <h2>A slot opened with ${esc(dp.name)}</h2>
+        ${waitlistControl(dp, cert, "offer", false)}
         ${mineB ? `<p>${reqPill(mineB)}</p>` : ended ? `<p class="small" data-offer-ended>${endedText || "Already taken"}</p>` : `<p data-offer-chip>${chip("warn", `Held for you until ${readerTime(h.end)}`)}</p><p data-offer-body>${body}</p>
         <p class="small muted" data-hold-rule>We hold openings for 2 hours, or 30 minutes if the slot is less than 3 days away. If a 2-hour hold would end overnight (9 PM\u20138 AM your time), we hold it until 9 AM.</p>
         <p class="small" data-offer-allin>${allin}</p>
@@ -2304,7 +2317,13 @@ const closeModal = () => {
   const CLOCK_RATING = { ppl: "private-asel", ir: "instrument-airplane", cpl: "commercial-asel", me: "private-amel", cfi: "cfi", mei: "cfi", cfii: "cfi-instrument", sport: "sport-airplane" };
   const CK = () => S.clock || {};
   const triVal = (v) => (v === "yes" ? true : v === "no" ? false : null);
-  const clockCert = () => { const cur = activeReq(); return cur ? cur.cert : "ppl"; };
+  // Planning defaults only: explicit choices/evidence and active requests outrank signup hints.
+  const supportedGoal = (v) => typeof v === "string" && v !== "sport" && !!certById(v);
+  const signupGoal = () => supportedGoal(S.demoUser && S.demoUser.goal) ? S.demoUser.goal : "ppl";
+  const hasReadinessEvidence = () => Object.keys(CK()).length > 0 || Object.values(S.ready9 || {}).some(Boolean) || (!S.ktSample && Object.values(S.ready9Dates || {}).some(Boolean)) || Object.keys(S.medical || {}).length > 0;
+  const planningCert = () => supportedGoal(S.readinessCert) ? S.readinessCert : hasReadinessEvidence() ? "ppl" : signupGoal();
+  const clockCert = () => { const cur = activeReq(); return cur ? cur.cert : planningCert(); };
+  const pinReadiness = () => { if (!activeReq() && !supportedGoal(S.readinessCert)) S.readinessCert = planningCert(); };
   const clockPlanned = () => {
     const cur = activeReq(), sl = cur && slotOf(cur);
     if (sl) return { planned: sl.date, key: "clock.when.slot", text: COPY["clock.when.slot"].replace("{date}", fmtDateY(sl.date)).replace("{airport}", sl.airport).replace("{zone}", zoneLabel(slotTz(sl))) };
@@ -2314,11 +2333,15 @@ const closeModal = () => {
   // D44 / QA-099: preserve native raw text and validate through the shared engine before coercion.
   // Unsupported precision stays invalid evidence, never missing; this advisory never blocks booking.
   const prepHoursBad = (e) => { if (!e) return false; if (e.hoursBad) return true; const h = e.hours; if (typeof h === "boolean") return true; if (h === undefined || h === null || String(h).trim() === "") return false; return !(window.CC_ELIG && window.CC_ELIG.prepHoursValid && window.CC_ELIG.prepHoursValid(h)); };
+  // RC7-I01/I02: text + decimal inputmode retains raw syntax that native number inputs normalize/filter.
+  // RC7-I03: valid imported padded text is visible in supported trimmed form, without mutating saved evidence.
+  const prepHoursDisplay = (e) => { if (!e || e.hoursBad || typeof e.hours === "boolean" || e.hours == null) return ""; const t = String(e.hours); return window.CC_ELIG.prepHoursValid(e.hours) ? t.replace(/^[ \t\n\r]+|[ \t\n\r]+$/g, "") : t; };
   const prepIgnored = () => (CK().prep || []).filter((e) => e && prepHoursBad(e)).length;
   // Preserve nonempty invalid evidence for the engine: zero qualifying hours is fails, not missing (QA-098).
   // A date-only row or intentionally blank hours is still no evidence. Bad native input is evidence even when value=="".
   const clockEntries = () => { const rows = (CK().prep || []).filter((e) => e && (prepHoursBad(e) || E_OK(e.date) && String(e.hours ?? "").trim() !== "")); return rows.length ? rows.map((e) => ({ date: E_OK(e.date) ? e.date : "", hours: prepHoursBad(e) ? null : e.hours, qualifies: !e.sim })) : null; };
   function savePrepHours(t) {
+    pinReadiness();
     const i = +t.dataset.clock.split(".")[1], c = S.clock = S.clock || {};
     c.prep = c.prep || []; const e = c.prep[i] = c.prep[i] || {};
     e.hours = t.value; e.hoursBad = !!(t.validity && t.validity.badInput);
@@ -2331,7 +2354,7 @@ const closeModal = () => {
         err.style.cssText = "margin:0;flex-basis:100%;color:var(--bad-text)"; t.closest("label").after(err); }
       err.textContent = COPY["clock.more.hours_invalid"];
     } else { t.removeAttribute("aria-invalid"); t.removeAttribute("aria-describedby"); if (err) err.remove(); }
-    // Refresh advisory output only, never replace the native number input while it is being edited.
+    // Refresh advisory output only; never replace the raw-text hours control while it is being edited.
     document.querySelectorAll("[data-elig-clock]").forEach((el) => { el.outerHTML = clockBlock(el.id); });
   }
   const E_OK = (d) => !!(window.CC_ELIG && window.CC_ELIG.cal.isYmd(d));
@@ -2378,7 +2401,7 @@ const closeModal = () => {
     const dt = (id, key, label, val) => `<label class="field" style="max-width:240px"><span>${label}</span><input type="date" id="${id}" data-clock="${key}" value="${esc(val || "")}" /></label>`;
     return `<details class="clock-more" id="clock-more" ${has || ui.clockOpen ? "open" : ""}><summary data-copy-key="clock.more.summary">${COPY["clock.more.summary"]}</summary>
       <fieldset class="clock-fs"><legend data-copy-key="clock.more.prep_legend">${COPY["clock.more.prep_legend"]}</legend>
-        ${rule && cert !== "me" ? `${[0, 1, 2].map((i) => { const e = prep[i] || {}; return `<div class="row clock-prep-row" style="gap:.6rem;align-items:end;flex-wrap:wrap">${dt(`clock-prep-d${i}`, `prep.${i}.date`, `Date ${i + 1}`, e.date)}<label class="field" style="max-width:110px"><span>Hours</span><input type="number" inputmode="decimal" min="0.1" max="24" step="0.01" id="clock-prep-h${i}" data-clock="prep.${i}.hours" value="${esc(e.hoursBad || typeof e.hours === "boolean" ? "" : e.hours || "")}"${prepHoursBad(e) ? ` aria-invalid="true" aria-describedby="clock-prep-h${i}-err"` : ""} /></label>${prepHoursBad(e) ? `<p class="small" id="clock-prep-h${i}-err" data-prep-hours-err style="margin:0;flex-basis:100%;color:var(--bad-text)" data-copy-key="clock.more.hours_invalid">${COPY["clock.more.hours_invalid"]}</p>` : ""}<label class="row" style="gap:.35rem;min-height:44px"><input type="checkbox" id="clock-prep-s${i}" data-clock="prep.${i}.sim" ${e.sim ? "checked" : ""} /> <span class="small">Simulator or FTD</span></label></div>`; }).join("")}
+        ${rule && cert !== "me" ? `${[0, 1, 2].map((i) => { const e = prep[i] || {}; return `<div class="row clock-prep-row" style="gap:.6rem;align-items:end;flex-wrap:wrap">${dt(`clock-prep-d${i}`, `prep.${i}.date`, `Date ${i + 1}`, e.date)}<label class="field" style="max-width:110px"><span>Hours</span><input type="text" inputmode="decimal" autocomplete="off" spellcheck="false" id="clock-prep-h${i}" data-clock="prep.${i}.hours" value="${esc(prepHoursDisplay(e))}"${prepHoursBad(e) ? ` aria-invalid="true" aria-describedby="clock-prep-h${i}-err"` : ""} /></label>${prepHoursBad(e) ? `<p class="small" id="clock-prep-h${i}-err" data-prep-hours-err style="margin:0;flex-basis:100%;color:var(--bad-text)" data-copy-key="clock.more.hours_invalid">${COPY["clock.more.hours_invalid"]}</p>` : ""}<label class="row" style="gap:.35rem;min-height:44px"><input type="checkbox" id="clock-prep-s${i}" data-clock="prep.${i}.sim" ${e.sim ? "checked" : ""} /> <span class="small">Simulator or FTD</span></label></div>`; }).join("")}
         <p class="small muted" style="margin:.25rem 0" data-copy-key="clock.more.sim_note">${COPY["clock.more.sim_note"]} ${verifyFor([16])}</p>
         ${dt("clock-grad", "grad", COPY["clock.more.grad"], c.grad)}` : cert === "me" ? `<p class="small muted" style="margin:0" data-copy-key="clock.more.prep_exempt">${COPY["clock.more.prep_exempt"]} ${verifyFor([17])}</p>` : `<p class="small muted" style="margin:0" data-copy-key="clock.more.prep_none">${COPY["clock.more.prep_none"]} ${VERIFY}</p>`}
       </fieldset>
@@ -2395,7 +2418,7 @@ const closeModal = () => {
   function viewJourney() {
     const reqs = myReqs(), cur = activeReq();
     const s = cur && slotOf(cur), dp = cur && dpeById(cur.dpeId);
-    const cert = cur ? cur.cert : "ppl";
+    const cert = cur ? cur.cert : planningCert();
     const n = ready9Count();
     const items = READY9(cert, dp), r9 = S.ready9 || {};
     const nextItem = items.find((it) => !r9[it.id]);
@@ -2437,7 +2460,7 @@ const closeModal = () => {
 
   function viewReadiness() {
     const cur = activeReq(), dp = cur && dpeById(cur.dpeId), s = cur && slotOf(cur);
-    const cert = cur ? cur.cert : "ppl";
+    const cert = cur ? cur.cert : planningCert();
     const items = READY9(cert, dp), r9 = S.ready9 || {}, n = ready9Count();
     const cs = cur && cur.status === "confirmed" ? S.curated[cur.id] : null;
     return `<div class="page">
@@ -2447,6 +2470,7 @@ const closeModal = () => {
         <p class="muted small">${cur ? `For your ${esc(certById(cert).name)} checkride with ${esc(dp.name)} \u00b7 ${slotAt(s)}` : `For your ${esc(certById(cert).name)} checkride`}</p>
         ${cs && cs.sent ? `<p class="small">${esc(dp.name)} confirmed this list on ${fmtDate(iso(new Date(cs.sent.sentAt)), { month: "short", day: "numeric" })}.</p>` : ""}
         <div class="row" style="margin:.25rem 0 .5rem;gap:.75rem;align-items:end"><label class="field" style="max-width:240px"><span>Knowledge test date (optional)</span><input type="date" id="kt-date-r9" data-r9date="kt" value="${esc((S.ready9Dates || {}).kt || "")}" /></label>${rollChip(eligRollup())}</div>
+        ${!cur ? `<label class="field" style="max-width:420px"><span data-copy-key="goal.label">${COPY["goal.label"]}</span><select id="readiness-cert" data-planning-cert aria-describedby="planning-note">${D.certs.filter(c => c.id !== "sport").map(c => `<option value="${c.id}" ${c.id === cert ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></label><p class="small muted" id="planning-note" data-copy-key="goal.note">${COPY["goal.note"]}</p>` : ""}
         ${clockInputs()}${clockBlock("elig-clock-r9")}
         <ol class="ready9">${items.map((it, i) => { const d = !!r9[it.id]; return `<li><label class="check-item ${d ? "done" : ""}"><input type="checkbox" data-r9="${it.id}" ${d ? "checked" : ""} /><div><div class="t"><span class="mono muted">${i + 1}</span> ${esc(it.t)}</div><div class="muted small">${it.h}</div>${it.lbl ? `<div class="small"><b>${it.lbl}</b></div>` : ""}${it.id === "prep" && cs && cs.sent ? `<a class="small" href="#/my-checklists">Open prep list</a>` : ""}</div></label>${it.id === "med" ? medicalBlock() : it.id === "prep" ? prepStudent(cur && cur.status === "confirmed" ? cur : null, dp) : ""}</li>`; }).join("")}</ol>
         <p class="small muted" style="margin:.75rem 0 0">A checklist to help you prepare, not an FAA requirement list. Your CFI and examiner have the final word.</p>
@@ -2650,7 +2674,7 @@ const closeModal = () => {
     const raw = (k) => (dup[k] ? dup[k][0] : q[k]);
     const rc = raw("cert"), rn = raw("near"), rr = raw("radius");
     const qc = rc == null ? rc : String(rc).trim().toLowerCase(), qn = rn == null ? rn : String(rn).trim().toUpperCase();
-    const cert = qc && certById(qc) && qc !== "sport" ? qc : "ppl";
+    const cert = qc && certById(qc) && qc !== "sport" ? qc : rc != null ? "ppl" : supportedGoal(S.findCert) ? S.findCert : signupGoal();
     const near = qn && apt(qn) ? qn : DEFAULT_NEAR;
     const radius = V4_RADII.includes(+rr) ? +rr : 50;
     // QA-069: a link with a value we can't use says what it fell back to instead of switching silently.
@@ -2735,9 +2759,9 @@ const closeModal = () => {
     // QA-070: the slot.started message (role=status, focusable) when the picked opening started or went away.
     const lostMsg = lost ? `<p class="v4-note crit" id="slot-started" role="status" tabindex="-1"><b>${lost.started ? COPY["slot.started"] : "That opening is no longer available."}</b> <span>${esc(fmtDate(lost.date, { weekday: "short", month: "short", day: "numeric" }))} \u00b7 <span class="mono">${esc(lost.time)}</span>. Pick another time.</span></p>` : "";
     const alertMsg = alertPick ? `<div class="cta-banner small" id="alert-pick" style="margin:.75rem 0 0"><b>From your alert:</b> ${slotTime(alertPick)} is preselected.${alertPick.simulated ? ` <span class="pill warn">Simulated opening</span>` : ""}</div>` : q.slot ? `<p class="v4-note" id="alert-pick-gone"><b>That opening is no longer available.</b> Pick another time below.</p>` : "";
-    const foot = `<div class="v4-op-foot small"><span>${freshBadge(dp.id)}</span> <b>Nothing that works?</b> <a href="#" data-action="alert-dpe" data-dpe="${dp.id}" data-cert="${cert}">Save a mock alert for ${esc(first(dp.name))}</a></div>
+    const foot = `<div class="v4-op-foot small"><span>${freshBadge(dp.id)}</span>${waitlistControl(dp, cert)}</div>
       <p class="muted small" style="margin:.5rem 0 0">${plural(slots.length, "open slot")} \u00b7 sample calendar, generated for this demo. Always confirm the date with the examiner; this prototype guarantees nothing.</p>`;
-    if (stale || !days.length) return `<section class="card v4-openings" id="v4-openings" aria-labelledby="v4-op-h"><h2 id="v4-op-h">Openings</h2>${lostMsg}${alertMsg}<p class="muted small" style="margin:0">${stale ? "<b>Availability not recently confirmed.</b> Contact the examiner. Openings are hidden until the examiner confirms." : `No open ${esc(certById(cert).short)} slots right now.`} <a href="#" data-action="alert-dpe" data-dpe="${dp.id}" data-cert="${cert}">Save a mock alert</a></p></section>`;
+    if (stale || !days.length) return `<section class="card v4-openings" id="v4-openings" aria-labelledby="v4-op-h"><h2 id="v4-op-h">Openings</h2>${lostMsg}${alertMsg}<p class="muted small" style="margin:0">${stale ? "<b>Availability not recently confirmed.</b> Contact the examiner. Openings are hidden until the examiner confirms." : `No open ${esc(certById(cert).short)} slots right now.`} </p>${waitlistControl(dp, cert)}</section>`;
     // The shown day is the student's: a fixed day (a ?date= link, or the day of a slot that started) is never swapped for another.
     const day = days.includes(ui.sel) ? ui.sel : ui.selFixed && ui.sel ? null : days[0];
     const times = day ? S.slots.filter((s) => s.dpeId === dp.id && s.date === day && s.status !== "removed" && !(s.status === "open" && slotPast(s))).sort((a, b) => a.time.localeCompare(b.time)) : [];
@@ -2787,7 +2811,7 @@ const closeModal = () => {
   function viewSignup(q) {
     const role = V4_ROLES.some(([r]) => r === (ui.signupRole || q.role)) ? (ui.signupRole || q.role) : "pilot";
     const aptLbl = { pilot: "Home airport", dpe: "Main airport you test at", school: "School\u2019s home airport" }[role];
-    const goal = role === "pilot" ? `<label class="field"><span>Checkride you\u2019re working toward</span><select name="goal" id="signup-goal">${D.certs.filter((c) => c.id !== "sport").map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join("")}<option value="atp">ATP (info only: not bookable in this prototype)</option></select></label>
+    const goal = role === "pilot" ? `<label class="field"><span>Checkride you\u2019re working toward</span><select name="goal" id="signup-goal"><option value="" data-copy-key="goal.blank">${COPY["goal.blank"]}</option>${D.certs.filter((c) => c.id !== "sport").map((c) => `<option value="${c.id}" ${(ui.signupGoal ?? (S.demoUser && S.demoUser.goal)) === c.id ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option value="atp" ${(ui.signupGoal ?? (S.demoUser && S.demoUser.goal)) === "atp" ? "selected" : ""}>ATP (info only: not bookable in this prototype)</option></select></label>
         <label class="field"><span>Recommending CFI <span class="muted">(optional)</span></span><input name="cfi" id="signup-cfi" autocomplete="off"></label>` : "";
     return v4AuthShell(`<h1>Create your account</h1><p class="muted">Free during the prototype. Takes about a minute.</p>${V4_DEMO_NOTE}
       <form class="stack" data-form="demo-signup" autocomplete="off" novalidate>
@@ -3060,7 +3084,7 @@ const closeModal = () => {
     const e = f.querySelector("#" + errId); if (e && e.textContent === c[2]) e.textContent = "";
   }
   const V4_FORMS = {
-    find: (f, fd) => { const q = new URLSearchParams({ cert: fd.get("cert"), near: fd.get("near"), radius: fd.get("radius") || 50 }); location.hash = "#/find?" + q.toString(); },
+    find: (f, fd, t) => { if (t && t.name === "cert") { S.findCert = fd.get("cert"); save(); } const q = new URLSearchParams({ cert: fd.get("cert"), near: fd.get("near"), radius: fd.get("radius") || 50 }); location.hash = "#/find?" + q.toString(); },
     "demo-login": (f, fd) => {
       const role = fd.get("role") || "pilot";
       if (!authValidate(f)) return; // QA-081 (X04): inline message, aria-invalid, focus on the first empty field
@@ -3073,7 +3097,7 @@ const closeModal = () => {
       // QA-068 + QA-075: focus and the message go to the first field with a problem; fields already fixed are not invalid.
       if (!authValidate(f)) return;
       const airport = fd.get("airport") || "";
-      S.demoUser = { name: name.slice(0, 60), role, airport }; S.role = role; ui.signupRole = null;
+      S.demoUser = { name: name.slice(0, 60), role, airport, goal: role === "pilot" && (supportedGoal(fd.get("goal")) || fd.get("goal") === "atp") ? fd.get("goal") : "" }; S.role = role; ui.signupRole = null; ui.signupGoal = null;
       f.reset(); save(); toast(`Demo account for ${S.demoUser.name}. Nothing was sent; your email, phone and password weren\u2019t kept.`); go(HOME[role]);
     },
   };
@@ -3271,15 +3295,18 @@ function countUp(root) {
 
   // ---------- actions ----------
   function addAlert(a) {
+    if (a.dpeId && wlJoined(a.dpeId, a.cert)) { toast(COPY["wl.already"]); return true; }
     if (S.alerts.length >= ALERT_LIMIT) {
       openModal(`<h2>Alert limit reached</h2><p class="muted">This prototype keeps up to ${ALERT_LIMIT} saved mock alerts. Delete one to add another.</p>
         <div class="row" style="justify-content:flex-end"><a class="btn secondary" href="#/alerts" data-action="close-modal">Manage alerts</a></div>`);
       return false;
     }
+    if (a.dpeId) wlOf(a.dpeId);
     S.alerts.push({ id: uid("a"), channels: ["email"], createdAt: Date.now(), ...a });
     const n = openSlots({ cert: a.cert }).filter((s) => alertMatches(a, s)).length;
-    toast(`Mock alert saved in this browser.${n ? ` ${plural(n, "opening")} already match${n === 1 ? "es" : ""} it.` : " A mock alert will appear in your inbox when something matches."} No email is sent.`);
+    toast(a.dpeId ? COPY["wl.joined"] : `Mock alert saved in this browser.${n ? ` ${plural(n, "opening")} already match${n === 1 ? "es" : ""} it.` : " A mock alert will appear in your inbox when something matches."} No email is sent.`);
     rerender();
+    if (a.dpeId) document.querySelector(`[data-wl-control="${a.dpeId}"][data-wl-cert="${a.cert}"] button`)?.focus();
     return true;
   }
 
@@ -3478,7 +3505,8 @@ function countUp(root) {
       simBusy();
     },
     "notif-perm": () => { try { Promise.resolve(Notification.requestPermission()).then(() => rerender()); } catch (e) { /* unsupported */ } },
-    "del-alert": (el) => { S.alerts = S.alerts.filter((a) => a.id !== el.dataset.id); toast("Alert deleted."); rerender(); },
+    "del-alert": (el) => { const a = S.alerts.find(a => a.id === el.dataset.id); S.alerts = S.alerts.filter(x => a && a.dpeId ? !(x.dpeId === a.dpeId && x.cert === a.cert) : x.id !== el.dataset.id); toast(a && a.dpeId ? COPY["wl.left"] : "Alert deleted."); rerender(); },
+    "leave-waitlist": (el) => { S.alerts = S.alerts.filter(a => !(a.dpeId === el.dataset.dpe && a.cert === el.dataset.cert)); toast(COPY["wl.left"]); rerender(); document.querySelector(`[data-wl-control="${el.dataset.dpe}"][data-wl-cert="${el.dataset.cert}"] button`)?.focus(); },
     "read-all": () => { S.notifications.forEach((n) => { n.read = true; }); rerender(); },
     // ---- C: no-shows (D34/D36)
     "ns-mark": (el) => {
@@ -3957,7 +3985,8 @@ function countUp(root) {
   document.addEventListener("change", (e) => {
     const t = e.target;
     authLive(t); // QA-075
-    if (t.hasAttribute && t.hasAttribute("data-signup-role")) { const nm = ($("#signup-name") || {}).value || ""; ui.signupRole = t.value; render(); const n2 = $("#signup-name"); if (n2) n2.value = nm; const r2 = document.querySelector(`[data-signup-role][value="${t.value}"]`); if (r2) r2.focus(); return; }
+    if (t.id === "signup-goal") { ui.signupGoal = t.value; return; }
+    if (t.hasAttribute && t.hasAttribute("data-signup-role")) { if (document.getElementById("signup-goal")) ui.signupGoal = document.getElementById("signup-goal").value; const nm = ($("#signup-name") || {}).value || ""; ui.signupRole = t.value; render(); const n2 = $("#signup-name"); if (n2) n2.value = nm; const r2 = document.querySelector(`[data-signup-role][value="${t.value}"]`); if (r2) r2.focus(); return; }
     if (t.dataset.ctick) {
       S.ticks[t.dataset.ctick] = S.ticks[t.dataset.ctick] || {};
       S.ticks[t.dataset.ctick][t.dataset.item] = t.checked;
@@ -3974,7 +4003,7 @@ function countUp(root) {
     if (t.dataset.actionChange === "avail-age") { availOf(S.actingDpe).confirmedAt = Date.now() - Number(t.value) * DAY; rerender(); return; }
     if (t.dataset.actionChange === "theme") { applyTheme(t.value); return; }
     if (t.dataset.actionChange === "role") { S.role = t.value; go(HOME[S.role]); return; }
-    if (t.dataset.med) {
+    if (t.dataset.med) { pinReadiness();
       S.medical = S.medical || {};
       if (t.dataset.med === "type") { S.medical.type = t.value; if (!t.value || t.value === "unsure") S.medical.date = ""; }
       else {
@@ -3989,6 +4018,8 @@ function countUp(root) {
       }
       save(); rerender(); const back = $(t.dataset.med === "type" ? "#med-type" : "#med-date"); if (back) back.focus(); return;
     }
+    if (t.matches("[data-planning-cert]")) { if (supportedGoal(t.value)) { S.readinessCert = t.value; save(); rerender(); document.getElementById("readiness-cert")?.focus(); } return; }
+    if (t.matches("[data-clock],[data-r9],[data-r9date],[data-med]")) pinReadiness();
     if (t.dataset.clock && /^prep\.\d+\.hours$/.test(t.dataset.clock)) { savePrepHours(t); return; }
     if (t.dataset.clock) { // Rules 5/6 inputs: save, rerender, keep focus (labels only, never blocks)
       const c = S.clock = S.clock || {}, p = t.dataset.clock.split("."), v = t.type === "checkbox" ? t.checked : t.value;
@@ -4015,11 +4046,11 @@ function countUp(root) {
   const applyState = (sel, nextSel) => { delete sel.dataset.pending; forms.search(sel.form, new FormData(sel.form), sel); if (nextSel) ui.focusAfter = nextSel; };
   document.addEventListener("keydown", (e) => {
     const t = e.target;
-    // A saved boolean cannot be displayed by a native number input. An explicit Delete/Backspace
+    // Imported boolean/legacy native-badInput evidence displays blank with an error. Explicit Delete/Backspace
     // on that empty field clears the imported invalid evidence; merely focusing/blurring never clears it.
     if (t.dataset && /^prep\.\d+\.hours$/.test(t.dataset.clock || "") && ["Backspace", "Delete"].includes(e.key) && t.value === "" && !t.validity.badInput) {
       const row = (CK().prep || [])[+t.dataset.clock.split(".")[1]];
-      if (row && typeof row.hours === "boolean") savePrepHours(t);
+      if (row && (typeof row.hours === "boolean" || row.hoursBad)) savePrepHours(t);
     }
     if (!t.matches || !t.matches("[data-state-select]")) return;
     if (e.key === "Enter") { if (t.dataset.pending === "1") { e.preventDefault(); applyState(t); } return; }

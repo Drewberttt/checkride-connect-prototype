@@ -1,0 +1,46 @@
+{
+  "pass": 8,
+  "fail": 0,
+  "results": [
+    {
+      "browser": "chromium",
+      "name": "actual KT edit pins goal before save",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "goal change retains KT/checklist/medical bytes",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "clearing evidence persists without resetting chosen cert",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "cleared signup goal does not overwrite prior readiness selection",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual KT edit pins goal before save",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "goal change retains KT/checklist/medical bytes",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "clearing evidence persists without resetting chosen cert",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "cleared signup goal does not overwrite prior readiness selection",
+      "pass": true
+    }
+  ]
+}

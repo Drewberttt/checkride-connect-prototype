@@ -1,0 +1,22 @@
+PASS index.html byte-identical
+PASS styles.css byte-identical
+PASS elig-clock.js byte-identical
+PASS data.js byte-identical
+PASS demo-date.js byte-identical
+PASS cost-model.js byte-identical
+PASS D41 landing byte-identical
+PASS mandatory notice unchanged   const PROTO_STRIP =
+PASS mandatory notice unchanged       <div class="proto-strip small"
+PASS mandatory examiner notice unchanged
+PASS fees disabled
+PASS unreleased next SW version
+PASS SW caching logic/shell unchanged
+PASS font unchanged README.md
+PASS font unchanged Manrope-Variable-latin.woff2
+PASS font unchanged Manrope-Variable-latin-ext.woff2
+PASS font unchanged GeistMono-Variable.woff2
+PASS font unchanged Geist-Variable.woff2
+PASS font unchanged OFL-Manrope.txt
+PASS font unchanged OFL-Geist-and-GeistMono.txt
+PASS rc8 freeze gate upheld: no rc8 snapshot
+RC8 SCOPE AUDIT 21 PASS

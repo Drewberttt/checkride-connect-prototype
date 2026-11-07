@@ -1,0 +1,214 @@
+{
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/chromium-dark-readiness-390.png": {
+    "sha256": "bff7753fcdb59eaa9e61f77c61a8354a0e7867b4f20a6111aad21515d1d45674",
+    "size": 236322
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/firefox-dark-dpe-390.png": {
+    "sha256": "a0df94826708ad3c3044151a5774b7f924041cc2612be2a0061df124762ae96c",
+    "size": 632893
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/firefox-light-dpe-390.png": {
+    "sha256": "d07dfbda62a6dee5beba301a4a1cb9871f5184d0e1924ba2d496bb0ead93c512",
+    "size": 629421
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/firefox-light-readiness-390.png": {
+    "sha256": "da1282698b530b3e07721bcf348cc63e560a462ac7199f28e9af7077e496257b",
+    "size": 362132
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/firefox-dark-readiness-390.png": {
+    "sha256": "38171936c2664fa6511245bedec72547bf33a65e00251bf26b9825398210564d",
+    "size": 367282
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/firefox-dark-alerts-390.png": {
+    "sha256": "b69788ab0fd53a08b56465079bde67469f38e596feacc3b49dd82f54bab2c456",
+    "size": 373243
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/chromium-light-alerts-390.png": {
+    "sha256": "c5d0de2ec7c8dc239e58eaec612e7c642fa09491739788163493cfbe714333e6",
+    "size": 245762
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/chromium-light-dpe-390.png": {
+    "sha256": "ed80c30f57195723ea91e0058a120c9d14565c0428f6b0fccc96b6156797264f",
+    "size": 404090
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/chromium-dark-alerts-390.png": {
+    "sha256": "890ece19f2ef7c67def83a73599dc36918613847c539ff7cdcf7162692a8e72d",
+    "size": 243724
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/chromium-light-readiness-390.png": {
+    "sha256": "ca555f8c3e135575c4f2052f4a08c05a9de2532836ca3004940bff6fc405a92f",
+    "size": 234560
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/chromium-dark-dpe-390.png": {
+    "sha256": "3a8f596ef642665c71bd276ff84f865b628d9b66f3300d85dc9225bb3d79e54c",
+    "size": 406568
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main/firefox-light-alerts-390.png": {
+    "sha256": "ae6667f8bc6e6bbcca83d9bff31806933a7ebacb9ddd027e769c742b9c440902",
+    "size": 374246
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/pwa/firefox-root-offline.png": {
+    "sha256": "97c6b8aacc33056e44ce80348f7d1f63eb303537154ad947f8843f2a7929d086",
+    "size": 237768
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/pwa/chromium-root-offline.png": {
+    "sha256": "c76b53fe04cca82f84a3873df0cae5f76fe3ffc685b0dca5ad4ffa5888af2d9e",
+    "size": 175869
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/pwa/firefox-subpath-offline.png": {
+    "sha256": "97c6b8aacc33056e44ce80348f7d1f63eb303537154ad947f8843f2a7929d086",
+    "size": 237768
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/pwa/chromium-subpath-offline.png": {
+    "sha256": "ad1abd43546129c5af529be062c05f9bf0b8b0bd30f462e81840ec7931bc0e60",
+    "size": 175293
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/chromium-dark-readiness-390.png": {
+    "sha256": "32a106f58366519464f7c4d71aa346f7d02204bbd1a15c7f6532dc850927abb8",
+    "size": 236421
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/firefox-dark-dpe-390.png": {
+    "sha256": "27418dff1184992cc677a91cfa593cfa7c9edf436cc566c2dc71a6e81a70ee00",
+    "size": 636262
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/firefox-light-dpe-390.png": {
+    "sha256": "e457e37d6c0757a8adbe0b825e41747ab9799261ed91735de42103ccdf371bf5",
+    "size": 632356
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/firefox-light-readiness-390.png": {
+    "sha256": "4b879d8ca5f4a6c6bd850e7c33d36a99a99f999d882c4a8a01bf85da976c70ab",
+    "size": 362207
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/firefox-dark-readiness-390.png": {
+    "sha256": "cf218f16860b67cb25f4a88cb7e5821940cb10cc188f31466bf0352739644f89",
+    "size": 367352
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/firefox-dark-alerts-390.png": {
+    "sha256": "209587324d36017c104ffde07f5c66c1c7d3ce774e22632fafe016c4d39d2d50",
+    "size": 456773
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/chromium-light-alerts-390.png": {
+    "sha256": "b991ad228654358fefcb9ff951ad2caf566e7b820fd03e9d9d068a2024cd6414",
+    "size": 314160
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/chromium-light-dpe-390.png": {
+    "sha256": "165d42eb127959631d7433e9a39a3c09a48d460e9af8539464a0a3be59eda27d",
+    "size": 406553
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/chromium-dark-alerts-390.png": {
+    "sha256": "ae05993bf5bc9590e529d6272ec64641d9fb4a845667116931dd5656427adcf7",
+    "size": 309734
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/chromium-light-readiness-390.png": {
+    "sha256": "a4b81631fccf586ba7af2874056f334076149ba8f2abf10eda2135587f0ec5e1",
+    "size": 234650
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/chromium-dark-dpe-390.png": {
+    "sha256": "b6187542889bfa9d560c69702658404d42b79523a8ec706a731bdd07190c07c0",
+    "size": 409651
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-final/firefox-light-alerts-390.png": {
+    "sha256": "adf4a241b81e3fc1474bb7e68a99b3e8ec194b714c912615b84907fd0816268b",
+    "size": 459918
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/firefox-invalid-only-24.1.png": {
+    "sha256": "54bb92752e277cd2879d1a14067a31f4cc68a2c9c29830d44ec2749073ef41c7",
+    "size": 466160
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/firefox-malformed-e.png": {
+    "sha256": "f5e48eecd6420a496bd828a93477f2b3f1d5d560ca76ec5085488132ba87786e",
+    "size": 466142
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/chromium-invalid-only-24.1.png": {
+    "sha256": "e66d1a68dc14ff8c4c087e28c0b25bea1f38eaaf8af703fd6dd13214e0b258eb",
+    "size": 385866
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/firefox-malformed-1_5.png": {
+    "sha256": "b085a331aa107c9246a5e6635dfe98829383b8b54292c1b6ba806afea7fa6b1f",
+    "size": 466160
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/firefox-precision-pasted-invalid.png": {
+    "sha256": "f3cd556802e48b6c79ff53efe55a28c6c75703af4eaebada7f2257e961f2c52e",
+    "size": 466507
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/chromium-malformed-1e.png": {
+    "sha256": "785f465c29d970953d322795631262d0367e03bee0d7cbc9e34f9067d82e76c6",
+    "size": 385957
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/firefox-malformed-1e.png": {
+    "sha256": "b92a6735abb7ffd37e8e7b37e9179bb7f606953c2d10149e7b49f888e5c736ac",
+    "size": 466060
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/chromium-malformed-e.png": {
+    "sha256": "1116134687611f299cf523079be0a9df61c9a47d5ea8c1335047f81dbdadc96c",
+    "size": 385709
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/native-regression/chromium-precision-pasted-invalid.png": {
+    "sha256": "6b542d4bcba7c890fb7c67810852ab61105d25a7aa526edc8649cead408932cb",
+    "size": 386278
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/chromium-dark-readiness-390.png": {
+    "sha256": "32a106f58366519464f7c4d71aa346f7d02204bbd1a15c7f6532dc850927abb8",
+    "size": 236421
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/firefox-dark-dpe-390.png": {
+    "sha256": "27418dff1184992cc677a91cfa593cfa7c9edf436cc566c2dc71a6e81a70ee00",
+    "size": 636262
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/firefox-light-dpe-390.png": {
+    "sha256": "e457e37d6c0757a8adbe0b825e41747ab9799261ed91735de42103ccdf371bf5",
+    "size": 632356
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/firefox-light-readiness-390.png": {
+    "sha256": "4b879d8ca5f4a6c6bd850e7c33d36a99a99f999d882c4a8a01bf85da976c70ab",
+    "size": 362207
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/firefox-dark-readiness-390.png": {
+    "sha256": "cf218f16860b67cb25f4a88cb7e5821940cb10cc188f31466bf0352739644f89",
+    "size": 367352
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/firefox-dark-alerts-390.png": {
+    "sha256": "209587324d36017c104ffde07f5c66c1c7d3ce774e22632fafe016c4d39d2d50",
+    "size": 456773
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/chromium-light-alerts-390.png": {
+    "sha256": "b991ad228654358fefcb9ff951ad2caf566e7b820fd03e9d9d068a2024cd6414",
+    "size": 314160
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/chromium-light-dpe-390.png": {
+    "sha256": "165d42eb127959631d7433e9a39a3c09a48d460e9af8539464a0a3be59eda27d",
+    "size": 406553
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/chromium-dark-alerts-390.png": {
+    "sha256": "ae05993bf5bc9590e529d6272ec64641d9fb4a845667116931dd5656427adcf7",
+    "size": 309734
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/chromium-light-readiness-390.png": {
+    "sha256": "a4b81631fccf586ba7af2874056f334076149ba8f2abf10eda2135587f0ec5e1",
+    "size": 234650
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/chromium-dark-dpe-390.png": {
+    "sha256": "b6187542889bfa9d560c69702658404d42b79523a8ec706a731bdd07190c07c0",
+    "size": 409651
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/main-settled/firefox-light-alerts-390.png": {
+    "sha256": "adf4a241b81e3fc1474bb7e68a99b3e8ec194b714c912615b84907fd0816268b",
+    "size": 459918
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/signup-accessibility/firefox-signup-dark-390.png": {
+    "sha256": "e29f664cfc20ff43f27987e05da63c5fe8ad40f4f8bd7e7c403096030ebf6b0b",
+    "size": 196414
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/signup-accessibility/firefox-signup-light-390.png": {
+    "sha256": "77f94c64e6558b872d39d4296823ef0467746b6ac1374dcd9c6a247cfd8afc8b",
+    "size": 198280
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/signup-accessibility/chromium-signup-dark-390.png": {
+    "sha256": "12b51bab49a45bc8ab7a8e3dae4386827e01d8c8a37b0563b4c6d11a2212db1f",
+    "size": 120154
+  },
+  "/workspace/checkride-connect-shots/rc8-dev-20261107-1524/signup-accessibility/chromium-signup-light-390.png": {
+    "sha256": "669cc6922b4ebde06524854c0569fbc6f4d7e3b01c9bdc1f9ff1e48eef0d22a7",
+    "size": 123198
+  }
+}

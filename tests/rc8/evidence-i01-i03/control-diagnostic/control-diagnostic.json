@@ -1,0 +1,254 @@
+[
+  {
+    "browser": "chromium",
+    "control": "number",
+    "method": "typing",
+    "raw": "3.",
+    "value": "3",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "chromium",
+    "control": "number",
+    "method": "typing",
+    "raw": "+3",
+    "value": "3",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "chromium",
+    "control": "number",
+    "method": "typing",
+    "raw": " .50 ",
+    "value": ".50",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "chromium",
+    "control": "number",
+    "method": "clipboard",
+    "raw": "3.",
+    "value": "3",
+    "badInput": false,
+    "paste": "3."
+  },
+  {
+    "browser": "chromium",
+    "control": "number",
+    "method": "clipboard",
+    "raw": "+3",
+    "value": "3",
+    "badInput": false,
+    "paste": "+3"
+  },
+  {
+    "browser": "chromium",
+    "control": "number",
+    "method": "clipboard",
+    "raw": " .50 ",
+    "value": ".50",
+    "badInput": false,
+    "paste": " .50 "
+  },
+  {
+    "browser": "chromium",
+    "control": "text",
+    "method": "typing",
+    "raw": "3.",
+    "value": "3.",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "chromium",
+    "control": "text",
+    "method": "typing",
+    "raw": "+3",
+    "value": "+3",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "chromium",
+    "control": "text",
+    "method": "typing",
+    "raw": " .50 ",
+    "value": " .50 ",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "chromium",
+    "control": "text",
+    "method": "clipboard",
+    "raw": "3.",
+    "value": "3.",
+    "badInput": false,
+    "paste": "3."
+  },
+  {
+    "browser": "chromium",
+    "control": "text",
+    "method": "clipboard",
+    "raw": "+3",
+    "value": "+3",
+    "badInput": false,
+    "paste": "+3"
+  },
+  {
+    "browser": "chromium",
+    "control": "text",
+    "method": "clipboard",
+    "raw": " .50 ",
+    "value": " .50 ",
+    "badInput": false,
+    "paste": " .50 "
+  },
+  {
+    "browser": "chromium",
+    "control": "number",
+    "method": "saved padded import diagnostic, NOT clipboard",
+    "raw": " 3.00 ",
+    "before": "",
+    "after": "",
+    "inputEvents": 0
+  },
+  {
+    "browser": "chromium",
+    "control": "text",
+    "method": "saved padded import diagnostic, NOT clipboard",
+    "raw": " 3.00 ",
+    "before": " 3.00 ",
+    "after": "",
+    "inputEvents": 1
+  },
+  {
+    "browser": "firefox",
+    "control": "number",
+    "method": "typing",
+    "raw": "3.",
+    "value": "3",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "firefox",
+    "control": "number",
+    "method": "typing",
+    "raw": "+3",
+    "value": "",
+    "badInput": true,
+    "paste": null
+  },
+  {
+    "browser": "firefox",
+    "control": "number",
+    "method": "typing",
+    "raw": " .50 ",
+    "value": "",
+    "badInput": true,
+    "paste": null
+  },
+  {
+    "browser": "firefox",
+    "control": "number",
+    "method": "clipboard",
+    "raw": "3.",
+    "value": "3",
+    "badInput": false,
+    "paste": "3."
+  },
+  {
+    "browser": "firefox",
+    "control": "number",
+    "method": "clipboard",
+    "raw": "+3",
+    "value": "",
+    "badInput": true,
+    "paste": "+3"
+  },
+  {
+    "browser": "firefox",
+    "control": "number",
+    "method": "clipboard",
+    "raw": " .50 ",
+    "value": "",
+    "badInput": true,
+    "paste": " .50 "
+  },
+  {
+    "browser": "firefox",
+    "control": "text",
+    "method": "typing",
+    "raw": "3.",
+    "value": "3.",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "firefox",
+    "control": "text",
+    "method": "typing",
+    "raw": "+3",
+    "value": "+3",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "firefox",
+    "control": "text",
+    "method": "typing",
+    "raw": " .50 ",
+    "value": " .50 ",
+    "badInput": false,
+    "paste": null
+  },
+  {
+    "browser": "firefox",
+    "control": "text",
+    "method": "clipboard",
+    "raw": "3.",
+    "value": "3.",
+    "badInput": false,
+    "paste": "3."
+  },
+  {
+    "browser": "firefox",
+    "control": "text",
+    "method": "clipboard",
+    "raw": "+3",
+    "value": "+3",
+    "badInput": false,
+    "paste": "+3"
+  },
+  {
+    "browser": "firefox",
+    "control": "text",
+    "method": "clipboard",
+    "raw": " .50 ",
+    "value": " .50 ",
+    "badInput": false,
+    "paste": " .50 "
+  },
+  {
+    "browser": "firefox",
+    "control": "number",
+    "method": "saved padded import diagnostic, NOT clipboard",
+    "raw": " 3.00 ",
+    "before": "",
+    "after": "",
+    "inputEvents": 0
+  },
+  {
+    "browser": "firefox",
+    "control": "text",
+    "method": "saved padded import diagnostic, NOT clipboard",
+    "raw": " 3.00 ",
+    "before": " 3.00 ",
+    "after": "",
+    "inputEvents": 1
+  }
+]
