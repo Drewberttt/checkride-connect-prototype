@@ -1,0 +1,670 @@
+{
+  "pass": 120,
+  "fail": 0,
+  "results": [
+    {
+      "name": "chromium root old rc8 SW controlled",
+      "pass": true
+    },
+    {
+      "name": "chromium root upgraded single v7.12 cache",
+      "pass": true,
+      "data": [
+        "checkride-connect-cc-proto-v7.13.0"
+      ]
+    },
+    {
+      "name": "chromium root prep array byte-for-byte preserved",
+      "pass": true
+    },
+    {
+      "name": "chromium root legacy readiness stays PPL despite imported goal IR",
+      "pass": true
+    },
+    {
+      "name": "chromium root legacy prep evidence remains unchanged",
+      "pass": true
+    },
+    {
+      "name": "chromium root native correction/Tab/node identity",
+      "pass": true
+    },
+    {
+      "name": "chromium root subpath-scoped precache assets",
+      "pass": true,
+      "data": 51
+    },
+    {
+      "name": "chromium root manifest/icons available",
+      "pass": true,
+      "data": [
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        },
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "chromium root normal Find NC selection renders",
+      "pass": true
+    },
+    {
+      "name": "chromium root legacy search link/filters render",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline prominent exact digest disclosure",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline relevant seeded digest groups",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline digest link opens profile",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline digest reload navigation stable",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /home",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /find",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /readiness",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /alerts",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline route /dpe/d1?cert=ppl",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline actual signup goal -> Find default",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline signup preserves saved readiness/evidence",
+      "pass": true
+    },
+    {
+      "name": "chromium root old joined sample position retained offline",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline leave persists",
+      "pass": true
+    },
+    {
+      "name": "chromium root D45 offline rejoin persists once at illustrative back12",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline actual clipboard \"3.\"",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "aria": "true",
+        "raw": "3.",
+        "inputType": "insertFromPaste",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)"
+      }
+    },
+    {
+      "name": "chromium root offline actual clipboard \" .50 \"",
+      "pass": true,
+      "data": {
+        "value": " .50 ",
+        "type": "text",
+        "mode": "decimal",
+        "aria": null,
+        "raw": " .50 ",
+        "inputType": "insertFromPaste",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0.5 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)"
+      }
+    },
+    {
+      "name": "chromium root offline optional tick and Send enabled",
+      "pass": true
+    },
+    {
+      "name": "chromium root offline mock Send persists unchecked CFI",
+      "pass": true
+    },
+    {
+      "name": "chromium root reconnect normal no crash/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "consoleErrors": []
+      }
+    },
+    {
+      "name": "chromium checkride/ old rc8 SW controlled",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ upgraded single v7.12 cache",
+      "pass": true,
+      "data": [
+        "checkride-connect-cc-proto-v7.13.0"
+      ]
+    },
+    {
+      "name": "chromium checkride/ prep array byte-for-byte preserved",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ legacy readiness stays PPL despite imported goal IR",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ legacy prep evidence remains unchanged",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ native correction/Tab/node identity",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ subpath-scoped precache assets",
+      "pass": true,
+      "data": 51
+    },
+    {
+      "name": "chromium checkride/ manifest/icons available",
+      "pass": true,
+      "data": [
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        },
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "chromium checkride/ normal Find NC selection renders",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ legacy search link/filters render",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline prominent exact digest disclosure",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline relevant seeded digest groups",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline digest link opens profile",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline digest reload navigation stable",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /home",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /find",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /readiness",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /alerts",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline route /dpe/d1?cert=ppl",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline actual signup goal -> Find default",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline signup preserves saved readiness/evidence",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ old joined sample position retained offline",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline leave persists",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ D45 offline rejoin persists once at illustrative back12",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline actual clipboard \"3.\"",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "aria": "true",
+        "raw": "3.",
+        "inputType": "insertFromPaste",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)"
+      }
+    },
+    {
+      "name": "chromium checkride/ offline actual clipboard \" .50 \"",
+      "pass": true,
+      "data": {
+        "value": " .50 ",
+        "type": "text",
+        "mode": "decimal",
+        "aria": null,
+        "raw": " .50 ",
+        "inputType": "insertFromPaste",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0.5 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)"
+      }
+    },
+    {
+      "name": "chromium checkride/ offline optional tick and Send enabled",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ offline mock Send persists unchecked CFI",
+      "pass": true
+    },
+    {
+      "name": "chromium checkride/ reconnect normal no crash/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "consoleErrors": []
+      }
+    },
+    {
+      "name": "firefox root old rc8 SW controlled",
+      "pass": true
+    },
+    {
+      "name": "firefox root upgraded single v7.12 cache",
+      "pass": true,
+      "data": [
+        "checkride-connect-cc-proto-v7.13.0"
+      ]
+    },
+    {
+      "name": "firefox root prep array byte-for-byte preserved",
+      "pass": true
+    },
+    {
+      "name": "firefox root legacy readiness stays PPL despite imported goal IR",
+      "pass": true
+    },
+    {
+      "name": "firefox root legacy prep evidence remains unchanged",
+      "pass": true
+    },
+    {
+      "name": "firefox root native correction/Tab/node identity",
+      "pass": true
+    },
+    {
+      "name": "firefox root subpath-scoped precache assets",
+      "pass": true,
+      "data": 51
+    },
+    {
+      "name": "firefox root manifest/icons available",
+      "pass": true,
+      "data": [
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        },
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "firefox root normal Find NC selection renders",
+      "pass": true
+    },
+    {
+      "name": "firefox root legacy search link/filters render",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline prominent exact digest disclosure",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline relevant seeded digest groups",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline digest link opens profile",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline digest reload navigation stable",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /home",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /find",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /readiness",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /alerts",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline route /dpe/d1?cert=ppl",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline actual signup goal -> Find default",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline signup preserves saved readiness/evidence",
+      "pass": true
+    },
+    {
+      "name": "firefox root old joined sample position retained offline",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline leave persists",
+      "pass": true
+    },
+    {
+      "name": "firefox root D45 offline rejoin persists once at illustrative back12",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline actual clipboard \"3.\"",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "aria": "true",
+        "raw": "3.",
+        "inputType": "insertFromPaste",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)"
+      }
+    },
+    {
+      "name": "firefox root offline actual clipboard \" .50 \"",
+      "pass": true,
+      "data": {
+        "value": " .50 ",
+        "type": "text",
+        "mode": "decimal",
+        "aria": null,
+        "raw": " .50 ",
+        "inputType": "insertFromPaste",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0.5 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)"
+      }
+    },
+    {
+      "name": "firefox root offline optional tick and Send enabled",
+      "pass": true
+    },
+    {
+      "name": "firefox root offline mock Send persists unchecked CFI",
+      "pass": true
+    },
+    {
+      "name": "firefox root reconnect normal no crash/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "consoleErrors": []
+      }
+    },
+    {
+      "name": "firefox checkride/ old rc8 SW controlled",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ upgraded single v7.12 cache",
+      "pass": true,
+      "data": [
+        "checkride-connect-cc-proto-v7.13.0"
+      ]
+    },
+    {
+      "name": "firefox checkride/ prep array byte-for-byte preserved",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ legacy readiness stays PPL despite imported goal IR",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ legacy prep evidence remains unchanged",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ native correction/Tab/node identity",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ subpath-scoped precache assets",
+      "pass": true,
+      "data": 51
+    },
+    {
+      "name": "firefox checkride/ manifest/icons available",
+      "pass": true,
+      "data": [
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        },
+        {
+          "status": 200,
+          "sizes": "192x192"
+        },
+        {
+          "status": 200,
+          "sizes": "512x512"
+        }
+      ]
+    },
+    {
+      "name": "firefox checkride/ normal Find NC selection renders",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ legacy search link/filters render",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline prominent exact digest disclosure",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline relevant seeded digest groups",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline digest link opens profile",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline digest reload navigation stable",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /home",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /find",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /readiness",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /alerts",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline route /dpe/d1?cert=ppl",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline actual signup goal -> Find default",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline signup preserves saved readiness/evidence",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ old joined sample position retained offline",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline leave persists",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ D45 offline rejoin persists once at illustrative back12",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline actual clipboard \"3.\"",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "aria": "true",
+        "raw": "3.",
+        "inputType": "insertFromPaste",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)"
+      }
+    },
+    {
+      "name": "firefox checkride/ offline actual clipboard \" .50 \"",
+      "pass": true,
+      "data": {
+        "value": " .50 ",
+        "type": "text",
+        "mode": "decimal",
+        "aria": null,
+        "raw": " .50 ",
+        "inputType": "insertFromPaste",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0.5 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)"
+      }
+    },
+    {
+      "name": "firefox checkride/ offline optional tick and Send enabled",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ offline mock Send persists unchecked CFI",
+      "pass": true
+    },
+    {
+      "name": "firefox checkride/ reconnect normal no crash/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "consoleErrors": []
+      }
+    }
+  ],
+  "versions": {
+    "chromium": "158.0.8127.18",
+    "firefox": "159.0"
+  }
+}

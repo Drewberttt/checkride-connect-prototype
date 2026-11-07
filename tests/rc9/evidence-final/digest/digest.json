@@ -1,0 +1,322 @@
+{
+  "pass": 60,
+  "fail": 0,
+  "results": [
+    {
+      "browser": "chromium",
+      "name": "obvious exact disclosure before opening",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "unmodified sample has relevant group/openings",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "existing airport timezone formatting present",
+      "pass": true,
+      "data": "Kim Ortega\nWed, Nov 4 · 8:30 AM ET, at XNC12\nView sample opening"
+    },
+    {
+      "browser": "chromium",
+      "name": "distinct supported checkride groups",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "duplicate filters collapse per semantic filter",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "waitlist duplicate membership shown once",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "fictional stable illustrative position",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "same opening not duplicated per checkride",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "expired/taken/stale offers excluded",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "read-only preview does not mutate state",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "opening link navigates to sample examiner/date",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "membership profile link works",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "reload/navigation keeps membership and opening projection",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "light keyboard Enter opens native disclosure",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "light Tab reaches working local link",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "light settled full-app axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "light narrow no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "dark keyboard Enter opens native disclosure",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "dark Tab reaches working local link",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "dark settled full-app axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "dark narrow no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "no-alert empty state without unrelated openings",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "empty search link works",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "no-openings state retains honest waitlist",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "fee/radius filters reuse existing match semantics",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "digest concise cap six with transparent scope",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "soonest-first deterministic order",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "render/reload projection stable",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "no address/schedule/delivery controls in preview",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "no crash external or nonGET request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "deliveries": []
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "obvious exact disclosure before opening",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "unmodified sample has relevant group/openings",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "existing airport timezone formatting present",
+      "pass": true,
+      "data": "Kim Ortega\nWed, Nov 4 · 8:30 AM ET, at XNC12\nView sample opening"
+    },
+    {
+      "browser": "firefox",
+      "name": "distinct supported checkride groups",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "duplicate filters collapse per semantic filter",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "waitlist duplicate membership shown once",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "fictional stable illustrative position",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "same opening not duplicated per checkride",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "expired/taken/stale offers excluded",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "read-only preview does not mutate state",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "opening link navigates to sample examiner/date",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "membership profile link works",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "reload/navigation keeps membership and opening projection",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "light keyboard Enter opens native disclosure",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "light Tab reaches working local link",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "light settled full-app axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "light narrow no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "dark keyboard Enter opens native disclosure",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "dark Tab reaches working local link",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "dark settled full-app axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "dark narrow no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "no-alert empty state without unrelated openings",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "empty search link works",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "no-openings state retains honest waitlist",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "fee/radius filters reuse existing match semantics",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "digest concise cap six with transparent scope",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "soonest-first deterministic order",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "render/reload projection stable",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "no address/schedule/delivery controls in preview",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "no crash external or nonGET request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": [],
+        "deliveries": []
+      }
+    }
+  ]
+}

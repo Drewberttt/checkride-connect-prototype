@@ -1,0 +1,25 @@
+{
+  "browser_pass": 352,
+  "browser_fail": 0,
+  "scope_pass": 17,
+  "gate_pass": 3,
+  "protected_trees": 14,
+  "protected_files": 862,
+  "prior_screenshot_counts": [
+    51,
+    53,
+    54
+  ],
+  "new_screenshots": 52,
+  "verified_manifests": [
+    "/workspace/checkride-v4-rc3/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc5/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc7/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc6/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc4/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc8/MD5SUMS.txt"
+  ],
+  "app_sha256": "b4a07fb8074545ffff4285b11cbe1e7d0acb5cc231ea29d35de4758bac38d185",
+  "sw_sha256": "545e4c5c196d7b07c7c575838bcc7dbcff3af3ed2037a0b3fc387da8e0b4aeac",
+  "rc9_snapshot_absent": true
+}

@@ -1,0 +1,1506 @@
+{
+  "pass": 136,
+  "fail": 0,
+  "results": [
+    {
+      "browser": "chromium",
+      "name": "signed-out light 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 183.046875,
+            "right": 254.828125,
+            "width": 71.78125,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 261.21875,
+            "right": 344,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out light 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out light settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out light 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 213.046875,
+            "right": 284.828125,
+            "width": 71.78125,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 291.21875,
+            "right": 374,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out light 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out light 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 434.265625,
+            "right": 506.046875,
+            "width": 71.78125,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 512.4375,
+            "right": 595.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out light 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out light 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 1106.265625,
+            "right": 1178.046875,
+            "width": 71.78125,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 1184.4375,
+            "right": 1267.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out light 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 183.046875,
+            "right": 254.828125,
+            "width": 71.78125,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 261.21875,
+            "right": 344,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 213.046875,
+            "right": 284.828125,
+            "width": 71.78125,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 291.21875,
+            "right": 374,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 434.265625,
+            "right": 506.046875,
+            "width": 71.78125,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 512.4375,
+            "right": 595.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 1106.265625,
+            "right": 1178.046875,
+            "width": 71.78125,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 1184.4375,
+            "right": 1267.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "signed-out dark 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 261.21875,
+            "right": 344,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 291.21875,
+            "right": 374,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 512.4375,
+            "right": 595.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 1184.4375,
+            "right": 1267.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA light 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 261.21875,
+            "right": 344,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 291.21875,
+            "right": 374,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 512.4375,
+            "right": 595.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 1184.4375,
+            "right": 1267.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Independent QA dark 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 261.21875,
+            "right": 344,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 291.21875,
+            "right": 374,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 512.4375,
+            "right": 595.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 1184.4375,
+            "right": 1267.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam light 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 261.21875,
+            "right": 344,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 291.21875,
+            "right": 374,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 512.4375,
+            "right": 595.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 1184.4375,
+            "right": 1267.21875,
+            "width": 82.78125,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "ExampleLongNam dark 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual keyboard Log out usable at360",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual ATP goal find exact info, no bookable/PPL substitution",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual ATP goal readiness exact info, no bookable/PPL substitution",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual ATP goal journey exact info, no bookable/PPL substitution",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "explicit supported URL beats ATP goal",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "temporary URL does not silently save PPL/IR over ATP goal",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "explicit saved supported Find overrides ATP",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "saved unsupported rotorcraft never PPL fallback",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "saved unsupported ATP wins goal/evidence without relabeling or deletion",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "explicit supported choice retains exact global evidence and warning",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "legacy evidence precedes unsupported signup default, legitimate PPL mapping",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual rotorcraft signup is info-only default",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "rotorcraft readiness info-only default",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "no normal app crash or external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": []
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 186.6999969482422,
+            "right": 257.01666259765625,
+            "width": 70.31666564941406,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 263.41668701171875,
+            "right": 344.00001525878906,
+            "width": 80.58332824707031,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 216.6999969482422,
+            "right": 287.01666259765625,
+            "width": 70.31666564941406,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 293.41668701171875,
+            "right": 374.00001525878906,
+            "width": 80.58332824707031,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 439.8666687011719,
+            "right": 510.18333435058594,
+            "width": 70.31666564941406,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 516.5833129882812,
+            "right": 597.1666564941406,
+            "width": 80.58334350585938,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 1111.86669921875,
+            "right": 1182.183364868164,
+            "width": 70.31666564941406,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 1188.5833740234375,
+            "right": 1269.1667175292969,
+            "width": 80.58334350585938,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out light 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 186.6999969482422,
+            "right": 257.01666259765625,
+            "width": 70.31666564941406,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 263.41668701171875,
+            "right": 344.00001525878906,
+            "width": 80.58332824707031,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 216.6999969482422,
+            "right": 287.01666259765625,
+            "width": 70.31666564941406,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 293.41668701171875,
+            "right": 374.00001525878906,
+            "width": 80.58332824707031,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 439.8666687011719,
+            "right": 510.18333435058594,
+            "width": 70.31666564941406,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 516.5833129882812,
+            "right": 597.1666564941406,
+            "width": 80.58334350585938,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log in",
+            "left": 1111.86669921875,
+            "right": 1182.183364868164,
+            "width": 70.31666564941406,
+            "height": 44,
+            "hidden": false
+          },
+          {
+            "text": "Sign up",
+            "left": 1188.5833740234375,
+            "right": 1269.1667175292969,
+            "width": 80.58334350585938,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "signed-out dark 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 262.933349609375,
+            "right": 344.00001525878906,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 292.933349609375,
+            "right": 374.00001525878906,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 516.0999755859375,
+            "right": 597.1666412353516,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 1188.0999755859375,
+            "right": 1269.1666412353516,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA light 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 262.933349609375,
+            "right": 344.00001525878906,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 292.933349609375,
+            "right": 374.00001525878906,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 516.0999755859375,
+            "right": 597.1666412353516,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 1188.0999755859375,
+            "right": 1269.1666412353516,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Independent QA dark 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 262.933349609375,
+            "right": 344.00001525878906,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 292.933349609375,
+            "right": 374.00001525878906,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 516.0999755859375,
+            "right": 597.1666412353516,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 1188.0999755859375,
+            "right": 1269.1666412353516,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam light 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark 360 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 360,
+        "doc": 360,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 262.933349609375,
+            "right": 344.00001525878906,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark 360 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark settled360 full-page axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark 390 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 390,
+        "doc": 390,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 292.933349609375,
+            "right": 374.00001525878906,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark 390 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark 768 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 768,
+        "doc": 768,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 516.0999755859375,
+            "right": 597.1666412353516,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark 768 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark 1440 no overflow/visible usable auth controls",
+      "pass": true,
+      "data": {
+        "viewport": 1440,
+        "doc": 1440,
+        "controls": [
+          {
+            "text": "Log out",
+            "left": 1188.0999755859375,
+            "right": 1269.1666412353516,
+            "width": 81.06666564941406,
+            "height": 44,
+            "hidden": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "ExampleLongNam dark 1440 auth keyboard focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual keyboard Log out usable at360",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual ATP goal find exact info, no bookable/PPL substitution",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual ATP goal readiness exact info, no bookable/PPL substitution",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual ATP goal journey exact info, no bookable/PPL substitution",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "explicit supported URL beats ATP goal",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "temporary URL does not silently save PPL/IR over ATP goal",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "explicit saved supported Find overrides ATP",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "saved unsupported rotorcraft never PPL fallback",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "saved unsupported ATP wins goal/evidence without relabeling or deletion",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "explicit supported choice retains exact global evidence and warning",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "legacy evidence precedes unsupported signup default, legitimate PPL mapping",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual rotorcraft signup is info-only default",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "rotorcraft readiness info-only default",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "no normal app crash or external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": []
+      }
+    }
+  ]
+}

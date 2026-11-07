@@ -1,0 +1,548 @@
+{
+  "pass": 104,
+  "fail": 0,
+  "results": [
+    {
+      "browser": "chromium",
+      "name": "fresh goal is unset",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "unsaved goal survives role toggle",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual signup persists supported goal only, no private fields",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "fresh Find uses signup IR",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "fresh readiness uses IR without checks/approval",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "airport edit does not pin an untouched goal-derived certificate",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "explicit Find selection saved on bare navigation/reload",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Find selection persists reload",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "explicit URL wins saved/goal",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "explicit cleared query uses legacy PPL not goal",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "goal change applies when no readiness evidence/override",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "goal change never overwrites saved Find choice",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "cleared goal fallback coherent",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "D45 unsupported ATP exact info only, no PPL readiness",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "first actual edit pins current IR default",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "goal change preserves pinned readiness and exact evidence",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "explicit readiness change keeps evidence and focus",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "readiness override persists",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "legacy evidence retains prior PPL interpretation",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "native keyboard readiness selection works",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual active request certificate outranks signup/default selection",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual withdrawal restores saved readiness and global evidence",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "restored choice survives reload",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "not joined initially with explicit fictional notice",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "keyboard join saves exactly one and illustrative position4",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "join returns keyboard focus to leave control",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "joined position stable on reload",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "duplicate join through actual alert form is idempotent",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Alerts and new digest show same membership/position",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "second examiner isolated",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "leave isolates examiner/checkride; keeps other cert and examiner",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "leave persists",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "D45 actual rejoin moves to illustrative back12",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "per-examiner back position shared with still joined IR",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "digest shared position back12, no old spot4",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "legacy duplicate state not silently deleted on render",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "intentional leave removes legacy duplicates, rejoin once and retains example position",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "existing simulated offer uses same local joined/illustrative position disclosure",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "Alerts leave and profile membership agree",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "settled light readiness axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "narrow light readiness no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "settled light dpe/d1?cert=ppl axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "narrow light dpe/d1?cert=ppl no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "settled light alerts axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "narrow light alerts no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "settled dark readiness axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "narrow dark readiness no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "settled dark dpe/d1?cert=ppl axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "narrow dark dpe/d1?cert=ppl no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "settled dark alerts axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "narrow dark alerts no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "normal no crash/console/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "consoleErrors": [],
+        "external": []
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "fresh goal is unset",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "unsaved goal survives role toggle",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual signup persists supported goal only, no private fields",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "fresh Find uses signup IR",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "fresh readiness uses IR without checks/approval",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "airport edit does not pin an untouched goal-derived certificate",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "explicit Find selection saved on bare navigation/reload",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Find selection persists reload",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "explicit URL wins saved/goal",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "explicit cleared query uses legacy PPL not goal",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "goal change applies when no readiness evidence/override",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "goal change never overwrites saved Find choice",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "cleared goal fallback coherent",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "D45 unsupported ATP exact info only, no PPL readiness",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "first actual edit pins current IR default",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "goal change preserves pinned readiness and exact evidence",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "explicit readiness change keeps evidence and focus",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "readiness override persists",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "legacy evidence retains prior PPL interpretation",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "native keyboard readiness selection works",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual active request certificate outranks signup/default selection",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual withdrawal restores saved readiness and global evidence",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "restored choice survives reload",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "not joined initially with explicit fictional notice",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "keyboard join saves exactly one and illustrative position4",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "join returns keyboard focus to leave control",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "joined position stable on reload",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "duplicate join through actual alert form is idempotent",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Alerts and new digest show same membership/position",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "second examiner isolated",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "leave isolates examiner/checkride; keeps other cert and examiner",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "leave persists",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "D45 actual rejoin moves to illustrative back12",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "per-examiner back position shared with still joined IR",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "digest shared position back12, no old spot4",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "legacy duplicate state not silently deleted on render",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "intentional leave removes legacy duplicates, rejoin once and retains example position",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "existing simulated offer uses same local joined/illustrative position disclosure",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "Alerts leave and profile membership agree",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "settled light readiness axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "narrow light readiness no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "settled light dpe/d1?cert=ppl axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "narrow light dpe/d1?cert=ppl no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "settled light alerts axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "narrow light alerts no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "settled dark readiness axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "narrow dark readiness no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "settled dark dpe/d1?cert=ppl axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "narrow dark dpe/d1?cert=ppl no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "settled dark alerts axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "narrow dark alerts no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "normal no crash/console/external request",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "consoleErrors": [],
+        "external": []
+      }
+    }
+  ]
+}

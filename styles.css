@@ -1229,3 +1229,9 @@ body.is-landing .v4-authbar { display: inline-flex; }
 .home-v3 .b-fee { grid-area: fee; text-align: left; font-size: .875rem; }
 @media (max-width: 440px) { .home-v3 .board-row { grid-template-areas: "tile who"; } .home-v3 .b-fee { display: none; } }
 @media (min-width: 1024px) and (max-width: 1279px) { .home-v3 .ws-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
+
+/* RC8-I01: auth header name may shrink, never its Log out control. Landing styling is untouched. */
+body.is-auth .topbar-right { min-width: 0; flex-shrink: 1; }
+body.is-auth .v4-authbar { min-width: 0; flex-shrink: 1; }
+body.is-auth .v4-hi { min-width: 0; flex-shrink: 1; }
+body.is-auth .v4-authbar .btn { flex-shrink: 0; }

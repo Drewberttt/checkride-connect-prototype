@@ -1,0 +1,60 @@
+{
+  "pass": 10,
+  "fail": 0,
+  "results": [
+    {
+      "browser": "chromium",
+      "name": "native signup goal keyboard and Tab",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signup narrow settled axe light",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "signup narrow overflow light",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "signup narrow settled axe dark",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "signup narrow overflow dark",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "native signup goal keyboard and Tab",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signup narrow settled axe light",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "signup narrow overflow light",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "signup narrow settled axe dark",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "signup narrow overflow dark",
+      "pass": true
+    }
+  ]
+}

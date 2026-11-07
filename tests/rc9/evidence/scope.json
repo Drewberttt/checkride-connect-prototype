@@ -1,0 +1,74 @@
+{
+  "pass": 17,
+  "fail": 0,
+  "results": [
+    {
+      "name": "All preexisting app behavior/copy byte-identical after removing isolated digest additions",
+      "pass": true
+    },
+    {
+      "name": "Unchanged demo-date.js",
+      "pass": true
+    },
+    {
+      "name": "Unchanged sample-nc-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "Unchanged sample-fl-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "Unchanged sample-az-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "Unchanged index.html",
+      "pass": true
+    },
+    {
+      "name": "Unchanged cost-model.js",
+      "pass": true
+    },
+    {
+      "name": "Unchanged styles.css",
+      "pass": true
+    },
+    {
+      "name": "Unchanged sample-tx-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "Unchanged data.js",
+      "pass": true
+    },
+    {
+      "name": "Unchanged sample-ca-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "Unchanged elig-clock.js",
+      "pass": true
+    },
+    {
+      "name": "Next SW version",
+      "pass": true
+    },
+    {
+      "name": "SW only version/comment changed",
+      "pass": true
+    },
+    {
+      "name": "Exact preview label",
+      "pass": true
+    },
+    {
+      "name": "No rc9 snapshot",
+      "pass": true
+    },
+    {
+      "name": "No repository metadata",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+PASS chromium legacy retained place has no current membership or leave marker
+PASS chromium legacy absent membership cannot restore old4; back12
+PASS chromium legacy back12 persists
+PASS chromium existing other-cert membership retains shared current place, no invented past leave
+PASS firefox legacy retained place has no current membership or leave marker
+PASS firefox legacy absent membership cannot restore old4; back12
+PASS firefox legacy back12 persists
+PASS firefox existing other-cert membership retains shared current place, no invented past leave
+LEGACY PLACE 8 0

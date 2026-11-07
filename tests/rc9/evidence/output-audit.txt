@@ -1,0 +1,4 @@
+Fresh OUT=/workspace/checkride-test-tools/evidence/rc9-dev-20261107-155731
+Fresh SHOTS=/workspace/checkride-connect-shots/rc9-dev-20261107-155731
+Every inherited harness run must explicitly override OUT/SHOTS; never historical destinations. PWA adapter uses new pointer/port, not historical rc8 pointer. No rc9 freeze.
+Executed distinct destinations: digest, pwa, pwa-r2, onboarding-waitlist, features-r2, evidence-defaults, signup, raw, gate; all OUT under this evidence root, SHOTS under matching fresh screenshot root. Historical screenshot inventories verified unchanged.

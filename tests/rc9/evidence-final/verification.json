@@ -1,0 +1,61 @@
+{
+  "browser_pass": 504,
+  "browser_fail": 0,
+  "scope_pass": 27,
+  "gate_pass": 3,
+  "protected_trees": 14,
+  "protected_files": 862,
+  "verified_manifests": [
+    "/workspace/checkride-v4-rc3/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc5/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc7/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc6/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc4/MD5SUMS.txt",
+    "/workspace/checkride-v4-rc8/MD5SUMS.txt"
+  ],
+  "historical_screenshot_counts": [
+    51,
+    53,
+    54,
+    52
+  ],
+  "fresh_screenshots": 180,
+  "runtime_sha256": {
+    "app.js": "96092a5582b8cfe4f53dc85730afa64727dcff23d57706e6a920be374d3fc5df",
+    "styles.css": "c5be983762d1e7738731802e91309006dbe29f444d3051c9e5939c390412c779",
+    "sw.js": "8c88a1be79f61a2ade8588fb0290e732dd9898a74dcf5d854079224ad83bca4e",
+    "elig-clock.js": "8aff2a1393b51f1682a6a2f88d6808f270605f393972c1df6a92fa78ab0fe9d9"
+  },
+  "rc9_absent": true,
+  "stage": "pre-freeze-final",
+  "final_lanes": [
+    [
+      "header-final/header-unsupported.json",
+      144
+    ],
+    [
+      "features-final/main.json",
+      106
+    ],
+    [
+      "pwa-final/pwa-legacy.json",
+      120
+    ],
+    [
+      "digest-final/digest.json",
+      60
+    ],
+    [
+      "evidence-final/evidence-defaults.json",
+      8
+    ],
+    [
+      "raw-final/raw-hours.json",
+      58
+    ],
+    [
+      "legacy-place/legacy-place.json",
+      8
+    ]
+  ]
+}

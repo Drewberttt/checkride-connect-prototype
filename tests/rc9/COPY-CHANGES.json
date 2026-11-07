@@ -1,0 +1,15 @@
+{
+  "digest.title": "Monday digest preview",
+  "digest.label": "Preview, nothing is sent",
+  "digest.open": "Open local preview",
+  "digest.note": "Fictional local data, evaluated when you open Alerts. Monday is a preview title, not a delivery schedule. No email, notifications or reservations are created.",
+  "digest.empty": "No saved alerts or sample waitlists yet. Save a local alert or join a sample waitlist to see relevant openings here.",
+  "digest.filters": "Saved local filters",
+  "digest.waitlists": "Sample waitlists",
+  "digest.openings": "Current matching sample openings",
+  "digest.none": "No current sample openings match these saved filters. Expired, taken and stale-availability openings are excluded.",
+  "digest.limit": "Up to 6 distinct openings per checkride are shown, soonest first. The same opening is shown once per checkride even if several saved filters match.",
+  "digest.view": "View sample opening",
+  "digest.search": "Find sample openings",
+  "digest.waitlist_view": "View sample examiner"
+}

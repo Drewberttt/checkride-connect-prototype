@@ -1,0 +1,137 @@
+PASS chromium signed-out light 360 no overflow/visible usable auth controls 
+PASS chromium signed-out light 360 auth keyboard focus 
+PASS chromium signed-out light settled360 full-page axe 
+PASS chromium signed-out light 390 no overflow/visible usable auth controls 
+PASS chromium signed-out light 390 auth keyboard focus 
+PASS chromium signed-out light 768 no overflow/visible usable auth controls 
+PASS chromium signed-out light 768 auth keyboard focus 
+PASS chromium signed-out light 1440 no overflow/visible usable auth controls 
+PASS chromium signed-out light 1440 auth keyboard focus 
+PASS chromium signed-out dark 360 no overflow/visible usable auth controls 
+PASS chromium signed-out dark 360 auth keyboard focus 
+PASS chromium signed-out dark settled360 full-page axe 
+PASS chromium signed-out dark 390 no overflow/visible usable auth controls 
+PASS chromium signed-out dark 390 auth keyboard focus 
+PASS chromium signed-out dark 768 no overflow/visible usable auth controls 
+PASS chromium signed-out dark 768 auth keyboard focus 
+PASS chromium signed-out dark 1440 no overflow/visible usable auth controls 
+PASS chromium signed-out dark 1440 auth keyboard focus 
+PASS chromium Independent QA light 360 no overflow/visible usable auth controls 
+PASS chromium Independent QA light 360 auth keyboard focus 
+PASS chromium Independent QA light settled360 full-page axe 
+PASS chromium Independent QA light 390 no overflow/visible usable auth controls 
+PASS chromium Independent QA light 390 auth keyboard focus 
+PASS chromium Independent QA light 768 no overflow/visible usable auth controls 
+PASS chromium Independent QA light 768 auth keyboard focus 
+PASS chromium Independent QA light 1440 no overflow/visible usable auth controls 
+PASS chromium Independent QA light 1440 auth keyboard focus 
+PASS chromium Independent QA dark 360 no overflow/visible usable auth controls 
+PASS chromium Independent QA dark 360 auth keyboard focus 
+PASS chromium Independent QA dark settled360 full-page axe 
+PASS chromium Independent QA dark 390 no overflow/visible usable auth controls 
+PASS chromium Independent QA dark 390 auth keyboard focus 
+PASS chromium Independent QA dark 768 no overflow/visible usable auth controls 
+PASS chromium Independent QA dark 768 auth keyboard focus 
+PASS chromium Independent QA dark 1440 no overflow/visible usable auth controls 
+PASS chromium Independent QA dark 1440 auth keyboard focus 
+PASS chromium ExampleLongNam light 360 no overflow/visible usable auth controls 
+PASS chromium ExampleLongNam light 360 auth keyboard focus 
+PASS chromium ExampleLongNam light settled360 full-page axe 
+PASS chromium ExampleLongNam light 390 no overflow/visible usable auth controls 
+PASS chromium ExampleLongNam light 390 auth keyboard focus 
+PASS chromium ExampleLongNam light 768 no overflow/visible usable auth controls 
+PASS chromium ExampleLongNam light 768 auth keyboard focus 
+PASS chromium ExampleLongNam light 1440 no overflow/visible usable auth controls 
+PASS chromium ExampleLongNam light 1440 auth keyboard focus 
+PASS chromium ExampleLongNam dark 360 no overflow/visible usable auth controls 
+PASS chromium ExampleLongNam dark 360 auth keyboard focus 
+PASS chromium ExampleLongNam dark settled360 full-page axe 
+PASS chromium ExampleLongNam dark 390 no overflow/visible usable auth controls 
+PASS chromium ExampleLongNam dark 390 auth keyboard focus 
+PASS chromium ExampleLongNam dark 768 no overflow/visible usable auth controls 
+PASS chromium ExampleLongNam dark 768 auth keyboard focus 
+PASS chromium ExampleLongNam dark 1440 no overflow/visible usable auth controls 
+PASS chromium ExampleLongNam dark 1440 auth keyboard focus 
+PASS chromium actual keyboard Log out usable at360 
+PASS chromium actual ATP goal find exact info, no bookable/PPL substitution 
+PASS chromium actual ATP goal readiness exact info, no bookable/PPL substitution 
+PASS chromium actual ATP goal journey exact info, no bookable/PPL substitution 
+PASS chromium explicit supported URL beats ATP goal 
+PASS chromium temporary URL does not silently save PPL/IR over ATP goal 
+PASS chromium explicit saved supported Find overrides ATP 
+PASS chromium saved unsupported rotorcraft never PPL fallback 
+PASS chromium saved unsupported ATP wins goal/evidence without relabeling or deletion 
+PASS chromium explicit supported choice retains exact global evidence and warning 
+PASS chromium legacy evidence precedes unsupported signup default, legitimate PPL mapping 
+PASS chromium actual rotorcraft signup is info-only default 
+PASS chromium rotorcraft readiness info-only default 
+PASS chromium no normal app crash or external request 
+PASS firefox signed-out light 360 no overflow/visible usable auth controls 
+PASS firefox signed-out light 360 auth keyboard focus 
+PASS firefox signed-out light settled360 full-page axe 
+PASS firefox signed-out light 390 no overflow/visible usable auth controls 
+PASS firefox signed-out light 390 auth keyboard focus 
+PASS firefox signed-out light 768 no overflow/visible usable auth controls 
+PASS firefox signed-out light 768 auth keyboard focus 
+PASS firefox signed-out light 1440 no overflow/visible usable auth controls 
+PASS firefox signed-out light 1440 auth keyboard focus 
+PASS firefox signed-out dark 360 no overflow/visible usable auth controls 
+PASS firefox signed-out dark 360 auth keyboard focus 
+PASS firefox signed-out dark settled360 full-page axe 
+PASS firefox signed-out dark 390 no overflow/visible usable auth controls 
+PASS firefox signed-out dark 390 auth keyboard focus 
+PASS firefox signed-out dark 768 no overflow/visible usable auth controls 
+PASS firefox signed-out dark 768 auth keyboard focus 
+PASS firefox signed-out dark 1440 no overflow/visible usable auth controls 
+PASS firefox signed-out dark 1440 auth keyboard focus 
+PASS firefox Independent QA light 360 no overflow/visible usable auth controls 
+PASS firefox Independent QA light 360 auth keyboard focus 
+PASS firefox Independent QA light settled360 full-page axe 
+PASS firefox Independent QA light 390 no overflow/visible usable auth controls 
+PASS firefox Independent QA light 390 auth keyboard focus 
+PASS firefox Independent QA light 768 no overflow/visible usable auth controls 
+PASS firefox Independent QA light 768 auth keyboard focus 
+PASS firefox Independent QA light 1440 no overflow/visible usable auth controls 
+PASS firefox Independent QA light 1440 auth keyboard focus 
+PASS firefox Independent QA dark 360 no overflow/visible usable auth controls 
+PASS firefox Independent QA dark 360 auth keyboard focus 
+PASS firefox Independent QA dark settled360 full-page axe 
+PASS firefox Independent QA dark 390 no overflow/visible usable auth controls 
+PASS firefox Independent QA dark 390 auth keyboard focus 
+PASS firefox Independent QA dark 768 no overflow/visible usable auth controls 
+PASS firefox Independent QA dark 768 auth keyboard focus 
+PASS firefox Independent QA dark 1440 no overflow/visible usable auth controls 
+PASS firefox Independent QA dark 1440 auth keyboard focus 
+PASS firefox ExampleLongNam light 360 no overflow/visible usable auth controls 
+PASS firefox ExampleLongNam light 360 auth keyboard focus 
+PASS firefox ExampleLongNam light settled360 full-page axe 
+PASS firefox ExampleLongNam light 390 no overflow/visible usable auth controls 
+PASS firefox ExampleLongNam light 390 auth keyboard focus 
+PASS firefox ExampleLongNam light 768 no overflow/visible usable auth controls 
+PASS firefox ExampleLongNam light 768 auth keyboard focus 
+PASS firefox ExampleLongNam light 1440 no overflow/visible usable auth controls 
+PASS firefox ExampleLongNam light 1440 auth keyboard focus 
+PASS firefox ExampleLongNam dark 360 no overflow/visible usable auth controls 
+PASS firefox ExampleLongNam dark 360 auth keyboard focus 
+PASS firefox ExampleLongNam dark settled360 full-page axe 
+PASS firefox ExampleLongNam dark 390 no overflow/visible usable auth controls 
+PASS firefox ExampleLongNam dark 390 auth keyboard focus 
+PASS firefox ExampleLongNam dark 768 no overflow/visible usable auth controls 
+PASS firefox ExampleLongNam dark 768 auth keyboard focus 
+PASS firefox ExampleLongNam dark 1440 no overflow/visible usable auth controls 
+PASS firefox ExampleLongNam dark 1440 auth keyboard focus 
+PASS firefox actual keyboard Log out usable at360 
+PASS firefox actual ATP goal find exact info, no bookable/PPL substitution 
+PASS firefox actual ATP goal readiness exact info, no bookable/PPL substitution 
+PASS firefox actual ATP goal journey exact info, no bookable/PPL substitution 
+PASS firefox explicit supported URL beats ATP goal 
+PASS firefox temporary URL does not silently save PPL/IR over ATP goal 
+PASS firefox explicit saved supported Find overrides ATP 
+PASS firefox saved unsupported rotorcraft never PPL fallback 
+PASS firefox saved unsupported ATP wins goal/evidence without relabeling or deletion 
+PASS firefox explicit supported choice retains exact global evidence and warning 
+PASS firefox legacy evidence precedes unsupported signup default, legitimate PPL mapping 
+PASS firefox actual rotorcraft signup is info-only default 
+PASS firefox rotorcraft readiness info-only default 
+PASS firefox no normal app crash or external request 
+HEADER D45 RESULT 136 0

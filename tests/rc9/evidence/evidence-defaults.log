@@ -1,0 +1,9 @@
+PASS chromium actual KT edit pins goal before save 
+PASS chromium goal change retains KT/checklist/medical bytes 
+PASS chromium clearing evidence persists without resetting chosen cert 
+PASS chromium cleared signup goal does not overwrite prior readiness selection 
+PASS firefox actual KT edit pins goal before save 
+PASS firefox goal change retains KT/checklist/medical bytes 
+PASS firefox clearing evidence persists without resetting chosen cert 
+PASS firefox cleared signup goal does not overwrite prior readiness selection 
+EVIDENCE DEFAULTS RESULT 8 passed, 0 failed

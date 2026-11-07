@@ -1,0 +1,3 @@
+Initial scratch storage probes attempted JSON.parse before any state was persisted; fresh seed is in memory until a user action. Actual fictional signup correctly initializes storage. Those probe errors were test setup, not app exceptions.
+Initial inherited features run94/96: both failures assumed one global membership rendering; new digest intentionally adds a second. Adapter checks both projections and scoped membership,96/96, no runtime change.
+Initial PWA118/120: two Chromium profile-link assertions ran before hash-render detachment. Adapter explicitly awaits destination render,120/120, no runtime change. Initial logs/results/screenshots retained, never overwritten.

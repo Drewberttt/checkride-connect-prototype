@@ -1,0 +1,3 @@
+Fresh OUT=/workspace/checkride-test-tools/evidence/rc9-final-20261107-161404; SHOTS=/workspace/checkride-connect-shots/rc9-final-20261107-161404. Each inherited script requires explicit OUT and SHOTS overrides; PWA uses new final pointer + port8042; all earlier evidence/screenshots untouched.
+Fresh subfolders: header, header-r2, features, features-r2, pwa, pwa-r2, digest, digest-r2, evidence-defaults, evidence-r2, raw, raw-r2, gate, gate-r2; all OUT/SHOTS explicitly supplied. Historical210 screenshots unchanged; new screenshot inventory includes preliminary and final evidence.
+Final post-compatibility runs: legacy-place, features-final, header-final, pwa-final, digest-final, evidence-final, raw-final, gate-final; all fresh explicit paths. No historical output reused.

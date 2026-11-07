@@ -1,0 +1,6 @@
+{
+  "goal.no_estimate": "No estimate yet for this certificate.",
+  "goal.info_only": "Info only: not bookable in this prototype.",
+  "goal.rotorcraft": "Rotorcraft (info only: not bookable in this prototype)",
+  "wl.leave_note": "Leaving removes this examiner/checkride’s local alerts. Rejoining goes to the back of this examiner’s illustrative line; the example position is shared across checkrides."
+}

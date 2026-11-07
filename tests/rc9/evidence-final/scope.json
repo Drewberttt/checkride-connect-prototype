@@ -1,0 +1,114 @@
+{
+  "pass": 27,
+  "fail": 0,
+  "results": [
+    {
+      "name": "protected demo-date.js",
+      "pass": true
+    },
+    {
+      "name": "protected sample-nc-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "protected sample-fl-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "protected sample-az-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "protected index.html",
+      "pass": true
+    },
+    {
+      "name": "protected cost-model.js",
+      "pass": true
+    },
+    {
+      "name": "protected sample-tx-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "protected data.js",
+      "pass": true
+    },
+    {
+      "name": "protected sample-ca-examiners.js",
+      "pass": true
+    },
+    {
+      "name": "protected elig-clock.js",
+      "pass": true
+    },
+    {
+      "name": "owned reference unchanged",
+      "pass": true
+    },
+    {
+      "name": "D41/D43 landing unchanged",
+      "pass": true
+    },
+    {
+      "name": "prep display/save/clock inputs byte-identical",
+      "pass": true
+    },
+    {
+      "name": "mandatory notice   const PROTO_STRIP =",
+      "pass": true
+    },
+    {
+      "name": "mandatory notice       <div class=\"proto-strip small\"",
+      "pass": true
+    },
+    {
+      "name": "styles original prefix unchanged; new rules auth-only",
+      "pass": true
+    },
+    {
+      "name": "SW shell/logic unchanged",
+      "pass": true
+    },
+    {
+      "name": "font fonts/README.md",
+      "pass": true
+    },
+    {
+      "name": "font fonts/Manrope-Variable-latin.woff2",
+      "pass": true
+    },
+    {
+      "name": "font fonts/Manrope-Variable-latin-ext.woff2",
+      "pass": true
+    },
+    {
+      "name": "font fonts/GeistMono-Variable.woff2",
+      "pass": true
+    },
+    {
+      "name": "font fonts/Geist-Variable.woff2",
+      "pass": true
+    },
+    {
+      "name": "font fonts/licenses/OFL-Manrope.txt",
+      "pass": true
+    },
+    {
+      "name": "font fonts/licenses/OFL-Geist-and-GeistMono.txt",
+      "pass": true
+    },
+    {
+      "name": "No repository metadata",
+      "pass": true
+    },
+    {
+      "name": "rc9 absent",
+      "pass": true
+    },
+    {
+      "name": "D45 owner source unchanged since read",
+      "pass": true
+    }
+  ]
+}

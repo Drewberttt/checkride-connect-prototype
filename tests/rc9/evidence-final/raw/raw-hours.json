@@ -1,0 +1,1032 @@
+{
+  "pass": 58,
+  "fail": 0,
+  "results": [
+    {
+      "browser": "chromium",
+      "name": "I03 supported padded import visible and counts3",
+      "pass": true,
+      "data": {
+        "value": "3.00",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": " 3.00 "
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I03 actual Ctrl+A/Backspace/Tab uncounts -> missing",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I03 cleared empty persists reload",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "control explicitly text/mobile decimal, not native number",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I01 actual typing 3. retained/invalid/uncounted",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3.",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "typed 3. route/reload persistence",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3.",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I01 actual clipboard 3. exact paste/invalid",
+      "pass": true,
+      "data": {
+        "z": {
+          "value": "3.",
+          "type": "text",
+          "mode": "decimal",
+          "bad": false,
+          "aria": "true",
+          "desc": "clock-prep-h0-err",
+          "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+          "reason": "fails",
+          "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+          "ignored": "1",
+          "stored": [
+            {
+              "date": "2026-11-01",
+              "hours": "3.",
+              "hoursBad": false
+            }
+          ]
+        },
+        "clip": {
+          "text": "3.",
+          "type": "insertFromPaste"
+        }
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "pasted 3. reload persists raw rejection",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3.",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I01 actual typing +3 retained/invalid/uncounted",
+      "pass": true,
+      "data": {
+        "value": "+3",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "+3",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "typed +3 route/reload persistence",
+      "pass": true,
+      "data": {
+        "value": "+3",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "+3",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I01 actual clipboard +3 exact paste/invalid",
+      "pass": true,
+      "data": {
+        "z": {
+          "value": "+3",
+          "type": "text",
+          "mode": "decimal",
+          "bad": false,
+          "aria": "true",
+          "desc": "clock-prep-h0-err",
+          "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+          "reason": "fails",
+          "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+          "ignored": "1",
+          "stored": [
+            {
+              "date": "2026-11-01",
+              "hours": "+3",
+              "hoursBad": false
+            }
+          ]
+        },
+        "clip": {
+          "text": "+3",
+          "type": "insertFromPaste"
+        }
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "pasted +3 reload persists raw rejection",
+      "pass": true,
+      "data": {
+        "value": "+3",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "+3",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I02 exact padded clipboard valid0.5 no malformed feedback",
+      "pass": true,
+      "data": {
+        "z": {
+          "value": " .50 ",
+          "type": "text",
+          "mode": "decimal",
+          "bad": false,
+          "aria": null,
+          "desc": null,
+          "err": null,
+          "reason": "fails",
+          "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0.5 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+          "ignored": null,
+          "stored": [
+            {
+              "date": "2026-11-01",
+              "hours": " .50 ",
+              "hoursBad": false
+            }
+          ]
+        },
+        "clip": {
+          "text": " .50 ",
+          "type": "insertFromPaste"
+        }
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I02 reload trimmed visible .50 still valid0.5",
+      "pass": true,
+      "data": {
+        "value": ".50",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0.5 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": " .50 ",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "I02 supported padded state clears normally",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "cursor moves without control replacement",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "correction removes dot without replacing input",
+      "pass": true,
+      "data": {
+        "value": "3",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "Hours Tab advances to simulator",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "mixed invalid dot +1.00 counts only1",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 1 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3."
+          },
+          {
+            "date": "2026-11-01",
+            "hours": "1.00"
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "legacy saved native-badInput explicit empty clear",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "chromium",
+      "name": "invalid-only raw syntax optional tick false",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual raw-invalid mock Send false nonblocking + persistence",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "invalid-only raw syntax optional tick true",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "actual raw-invalid mock Send true nonblocking + persistence",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "raw hours settled narrow light axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "raw hours narrow light no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "raw hours settled narrow dark axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "chromium",
+      "name": "raw hours narrow dark no overflow",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "raw hours no crash/external requests",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": []
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I03 supported padded import visible and counts3",
+      "pass": true,
+      "data": {
+        "value": "3.00",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": " 3.00 "
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I03 actual Ctrl+A/Backspace/Tab uncounts -> missing",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I03 cleared empty persists reload",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "control explicitly text/mobile decimal, not native number",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I01 actual typing 3. retained/invalid/uncounted",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3.",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "typed 3. route/reload persistence",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3.",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I01 actual clipboard 3. exact paste/invalid",
+      "pass": true,
+      "data": {
+        "z": {
+          "value": "3.",
+          "type": "text",
+          "mode": "decimal",
+          "bad": false,
+          "aria": "true",
+          "desc": "clock-prep-h0-err",
+          "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+          "reason": "fails",
+          "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+          "ignored": "1",
+          "stored": [
+            {
+              "date": "2026-11-01",
+              "hours": "3.",
+              "hoursBad": false
+            }
+          ]
+        },
+        "clip": {
+          "text": "3.",
+          "type": "insertFromPaste"
+        }
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "pasted 3. reload persists raw rejection",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3.",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I01 actual typing +3 retained/invalid/uncounted",
+      "pass": true,
+      "data": {
+        "value": "+3",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "+3",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "typed +3 route/reload persistence",
+      "pass": true,
+      "data": {
+        "value": "+3",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "+3",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I01 actual clipboard +3 exact paste/invalid",
+      "pass": true,
+      "data": {
+        "z": {
+          "value": "+3",
+          "type": "text",
+          "mode": "decimal",
+          "bad": false,
+          "aria": "true",
+          "desc": "clock-prep-h0-err",
+          "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+          "reason": "fails",
+          "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+          "ignored": "1",
+          "stored": [
+            {
+              "date": "2026-11-01",
+              "hours": "+3",
+              "hoursBad": false
+            }
+          ]
+        },
+        "clip": {
+          "text": "+3",
+          "type": "insertFromPaste"
+        }
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "pasted +3 reload persists raw rejection",
+      "pass": true,
+      "data": {
+        "value": "+3",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "+3",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I02 exact padded clipboard valid0.5 no malformed feedback",
+      "pass": true,
+      "data": {
+        "z": {
+          "value": " .50 ",
+          "type": "text",
+          "mode": "decimal",
+          "bad": false,
+          "aria": null,
+          "desc": null,
+          "err": null,
+          "reason": "fails",
+          "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0.5 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+          "ignored": null,
+          "stored": [
+            {
+              "date": "2026-11-01",
+              "hours": " .50 ",
+              "hoursBad": false
+            }
+          ]
+        },
+        "clip": {
+          "text": " .50 ",
+          "type": "insertFromPaste"
+        }
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I02 reload trimmed visible .50 still valid0.5",
+      "pass": true,
+      "data": {
+        "value": ".50",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 0.5 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": " .50 ",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "I02 supported padded state clears normally",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "cursor moves without control replacement",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "correction removes dot without replacing input",
+      "pass": true,
+      "data": {
+        "value": "3",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "ok",
+        "text": "Practical-test prep (3 hours)\nOn track\n[VERIFY]\n\n3 of 3 hours of prep logged in the window for December 2026 (Thu, Oct 1, 2026 to Thu, Dec 31, 2026). Prep after the test date won’t count.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "Hours Tab advances to simulator",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "mixed invalid dot +1.00 counts only1",
+      "pass": true,
+      "data": {
+        "value": "3.",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": "true",
+        "desc": "clock-prep-h0-err",
+        "err": "Enter hours from 0.1 to 24. This entry isn’t counted.",
+        "reason": "fails",
+        "text": "Practical-test prep (3 hours)\nCFI review\n[VERIFY]\n\nYou’ve logged 1 of 3 hours of practical-test prep with your instructor since Thu, Oct 1, 2026. The rule (§61.109(a)(4)) needs them in your test month or the 2 calendar months before it. Ask your CFI to review this.\n\nNot counted: 1 of your prep entries. Hours must be a number from 0.1 to 24.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": "1",
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "3."
+          },
+          {
+            "date": "2026-11-01",
+            "hours": "1.00"
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "legacy saved native-badInput explicit empty clear",
+      "pass": true,
+      "data": {
+        "value": "",
+        "type": "text",
+        "mode": "decimal",
+        "bad": false,
+        "aria": null,
+        "desc": null,
+        "err": null,
+        "reason": "missing",
+        "text": "Practical-test prep (3 hours)\nNot set\n[VERIFY]\n\nLog 3 hours of practical-test prep with your instructor in your test month or the 2 calendar months before it.\n\nConfirm this with your CFI.\n\nBasis: 14 CFR 61.109(a)(4) (draft reading)",
+        "ignored": null,
+        "stored": [
+          {
+            "date": "2026-11-01",
+            "hours": "",
+            "hoursBad": false
+          }
+        ]
+      }
+    },
+    {
+      "browser": "firefox",
+      "name": "invalid-only raw syntax optional tick false",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual raw-invalid mock Send false nonblocking + persistence",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "invalid-only raw syntax optional tick true",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "actual raw-invalid mock Send true nonblocking + persistence",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "raw hours settled narrow light axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "raw hours narrow light no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "raw hours settled narrow dark axe",
+      "pass": true,
+      "data": []
+    },
+    {
+      "browser": "firefox",
+      "name": "raw hours narrow dark no overflow",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "raw hours no crash/external requests",
+      "pass": true,
+      "data": {
+        "errors": [],
+        "external": []
+      }
+    }
+  ]
+}

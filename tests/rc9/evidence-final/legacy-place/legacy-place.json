@@ -1,0 +1,46 @@
+{
+  "pass": 8,
+  "fail": 0,
+  "results": [
+    {
+      "browser": "chromium",
+      "name": "legacy retained place has no current membership or leave marker",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "legacy absent membership cannot restore old4; back12",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "legacy back12 persists",
+      "pass": true
+    },
+    {
+      "browser": "chromium",
+      "name": "existing other-cert membership retains shared current place, no invented past leave",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "legacy retained place has no current membership or leave marker",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "legacy absent membership cannot restore old4; back12",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "legacy back12 persists",
+      "pass": true
+    },
+    {
+      "browser": "firefox",
+      "name": "existing other-cert membership retains shared current place, no invented past leave",
+      "pass": true
+    }
+  ]
+}

@@ -194,12 +194,12 @@
   // QA-039: one shared rule. A slot whose start instant (airport zone) has passed is never listed, alerted, offered or requestable.
   const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
   // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
-  const COPY = { "goal.blank": "No default checkride", "goal.label": "Planning checkride", "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",
+  const COPY = { "goal.no_estimate": "No estimate yet for this certificate.", "goal.info_only": "Info only: not bookable in this prototype.", "goal.rotorcraft": "Rotorcraft (info only: not bookable in this prototype)", "digest.title": "Monday digest preview", "digest.label": "Preview, nothing is sent", "digest.open": "Open local preview", "digest.note": "Fictional local data, evaluated when you open Alerts. Monday is a preview title, not a delivery schedule. No email, notifications or reservations are created.", "digest.empty": "No saved alerts or sample waitlists yet. Save a local alert or join a sample waitlist to see relevant openings here.", "digest.filters": "Saved local filters", "digest.waitlists": "Sample waitlists", "digest.openings": "Current matching sample openings", "digest.none": "No current sample openings match these saved filters. Expired, taken and stale-availability openings are excluded.", "digest.limit": "Up to 6 distinct openings per checkride are shown, soonest first. The same opening is shown once per checkride even if several saved filters match.", "digest.view": "View sample opening", "digest.search": "Find sample openings", "digest.waitlist_view": "View sample examiner", "goal.blank": "No default checkride", "goal.label": "Planning checkride", "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",
     "wl.status.joined": "Joined locally · illustrative position #{position}.", "wl.status.not_joined": "Not joined for this checkride.",
     "wl.sample": "Fictional sample only. Positions are illustrative, not live demand or priority. No notifications are sent; no slot is reserved.",
     "wl.join": "Join sample waitlist", "wl.leave": "Leave sample waitlist", "wl.already": "Already joined locally for this examiner and checkride. Nothing was sent.",
     "wl.joined": "Sample waitlist joined in this browser. Nothing was sent.", "wl.left": "Sample waitlist left for this checkride. Nothing was sent.",
-    "wl.leave_note": "Leaving removes this examiner/checkride’s local alerts.", "proto.payments": "Prototype: no real payments.", "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state",
+    "wl.leave_note": "Leaving removes this examiner/checkride’s local alerts. Rejoining goes to the back of this examiner’s illustrative line; the example position is shared across checkrides.", "proto.payments": "Prototype: no real payments.", "slot.started": "This opening has already started.", "search.empty_today": "No openings left today.", "search.state.placeholder": "Choose a state",
     // D41 (new key for Customer Discovery): the NC sample area has no cost data, so no estimate is shown and nothing is invented.
     "estimate.no_area_data": `No estimate yet for ${IS_NC ? "North Carolina" : "this area"}. This prototype has no sample aircraft, instructor or travel cost data here, so we don\u2019t guess. Fees shown are each examiner\u2019s own (sample).`,
     // NC cost data (Marlo, Nov 2; new keys for Customer Discovery). National figures used where NC has none are labelled "national average".
@@ -1046,6 +1046,7 @@ const closeModal = () => {
       body: `Nothing for ${esc(certById(f.cert).name)} within ${f.radius} nm of ${esc(f.near)}${why ? ` with ${why}` : ""}. Widen the search, or save a mock alert above to hear about new openings.`, actions: acts.join("") });
   }
   function viewSearch(q) {
+    if (infoGoal(q.cert)) return infoCertificate(q.cert, true);
     const f = searchFilters(q);
     const results = f.outside ? [] : searchDpes(f);
     const inState = allDpes().filter((dp) => dpeState(dp) === f.state).length;
@@ -1118,6 +1119,7 @@ const closeModal = () => {
   function viewProfile(q, id) {
     const dp = dpeById(id);
     if (!dp) return `<div class="page">${emptyState({ id: "dpe-not-found", ic: "search", h: "h1", title: "Examiner not found", body: "This sample examiner isn\u2019t in the data set (links can go stale after a reset).", actions: `<a class="btn" href="#/find">Back to Find a DPE</a>` })}</div>`; // QA-072
+    if (infoGoal(q.cert)) return infoCertificate(q.cert, true, { near: nearFor(q.near, dp), radius: 50 });
     const certIds = Object.keys(dp.fees);
     const cert = certIds.includes(q.cert) ? q.cert : certIds[0];
     // QA-045 (D40): ATP and rotorcraft have no estimator yet. A ?cert=atp|rh link says so instead of silently showing another cert's numbers.
@@ -1272,6 +1274,33 @@ const closeModal = () => {
     </div>`;
   }
 
+  // Read-only, on-demand digest projection. No subscription, timer, notification or new persistence.
+  function digestPreview() {
+    const groups = new Map();
+    S.alerts.forEach(a => {
+      if (!D.certs.some(c => c.id === a.cert)) return;
+      if (!groups.has(a.cert)) groups.set(a.cert, new Map());
+      const key = JSON.stringify([a.dpeId || "", a.near, a.radius, a.before || "", a.maxFee || 0]);
+      groups.get(a.cert).set(key, a);
+    });
+    const content = [...groups].map(([cert, filters]) => {
+      const alerts = [...filters.values()], seen = new Set();
+      const slots = openSlots({cert}).filter(s => {
+        if (!alerts.some(a => alertMatches(a, s))) return false;
+        const key = JSON.stringify([s.dpeId, s.airport, s.date, s.time]);
+        if (seen.has(key)) return false;
+        seen.add(key); return true;
+      });
+      const members = [...new Set(alerts.map(a => a.dpeId).filter(id => id && dpeById(id)))];
+      return `<section class="inset" data-digest-group="${esc(cert)}" style="margin-top:1rem"><h3>${esc(certById(cert).name)}</h3>
+        <h4>${COPY["digest.filters"]}</h4><ul class="small">${alerts.map(a => `<li>${esc(a.near)} · ${esc(a.radius)} nm${a.before ? ` · before ${fmtDateA(a.before)}` : ""}${a.maxFee ? ` · up to ${money(a.maxFee)}` : ""}${a.dpeId ? ` · ${esc(dpeById(a.dpeId)?.name || "Sample examiner")}` : ""}</li>`).join("")}</ul>
+        ${members.length ? `<h4>${COPY["digest.waitlists"]}</h4>${members.map(id => { const dp = dpeById(id); return `<div data-digest-member="${esc(id)}"><a href="#/dpe/${esc(id)}?${toQuery({cert})}">${COPY["digest.waitlist_view"]}: ${esc(dp.name)}</a>${waitlistControl(dp, cert, "digest", false)}</div>`; }).join("")}` : ""}
+        <h4>${COPY["digest.openings"]}</h4>${slots.length ? `<ul>${slots.slice(0, 6).map(s => `<li data-digest-slot="${esc(s.id)}" style="margin-bottom:.75rem"><b>${esc(dpeById(s.dpeId).name)}</b><div class="small">${slotAt(s)}${s.simulated ? ' · Simulated' : ''}</div><a href="#/dpe/${esc(s.dpeId)}?${toQuery({cert, date:s.date})}">${COPY["digest.view"]}</a></li>`).join("")}</ul>` : `<p data-digest-no-openings>${COPY["digest.none"]}</p>`}
+      </section>`;
+    }).join("");
+    return `<section class="card" id="digest-preview" aria-labelledby="digest-title" style="margin-bottom:1rem"><h2 id="digest-title" data-copy-key="digest.title">${COPY["digest.title"]}</h2><p><b class="pill warn" data-copy-key="digest.label">${COPY["digest.label"]}</b></p><details><summary>${COPY["digest.open"]}</summary><p class="muted small">${COPY["digest.note"]}</p><p class="muted small">${COPY["digest.limit"]}</p>${content || `<p data-digest-empty>${COPY["digest.empty"]}</p><a href="#/search">${COPY["digest.search"]}</a>`}</details></section>`;
+  }
+
   function viewAlerts() {
     const unread = S.notifications.filter((n) => !n.read).length;
     const alertCard = (a) => {
@@ -1289,6 +1318,7 @@ const closeModal = () => {
     };
     return `<div class="page">
       <div class="page-head v3-head"><p class="eyebrow">Openings and updates</p><h1>Alerts <span class="pill warn" style="vertical-align:middle">Mock only</span></h1><p class="muted">Saved searches are matched against sample openings in this browser. <b>No email, SMS or push is ever sent</b>; alerts appear only in the inbox on this page.</p></div>
+      ${digestPreview()}
       <div class="split-r">
         <div class="stack">
           <section class="card" style="border-color:var(--border-strong)"><span class="pill">Free for students</span> <span class="pill warn">Email only · mock</span><p class="muted small" style="margin:.5rem 0 0">Alerts are free and email-only in the plan. In this prototype nothing is emailed: matches show up in the inbox on this page.</p></section>
@@ -1438,6 +1468,11 @@ const closeModal = () => {
   function waitlistControl(dp, cert, where = "profile", buttons = true) {
     const joined = wlJoined(dp.id, cert), id = `wl-note-${where}-${dp.id}-${cert}`;
     return `<div class="small" data-wl-control="${dp.id}" data-wl-cert="${cert}" style="margin-top:.7rem"><p role="status" data-wl-state="${joined ? "joined" : "not-joined"}"${joined ? ` data-wl-position="${wlPosition(dp.id)}"` : ""} style="margin:.25rem 0" data-copy-key="wl.status.${joined ? "joined" : "not_joined"}">${joined ? COPY["wl.status.joined"].replace("{position}", wlPosition(dp.id)) : COPY["wl.status.not_joined"]}</p><p id="${id}" class="muted" data-copy-key="wl.sample">${COPY["wl.sample"]}</p>${buttons ? `<button type="button" class="btn secondary sm" data-action="${joined ? "leave-waitlist" : "alert-dpe"}" data-dpe="${dp.id}" data-cert="${cert}" aria-describedby="${id}">${COPY[joined ? "wl.leave" : "wl.join"]}</button>` : ""}${joined ? `<p class="muted" data-copy-key="wl.leave_note">${COPY["wl.leave_note"]}</p>` : ""}</div>`;
+  }
+  function leaveSampleWaitlist(dpeId, cert) {
+    if (!wlJoined(dpeId, cert)) return;
+    wlOf(dpeId).left = true;
+    S.alerts = S.alerts.filter(a => !(a.dpeId === dpeId && a.cert === cert));
   }
   const WL_BACK = 12; // mock "back of the line"
   const quietHour = (ts) => { const h = new Date(ts).getHours(); return h >= 21 || h < 8; };
@@ -2319,9 +2354,11 @@ const closeModal = () => {
   const triVal = (v) => (v === "yes" ? true : v === "no" ? false : null);
   // Planning defaults only: explicit choices/evidence and active requests outrank signup hints.
   const supportedGoal = (v) => typeof v === "string" && v !== "sport" && !!certById(v);
-  const signupGoal = () => supportedGoal(S.demoUser && S.demoUser.goal) ? S.demoUser.goal : "ppl";
+  const infoGoal = v => v === "atp" || v === "rh";
+  const planningChoice = v => supportedGoal(v) || infoGoal(v);
+  const signupGoal = () => planningChoice(S.demoUser && S.demoUser.goal) ? S.demoUser.goal : "ppl";
   const hasReadinessEvidence = () => Object.keys(CK()).length > 0 || Object.values(S.ready9 || {}).some(Boolean) || (!S.ktSample && Object.values(S.ready9Dates || {}).some(Boolean)) || Object.keys(S.medical || {}).length > 0;
-  const planningCert = () => supportedGoal(S.readinessCert) ? S.readinessCert : hasReadinessEvidence() ? "ppl" : signupGoal();
+  const planningCert = () => planningChoice(S.readinessCert) ? S.readinessCert : hasReadinessEvidence() ? "ppl" : signupGoal();
   const clockCert = () => { const cur = activeReq(); return cur ? cur.cert : planningCert(); };
   const pinReadiness = () => { if (!activeReq() && !supportedGoal(S.readinessCert)) S.readinessCert = planningCert(); };
   const clockPlanned = () => {
@@ -2415,10 +2452,19 @@ const closeModal = () => {
   }
   const ready9Count = () => { const r = S.ready9 || {}; return ["kt", "exp", "end", "med", "iacra", "docs", "id", "terms", "prep"].filter((k) => r[k]).length; };
 
+  function infoCertificate(cert, find = false, f = {}) {
+    const name = cert === "atp" ? "ATP" : "Rotorcraft";
+    return `<div class="page"><h1>${find ? "Find a DPE" : "Planning checkride"}</h1><section class="card" data-info-cert="${cert}"><h2>${name}</h2><p data-copy-key="goal.no_estimate">${COPY["goal.no_estimate"]}</p><p>${COPY["goal.info_only"]}</p>
+      ${find ? `<form data-form="find" data-auto><input type="hidden" name="near" value="${esc(f.near || DEFAULT_NEAR)}"><input type="hidden" name="radius" value="${f.radius || 50}">` : ""}
+      <label class="field"><span>${COPY["goal.label"]}</span><select ${find ? 'id="find-cert" name="cert"' : 'id="readiness-cert" data-planning-cert'} aria-describedby="planning-note"><option value="${cert}" selected>${name} (info only)</option>${D.certs.filter(c => c.id !== "sport").map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join("")}</select></label>${find ? '</form>' : ''}
+      <p class="small muted" id="planning-note">${COPY["goal.note"]}</p></section></div>`;
+  }
+
   function viewJourney() {
     const reqs = myReqs(), cur = activeReq();
     const s = cur && slotOf(cur), dp = cur && dpeById(cur.dpeId);
     const cert = cur ? cur.cert : planningCert();
+    if (infoGoal(cert)) return infoCertificate(cert);
     const n = ready9Count();
     const items = READY9(cert, dp), r9 = S.ready9 || {};
     const nextItem = items.find((it) => !r9[it.id]);
@@ -2461,6 +2507,7 @@ const closeModal = () => {
   function viewReadiness() {
     const cur = activeReq(), dp = cur && dpeById(cur.dpeId), s = cur && slotOf(cur);
     const cert = cur ? cur.cert : planningCert();
+    if (infoGoal(cert)) return infoCertificate(cert);
     const items = READY9(cert, dp), r9 = S.ready9 || {}, n = ready9Count();
     const cs = cur && cur.status === "confirmed" ? S.curated[cur.id] : null;
     return `<div class="page">
@@ -2674,7 +2721,7 @@ const closeModal = () => {
     const raw = (k) => (dup[k] ? dup[k][0] : q[k]);
     const rc = raw("cert"), rn = raw("near"), rr = raw("radius");
     const qc = rc == null ? rc : String(rc).trim().toLowerCase(), qn = rn == null ? rn : String(rn).trim().toUpperCase();
-    const cert = qc && certById(qc) && qc !== "sport" ? qc : rc != null ? "ppl" : supportedGoal(S.findCert) ? S.findCert : signupGoal();
+    const cert = qc && planningChoice(qc) ? qc : rc != null ? "ppl" : planningChoice(S.findCert) ? S.findCert : signupGoal();
     const near = qn && apt(qn) ? qn : DEFAULT_NEAR;
     const radius = V4_RADII.includes(+rr) ? +rr : 50;
     // QA-069: a link with a value we can't use says what it fell back to instead of switching silently.
@@ -2718,6 +2765,7 @@ const closeModal = () => {
 
   function viewFind(q) {
     const f = v4FindFilters(q, ui.hashDup);
+    if (infoGoal(f.cert)) return infoCertificate(f.cert, true, f);
     const res = searchDpes(f);
     const c = certById(f.cert);
     const firstOpen = res.findIndex((r) => r.soonest && !isStale(r.dp.id));
@@ -2811,7 +2859,7 @@ const closeModal = () => {
   function viewSignup(q) {
     const role = V4_ROLES.some(([r]) => r === (ui.signupRole || q.role)) ? (ui.signupRole || q.role) : "pilot";
     const aptLbl = { pilot: "Home airport", dpe: "Main airport you test at", school: "School\u2019s home airport" }[role];
-    const goal = role === "pilot" ? `<label class="field"><span>Checkride you\u2019re working toward</span><select name="goal" id="signup-goal"><option value="" data-copy-key="goal.blank">${COPY["goal.blank"]}</option>${D.certs.filter((c) => c.id !== "sport").map((c) => `<option value="${c.id}" ${(ui.signupGoal ?? (S.demoUser && S.demoUser.goal)) === c.id ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option value="atp" ${(ui.signupGoal ?? (S.demoUser && S.demoUser.goal)) === "atp" ? "selected" : ""}>ATP (info only: not bookable in this prototype)</option></select></label>
+    const goal = role === "pilot" ? `<label class="field"><span>Checkride you\u2019re working toward</span><select name="goal" id="signup-goal"><option value="" data-copy-key="goal.blank">${COPY["goal.blank"]}</option>${D.certs.filter((c) => c.id !== "sport").map((c) => `<option value="${c.id}" ${(ui.signupGoal ?? (S.demoUser && S.demoUser.goal)) === c.id ? "selected" : ""}>${esc(c.name)}</option>`).join("")}<option value="atp" ${(ui.signupGoal ?? (S.demoUser && S.demoUser.goal)) === "atp" ? "selected" : ""}>ATP (info only: not bookable in this prototype)</option><option value="rh" ${(ui.signupGoal ?? (S.demoUser && S.demoUser.goal)) === "rh" ? "selected" : ""}>${COPY["goal.rotorcraft"]}</option></select></label>
         <label class="field"><span>Recommending CFI <span class="muted">(optional)</span></span><input name="cfi" id="signup-cfi" autocomplete="off"></label>` : "";
     return v4AuthShell(`<h1>Create your account</h1><p class="muted">Free during the prototype. Takes about a minute.</p>${V4_DEMO_NOTE}
       <form class="stack" data-form="demo-signup" autocomplete="off" novalidate>
@@ -3097,7 +3145,7 @@ const closeModal = () => {
       // QA-068 + QA-075: focus and the message go to the first field with a problem; fields already fixed are not invalid.
       if (!authValidate(f)) return;
       const airport = fd.get("airport") || "";
-      S.demoUser = { name: name.slice(0, 60), role, airport, goal: role === "pilot" && (supportedGoal(fd.get("goal")) || fd.get("goal") === "atp") ? fd.get("goal") : "" }; S.role = role; ui.signupRole = null; ui.signupGoal = null;
+      S.demoUser = { name: name.slice(0, 60), role, airport, goal: role === "pilot" && planningChoice(fd.get("goal")) ? fd.get("goal") : "" }; S.role = role; ui.signupRole = null; ui.signupGoal = null;
       f.reset(); save(); toast(`Demo account for ${S.demoUser.name}. Nothing was sent; your email, phone and password weren\u2019t kept.`); go(HOME[role]);
     },
   };
@@ -3202,6 +3250,7 @@ const closeModal = () => {
     // QA-065: remember what had focus so a re-render that replaces it can put focus back on the same control.
     const fKey = focusKey(document.activeElement), pathChanged = ui.lastPath !== path && ui.lastPath !== null;
     document.body.classList.toggle("is-landing", pub);
+    document.body.classList.toggle("is-auth", path === "/login" || path === "/signup");
     $("#app").innerHTML = (landing ? "" : PROTO_STRIP) + (html ?? notFound(path));
     a11yFix($("#app"));
     if (!/^\/dpe\/[^/]+$/.test(path)) ui.profileKey = null;
@@ -3301,7 +3350,7 @@ function countUp(root) {
         <div class="row" style="justify-content:flex-end"><a class="btn secondary" href="#/alerts" data-action="close-modal">Manage alerts</a></div>`);
       return false;
     }
-    if (a.dpeId) wlOf(a.dpeId);
+    if (a.dpeId) { const prior = S.wl && S.wl[a.dpeId], alreadyJoined = S.alerts.some(x => x.dpeId === a.dpeId); const wl = wlOf(a.dpeId); if (wl.left || (prior && !alreadyJoined)) { wl.pos = WL_BACK; wl.passes = 0; wl.left = false; } }
     S.alerts.push({ id: uid("a"), channels: ["email"], createdAt: Date.now(), ...a });
     const n = openSlots({ cert: a.cert }).filter((s) => alertMatches(a, s)).length;
     toast(a.dpeId ? COPY["wl.joined"] : `Mock alert saved in this browser.${n ? ` ${plural(n, "opening")} already match${n === 1 ? "es" : ""} it.` : " A mock alert will appear in your inbox when something matches."} No email is sent.`);
@@ -3505,8 +3554,8 @@ function countUp(root) {
       simBusy();
     },
     "notif-perm": () => { try { Promise.resolve(Notification.requestPermission()).then(() => rerender()); } catch (e) { /* unsupported */ } },
-    "del-alert": (el) => { const a = S.alerts.find(a => a.id === el.dataset.id); S.alerts = S.alerts.filter(x => a && a.dpeId ? !(x.dpeId === a.dpeId && x.cert === a.cert) : x.id !== el.dataset.id); toast(a && a.dpeId ? COPY["wl.left"] : "Alert deleted."); rerender(); },
-    "leave-waitlist": (el) => { S.alerts = S.alerts.filter(a => !(a.dpeId === el.dataset.dpe && a.cert === el.dataset.cert)); toast(COPY["wl.left"]); rerender(); document.querySelector(`[data-wl-control="${el.dataset.dpe}"][data-wl-cert="${el.dataset.cert}"] button`)?.focus(); },
+    "del-alert": (el) => { const a = S.alerts.find(a => a.id === el.dataset.id); if (a && a.dpeId) leaveSampleWaitlist(a.dpeId, a.cert); else S.alerts = S.alerts.filter(x => x.id !== el.dataset.id); toast(a && a.dpeId ? COPY["wl.left"] : "Alert deleted."); rerender(); },
+    "leave-waitlist": (el) => { leaveSampleWaitlist(el.dataset.dpe, el.dataset.cert); toast(COPY["wl.left"]); rerender(); document.querySelector(`[data-wl-control="${el.dataset.dpe}"][data-wl-cert="${el.dataset.cert}"] button`)?.focus(); },
     "read-all": () => { S.notifications.forEach((n) => { n.read = true; }); rerender(); },
     // ---- C: no-shows (D34/D36)
     "ns-mark": (el) => {
@@ -4018,7 +4067,7 @@ function countUp(root) {
       }
       save(); rerender(); const back = $(t.dataset.med === "type" ? "#med-type" : "#med-date"); if (back) back.focus(); return;
     }
-    if (t.matches("[data-planning-cert]")) { if (supportedGoal(t.value)) { S.readinessCert = t.value; save(); rerender(); document.getElementById("readiness-cert")?.focus(); } return; }
+    if (t.matches("[data-planning-cert]")) { if (planningChoice(t.value)) { S.readinessCert = t.value; save(); rerender(); document.getElementById("readiness-cert")?.focus(); } return; }
     if (t.matches("[data-clock],[data-r9],[data-r9date],[data-med]")) pinReadiness();
     if (t.dataset.clock && /^prep\.\d+\.hours$/.test(t.dataset.clock)) { savePrepHours(t); return; }
     if (t.dataset.clock) { // Rules 5/6 inputs: save, rerender, keep focus (labels only, never blocks)

@@ -1,0 +1,61 @@
+PASS chromium obvious exact disclosure before opening 
+PASS chromium unmodified sample has relevant group/openings 
+PASS chromium existing airport timezone formatting present 
+PASS chromium distinct supported checkride groups 
+PASS chromium duplicate filters collapse per semantic filter 
+PASS chromium waitlist duplicate membership shown once 
+PASS chromium fictional stable illustrative position 
+PASS chromium same opening not duplicated per checkride 
+PASS chromium expired/taken/stale offers excluded 
+PASS chromium read-only preview does not mutate state 
+PASS chromium opening link navigates to sample examiner/date 
+PASS chromium membership profile link works 
+PASS chromium reload/navigation keeps membership and opening projection 
+PASS chromium light keyboard Enter opens native disclosure 
+PASS chromium light Tab reaches working local link 
+PASS chromium light settled full-app axe 
+PASS chromium light narrow no overflow 
+PASS chromium dark keyboard Enter opens native disclosure 
+PASS chromium dark Tab reaches working local link 
+PASS chromium dark settled full-app axe 
+PASS chromium dark narrow no overflow 
+PASS chromium no-alert empty state without unrelated openings 
+PASS chromium empty search link works 
+PASS chromium no-openings state retains honest waitlist 
+PASS chromium fee/radius filters reuse existing match semantics 
+PASS chromium digest concise cap six with transparent scope 
+PASS chromium soonest-first deterministic order 
+PASS chromium render/reload projection stable 
+PASS chromium no address/schedule/delivery controls in preview 
+PASS chromium no crash external or nonGET request 
+PASS firefox obvious exact disclosure before opening 
+PASS firefox unmodified sample has relevant group/openings 
+PASS firefox existing airport timezone formatting present 
+PASS firefox distinct supported checkride groups 
+PASS firefox duplicate filters collapse per semantic filter 
+PASS firefox waitlist duplicate membership shown once 
+PASS firefox fictional stable illustrative position 
+PASS firefox same opening not duplicated per checkride 
+PASS firefox expired/taken/stale offers excluded 
+PASS firefox read-only preview does not mutate state 
+PASS firefox opening link navigates to sample examiner/date 
+PASS firefox membership profile link works 
+PASS firefox reload/navigation keeps membership and opening projection 
+PASS firefox light keyboard Enter opens native disclosure 
+PASS firefox light Tab reaches working local link 
+PASS firefox light settled full-app axe 
+PASS firefox light narrow no overflow 
+PASS firefox dark keyboard Enter opens native disclosure 
+PASS firefox dark Tab reaches working local link 
+PASS firefox dark settled full-app axe 
+PASS firefox dark narrow no overflow 
+PASS firefox no-alert empty state without unrelated openings 
+PASS firefox empty search link works 
+PASS firefox no-openings state retains honest waitlist 
+PASS firefox fee/radius filters reuse existing match semantics 
+PASS firefox digest concise cap six with transparent scope 
+PASS firefox soonest-first deterministic order 
+PASS firefox render/reload projection stable 
+PASS firefox no address/schedule/delivery controls in preview 
+PASS firefox no crash external or nonGET request 
+DIGEST RESULT 60 0
