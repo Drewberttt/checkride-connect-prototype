@@ -1252,3 +1252,78 @@ body.is-auth .v4-authbar .btn { flex-shrink: 0; }
 @media (prefers-reduced-motion: reduce) {
   .saved-toggle, .toast { transition: none !important; animation: none !important; }
 }
+
+
+/* ---- First-run onboarding (design-spec §16; fr.*) ---- */
+.fr-page { max-width: 480px; margin: 0 auto; padding-bottom: 2rem; }
+.fr-progress { margin: 0 0 1rem; }
+.fr-segs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.fr-seg { height: 4px; border-radius: 2px; background: var(--border); }
+.fr-seg.is-on { background: var(--accent); }
+.fr-skip-all { margin: 0 0 .75rem; min-height: 44px; }
+.fr-h1:focus { outline: none; }
+.fr-q { font-weight: 600; margin: .35rem 0 .25rem; color: var(--text); }
+.fr-cards { display: grid; gap: .5rem; margin: .75rem 0; }
+.fr-card {
+  display: grid; grid-template-columns: auto 1fr; gap: .75rem; align-items: start;
+  padding: .85rem 1rem; border: 1px solid var(--border-control); border-radius: 12px;
+  background: var(--surface); cursor: pointer; min-height: 44px;
+}
+.fr-card input { margin-top: .2rem; width: 1.1rem; height: 1.1rem; accent-color: var(--accent); }
+.fr-card.is-selected, .fr-card:has(input:checked) {
+  border-color: var(--accent); border-width: 2px; background: var(--accent-soft); padding: calc(.85rem - 1px) calc(1rem - 1px);
+}
+.fr-card-title { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+.fr-card-body small { display: block; color: var(--muted); margin-top: .15rem; }
+.fr-info-pill { font-size: .7rem; }
+.fr-actions { gap: .75rem; flex-wrap: wrap; margin-top: 1rem; align-items: center; }
+.fr-actions .btn { min-height: 44px; }
+.fr-proto { margin-top: 1rem; }
+.fr-err { color: var(--bad-text); }
+.fr-unsure { gap: .5rem; margin: .5rem 0; min-height: 44px; align-items: center; }
+.fr-target { border: 0; padding: 0; margin: 0; }
+.fr-plan { margin-bottom: .75rem; }
+.fr-chips { gap: .5rem; flex-wrap: wrap; }
+.fr-chip {
+  display: inline-flex; align-items: center; min-height: 44px; padding: .4rem .75rem;
+  border-radius: 999px; border: 1px solid var(--border-control); background: var(--surface);
+  color: var(--text); text-decoration: none; font-size: .875rem;
+}
+.fr-chip:hover { border-color: var(--accent); color: var(--accent-text); }
+.fr-prompt { font-size: .9rem; margin-bottom: .5rem; }
+.fr-greeting { font-weight: 600; margin: 0 0 .75rem; }
+@media (prefers-reduced-motion: reduce) {
+  .fr-page, .fr-seg { transition: none !important; animation: none !important; }
+}
+
+/* Home Next openings: keep examiner name + meta readable on desktop */
+.home-v3 .b-who {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  min-width: 0;
+}
+.home-v3 .b-who > b {
+  display: block;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+}
+.home-v3 .b-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .15rem .35rem;
+  align-items: baseline;
+  white-space: normal;
+  margin-top: .2rem;
+}
+.home-v3 .b-meta .b-sep { flex: 0 0 auto; }
+.home-v3 .b-time, .home-v3 .b-apt, .home-v3 .b-rel { white-space: nowrap; }
+@media (min-width: 1024px) {
+  .home-v3 .board-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "tile who fee";
+    align-items: center;
+  }
+  .home-v3 .b-fee { grid-area: fee; text-align: right; white-space: nowrap; }
+}
