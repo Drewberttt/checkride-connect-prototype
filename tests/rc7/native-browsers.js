@@ -28,11 +28,12 @@ function check(browser,name,yes,data){const r={browser,name,pass:!!yes,data};res
  await p.screenshot({path:path.join(SH,name+'-precision-pasted-invalid.png'),fullPage:true});
  await p.reload();await more();s=await snap();check(name,'precision clipboard persistence',s.value==='2.9999999999999999'&&s.aria==='true'&&s.reason==='fails',s);
  // blank -> malformed must produce input-time feedback even though native value is empty and change may never fire.
+ // D44 / RC7-I01: hours are type=text inputmode=decimal (not number). QA rc10 confirmed prior badInput/empty-value
+ // expectations were a stale fixture, not an app regression (qa-report-20261109-1148.md). Align with text-precision-regression.js.
  for(const v of ['e','1e','1,5']){s=await typed(v);const native={value:s.value,badInput:s.bad};await blur();s=await snap();
-   if(name==='chromium'&&v==='1,5')check(name,'native comma filtering observed (NOT app rejection)',native.value==='15'&&!native.badInput&&!s.err&&s.reason==='ok',{native,s});
-   else {check(name,`typed ${v}: native badInput captured immediately`,native.value===''&&native.badInput&&s.aria==='true'&&!!s.err&&s.reason==='fails'&&s.ignored==='1',{native,s});
+   {check(name,`typed ${v}: raw text malformed feedback captured immediately`,native.value===v&&!native.badInput&&s.aria==='true'&&!!s.err&&s.reason==='fails'&&s.ignored==='1',{native,s});
     await p.screenshot({path:path.join(SH,name+'-malformed-'+v.replace(/\W/g,'_')+'.png'),fullPage:true});
-    await p.reload();await more();s=await snap();check(name,`malformed ${v} survives reload`,s.aria==='true'&&s.stored[0].hoursBad&&s.reason==='fails',s);
+    await p.reload();await more();s=await snap();check(name,`malformed ${v} survives reload`,s.aria==='true'&&s.stored[0].hours===v&&!s.stored[0].hoursBad&&s.reason==='fails',s);
     await tick(true);
    }
    s=await typed('3');await blur();s=await snap();check(name,`corrected ${v} clears error`,!s.err&&!s.aria&&s.reason==='ok'&&!s.stored[0].hoursBad,s);

@@ -614,7 +614,33 @@
     return s;
   }
   function load() { try { const raw = localStorage.getItem(KEY); if (raw) { const s = JSON.parse(raw); if (s && s.v === 3) return migrate(s); } } catch (e) { /* storage unavailable */ } return seed(); }
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* storage unavailable */ } }
+  // RC10-I01: return false on QuotaExceeded/unavailable so callers can show failure and revert in-memory saved state.
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { return false; } }
+  function snapSaved() {
+    return {
+      savedExaminers: (S.savedExaminers || []).map((r) => ({ ...r })),
+      savedSearches: (S.savedSearches || []).map((r) => ({ ...r, seenKeys: Array.isArray(r.seenKeys) ? r.seenKeys.slice() : [] })),
+      nextId: S.nextId
+    };
+  }
+  function restoreSaved(snap) {
+    S.savedExaminers = snap.savedExaminers;
+    S.savedSearches = snap.savedSearches;
+    S.nextId = snap.nextId;
+  }
+  function savedPersistFailed() {
+    const msg = COPY["saved.error.quota"]; // ux-copy-v3 §8.7 — covers quota and unavailable device storage
+    toast(msg);
+    const last = $("#toasts") && $("#toasts").lastElementChild;
+    if (last) last.setAttribute("role", "status");
+    ui.savedAnnounce = msg;
+    return false;
+  }
+  function persistSaved(snap) {
+    if (save()) return true;
+    restoreSaved(snap);
+    return savedPersistFailed();
+  }
   const ui = { profileKey: null, month: null, sel: null, lastPath: null };
   // ---- Saved examiners + saved searches (local retention only; no delivery) ----
   function normalizeSaved(s) {
@@ -3356,7 +3382,9 @@ const closeModal = () => {
       ensureSavedArrays();
       const id = fd.get("id"), name = String(fd.get("name") || "").trim().slice(0, 80);
       const row = S.savedSearches.find((x) => x.id === id); if (!row || !name) return;
-      row.name = name; save(); closeModal(); toast(savedFmt("saved.toast.search_renamed",{name})); ui.savedAnnounce = savedFmt("saved.toast.search_renamed",{name}); rerender();
+      const snap = snapSaved(); const prev = row.name; row.name = name;
+      if (!persistSaved(snap)) { row.name = prev; closeModal(); rerender(); return; }
+      closeModal(); toast(savedFmt("saved.toast.search_renamed",{name})); ui.savedAnnounce = savedFmt("saved.toast.search_renamed",{name}); rerender();
     },
     find: (f, fd, t) => { if (t && t.name === "cert") { S.findCert = fd.get("cert"); save(); } const q = new URLSearchParams({ cert: fd.get("cert"), near: fd.get("near"), radius: fd.get("radius") || 50 }); const before = String(fd.get("before") || ""); if (/^\d{4}-\d{2}-\d{2}$/.test(before)) q.set("before", before); location.hash = "#/find?" + q.toString(); },
     "demo-login": (f, fd) => {
@@ -3772,15 +3800,29 @@ function countUp(root) {
     "toggle-save-examiner": (el) => {
       ensureSavedArrays();
       const id = el.dataset.dpe; if (!id || !dpeById(id)) return;
+      const before = snapSaved();
       const existing = S.savedExaminers.find((x) => x.dpeId === id);
       if (existing) {
         const removed = existing;
-        S.savedExaminers = S.savedExaminers.filter((x) => x.dpeId !== id); save();
-        const nm=dpeById(id).name; toastUndo(savedFmt("saved.toast.examiner_removed",{name:nm}), () => { ensureSavedArrays(); if (!S.savedExaminers.some((x) => x.dpeId === id)) { S.savedExaminers.unshift(removed); save(); ui.savedAnnounce = COPY["saved.toast.undone"]; } rerender(); });
+        S.savedExaminers = S.savedExaminers.filter((x) => x.dpeId !== id);
+        if (!persistSaved(before)) { rerender(); document.querySelector(`[data-action="toggle-save-examiner"][data-dpe="${id}"]`)?.focus(); return; }
+        const nm = dpeById(id).name;
+        toastUndo(savedFmt("saved.toast.examiner_removed", { name: nm }), () => {
+          ensureSavedArrays();
+          if (!S.savedExaminers.some((x) => x.dpeId === id)) {
+            const undoSnap = snapSaved();
+            S.savedExaminers.unshift(removed);
+            if (!persistSaved(undoSnap)) { rerender(); return false; }
+            ui.savedAnnounce = COPY["saved.toast.undone"];
+          }
+          rerender();
+        });
       } else {
         const row = { id: uid("sx"), dpeId: id, savedAt: Date.now() };
-        S.savedExaminers.unshift(row); save();
-        const savedMsg = savedFmt("saved.toast.examiner_saved",{name:dpeById(id).name}); toast(savedMsg); ui.savedAnnounce = savedMsg;
+        S.savedExaminers.unshift(row);
+        if (!persistSaved(before)) { rerender(); document.querySelector(`[data-action="toggle-save-examiner"][data-dpe="${id}"]`)?.focus(); return; }
+        const savedMsg = savedFmt("saved.toast.examiner_saved", { name: dpeById(id).name });
+        toast(savedMsg); ui.savedAnnounce = savedMsg;
       }
       rerender();
       document.querySelector(`[data-action="toggle-save-examiner"][data-dpe="${id}"]`)?.focus();
@@ -3792,10 +3834,10 @@ function countUp(root) {
       const key = savedSearchKey({ cert, near, radius, before });
       const existing = S.savedSearches.find((s) => savedSearchKey(s) === key);
       if (existing) { const nm = savedSearchName(existing); toast(savedFmt("saved.search.already",{name:nm})); ui.savedAnnounce = savedFmt("saved.error.duplicate_search",{name:nm}); rerender(); return; }
+      const snap = snapSaved();
       const row = { id: uid("ss"), cert, near, radius, before, name: "", savedAt: Date.now(), lastVisitAt: Date.now(), seenKeys: savedSearchMatches({ cert, near, radius, before }).map(slotSeenKey) };
-      try {
-        S.savedSearches.unshift(row); save();
-      } catch (err) { toast(COPY["saved.error.quota"]); return; }
+      S.savedSearches.unshift(row);
+      if (!persistSaved(snap)) { rerender(); return; }
       const savedMsg = savedFmt("saved.toast.search_saved",{name:savedSearchName(row)}); toast(savedMsg); ui.savedAnnounce = savedMsg;
       rerender();
     },
@@ -3803,8 +3845,19 @@ function countUp(root) {
       ensureSavedArrays();
       const row = S.savedSearches.find((x) => x.id === el.dataset.id); if (!row) return;
       const nm = savedSearchName(row);
-      S.savedSearches = S.savedSearches.filter((x) => x.id !== row.id); save();
-      toastUndo(savedFmt("saved.toast.search_removed",{name:nm}), () => { ensureSavedArrays(); if (!S.savedSearches.some((x) => savedSearchKey(x) === savedSearchKey(row))) { S.savedSearches.unshift(row); save(); ui.savedAnnounce = COPY["saved.toast.undone"]; } rerender(); });
+      const snap = snapSaved();
+      S.savedSearches = S.savedSearches.filter((x) => x.id !== row.id);
+      if (!persistSaved(snap)) { rerender(); return; }
+      toastUndo(savedFmt("saved.toast.search_removed",{name:nm}), () => {
+        ensureSavedArrays();
+        if (!S.savedSearches.some((x) => savedSearchKey(x) === savedSearchKey(row))) {
+          const undoSnap = snapSaved();
+          S.savedSearches.unshift(row);
+          if (!persistSaved(undoSnap)) { rerender(); return false; }
+          ui.savedAnnounce = COPY["saved.toast.undone"];
+        }
+        rerender();
+      });
       rerender();
     },
     "remove-saved-examiner": (el) => { el.dataset.action = "toggle-save-examiner"; return actions["toggle-save-examiner"](el); },
@@ -3824,7 +3877,12 @@ function countUp(root) {
       if (row) { markSavedSearchVisited(row); save(); }
       return true; // allow navigation
     },
-    "saved-undo": () => { const fn = ui.savedUndo; ui.savedUndo = null; if (fn) { fn(); toast(COPY["saved.toast.undone"]); } },
+    "saved-undo": () => {
+      const fn = ui.savedUndo; ui.savedUndo = null;
+      if (!fn) return;
+      // RC10-I01: undo callback returns false when persist failed (already toasted quota)
+      if (fn() !== false) toast(COPY["saved.toast.undone"]);
+    },
     "alert-from-search": (el) => {
       const f = searchFilters(parseHash().q);
       addAlert({ cert: f.cert, near: f.near, radius: f.radius, before: f.before || addDays(60), maxFee: f.maxFee, dpeId: el.dataset.dpe || "" });
