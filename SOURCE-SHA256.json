@@ -1,0 +1,306 @@
+{
+  "app.js": {
+    "sha256": "f469f3c6e23d390254557311f5a21c65c85829288e7a909ffc28bc4954e49e0f",
+    "size": 513245
+  },
+  "sw.js": {
+    "sha256": "8183e9ffd08c15fb5310288a6b22a0480451705189bfa3478840d1b85381bca4",
+    "size": 6622
+  },
+  "styles.css": {
+    "sha256": "bc73893ace6902ede6c8b8c08ab723fe5bf1503fe5b297061adf797b15bd8881",
+    "size": 96554
+  },
+  "index.html": {
+    "sha256": "35279982077dd991c36eee09f38bb0f39a63ff7187eb6163b318078980735eb9",
+    "size": 7901
+  },
+  "data.js": {
+    "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
+    "size": 29319
+  },
+  "demo-date.js": {
+    "sha256": "912818f3798c38726ad7f9842171b1a65daeec4b2ee809901882271ee3e23960",
+    "size": 4017
+  },
+  "cost-model.js": {
+    "sha256": "47450078840a559bfc59421a184d9039ff8c04cf049fa94213b1b37c6bc810d8",
+    "size": 8380
+  },
+  "elig-clock.js": {
+    "sha256": "19da1b77aebbb7ae6562892dea191dbb453bfa083c3a335b520fddce46395912",
+    "size": 21039
+  },
+  "sample-fl-examiners.js": {
+    "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
+    "size": 77394
+  },
+  "sample-tx-examiners.js": {
+    "sha256": "5c54027e3cb8327a1f03260dc3e59e73e9f8b8cb6d9d9ca71a979aa6bce56004",
+    "size": 102126
+  },
+  "sample-ca-examiners.js": {
+    "sha256": "bce83384ca61b574de013b8060284a5bef91d7be9cc88277666b8de6cdc76d08",
+    "size": 96370
+  },
+  "sample-az-examiners.js": {
+    "sha256": "ad04221ea8d26fcc1f846dffb7d27df364c5e6e3c20a281d9022bcc576831880",
+    "size": 99082
+  },
+  "sample-nc-examiners.js": {
+    "sha256": "f7eef0031502fef943f7a1668f6925ff4a26fa6ed58b9bf6810e4007a12e6704",
+    "size": 78287
+  },
+  "site.webmanifest": {
+    "sha256": "62d2b2ec0ca97bb363d1923f03169969944d638800c5872ab7eb9f9918aee491",
+    "size": 1010
+  },
+  "runway.webmanifest": {
+    "sha256": "8991c1b13872f87bd3e23c0274cb52f38830a746ae3db33bddb79214dc2e7656",
+    "size": 1038
+  },
+  "favicon.ico": {
+    "sha256": "51dfa64095719eaeebf036603dc95abfd062159639c7284075f4766c75d2f47c",
+    "size": 541
+  },
+  "tests/rc10/freeze-tree.sh": {
+    "sha256": "17f504a508c27e58a72710a3df565234c295f366d88fd43ea1385c7e81c25813",
+    "size": 5876
+  },
+  "brand/archive-png-pre-v2/checkride-connect-icon.png": {
+    "sha256": "d97b64b4a3f30420683b8193a9ca46bae0b6b1d27727ac2475a220a3463e0db9",
+    "size": 35470
+  },
+  "brand/archive-png-pre-v2/checkride-connect-logo-dark.png": {
+    "sha256": "7ea62f0bec12786333529c93c65102f8533b696253e8fb194607a226a2792e65",
+    "size": 20483
+  },
+  "brand/archive-png-pre-v2/checkride-connect-logo-light.png": {
+    "sha256": "47b293c5434e1c650776948e63d1ea9d61f8cd316b7faf423694ba635b5483ea",
+    "size": 20508
+  },
+  "brand/checkride-connect-icon.png": {
+    "sha256": "930be36892ecd47ecbb7da5a0b74dd9bd7d0abde179efd84dfaa7f1a780923eb",
+    "size": 10544
+  },
+  "brand/checkride-connect-logo-dark.png": {
+    "sha256": "7ea62f0bec12786333529c93c65102f8533b696253e8fb194607a226a2792e65",
+    "size": 20483
+  },
+  "brand/checkride-connect-logo-dark.svg": {
+    "sha256": "9e00889669d5878b0341b5e29c3eb1bf29e1d1c16472f7acb93657b6860fe93d",
+    "size": 981
+  },
+  "brand/checkride-connect-logo-light.png": {
+    "sha256": "47b293c5434e1c650776948e63d1ea9d61f8cd316b7faf423694ba635b5483ea",
+    "size": 20508
+  },
+  "brand/checkride-connect-logo-light.svg": {
+    "sha256": "fe22e80784b13f5fd4db2aef276bf25b90d5e3a6a5561a36bc80e6f28327180c",
+    "size": 981
+  },
+  "brand/checkride-connect-logo-original.png": {
+    "sha256": "07e6352f25af03fdf905cdedaa7f3158b4a62f746ebd15a118862e070a281b9c",
+    "size": 45754
+  },
+  "brand/checkride-connect-mark-dark.svg": {
+    "sha256": "a3e6648b8a4f8d62f05e1dd19a2c6c0e04202bc40cd54128ca35ee963729eb06",
+    "size": 659
+  },
+  "brand/checkride-connect-mark-light.svg": {
+    "sha256": "6a83d796b7a904eccdff727d94475a9e4e8e425ebf87b5926ccafaeb822b0de7",
+    "size": 659
+  },
+  "brand/checkride-connect-mark-mono-ink.svg": {
+    "sha256": "a438c0f3ec7c8eb2d02b6189ee6c733075f3c5b62ff26c8d2e618bcfaa754c4c",
+    "size": 659
+  },
+  "brand/checkride-connect-mark-mono-white.svg": {
+    "sha256": "16a3d85ea05f7b2ed54afb1a040c90f93eb1c8f2037674ebd0306ab49fa212cb",
+    "size": 659
+  },
+  "brand/checkride-connect-mark-on-navy.svg": {
+    "sha256": "3a01ef59b0dec9a402199245944fee950255d7ff25581925f4a3090601e64280",
+    "size": 616
+  },
+  "brand/contrast-qa085.json": {
+    "sha256": "5a73e851012fe33cac0a835b5eb83edbef9dc92f991e5c6e29acd313c2e35fe5",
+    "size": 1053
+  },
+  "brand/runway-horizontal-dark.svg": {
+    "sha256": "ddc0be0c3856b8c60ac1e2df5302a45edf53e77dc67fb2f687e344fe763ba016",
+    "size": 10308
+  },
+  "brand/runway-horizontal-light.svg": {
+    "sha256": "2779157a14e2031f9c7a7aa870102de4d4562988f957198fec9420412e1219d4",
+    "size": 10308
+  },
+  "brand/runway-icon.svg": {
+    "sha256": "f997860483c5cdb5dd9b049de51a86bd94333e7e7deffc36689ea6ce2932d7ee",
+    "size": 977
+  },
+  "icons/apple-touch-icon.png": {
+    "sha256": "cde88e2fb7fc21a23276332af685dfefea9992fdaadc7e9da8d6f0e34cbc4b8c",
+    "size": 6553
+  },
+  "icons/favicon-16.png": {
+    "sha256": "4c5c5de0fdab4ae20387e59f45962e69637a6b2e42b221c3ef1c897dd4394332",
+    "size": 523
+  },
+  "icons/favicon-32.png": {
+    "sha256": "8ffe1e7849d7699db30b36477d5e70e42ae1b24615efab63dcdd47e4239bd083",
+    "size": 1251
+  },
+  "icons/favicon-48.png": {
+    "sha256": "1f9266237f1dde859485548cae304f6db3347b78f0f1ca3f2b695e039534a57c",
+    "size": 2186
+  },
+  "icons/favicon-dark-16.png": {
+    "sha256": "084653f87aad069f33435df3c3cf85f7df738cf30243b48ce6c41ed33015096b",
+    "size": 686
+  },
+  "icons/favicon-dark-32.png": {
+    "sha256": "4cbf66b32a4dc711b1526f7b7a86ad959eff4d214c9957cd54af1563a39efc18",
+    "size": 1768
+  },
+  "icons/favicon-dark-48.png": {
+    "sha256": "4776114d9f2e3cb83b258b3743ff06e97e8516cf72275db741b50ba9dd50659c",
+    "size": 3241
+  },
+  "icons/favicon-dark.svg": {
+    "sha256": "a3e6648b8a4f8d62f05e1dd19a2c6c0e04202bc40cd54128ca35ee963729eb06",
+    "size": 659
+  },
+  "icons/favicon.ico": {
+    "sha256": "51dfa64095719eaeebf036603dc95abfd062159639c7284075f4766c75d2f47c",
+    "size": 541
+  },
+  "icons/favicon.svg": {
+    "sha256": "6a83d796b7a904eccdff727d94475a9e4e8e425ebf87b5926ccafaeb822b0de7",
+    "size": 659
+  },
+  "icons/icon-192.png": {
+    "sha256": "930be36892ecd47ecbb7da5a0b74dd9bd7d0abde179efd84dfaa7f1a780923eb",
+    "size": 10544
+  },
+  "icons/icon-512.png": {
+    "sha256": "3d12e8946dabc774f2e6d24ba049c7880a71a5f78e04b09b80fa59a4a3fd52c1",
+    "size": 32786
+  },
+  "icons/icon-maskable-192.png": {
+    "sha256": "754d177e7986bca28ea31fab295b24f1ac6144143081eb50dd45ea376b9d793f",
+    "size": 7872
+  },
+  "icons/icon-maskable-512.png": {
+    "sha256": "31af1718d32495665c81d183b2930002feb98bd39339d76ae0dbb98ce118566f",
+    "size": 25196
+  },
+  "icons/mark-master-512.png": {
+    "sha256": "f47acc8fbead6705465e472bbc6278207f46fd53fe33f94243e5001d97e06369",
+    "size": 21327
+  },
+  "icons/runway/apple-touch-icon.png": {
+    "sha256": "7e3b72c8badd54f165b90e91f9775007b09ff7cb18ea5f60b47791cfeda9c355",
+    "size": 3485
+  },
+  "icons/runway/favicon-16.png": {
+    "sha256": "146fa181ede56b425161726928ab2e201504dba0ddb5973c011187b77227e687",
+    "size": 432
+  },
+  "icons/runway/favicon-32.png": {
+    "sha256": "d6f866f2e479d5a02e118961568bb12ec99ab38aa79b7977364d185d7f8d33d6",
+    "size": 796
+  },
+  "icons/runway/favicon-48.png": {
+    "sha256": "9d81b2b8269fa2fdcb3757d95be546e34bc3a67be387864092bdbe11267fb5ec",
+    "size": 1502
+  },
+  "icons/runway/favicon.ico": {
+    "sha256": "25e420de3a686147ff1e393bb2ab0f5460859133c899c8afdc56d12112342e54",
+    "size": 2731
+  },
+  "icons/runway/favicon.svg": {
+    "sha256": "8e0d6c9969f386e83c63a8744fa7177a3486047ee0c31424c31bb474d0d80eb4",
+    "size": 513
+  },
+  "icons/runway/icon-192.png": {
+    "sha256": "e6de9796994e83cae355717153a717abadb851216d68c729da9999afeec52ac9",
+    "size": 5753
+  },
+  "icons/runway/icon-512.png": {
+    "sha256": "101812c3e46b449fb35d2e7d4c12afd5a5bb95ff5553d45b82a16ebe1abfe2ee",
+    "size": 16863
+  },
+  "icons/runway/icon-maskable-192.png": {
+    "sha256": "dc13b9c393ac05a589899c237aef8065661a804bb6e94cae89f0f2f37439af13",
+    "size": 7352
+  },
+  "icons/runway/icon-maskable-512.png": {
+    "sha256": "4c00cbb705e41c4bf0aa9f1f2ceeb29815861abe6fb42e0fd0f17c53b3d0f65e",
+    "size": 11309
+  },
+  "QA-HANDOFF-DEV-AFTER-CHECKRIDE.md": {
+    "sha256": "6da010d0d16bef13a10d153e7dadac426645ce078ee16ec942a3c0e9e671fcbc",
+    "size": 7394
+  },
+  "QA-HANDOFF-DEV-DIGEST.md": {
+    "sha256": "f9be343442725ee2169b36a649f5f93cf5f795e83a1e0051858a57ac7a4313dc",
+    "size": 7540
+  },
+  "QA-HANDOFF-DEV-NEXT.md": {
+    "sha256": "b6558a63babb4eef70a13a161255f809f1d9905ff880068e0bae0d0f83e027fe",
+    "size": 2199
+  },
+  "QA-HANDOFF-DEV-ONBOARDING.md": {
+    "sha256": "d9721a09b39916a680ba0609d853f31ec4e88397d57b68443a9df36b9a6656ce",
+    "size": 4936
+  },
+  "QA-HANDOFF-DEV-RC10-FIXES.md": {
+    "sha256": "9de4a78a29aa39ac414be96ab89377c8dad84b545dc19f010f7e791f6e738b2f",
+    "size": 3202
+  },
+  "QA-HANDOFF-DEV-SAVED.md": {
+    "sha256": "7625e3c17c4c3abd9251d4798c91bb801c3c25e5b8cb5afad11720bc43a19e44",
+    "size": 9021
+  },
+  "QA-HANDOFF-RC10.md": {
+    "sha256": "d87aa0f4dc17421ffc32e28e2eaa7b92ffff11d8e6b95a8f251ba298052dc984",
+    "size": 4720
+  },
+  "QA-HANDOFF-RC12.md": {
+    "sha256": "a77a8a9e4c9051c62d11c3b33c232a867c68f521d6b5e0284f425bb1a732e6d9",
+    "size": 3424
+  },
+  "QA-HANDOFF-RC13.md": {
+    "sha256": "17ed2e7a9acc12e381b5bb34c6a2e15bed709234e7441c8a5551d7d140697469",
+    "size": 3468
+  },
+  "QA-HANDOFF-RC14.md": {
+    "sha256": "0efa8290573f940ad2cda85839990d24c5ff82a61aec92a91fcfde606451cb40",
+    "size": 3137
+  },
+  "QA-HANDOFF-RC6.md": {
+    "sha256": "627327800ac219fc469ca2ffbf533b7fc4e6ba04d26bd546b8a89a8f11ad8e08",
+    "size": 8531
+  },
+  "QA-HANDOFF-RC7.md": {
+    "sha256": "f7ed596c9c4a6dad18d66e4608c1285fb8c24eb3ca3bea9ef7ebfeeb9e4c2067",
+    "size": 1765
+  },
+  "QA-HANDOFF-RC8.md": {
+    "sha256": "29529d2b2a71dca655c0b11153cd95d368b3c0a4dc0b05c2f9db8d43acf1a3c9",
+    "size": 7741
+  },
+  "QA-HANDOFF-RC9.md": {
+    "sha256": "a928d7de49f4c00202bd0e16f32ec7fce18ab97c0d1a5d9c7f8808f908a1df88",
+    "size": 12020
+  },
+  "READY.txt": {
+    "sha256": "e6eeae0bb4124a4a724143336d7554d9ec3cb0a8f69773f558cf6634661a35fb",
+    "size": 396
+  },
+  "PLAN.md": {
+    "sha256": "432fa0e61bce34ed53505e61a3f2a8942ee0174ac5eab6a2fb2c4f12a7547103",
+    "size": 98432
+  }
+}

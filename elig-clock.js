@@ -128,6 +128,47 @@
   // ---- Rule 6: retest after a test you didn't pass (§61.49, ER §6). Order: fail -> training -> endorsement -> reapply.
   // o: { failureDate, endorsementDate (null = none), planned, endorserGaveTraining (true|false|null), has8710 (true|false|null),
   //      cfiSpinFailure, spinCertified (true|false|null), fmt? }
+
+  // ---- Rule 3: discontinuance / partial-test credit window (ER §3 / §6A.2). Same clock for NOD and LOD.
+  // Effective deadline = min( endOfMonthAfter(testBegan, 2) /* 61.39(g)/(h) */, firstDiscontinued + 60 days /* 61.43(f)(1) */ ).
+  // Day 60 is the last valid day (Interpretation; [VERIFY] #10). First discontinuance; do not reset ([VERIFY] 8900.1A).
+  const AT_RISK_DAYS = { interrupted: 14, knowledge_test: 90, endorsement: 21, medical: 60 };
+  const incrementsDeadline = (testStart) => endOfMonthAfter(testStart, 2);
+  const creditDeadline = (firstDiscontinued) => addDays(firstDiscontinued, 60);
+  const resumeWithCreditDeadline = (testStart, firstDiscontinued) => {
+    const a = incrementsDeadline(testStart), b = creditDeadline(firstDiscontinued);
+    return a <= b ? a : b;
+  };
+  function deadlineResult(rule, cite, deadline, plannedVal, today, riskKey, okMsg, failMsg, partialMsg, keyBase) {
+    const p = planned(plannedVal);
+    const pos = position(deadline, p);
+    const base = { cite, deadline };
+    if (pos === "out") return result(rule, WARN, "fails", keyBase + ".fails", failMsg, base);
+    if (pos === "partial") return result(rule, CHECK, "month-only", keyBase + ".month", partialMsg, base);
+    if (today && isYmd(today)) {
+      // days left = deadline - today (date-only strings)
+      const [dy, dm, dd] = parts(deadline), [ty, tm, td] = parts(today);
+      const daysLeft = Math.round((Date.UTC(dy, dm - 1, dd) - Date.UTC(ty, tm - 1, td)) / 86400000);
+      if (daysLeft >= 0 && daysLeft <= (AT_RISK_DAYS[riskKey] || 14))
+        return result(rule, WARN, "at-risk", keyBase + ".risk", `Heads-up: ${daysLeft} days left. ` + okMsg, base);
+    }
+    return result(rule, OK, "ok", keyBase + ".ok", okMsg, base);
+  }
+  // o: { testStart, firstDiscontinued, plannedResume, today?, fmt? }
+  function checkResume(o) {
+    const fmt = o.fmt || ((s) => s);
+    const dl = resumeWithCreditDeadline(o.testStart, o.firstDiscontinued);
+    const which = dl === incrementsDeadline(o.testStart) ? "\u00a761.39(g)" : "\u00a761.43(f)(1) 60-day";
+    const cite = "14 CFR 61.39(g)/(h), 61.43(f)(1)";
+    return deadlineResult(
+      "resume_credit", cite, dl, o.plannedResume, o.today || null, "interrupted",
+      `Finish the rest of your checkride by ${fmt(dl)} to keep credit for what you passed (${which} limit).`,
+      `Credit for the areas you passed ends ${fmt(dl)} (${which} limit). A checkride after that is likely the full test again. Check your knowledge test, endorsements and medical for a new test too. ${ASK}`,
+      `Credit for passed areas ends ${fmt(dl)}. Pick an exact date on or before it.`,
+      "clock.resume"
+    );
+  }
+
   function checkRetest(o) {
     const fmt = o.fmt || ((s) => s), R = "retest_61_49", cite = "14 CFR 61.49";
     const base = { cite, verify: [5] };
@@ -181,6 +222,6 @@
     "Rule 6: the doc checks endorsement <= reapplication for any plan; the reference checks it only for an exact date. A month-only plan is compared with the month's last day.",
     "Rule 6 spin and 8710 messages use 'likely' wording (doc §0); the reference says 'you must' / 'needs'.",
   ];
-  root.CC_ELIG = { prepHoursValid: hoursOk, checkPrep, checkRetest, combine, PREP_RULES, NO_PREP_RULE, VERIFY_FLAGS, DOC_VS_REF, CFI_NOTE,
+  root.CC_ELIG = { prepHoursValid: hoursOk, checkPrep, checkRetest, checkResume, incrementsDeadline, creditDeadline, resumeWithCreditDeadline, combine, PREP_RULES, NO_PREP_RULE, VERIFY_FLAGS, DOC_VS_REF, CFI_NOTE, AT_RISK_DAYS,
     cal: { monthIndex, endOfMonthAfter, startOfMonthBefore, sameDayMonthsBefore, addDays, firstOfMi, endOfMi, planned, isYmd, isYm } };
 })(typeof window !== "undefined" ? window : globalThis);

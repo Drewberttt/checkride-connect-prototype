@@ -1,4 +1,9 @@
-# rc7 test reference: verified canonical v2.5 / D44; PM-owned source remains read-only.
+# rc7/after-checkride owned mirror of Data Collector canonical eligibility_clock_reference.py
+# Canonical path: /workspace/checkride-pm/tools/eligibility_clock_reference.py
+# Canonical SHA256: c97a28692d963817288a814ea31db6cb10208fdbcf2d61ede6d77613e2d6cce2
+# Refreshed: 2026-11-09 (America/New_York). Do not edit PM tools/; mirror only.
+# Self-test expectation: 184/184 (includes D12–D20 §6A credit window).
+#
 """Reference implementation of /workspace/checkride-pm/eligibility-rules.md (v2.1, "warn, never block").
 
 Every check returns a Result with status ok | warn | needs-check. Nothing returns "blocked":
@@ -444,6 +449,15 @@ cases = [
  ("D9","Interrupted at-risk: deadline 2026-03-02, today 2026-02-16 (14 days)", st(check_resume(D(2026,1,1),D(2026,1,1),D(2026,2,28),today=D(2026,2,16))), (WARN,"at-risk")),
  ("D10","Interrupted not at risk: today 2026-02-15 (15 days)", st(check_resume(D(2026,1,1),D(2026,1,1),D(2026,2,28),today=D(2026,2,15))), (OK,"ok")),
  ("D11","Month-only resume target 2026-03 vs deadline 2026-03-02", st(check_resume(D(2026,1,1),D(2026,1,1),"2026-03")), (CHECK,"month-only")),
+ ("D12","v2.6 Start/disc 2026-01-15, resume 2026-03-16 (exact D+60; 60-day binds)", st(check_resume(D(2026,1,15),D(2026,1,15),D(2026,3,16))), (OK,"ok")),
+ ("D13","v2.6 Same, resume 2026-03-17 (day after D+60)", st(check_resume(D(2026,1,15),D(2026,1,15),D(2026,3,17))), (WARN,"fails")),
+ ("D14","v2.6 Start/disc 2026-01-31, resume 2026-03-31 (month-end; 61.39 binds)", st(check_resume(D(2026,1,31),D(2026,1,31),D(2026,3,31))), (OK,"ok")),
+ ("D15","v2.6 Start 2026-01-31 / disc 2026-02-01, resume 2026-03-31 (61.39 from Jan)", st(check_resume(D(2026,1,31),D(2026,2,1),D(2026,3,31))), (OK,"ok")),
+ ("D16","v2.6 Start 2026-01-31 / disc 2026-02-01, resume 2026-04-01", st(check_resume(D(2026,1,31),D(2026,2,1),D(2026,4,1))), (WARN,"fails")),
+ ("D17","v2.6 Leap: start/disc 2028-02-29, resume 2028-04-29 (exact D+60)", st(check_resume(D(2028,2,29),D(2028,2,29),D(2028,4,29))), (OK,"ok")),
+ ("D18","v2.6 Leap: same, resume 2028-04-30 (day after D+60)", st(check_resume(D(2028,2,29),D(2028,2,29),D(2028,4,30))), (WARN,"fails")),
+ ("D19","v2.6 Non-leap: credit_deadline(2027-01-15) == 2027-03-16", credit_deadline(D(2027,1,15)), D(2027,3,16)),
+ ("D20","v2.6 NOD/LOD same helper: resume_with_credit_deadline(2026-05-10,2026-05-10) == 2026-07-09", resume_with_credit_deadline(D(2026,5,10),D(2026,5,10)), D(2026,7,9)),
  # ---- Rule 4 medical: REFERENCE computations (helper text / QA only, not shown as a date per #13/#20)
  ("M1","REF 3rd class exam 2026-03-01 age 39 -> 2031-03-31", medical_expiry(D(2026,3,1),D(1986,6,1),3,"private"), D(2031,3,31)),
  ("M2","REF 3rd class exam 2026-03-31 age 39 -> 2031-03-31", medical_expiry(D(2026,3,31),D(1986,6,1),3,"private"), D(2031,3,31)),

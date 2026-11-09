@@ -237,5 +237,26 @@
     "\u00a78 Run this search opens #/search (not #/find); Home and Saved use #/search.",
     "saved.toggle.pending / saved.aria.pending reserved; clicks are sync localStorage so pending UI not shown.",
     "saved.new.examiner key implemented but examiner rows do not yet show per-examiner 'new' counts (no examiner-level seenKeys)."
-  ]
+  ],
+  "_v719_examiner_plan_and_entry": {
+    "when": "2026-11-09 America/New_York",
+    "keys": {
+      "after.verify.examiner_plan": {
+        "from": "\u00a710.3c VERIFY sourcing paragraph (FSIMS unreachable\u2026)",
+        "to": "Your examiner decides the plan for the remaining test; bring your NOD/LOD and ask them what will be covered.",
+        "authority": "Brand Designer settled; ux-copy-v3 \u00a710.3.0 canonical; \u00a710.3c duplicate removed (source note only)",
+        "verify_chip": "kept (after.verify.* list / after.verify.chip)"
+      }
+    },
+    "placeholders_for_brand_designer": {
+      "after.entry.prompt": "How did it go?",
+      "after.entry.passed": "Passed",
+      "after.entry.inc": "Not finished (discontinued)",
+      "after.entry.dis": "Not passed",
+      "after.entry.helper": "Prototype only. Pick what happened on this sample checkride. Nothing is filed or sent.",
+      "after.entry.aria": "How did this checkride go?",
+      "after.entry.group_label": "After the checkride"
+    },
+    "note": "Entry-point three-way outcome split has no \u00a710 keys (journey \u00a76.2 only has Passed it / Not this time). Placeholders block rc13 freeze per Marlo gate."
+  }
 }

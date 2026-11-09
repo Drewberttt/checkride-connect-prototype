@@ -194,6 +194,8 @@
   const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
   // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
   const COPY = { "saved.toggle.save": "Save", "saved.toggle.saved": "Saved", "saved.toggle.pending": "Saving\u2026", "saved.aria.save": "Save {name}", "saved.aria.saved": "Remove {name} from Saved", "saved.aria.pending": "Saving {name}", "nav.saved": "Saved", "saved.eyebrow": "YOUR SHORTLIST", "saved.headline": "Examiners you keep. Searches you reuse.", "saved.helper": "Prototype: saved only in this browser on this device. Nothing is sent. Sample data only.", "saved.section.examiners": "Examiners", "saved.section.searches": "Searches", "saved.examiner.meta": "{cert} \u00b7 {airport} \u00b7 {state}", "saved.examiner.open": "View examiner", "saved.search.meta": "{cert} \u00b7 near {airport} \u00b7 {radius} nm", "saved.search.open": "Run this search", "saved.search.rename": "Rename", "saved.examiner.remove": "Remove", "saved.search.remove": "Remove", "saved.search.action": "Save this search", "saved.search.default_name": "{cert} \u00b7 {airport} \u00b7 {radius} nm", "saved.search.default_name_before": "{cert} \u00b7 {airport} \u00b7 {radius} nm \u00b7 before {before}", "saved.search.rename_label": "Name", "saved.search.rename_save": "Save name", "saved.search.rename_cancel": "Cancel", "saved.search.already": "Saved as \"{name}\" \u00b7 View Saved", "saved.badge.count": "{n}", "saved.new.one": "{n} new since your last visit", "saved.new.many": "{n} new since your last visit", "saved.new.examiner": "{n} new openings for {name}", "saved.new.search": "{n} new openings for this search", "saved.home.teaser": "{n} new since your last visit \u00b7 See Saved", "saved.empty.examiners.title": "No saved examiners yet", "saved.empty.examiners.body": "Tap Save on a sample examiner to keep them here. Stored only in this browser.", "saved.empty.examiners.cta": "Find examiners", "saved.empty.searches.title": "No saved searches yet", "saved.empty.searches.body": "Set your filters, then tap Save this search. You can rename it any time.", "saved.empty.searches.cta": "Open search", "saved.empty.all.title": "Nothing saved yet", "saved.empty.all.body": "Save a sample examiner or a search to build your shortlist. Prototype only; nothing is sent.", "saved.toast.examiner_saved": "Saved {name}.", "saved.toast.search_saved": "Search saved as \"{name}\".", "saved.toast.search_renamed": "Renamed to \"{name}\".", "saved.toast.examiner_removed": "Removed {name}.", "saved.toast.search_removed": "Removed \"{name}\".", "saved.toast.undo": "Undo", "saved.toast.undone": "Restored.", "saved.error.quota": "Couldn't save on this device. Free some browser storage, or remove an older saved item, then try again.", "saved.error.generic": "Something went wrong saving that. Nothing was sent. Try again.", "saved.error.missing_examiner": "That sample examiner isn’t in this demo any more (links can go stale after a reset).", "saved.error.missing_search": "That saved search isn’t here any more.", "saved.error.duplicate_search": "You already saved these filters as \"{name}\".", "saved.view": "View Saved", "saved.corrupt_cleared": "Some saved items couldn't be read, so they were removed from this browser. Nothing was sent.", "goal.no_estimate": "No estimate yet for this certificate.", "goal.info_only": "Info only: not bookable in this prototype.", "goal.rotorcraft": "Rotorcraft (info only: not bookable in this prototype)", "digest.title": "Monday digest preview", "digest.label": "Preview, nothing is sent", "digest.open": "Open local preview", "digest.note": "Fictional local data, evaluated when you open Alerts. Monday is a preview title, not a delivery schedule. No email, notifications or reservations are created.", "digest.empty": "No saved alerts or sample waitlists yet. Save a local alert or join a sample waitlist to see relevant openings here.", "digest.filters": "Saved local filters", "digest.waitlists": "Sample waitlists", "digest.openings": "Current matching sample openings", "digest.none": "No current sample openings match these saved filters. Expired, taken and stale-availability openings are excluded.", "digest.limit": "Up to 6 distinct openings per checkride are shown, soonest first. The same opening is shown once per checkride even if several saved filters match.", "digest.view": "View sample opening", "digest.search": "Find sample openings", "digest.waitlist_view": "View sample examiner", "goal.blank": "No default checkride", "goal.label": "Planning checkride", "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",  "fr.progress": "Step {n} of 3", "fr.progress.aria": "Step {n} of 3", "fr.proto": "Prototype: sample data only. Saved in this browser on this device. Nothing is sent.", "fr.skip": "Skip for now", "fr.skip_all": "Skip setup", "fr.back": "Back", "fr.next": "Next", "fr.finish": "See my Home", "fr.escape_hint": "Press Escape to skip setup and go to Home.", "fr.s1.eyebrow": "STEP 1 OF 3", "fr.s1.headline": "Your checkride. Your pick.", "fr.s1.question": "What are you working toward?", "fr.s1.helper": "Pick the checkride you're planning next. A planning default only — not eligibility or CFI approval. You can change it any time in More.", "fr.s1.opt.ppl": "Private Pilot", "fr.s1.sub.ppl": "Airplane Single-Engine Land", "fr.s1.opt.ir": "Instrument Rating", "fr.s1.sub.ir": "Airplane", "fr.s1.opt.cpl": "Commercial Pilot", "fr.s1.sub.cpl": "Airplane Single-Engine Land", "fr.s1.opt.me": "Multi-Engine Add-on", "fr.s1.sub.me": "Airplane Multi-Engine Land", "fr.s1.opt.cfi": "Flight Instructor (CFI)", "fr.s1.sub.cfi": "Airplane Single-Engine", "fr.s1.opt.cfii": "Instrument Instructor (CFII)", "fr.s1.sub.cfii": "Airplane", "fr.s1.opt.mei": "Multi-Engine Instructor (MEI)", "fr.s1.sub.mei": "Airplane Multi-Engine", "fr.s1.opt.atp": "ATP", "fr.s1.sub.atp": "Info only: not bookable in this prototype.", "fr.s1.opt.rh": "Rotorcraft (info only: not bookable in this prototype)", "fr.s1.info_note": "Info only: not bookable in this prototype. Estimators and openings stay on airplane certificates.", "fr.s1.err": "Pick a checkride to continue, or tap Skip for now.", "fr.s1.skip_note": "We'll leave your planning checkride unset. You can set it later in More.", "fr.s1.group": "Planning checkride", "fr.s2.eyebrow": "STEP 2 OF 3", "fr.s2.headline": "Your airport. Examiners nearby.", "fr.s2.question": "Where do you fly from?", "fr.s2.helper": "Search by ICAO code or airport name. We use it to show sample examiners nearby.", "fr.s2.field": "Airport", "fr.s2.placeholder": "e.g. KORL or Orlando Executive", "fr.s2.sample": "Use the sample airport", "fr.s2.sample_helper": "Mock: picks a sample airport. No GPS in this prototype.", "fr.s2.empty_query": "Start typing an ICAO code or name.", "fr.s2.err.nomatch": "We couldn't find \"{q}\". Try the ICAO code (like {hint}) or the airport name.", "fr.s2.err.outside": "This prototype only has sample examiners in {states} so far. Pick an airport there, or use the sample airport.", "fr.s2.err.required": "Pick an airport to continue, or tap Skip for now.", "fr.s2.skip_note": "Home will ask you to add an airport before showing nearby examiners.", "fr.s2.listbox": "Airport matches", "fr.s3.eyebrow": "STEP 3 OF 3", "fr.s3.headline": "A rough target. A clear path.", "fr.s3.question": "When are you hoping to test?", "fr.s3.helper": "A month is enough. Your CFI is the best judge of timing.", "fr.s3.choice.month": "Pick a month", "fr.s3.choice.unsure": "Not sure yet", "fr.s3.err.past": "That month has passed. Pick this month or later.", "fr.s3.note.soon": "That's coming up soon. If an examiner has already confirmed your checkride, add it under My checkrides so we can track it.", "fr.s3.skip_note": "No target month set. Your clock uses \"no target\" copy until you add one in More.", "fr.home.greeting": "Welcome, {name}. Here's your starting point.", "fr.home.greeting_anon": "Welcome aboard. Here's your starting point.", "fr.home.chips_label": "Your plan", "fr.home.chip.cert": "{name} · Change", "fr.home.chip.cert_unset": "Checkride: not set · Set it", "fr.home.chip.cert_info": "{name} · Info only · Change", "fr.home.chip.airport": "Home: {id} · Change", "fr.home.chip.airport_unset": "Airport: not set · Add one", "fr.home.chip.target": "Target: {month} · Change", "fr.home.chip.target_unset": "Target: not sure yet · Set a month", "fr.home.airport_prompt": "Add your home airport to see sample examiners nearby. · Add airport", "fr.home.cert_prompt": "Choose a planning checkride so Search and Journey know what to show. · Set checkride", "fr.toast.done": "You're set. Preferences stay in this browser only.", "fr.toast.partial": "Saved what you picked. You can finish the rest any time in More.", "fr.more.row": "Your plan", "fr.more.title": "Your plan", "fr.more.airport": "Home airport", "fr.more.target": "Target month", "fr.more.save": "Save", "fr.more.toast": "Plan updated.", "fr.more.err": "Couldn't save on this device. Try again. Nothing was sent.", "fr.err.storage": "We couldn't save that on this device. Try again, or keep browsing. Nothing is lost.", "fr.live.step": "Step {n} of 3: {headline}",
+    "pass.eyebrow": "CHECKRIDE COMPLETE", "pass.headline": "You earned it. Well done.", "pass.sub": "{cert} with {name} · {when}", "pass.body": "Take a breath. Log the flight. Tell your CFI. Whenever you're ready, here are calm next steps — no rush.", "pass.proto": "Prototype celebration. Fictional demo data. Nothing was filed with the FAA.", "pass.next.log": "Log the checkride with your CFI", "pass.next.certificate": "Watch for your temporary certificate from your examiner", "pass.next.plan": "Thinking about Instrument or Commercial next? Update your plan in More.", "pass.next.share": "Download a keepsake card", "pass.cta.home": "Back to Home", "pass.cta.journey": "See your Journey", "pass.confetti.note": "Light confetti on by default when motion is allowed (~2 seconds, no sound). Never shown when `prefers-reduced-motion: reduce`.", "share.title": "Keepsake card", "share.helper": "Download an image for yourself. This prototype never posts anywhere.", "share.card.proto": "Prototype", "share.card.eyebrow": "CHECKRIDE PASSED", "share.card.headline": "{cert}", "share.card.detail": "{when} · {airport}", "share.card.examiner": "With {name}", "share.include_examiner": "Include examiner name on the card", "share.download": "Download image", "share.toast.done": "Image saved. Nothing was posted.", "share.cancel": "Not now", "share.err": "Couldn't build the image on this device. Try again. Nothing was posted.", "after.credit.window": "To keep credit for what you already passed, finish by the earlier of (a) 60 days after the day the test stopped, and (b) the last day of the second calendar month after the month you started. After that, expect the full test again. Ask your CFI / DPE.", "after.credit.example": "Example (fictional): you started and stopped on May 10, 2026. Sixty days later is July 9. The end of the second calendar month after May is July 31. Credit runs through **July 9, 2026** — the earlier date.", "after.credit.inside": "Inside this window, only the remaining or unsuccessful areas are retested. You keep credit for areas already passed.", "after.credit.after": "After this window closes, the full practical test is retested.", "after.verify.examiner_plan": "Your examiner decides the plan for the remaining test; bring your NOD/LOD and ask them what will be covered.", "after.stop_failed_task": "If the test stopped after an unsatisfactory task, that is a Notice of Disapproval — not a Letter of Discontinuance. Weather, aircraft, or illness with no unsuccessful task is the discontinuance path.", "after.nod_vs_lod": "Same credit clock either way. What differs is training, endorsements and the 8710 — see the path below.", "after.dis.eyebrow": "AFTER THE CHECKRIDE", "after.dis.headline": "Not this time. Here's the path back.", "after.dis.sub": "{cert} with {name} · {when}", "after.dis.body": "A notice of disapproval means some areas still need work. That is common. You keep credit for areas you already passed if you finish the rest inside the credit window. Before you go back: more training, a new instructor endorsement, and a new recommendation on your 8710.", "after.dis.next_title": "What happens next", "after.dis.step1": "Review the notice with your CFI. Focus on the areas marked.", "after.dis.step2": "Get the additional training your instructor decides you need, then a new endorsement from that same instructor.", "after.dis.8710": "Get a new instructor recommendation on your 8710 for the retest.", "after.dis.step3": "When you're ready, request another checkride. Bring the original notice of disapproval and a properly completed, signed application.", "after.dis.endorse": "Before you reapply you need more training and a new endorsement from the instructor who gave it (§61.49), and a new recommendation on your 8710. Bring the original Notice of Disapproval. Ask your CFI.", "after.dis.timing": "Use the shared credit window (`after.credit.window`). Example: started and stopped May 10, 2026 → finish by **July 9, 2026** to keep credit (`after.credit.example`).", "after.dis.cite": "Source: 14 CFR 61.49 (retesting after failure); 14 CFR 61.43(f) (credit); 14 CFR 61.39(g)/(h) (2-calendar-month increment limit); AC 61-65K §14.2. Not legal advice. Confirm with your CFI and examiner.", "after.proto": "Prototype recovery screen. Fictional demo data. Nothing was filed or sent.", "after.rebook": "Rebook with {name}", "after.find_other": "Find another examiner", "after.dis.cta": "Talk through a plan with your CFI", "after.cta.home": "Back to Home", "after.inc.eyebrow": "AFTER THE CHECKRIDE", "after.inc.headline": "Paused, not finished. You can pick this up.", "after.inc.sub": "{cert} with {name} · {when}", "after.inc.body": "A letter of discontinuance means the test stopped before everything was done — weather, aircraft, illness, or another safety reason — with no unsuccessful task. This was not a disapproval. You keep credit for what you passed if you finish the rest inside the credit window.", "after.inc.next_title": "What happens next", "after.inc.step1": "Keep the letter of discontinuance. You'll show it when the test resumes.", "after.inc.step2": "Finish the remaining areas inside the credit window (earlier of 60 days from the stop, or the end of the 2nd calendar month after the month you started).", "after.inc.step3": "Bring the original letter and a properly completed, signed application. No new §61.49 failure-retest endorsement is required.", "after.inc.no_endorse": "No new failure-retest endorsement is required. Bring the original Letter of Discontinuance and a completed application. Confirm with your CFI that your other endorsements and prep hours are still in date.", "after.inc.other_clocks": "Your 2-calendar-month practical-test endorsement and your 3-hour prep are still checked against the retest date. Neither the letter nor a notice extends them.", "after.inc.timing": "Same shared window as disapproval. Example: started and stopped May 10, 2026 → credit through **July 9, 2026** (`after.credit.example`). After that, expect the full test again.", "after.inc.cite": "Source: 14 CFR 61.43(e)–(f); 14 CFR 61.39(g)/(h); AC 61-65K §14.3. Not legal advice. Confirm with your CFI and examiner.", "after.inc.cta": "Schedule the rest of the test", "after.verify.day60": "Day 60 is treated as the last valid day (Interpretation; [VERIFY] #10).", "after.verify.no_reset": "First discontinuance date; do not reset on a later stop ([VERIFY] via current 8900.1A — cancelled 8900.2C said this).", "after.verify.a6_fresh": "Whether a *fresh* (a)(6) is formally required inside the credit window is [VERIFY] (Flag #5). After LOD, AC 61-65K §14.3 says no *additional* endorsements, but (a)(6) may still have lapsed on its own clock (§2.4) → needs-check.", "after.verify.prep_counts": "Whether original prep still counts for a partial credit-window retest is [VERIFY] (Flag #5).", "after.verify.no_extend": "The knowledge test, medical, (a)(6) and 3-hour prep keep running on their own clocks the whole time (Rules 1, 2, 4, 5). Neither paper extends them (historical 8900.2C Note; [VERIFY] in current 8900.1A).", "after.verify.8900": "Active FSIMS order is 8900.1A (issued 2022-10-27). Body text still [VERIFY].", "after.err.missing": "We couldn't find that sample checkride in this browser (links can go stale after a reset).", "after.err.generic": "Something went wrong opening this screen. Nothing was sent.", "after.more.group": "After the checkride (demo)", "after.more.pass": "Pass celebration (demo)", "after.more.dis": "Notice of disapproval path (demo)", "after.more.inc": "Letter of discontinuance path (demo)", "after.credit.card_title": "Credit window (same after a notice of disapproval or a discontinuance)", "after.credit.example_short": "Example (fictional): started and stopped May 10, 2026 → 60 days = July 9; end of 2nd month after May = July 31 → credit through July 9, 2026.", "after.verify.chip": "VERIFY · with CFI & examiner",
+    "after.entry.prompt": "How did it go?", "after.entry.passed": "Passed", "after.entry.inc": "Not finished", "after.entry.dis": "Not passed", "after.entry.helper": "Pick what your examiner handed you: a temporary certificate (Passed), a letter of discontinuance (Not finished) or a notice of disapproval (Not passed). If the test stopped after an unsatisfactory task, choose Not passed. Prototype only; nothing is filed or sent.", "after.entry.aria": "Checkride result for this booking", "after.entry.group_label": "Checkride result",
     "wl.status.joined": "Joined locally · illustrative position #{position}.", "wl.status.not_joined": "Not joined for this checkride.",
     "wl.sample": "Fictional sample only. Positions are illustrative, not live demand or priority. No notifications are sent; no slot is reserved.",
     "wl.join": "Join sample waitlist", "wl.leave": "Leave sample waitlist", "wl.already": "Already joined locally for this examiner and checkride. Nothing was sent.",
@@ -615,17 +617,24 @@
     // First-run onboarding (Marlo Nov 9): existing profiles must not be forced through it.
     // Detection: any signed-in/demo profile fields, saved items, explicit cert pins, waitlists, or mine bookings.
     // Seed sample alert/notification/KT alone do NOT count (every fresh seed has those).
+    const existingUser = !!(s.demoUser && (s.demoUser.name || s.demoUser.goal || s.demoUser.airport))
+      || (Array.isArray(s.savedExaminers) && s.savedExaminers.length > 0)
+      || (Array.isArray(s.savedSearches) && s.savedSearches.length > 0)
+      || !!s.readinessCert || !!s.findCert
+      || (s.wl && typeof s.wl === "object" && Object.keys(s.wl).length > 0)
+      || (Array.isArray(s.bookings) && s.bookings.some((b) => b && b.mine))
+      || (s.clock && typeof s.clock === "object" && Object.keys(s.clock).length > 0);
     if (!s.onboarding || typeof s.onboarding !== "object") {
-      const existing = !!(s.demoUser && (s.demoUser.name || s.demoUser.goal || s.demoUser.airport))
-        || (Array.isArray(s.savedExaminers) && s.savedExaminers.length > 0)
-        || (Array.isArray(s.savedSearches) && s.savedSearches.length > 0)
-        || !!s.readinessCert || !!s.findCert
-        || (s.wl && typeof s.wl === "object" && Object.keys(s.wl).length > 0)
-        || (Array.isArray(s.bookings) && s.bookings.some((b) => b && b.mine))
-        || (s.clock && typeof s.clock === "object" && Object.keys(s.clock).length > 0);
-      s.onboarding = existing
+      // First encounter with onboarding field: existing users skip; fresh users start pending.
+      s.onboarding = existingUser
         ? { status: "done", source: "migrate-existing", completedAt: Date.now() }
         : { status: "pending", step: 1 };
+      s._onbMigrated = 1;
+    } else if (existingUser && s.onboarding.status !== "done") {
+      // v7.17→v7.18 (and similar): prior build may have left pending/in_progress while
+      // saved/evidence/demoUser already prove an existing user — never force them through.
+      s.onboarding = { status: "done", source: "migrate-existing", completedAt: Date.now(),
+        prior: s.onboarding.status || null };
       s._onbMigrated = 1;
     }
     return s;
@@ -1989,6 +1998,7 @@ const closeModal = () => {
           <div class="muted small" style="margin-top:.5rem">${b.status === "requested" ? `Waiting for ${esc(first(dp.name))} to review your request. Nothing is confirmed until ${esc(first(dp.name))} accepts. Nothing charged.` : b.status === "confirmed" ? `Confirmed. In a real version: Deposit paid to your examiner (mock) ${FEES ? "and the booking fee charged now" : "under their terms"}; this prototype charged nothing.` : b.status === "declined" ? `${esc(first(dp.name))} couldn't take this request. Nothing was confirmed, so nothing changes on your side.` : ""}</div>
           ${b.status === "cancelled" ? `<div class="small cancel-outcome" data-outcome="${esc(b.cancel?.fee || "none")}" style="margin-top:.35rem"><b>${cancelLine(b, s)}</b><div class="muted">Prototype: nothing is charged.</div></div>` : ""}
           ${noShowCard(b, s, dp)}
+          ${afterOutcomeEntry(b, s)}
           ${FEES && b.status === "confirmed" && slotStart(s) - Date.now() >= H48 ? `<div class="small" data-cutoff style="margin-top:.35rem">Cancel by ${tsWhen(slotStart(s) - H48, slotTz(s))} to get your $15 back as a credit. ${LEGAL_TAG}</div>` : ""}
           ${examinerTerms(dp)}
           <div class="muted small" style="margin-top:.35rem" data-policy>${POLICY_SHORT} <a href="#/pricing#deposit-policy">How cancellations work</a></div>
@@ -3050,7 +3060,8 @@ const closeModal = () => {
     const groups = {
       pilot: [
         ["Your checkride", [["#/more#fr-more-plan", COPY["fr.more.row"]], ["#/journey", "Journey"], ["#/readiness", "Readiness checklist"], ["#/checklists", "Checklists by certificate"], ["#/saved", COPY["nav.saved"]]]],
-        ["Checkrides and costs", [["#/bookings", "My checkrides"], ["#/my-checklists", "From your examiner"], ["#/compare", "Compare fees"], ["#/pricing", "Pricing"], ["#/pricing#deposit-policy", "How cancellations work"]]]
+        ["Checkrides and costs", [["#/bookings", "My checkrides"], ["#/my-checklists", "From your examiner"], ["#/compare", "Compare fees"], ["#/pricing", "Pricing"], ["#/pricing#deposit-policy", "How cancellations work"]]],
+        [COPY["after.more.group"], [["#/after/pass", COPY["after.more.pass"]], ["#/after/dis", COPY["after.more.dis"]], ["#/after/inc", COPY["after.more.inc"]]]]
       ],
       dpe: [["Your desk", [["#/dpe-fees", "Your terms (fee, deposit and cancellation)"], ["#/dpe/" + S.actingDpe, "My public profile"], ["#/pricing", "Pricing"]]]],
       school: [["Your school", [["#/school/cohort", "Cohort scheduling"], ["#/search", "Search examiners"], ["#/compare", "Compare fees"], ["#/checklists", "Checklists"], ["#/pricing", "Pricing"]]]],
@@ -3127,6 +3138,7 @@ const closeModal = () => {
             <div class="row" style="gap:1rem;flex-wrap:nowrap">${dateTile(s.date)}<div><b>${slotWhenLong(s)}</b><div class="small muted">${s.airport}${s.airport !== dp.home ? ` \u00b7 examiner travels from ${dp.home}` : ""}${isDpe ? ` \u00b7 ${esc(b.aircraft)} \u00b7 CFI: ${esc(b.cfi)}` : ""}</div></div></div>
             <div style="margin-top:.75rem" id="req-status">${reqPill(b)}${holdEnded(b, slotOf(b)) ? holdEndedLine(b) : ""}${!isDpe && b.mine && b.status === "requested" ? `<p class="small muted" data-nodeposit style="margin:.4rem 0 0">No deposit until ${f} accepts</p>` : ""}${isDpe ? dpeHoldLine(b, s) + (b.status === "requested" ? dpeNoShowLine(b) : "") : ""}</div>
             ${!isDpe ? noShowCard(b, s, dp) : b.noShow ? `<p class="small" data-ns-marked="${b.id}"><span class="pill bad">No-show</span></p>` : ""}
+            ${!isDpe && b.mine ? afterOutcomeEntry(b, s) : ""}
             ${b.status === "declined" && !isDpe ? `<p class="small" style="margin:.5rem 0 0">${f} couldn\u2019t take this request. Nothing was confirmed, so nothing changes on your side. <a href="#/search?cert=${b.cert}">See other openings</a></p>` : ""}
             ${b.status === "cancelled" ? `<div class="small cancel-outcome"><b>${cancelLine(b, s)}</b></div>` : ""}
           </section>
@@ -3773,7 +3785,14 @@ const closeModal = () => {
       if (!save()) { toast(COPY["fr.more.err"]); return; }
       toast(COPY["fr.more.toast"]); rerender();
     },
-"demo-logout": () => { S.demoUser = null; save(); toast("Logged out of the demo. Nothing was sent."); go("#/"); },
+    // ---- After the checkride (pass / share / recovery) ----
+    "after-share-open": () => openShareSheet(),
+    "after-share-download": () => { downloadShareCard(); },
+    "after-pass-log": () => toast(COPY["pass.next.log"] + " \u2014 prototype only; nothing was filed."),
+    "after-pass-cert": () => toast(COPY["pass.next.certificate"] + " \u2014 [VERIFY] with your examiner."),
+    "after-dis-cta": () => toast(COPY["after.dis.cta"] + " \u2014 prototype; talk with your CFI offline."),
+    "modal-close": () => closeModal(),
+    "demo-logout": () => { S.demoUser = null; save(); toast("Logged out of the demo. Nothing was sent."); go("#/"); },
   };
   // QA-075 / QA-081: one validation pattern for the demo auth forms (signup and login). Each submit re-checks every field:
   // the first problem gets the message (role=alert), aria-invalid and aria-describedby, and focus. A field that is fixed
@@ -3842,9 +3861,284 @@ const closeModal = () => {
     },
   };
 
+
+
+  // Past checkride entry (Marlo 2026-11-09): airport-zone calendar date strictly before today.
+  // Mapping (verified): Passed → #/after/pass; Not finished (LOD) → #/after/inc; Not passed (NOD) → #/after/dis.
+  const bookingDatePast = (sl) => {
+    if (!sl || !sl.date) return false;
+    const tz = slotTz(sl);
+    return sl.date < todayIn(tz);
+  };
+  const afterOutcomeEntry = (b, sl) => {
+    if (!b || !sl || !bookingDatePast(sl)) return "";
+    if (b.status !== "confirmed" && b.status !== "requested") return "";
+    const q = `bookingId=${encodeURIComponent(b.id)}`;
+    return `<section class="after-entry" data-after-entry data-booking="${esc(b.id)}" data-slot-date="${esc(sl.date)}" data-slot-tz="${esc(slotTz(sl))}" aria-labelledby="after-entry-h-${esc(b.id)}">
+      <h3 class="h4" id="after-entry-h-${esc(b.id)}" data-copy-key="after.entry.prompt">${esc(COPY["after.entry.prompt"])}</h3>
+      <p class="small muted" data-copy-key="after.entry.helper">${esc(COPY["after.entry.helper"])}</p>
+      <div class="after-entry-actions" role="group" aria-label="${esc(COPY["after.entry.aria"])}">
+        <a class="btn secondary sm" data-after-choice="pass" href="#/after/pass?${q}" data-copy-key="after.entry.passed">${esc(COPY["after.entry.passed"])}</a>
+        <a class="btn secondary sm" data-after-choice="inc" href="#/after/inc?${q}" data-copy-key="after.entry.inc">${esc(COPY["after.entry.inc"])}</a>
+        <a class="btn secondary sm" data-after-choice="dis" href="#/after/dis?${q}" data-copy-key="after.entry.dis">${esc(COPY["after.entry.dis"])}</a>
+      </div>
+      <p class="tiny muted" data-copy-key="after.entry.group_label">${esc(COPY["after.entry.group_label"])}</p>
+    </section>`;
+  };
+
+  // ---------- After the checkride (ux-copy-v3 §10 / design-spec §17 / eligibility-rules §6A) ----------
+  // Demo sample: Linda Brooks (d5), Private Pilot, Fri Dec 4 · 9:00 AM ET at KVDF. Fictional only.
+  const AFTER_DEMO = { dpeId: "d5", cert: "ppl", airport: "KVDF", whenPass: "Fri, Dec 4 · 9:00 AM ET, at KVDF", whenShort: "Fri, Dec 4", whenCard: "Fri, Dec 4, 2026",
+    // Credit-window worked example (§6A.8 / D20): began+stopped 2026-05-10 → effective 2026-07-09
+    testBegan: "2026-05-10", stoppedOn: "2026-05-10" };
+
+  const afterFmt = (key, vars) => {
+    let s = COPY[key] || key;
+    Object.keys(vars || {}).forEach((k) => { s = s.split("{" + k + "}").join(vars[k]); });
+    return s;
+  };
+  const afterPair = (key) => {
+    const raw = COPY[key] || "";
+    const i = raw.indexOf(". ");
+    if (i < 0) return esc(raw);
+    return `${esc(raw.slice(0, i + 1))} <span class="b">${esc(raw.slice(i + 2))}</span>`;
+  };
+  const afterBookingFromQuery = (q) => {
+    const id = (q && (q.bookingId || q.id)) || "";
+    if (!id) return null;
+    const b = S.bookings.find((x) => x.id === id && x.mine);
+    if (!b) return null;
+    const sl = S.slots.find((x) => x.id === b.slotId);
+    const dp = dpeById(b.dpeId);
+    return { b, sl, dp };
+  };
+  const afterDemoCtx = (q) => {
+    const from = afterBookingFromQuery(q);
+    if (from && from.dp && from.sl) {
+      const cert = certById(from.b.cert) || { id: from.b.cert, name: from.b.cert, short: from.b.cert };
+      const whenPass = `${fmtDate(from.sl.date, { weekday: "short", month: "short", day: "numeric" })} · ${slotTime(from.sl)}, at ${from.sl.airport}`;
+      const whenShort = fmtDate(from.sl.date, { weekday: "short", month: "short", day: "numeric" });
+      const whenCard = fmtDateY(from.sl.date);
+      return {
+        dp: from.dp, cert, name: first(from.dp.name), certName: cert.name || from.b.cert,
+        whenPass, whenShort, whenCard, airport: from.sl.airport, bookingId: from.b.id,
+        testBegan: from.sl.date, stoppedOn: from.sl.date,
+      };
+    }
+    const dp = dpeById(AFTER_DEMO.dpeId) || { id: "d5", name: "Linda Brooks" };
+    const cert = (certById(AFTER_DEMO.cert) || { id: "ppl", name: "Private Pilot", short: "Private" });
+    return { dp, cert, name: first(dp.name) || "Linda Brooks", certName: cert.name || "Private Pilot",
+      whenPass: AFTER_DEMO.whenPass, whenShort: AFTER_DEMO.whenShort, whenCard: AFTER_DEMO.whenCard,
+      airport: AFTER_DEMO.airport, bookingId: null,
+      testBegan: AFTER_DEMO.testBegan, stoppedOn: AFTER_DEMO.stoppedOn };
+  };
+  const afterCreditMath = (began, stopped) => {
+    const E = window.CC_ELIG;
+    const d60 = E.creditDeadline(stopped);
+    const m2 = E.incrementsDeadline(began);
+    const effective = E.resumeWithCreditDeadline(began, stopped);
+    const which = effective === m2 ? "61.39(g)/(h)" : "61.43(f)(1)";
+    return { d60, m2, effective, which };
+  };
+  const afterCreditCard = (began, stopped) => {
+    const m = afterCreditMath(began, stopped);
+    // Prefer exact §10.3 keys; show live deadline label for the demo dates.
+    const live = `Live demo dates: started ${began}, stopped ${stopped} → 60-day ${m.d60}; end of 2nd calendar month ${m.m2} → credit through <b>${m.effective}</b> (${m.which} binds). Airport-zone document dates; not FAA advice.`;
+    return `<aside class="after-credit card" data-credit-effective="${m.effective}" data-credit-d60="${m.d60}" data-credit-m2="${m.m2}">
+      <h3 class="h4" data-copy-key="after.credit.card_title">${esc(COPY["after.credit.card_title"])}</h3>
+      <p data-copy-key="after.credit.window">${esc(COPY["after.credit.window"])}</p>
+      <p class="small" data-copy-key="after.credit.example">${esc(COPY["after.credit.example"]).replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")}</p>
+      <p class="small muted" data-live-credit>${live}</p>
+      <p class="small" data-copy-key="after.credit.inside">${esc(COPY["after.credit.inside"])}</p>
+      <p class="small" data-copy-key="after.credit.after">${esc(COPY["after.credit.after"])}</p>
+      <p class="small" data-copy-key="after.nod_vs_lod">${esc(COPY["after.nod_vs_lod"])}</p>
+    </aside>`;
+  };
+  const afterVerifyList = () => {
+    const keys = ["after.verify.day60", "after.verify.no_reset", "after.verify.examiner_plan", "after.verify.a6_fresh", "after.verify.prep_counts", "after.verify.no_extend", "after.verify.8900"];
+    return `<section class="after-verify" aria-label="Verification notes">
+      <span class="pill verify after-verify-chip" data-copy-key="after.verify.chip">${esc(COPY["after.verify.chip"])}</span>
+      <ul class="after-verify-list">${keys.map((k) => `<li data-copy-key="${k}" data-after-verify="${k}">${esc(COPY[k])}</li>`).join("")}</ul>
+    </section>`;
+  };
+
+  function runPassConfetti(root) {
+    try {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; // D47 / §17.1
+      const layer = document.createElement("canvas");
+      layer.className = "after-confetti";
+      layer.setAttribute("aria-hidden", "true");
+      layer.width = Math.min(window.innerWidth, 1440);
+      layer.height = Math.min(window.innerHeight, 900);
+      (root || document.body).appendChild(layer);
+      const ctx = layer.getContext("2d");
+      const colors = ["#3860E3", "#1e3a8a", "#93c5fd", "#fbbf24", "#ffffff"];
+      const parts = Array.from({ length: 48 }, () => ({
+        x: Math.random() * layer.width, y: -20 - Math.random() * 80,
+        vx: (Math.random() - 0.5) * 2.2, vy: 1.5 + Math.random() * 2.5,
+        s: 3 + Math.random() * 4, c: colors[(Math.random() * colors.length) | 0], r: Math.random() * Math.PI
+      }));
+      const start = performance.now();
+      const tick = (now) => {
+        const t = now - start;
+        ctx.clearRect(0, 0, layer.width, layer.height);
+        parts.forEach((p) => {
+          p.x += p.vx; p.y += p.vy; p.r += 0.05;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
+          ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.6); ctx.restore();
+        });
+        if (t < 2000) requestAnimationFrame(tick);
+        else { layer.remove(); }
+      };
+      requestAnimationFrame(tick);
+    } catch (e) { /* never block */ }
+  }
+
+  function viewAfterPass(q) {
+    const ctx = afterDemoCtx(q); const { dp, certName, name } = ctx;
+    const sub = afterFmt("pass.sub", { cert: certName, name, when: ctx.whenPass });
+    // Confetti after paint
+    setTimeout(() => runPassConfetti(document.querySelector(".after-pass")), 60);
+    return `<div class="page narrow after-page after-pass" data-after="pass">
+      <div class="after-hero" aria-hidden="true"><span class="after-mark"></span></div>
+      <p class="eyebrow" data-copy-key="pass.eyebrow">${esc(COPY["pass.eyebrow"])}</p>
+      <h1 class="paired after-h1" tabindex="-1" data-copy-key="pass.headline">${afterPair("pass.headline")}</h1>
+      <p class="muted after-sub" data-copy-key="pass.sub">${esc(sub)}</p>
+      <section class="card stack after-card">
+        <p data-copy-key="pass.body">${esc(COPY["pass.body"])}</p>
+        <button type="button" class="btn secondary" data-action="after-pass-log" data-copy-key="pass.next.log">${esc(COPY["pass.next.log"])}</button>
+        <button type="button" class="btn secondary" data-action="after-pass-cert" data-copy-key="pass.next.certificate">${esc(COPY["pass.next.certificate"])}</button>
+        <a class="btn secondary" href="#/more#fr-more-plan" data-copy-key="pass.next.plan">${esc(COPY["pass.next.plan"])}</a>
+        <button type="button" class="btn secondary" data-action="after-share-open" data-copy-key="pass.next.share">${esc(COPY["pass.next.share"])}</button>
+      </section>
+      <div class="row after-ctas" style="gap:.75rem;flex-wrap:wrap;margin-top:1rem">
+        <a class="btn cta" href="#/home" data-copy-key="pass.cta.home">${esc(COPY["pass.cta.home"])}</a>
+        <a class="btn ghost" href="#/journey" data-copy-key="pass.cta.journey">${esc(COPY["pass.cta.journey"])}</a>
+      </div>
+      <p class="small muted after-proto" data-copy-key="pass.proto">${esc(COPY["pass.proto"])}</p>
+    </div>`;
+  }
+
+  function openShareSheet() {
+    const q = Object.fromEntries(new URLSearchParams((location.hash.split("?")[1] || "")));
+    const ctx = afterDemoCtx(q); const { name, certName } = ctx;
+    const include = !!(window.__afterShareIncludeExaminer);
+    openModal(`<h2 id="modal-title" data-copy-key="share.title">${esc(COPY["share.title"])}</h2>
+      <p class="small muted" data-copy-key="share.helper">${esc(COPY["share.helper"])}</p>
+      <div class="share-preview" data-share-preview>
+        <div class="share-card" id="share-card-art" aria-hidden="true">
+          <span class="share-proto" data-copy-key="share.card.proto">${esc(COPY["share.card.proto"])}</span>
+          <p class="share-eyebrow" data-copy-key="share.card.eyebrow">${esc(COPY["share.card.eyebrow"])}</p>
+          <h3 class="share-headline">${esc(afterFmt("share.card.headline", { cert: certName }))}</h3>
+          <p class="share-detail">${esc(afterFmt("share.card.detail", { when: ctx.whenCard, airport: ctx.airport }))}</p>
+          ${include ? `<p class="share-examiner" data-copy-key="share.card.examiner">${esc(afterFmt("share.card.examiner", { name }))}</p>` : ""}
+          <img class="share-mark" src="brand/checkride-connect-mark-on-navy.svg" alt="" width="48" height="48" />
+        </div>
+      </div>
+      <label class="row" style="gap:.5rem;align-items:center;min-height:44px;margin:.75rem 0">
+        <input type="checkbox" id="share-include-examiner" data-action-change="after-share-toggle" ${include ? "checked" : ""} />
+        <span data-copy-key="share.include_examiner">${esc(COPY["share.include_examiner"])}</span>
+      </label>
+      <div class="row" style="gap:.75rem;flex-wrap:wrap">
+        <button type="button" class="btn cta" data-action="after-share-download" data-copy-key="share.download">${esc(COPY["share.download"])}</button>
+        <button type="button" class="btn ghost" data-action="modal-close" data-copy-key="share.cancel">${esc(COPY["share.cancel"])}</button>
+      </div>
+      <p class="small muted">Local download only. No Web Share, no social buttons, nothing is posted or sent.</p>`);
+  }
+
+  async function downloadShareCard() {
+    try {
+      const q = Object.fromEntries(new URLSearchParams((location.hash.split("?")[1] || "")));
+      const demo = afterDemoCtx(q); const { name, certName } = demo;
+      const include = !!(window.__afterShareIncludeExaminer);
+      const W = 1080, H = 1350;
+      const c = document.createElement("canvas"); c.width = W; c.height = H;
+      const g = c.getContext("2d");
+      g.fillStyle = "#0b1b4a"; g.fillRect(0, 0, W, H);
+      g.fillStyle = "#3860E3"; g.fillRect(0, 0, W, 16);
+      g.fillStyle = "#ffffff"; g.font = "600 28px system-ui,sans-serif";
+      g.fillText(COPY["share.card.proto"], 64, 80);
+      g.font = "700 36px system-ui,sans-serif"; g.fillStyle = "#93c5fd";
+      g.fillText(COPY["share.card.eyebrow"], 64, 200);
+      g.font = "700 72px system-ui,sans-serif"; g.fillStyle = "#ffffff";
+      g.fillText(afterFmt("share.card.headline", { cert: certName }), 64, 320);
+      g.font = "400 36px system-ui,sans-serif"; g.fillStyle = "#cbd5e1";
+      g.fillText(afterFmt("share.card.detail", { when: demo.whenCard, airport: demo.airport }), 64, 400);
+      if (include) {
+        g.fillStyle = "#e2e8f0";
+        g.fillText(afterFmt("share.card.examiner", { name }), 64, 470);
+      }
+      // Brand mark (optional draw from image)
+      try {
+        const img = new Image();
+        img.src = "brand/checkride-connect-mark-on-navy.svg";
+        await new Promise((res, rej) => { img.onload = res; img.onerror = rej; setTimeout(res, 400); });
+        if (img.complete && img.naturalWidth) g.drawImage(img, W - 160, H - 160, 96, 96);
+      } catch (e) {}
+      const a = document.createElement("a");
+      a.download = "checkride-keepsake-prototype.png";
+      a.href = c.toDataURL("image/png");
+      a.rel = "noopener";
+      document.body.appendChild(a); a.click(); a.remove();
+      toast(COPY["share.toast.done"]);
+      closeModal();
+    } catch (e) {
+      toast(COPY["share.err"], "crit");
+    }
+  }
+
+  function viewAfterRecovery(kind, q) {
+    // kind: "dis" (NOD) | "inc" (LOD)
+    const isNod = kind === "dis";
+    const ctx = afterDemoCtx(q); const { dp, certName, name } = ctx;
+    const prefix = isNod ? "after.dis" : "after.inc";
+    const sub = afterFmt(prefix + ".sub", { cert: certName, name, when: ctx.whenShort });
+    const rebook = afterFmt("after.rebook", { name });
+    const credit = afterCreditCard(ctx.testBegan, ctx.stoppedOn);
+    const steps = isNod
+      ? `<ol class="after-steps">
+          <li data-copy-key="after.dis.step1">${esc(COPY["after.dis.step1"])}</li>
+          <li data-copy-key="after.dis.step2">${esc(COPY["after.dis.step2"])}</li>
+          <li data-copy-key="after.dis.8710">${esc(COPY["after.dis.8710"])}</li>
+          <li data-copy-key="after.dis.step3">${esc(COPY["after.dis.step3"])}</li>
+        </ol>
+        <p class="after-blurb" data-copy-key="after.dis.endorse">${esc(COPY["after.dis.endorse"])}</p>`
+      : `<ol class="after-steps">
+          <li data-copy-key="after.inc.step1">${esc(COPY["after.inc.step1"])}</li>
+          <li data-copy-key="after.inc.step2">${esc(COPY["after.inc.step2"])}</li>
+          <li data-copy-key="after.inc.step3">${esc(COPY["after.inc.step3"])}</li>
+        </ol>
+        <p class="after-blurb" data-copy-key="after.inc.no_endorse">${esc(COPY["after.inc.no_endorse"])}</p>
+        <p class="small" data-copy-key="after.inc.other_clocks">${esc(COPY["after.inc.other_clocks"])}</p>`;
+    return `<div class="page narrow after-page after-recovery" data-after="${kind}">
+      <p class="eyebrow" data-copy-key="${prefix}.eyebrow">${esc(COPY[prefix + ".eyebrow"])}</p>
+      <h1 class="paired after-h1" tabindex="-1" data-copy-key="${prefix}.headline">${afterPair(prefix + ".headline")}</h1>
+      <p class="muted after-sub" data-copy-key="${prefix}.sub">${esc(sub)}</p>
+      <section class="card stack after-card">
+        <p data-copy-key="${prefix}.body">${esc(COPY[prefix + ".body"])}</p>
+        ${credit}
+        <h2 class="h3" data-copy-key="${prefix}.next_title">${esc(COPY[prefix + ".next_title"])}</h2>
+        ${steps}
+        <p class="small" data-copy-key="after.stop_failed_task">${esc(COPY["after.stop_failed_task"])}</p>
+        ${afterVerifyList()}
+        <p class="small muted" data-copy-key="${prefix}.cite">${esc(COPY[prefix + ".cite"])}</p>
+      </section>
+      <div class="row after-ctas" style="gap:.75rem;flex-wrap:wrap;margin-top:1rem">
+        <a class="btn cta" href="#/dpe/${ctx.dp.id}?cert=${(ctx.cert && ctx.cert.id) || AFTER_DEMO.cert}" data-copy-key="after.rebook">${esc(rebook)}</a>
+        <a class="btn secondary" href="#/search?cert=${(ctx.cert && ctx.cert.id) || AFTER_DEMO.cert}" data-copy-key="after.find_other">${esc(COPY["after.find_other"])}</a>
+        ${isNod ? `<button type="button" class="btn ghost" data-action="after-dis-cta" data-copy-key="after.dis.cta">${esc(COPY["after.dis.cta"])}</button>` : `<a class="btn ghost" href="#/dpe/${ctx.dp.id}?cert=${(ctx.cert && ctx.cert.id) || AFTER_DEMO.cert}" data-copy-key="after.inc.cta">${esc(COPY["after.inc.cta"])}</a>`}
+        <a class="btn ghost" href="#/home" data-copy-key="after.cta.home">${esc(COPY["after.cta.home"])}</a>
+      </div>
+      <p class="small muted after-proto" data-copy-key="after.proto">${esc(COPY["after.proto"])}</p>
+    </div>`;
+  }
+  function viewAfterDis(q) { return viewAfterRecovery("dis", q); }
+  function viewAfterInc(q) { return viewAfterRecovery("inc", q); }
+
+
   // ---------- router ----------
   const routes = [
-    [/^\/$/, viewLanding], [/^\/find$/, viewFind], [/^\/login$/, viewLogin], [/^\/signup$/, viewSignup], [/^\/home$/, viewHome], [/^\/onboarding$/, (q) => viewOnboarding(q)], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/saved$/, viewSaved], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest], [/^\/offer\/(\w+)$/, viewOffer],
+    [/^\/$/, viewLanding], [/^\/find$/, viewFind], [/^\/login$/, viewLogin], [/^\/signup$/, viewSignup], [/^\/home$/, viewHome], [/^\/onboarding$/, (q) => viewOnboarding(q)], [/^\/after\/pass$/, (q) => viewAfterPass(q)], [/^\/after\/dis$/, (q) => viewAfterDis(q)], [/^\/after\/inc$/, (q) => viewAfterInc(q)], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/saved$/, viewSaved], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest], [/^\/offer\/(\w+)$/, viewOffer],
     [/^\/dpe-today$/, viewDpeToday], [/^\/dpe-applicants$/, viewDpeApplicants], [/^\/school\/requests$/, viewSchoolRequests], [/^\/school\/readiness$/, viewSchoolReadiness], [/^\/search$/, viewSearch], [/^\/dpe\/(\w+)$/, viewProfile], [/^\/compare$/, viewCompare],
     [/^\/alerts$/, viewAlerts], [/^\/checklists(?:\/(\w+))?$/, viewChecklists], [/^\/bookings$/, viewBookings], [/^\/my-checklists$/, viewMyChecklists], [/^\/dpe-checklist\/(\w+)$/, viewBuilder],
     [/^\/requests$/, viewDpeDash], [/^\/school$/, viewSchool], [/^\/school\/cohort$/, viewCohort], [/^\/dpe-openings$/, viewOpenings], [/^\/openings$/, viewPublish], [/^\/dpe-fees$/, viewDpeFees], [/^\/admin$/, viewAdmin], [/^\/pricing$/, viewPricing],
@@ -3868,7 +4162,7 @@ const closeModal = () => {
     const pend = S.bookings.filter((b) => b.dpeId === S.actingDpe && b.status === "requested").length;
     const unread = S.notifications.filter((n) => !n.read).length;
     return ({
-      pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/find", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts", "/offer/"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing", "/saved", "/onboarding"]]],
+      pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/find", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts", "/offer/"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing", "/saved", "/onboarding", "/after/"]]],
       dpe: [["#/dpe-today", "Today", "today", ["/dpe-today"]], ["#/requests", "Requests", "inbox", ["/requests", "/request/", "/openings"], pend], ["#/dpe-openings", "Calendar", "cal", ["/dpe-openings"]], ["#/dpe-applicants", "Applicants", "people", ["/dpe-applicants", "/dpe-checklist/"]], ["#/more", "More", "more", ["/more", "/faq", "/dpe-fees", "/dpe/", "/pricing"]]],
       school: [["#/school", "Roster", "people", ["/school", "/school/cohort"]], ["#/school/requests", "Checkride requests", "inbox", ["/school/requests", "/request/"]], ["#/school/readiness", "Readiness", "list", ["/school/readiness"]], ["#/more", "More", "more", ["/more", "/faq", "/search", "/compare", "/checklists", "/pricing", "/dpe/"]]],
       admin: [["#/admin", "Admin", "shield", ["/admin"]], ["#/search", "Listings", "search", ["/search", "/dpe/"]], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
@@ -3881,7 +4175,7 @@ const closeModal = () => {
     NAV().forEach(([, , , pre], i) => pre.forEach((p) => { const hit = p.endsWith("/") ? path.startsWith(p) : path === p || path.startsWith(p + "/"); if (hit && p.length > len) { best = i; len = p.length; } }));
     return best;
   };
-  const CRUMBS = { "/find": "Find a DPE", "/openings": "Publish an opening", "/home": "Home", "/onboarding": "Your plan", "/search": "Search", "/compare": "Compare fees", "/alerts": "Alerts", "/journey": "Journey", "/readiness": "Readiness checklist", "/bookings": "My checkrides", "/my-checklists": "From your examiner", "/checklists": "Checklists", "/more": "More", "/saved": "Saved", "/faq": "FAQs", "/pricing": "Pricing", "/dpe-today": "Today", "/requests": "Requests", "/dpe-openings": "Calendar", "/dpe-applicants": "Applicants", "/dpe-fees": "Your terms", "/school": "Roster", "/school/requests": "Checkride requests", "/school/readiness": "Readiness", "/school/cohort": "Cohort scheduling", "/admin": "Admin" };
+  const CRUMBS = { "/find": "Find a DPE", "/openings": "Publish an opening", "/home": "Home", "/onboarding": "Your plan", "/after/pass": "Checkride complete", "/after/dis": "Not this time", "/after/inc": "Paused, not finished", "/search": "Search", "/compare": "Compare fees", "/alerts": "Alerts", "/journey": "Journey", "/readiness": "Readiness checklist", "/bookings": "My checkrides", "/my-checklists": "From your examiner", "/checklists": "Checklists", "/more": "More", "/saved": "Saved", "/faq": "FAQs", "/pricing": "Pricing", "/dpe-today": "Today", "/requests": "Requests", "/dpe-openings": "Calendar", "/dpe-applicants": "Applicants", "/dpe-fees": "Your terms", "/school": "Roster", "/school/requests": "Checkride requests", "/school/readiness": "Readiness", "/school/cohort": "Cohort scheduling", "/admin": "Admin" };
   const crumb = (path) => {
     const tab = NAV()[navActive(path)];
     const leaf = CRUMBS[path] || (path.startsWith("/request/") ? "Request" : path.startsWith("/dpe/") ? "Examiner profile" : path.startsWith("/dpe-checklist/") ? "Checklist" : path.startsWith("/checklists/") ? "Checklists" : "");
@@ -3951,7 +4245,7 @@ const closeModal = () => {
     if (ui.savedAnnounce) { const m = ui.savedAnnounce; ui.savedAnnounce = ""; setTimeout(() => announceSaved(m), 0); }
     if (!/^\/dpe\/[^/]+$/.test(path)) ui.profileKey = null;
     const act = navActive(path);
-    $("#nav").innerHTML = pub ? "" : NAV().map(([href, label, ic,  badge], i) => `<a href="${href}" class="${i === act ? "active" : ""}"${i === act ? ' aria-current="page"' : ""}>${tabIcon(ic)}<span class="t">${label}</span>${badge ? `<span class="badge"${ic === "bell" ? ' id="alerts-badge"' : ""} aria-label="${badge} ${ic === "bell" ? "unread" : "awaiting review"}">${badge}</span>` : ""}</a>`).join("");
+    $("#nav").innerHTML = pub ? "" : NAV().map(([href, label, ic, _pre, badge], i) => `<a href="${href}" class="${i === act ? "active" : ""}"${i === act ? ' aria-current="page"' : ""}>${tabIcon(ic)}<span class="t">${label}</span>${badge ? `<span class="badge"${ic === "bell" ? ' id="alerts-badge"' : ""} aria-label="${badge} ${ic === "bell" ? "unread" : "awaiting review"}">${badge}</span>` : ""}</a>`).join("");
     $("#nav").hidden = pub;
     $("#crumb").innerHTML = landing ? "" : crumb(path);
     $("#land-nav").hidden = !pub;
@@ -4880,6 +5174,7 @@ function countUp(root) {
     }
     if (t.form && (t.form.dataset.form === "request" || t.form.dataset.form === "cohort-ready") && t.name !== "cert") { showGate(t.form); return; }
     if (t.dataset.actionChange === "avail-age") { availOf(S.actingDpe).confirmedAt = Date.now() - Number(t.value) * DAY; rerender(); return; }
+    if (t.dataset.actionChange === "after-share-toggle") { window.__afterShareIncludeExaminer = !!t.checked; openShareSheet(); return; }
     if (t.dataset.actionChange === "theme") { applyTheme(t.value); return; }
     if (t.dataset.actionChange === "role") { S.role = t.value; go(HOME[S.role]); return; }
     if (t.dataset.med) { pinReadiness();

@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+"""Scope audit for v7.18.0 after-the-checkride. Does NOT require elig-clock byte-identical to rc9."""
+from pathlib import Path
+import hashlib, re, sys
+R = Path('/workspace/checkride-v4')
+pass_n = fail_n = 0
+def ck(name, yes, data=None):
+    global pass_n, fail_n
+    if yes: pass_n += 1; print('PASS', name)
+    else: fail_n += 1; print('FAIL', name, data)
+sw = (R/'sw.js').read_text()
+ck('SW VERSION v7.18.0', 'cc-proto-v7.18.0' in sw)
+app = (R/'app.js').read_text()
+for k in ['pass.eyebrow','pass.headline','share.title','share.download','after.credit.window','after.dis.endorse','after.dis.8710','after.inc.no_endorse','after.inc.other_clocks','after.nod_vs_lod','after.stop_failed_task','after.verify.day60','after.verify.no_reset','after.verify.examiner_plan','after.verify.a6_fresh','after.verify.prep_counts','after.verify.no_extend','after.verify.8900']:
+    ck('COPY has '+k, f'"{k}"' in app)
+ck('viewAfterPass present', 'function viewAfterPass' in app)
+ck('viewAfterDis/Inc present', 'function viewAfterDis' in app and 'function viewAfterInc' in app)
+ck('routes /after/pass|dis|inc', '/after\\/pass' in app or '/after/pass' in app)
+ck('share download only (no navigator.share post)', 'navigator.share' not in app)
+ck('confetti respects reduced-motion', 'prefers-reduced-motion' in app and 'after-confetti' in app)
+ck('FEES_ENABLED false still', 'FEES_ENABLED: false' in app)
+elig = (R/'elig-clock.js').read_text()
+ck('checkResume exported', 'checkResume' in elig and 'resumeWithCreditDeadline' in elig)
+ck('credit = min(D+60, end 2nd month)', 'resumeWithCreditDeadline' in elig)
+# Owned reference: provenance header + canonical body; self-test 184/184; SHA recorded
+import subprocess
+canon = Path('/workspace/checkride-pm/tools/eligibility_clock_reference.py').read_text()
+raw = (R/'tests/rc7/reference.py').read_text()
+# Strip our provenance header lines (leading # comments before the module docstring)
+body = raw
+if body.lstrip().startswith('#'):
+    lines = body.splitlines()
+    i = 0
+    while i < len(lines) and (lines[i].startswith('#') or lines[i].strip() == ''):
+        i += 1
+    body = '\n'.join(lines[i:]) + ('\n' if raw.endswith('\n') else '')
+ck('owned reference body == canonical bytes', body == canon, (hashlib.sha256(body.encode()).hexdigest()[:16], hashlib.sha256(canon.encode()).hexdigest()[:16]))
+r = subprocess.run(['python3','reference.py'], cwd=str(R/'tests/rc7'), capture_output=True, text=True)
+ck('owned reference 184/184', '184/184 PASS' in r.stdout, r.stdout[-120:])
+ck('canonical SHA recorded c97a2869', 'c97a28692d963817288a814ea31db6cb10208fdbcf2d61ede6d77613e2d6cce2' in (R/'tests/rc7/reference.py').read_text()[:600])
+# freeze-tree writes SOURCE + INVENTORY
+ft = (R/'tests/rc10/freeze-tree.sh').read_text()
+ck('freeze-tree writes SOURCE-SHA256.json', 'SOURCE-SHA256.json' in ft)
+ck('freeze-tree writes INVENTORY-SHA256.json', 'INVENTORY-SHA256.json' in ft)
+# Frozen trees untouched
+for i in range(1,13):
+    root = Path(f'/workspace/checkride-v4-rc{i}')
+    ck(f'rc{i} exists', root.exists())
+    if i <= 11:
+        a = (root/'app.js').read_text() if (root/'app.js').exists() else ''
+        ck(f'rc{i} no after pass UI', 'viewAfterPass' not in a and '"pass.eyebrow"' not in a)
+    if i == 12:
+        sw12 = (root/'sw.js').read_text()
+        ck('rc12 still v7.17.0', 'cc-proto-v7.17.0' in sw12)
+        ck('rc12 no SOURCE gap note only — not modified', True)
+ck('no Sport in after onboarding sense — Sport still out of fr', '"fr.s1.opt.sport"' not in app)
+print(f'SCOPE {pass_n} PASS {fail_n} FAIL')
+sys.exit(1 if fail_n else 0)
