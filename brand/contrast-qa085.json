@@ -1,0 +1,48 @@
+{
+  "navy": "#15273F",
+  "measured": [
+    {
+      "fg": "#3860E3",
+      "bg": "#15273F",
+      "label": "standard brand on navy (DO NOT USE)",
+      "ratio": 2.83,
+      "pass_nontext_3": false
+    },
+    {
+      "fg": "#4167E4",
+      "bg": "#15273F",
+      "label": "mark-on-navy brand blue",
+      "ratio": 3.07,
+      "pass_nontext_3": true
+    },
+    {
+      "fg": "#FFFFFF",
+      "bg": "#15273F",
+      "label": "mono-white on navy",
+      "ratio": 15.07,
+      "pass_nontext_3": true
+    },
+    {
+      "fg": "#F9FDFE",
+      "bg": "#15273F",
+      "label": "on-navy runway wedges",
+      "ratio": 14.71,
+      "pass_nontext_3": true
+    },
+    {
+      "fg": "#3860E3",
+      "bg": "#F6F9FC",
+      "label": "brand on light (lockup-light)",
+      "ratio": 5.03,
+      "pass_nontext_3": true
+    },
+    {
+      "fg": "#3860E3",
+      "bg": "#0B1424",
+      "label": "brand on dark (lockup-dark surface)",
+      "ratio": 3.47,
+      "pass_nontext_3": true
+    }
+  ],
+  "chosen_for_navy": "mark-on-navy (#4167E4) primary; mono-white alternate"
+}

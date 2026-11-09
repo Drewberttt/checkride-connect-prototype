@@ -1,0 +1,241 @@
+{
+  "source": "ux-copy-v3.md \u00a78",
+  "design": "design-spec-v3.md \u00a714",
+  "keys": {
+    "saved.toggle.save": {
+      "copy": "Save",
+      "section": "8.1"
+    },
+    "saved.toggle.saved": {
+      "copy": "Saved",
+      "section": "8.1"
+    },
+    "saved.toggle.pending": {
+      "copy": "Saving\u2026",
+      "section": "8.1",
+      "note": "aria-busy path reserved; not yet wired on every click"
+    },
+    "saved.aria.save": {
+      "copy": "Save {name}",
+      "section": "8.1"
+    },
+    "saved.aria.saved": {
+      "copy": "Remove {name} from Saved",
+      "section": "8.1"
+    },
+    "saved.aria.pending": {
+      "copy": "Saving {name}",
+      "section": "8.1"
+    },
+    "nav.saved": {
+      "copy": "Saved",
+      "section": "8.2",
+      "where": "More > Your checkride \u2192 #/saved (not a 6th tab)"
+    },
+    "saved.eyebrow": {
+      "copy": "YOUR SHORTLIST",
+      "section": "8.2"
+    },
+    "saved.headline": {
+      "copy": "Examiners you keep. Searches you reuse.",
+      "section": "8.2",
+      "note": "Paired ink/accent split in markup"
+    },
+    "saved.helper": {
+      "copy": "Prototype: saved only in this browser on this device. Nothing is sent. Sample data only.",
+      "section": "8.2"
+    },
+    "saved.section.examiners": {
+      "copy": "Examiners",
+      "section": "8.2"
+    },
+    "saved.section.searches": {
+      "copy": "Searches",
+      "section": "8.2"
+    },
+    "saved.examiner.meta": {
+      "copy": "{cert} \u00b7 {airport} \u00b7 {state}",
+      "section": "8.2"
+    },
+    "saved.examiner.open": {
+      "copy": "View examiner",
+      "section": "8.2"
+    },
+    "saved.search.meta": {
+      "copy": "{cert} \u00b7 near {airport} \u00b7 {radius} nm",
+      "section": "8.2"
+    },
+    "saved.search.open": {
+      "copy": "Run this search",
+      "section": "8.2",
+      "note": "Opens #/search with filters"
+    },
+    "saved.search.rename": {
+      "copy": "Rename",
+      "section": "8.2"
+    },
+    "saved.examiner.remove": {
+      "copy": "Remove",
+      "section": "8.2"
+    },
+    "saved.search.remove": {
+      "copy": "Remove",
+      "section": "8.2"
+    },
+    "saved.search.action": {
+      "copy": "Save this search",
+      "section": "8.3",
+      "where": "#/search and #/find"
+    },
+    "saved.search.default_name": {
+      "copy": "{cert} \u00b7 {airport} \u00b7 {radius} nm",
+      "section": "8.3"
+    },
+    "saved.search.default_name_before": {
+      "copy": "{cert} \u00b7 {airport} \u00b7 {radius} nm \u00b7 before {before}",
+      "section": "8.3"
+    },
+    "saved.search.rename_label": {
+      "copy": "Name",
+      "section": "8.3"
+    },
+    "saved.search.rename_save": {
+      "copy": "Save name",
+      "section": "8.3"
+    },
+    "saved.search.rename_cancel": {
+      "copy": "Cancel",
+      "section": "8.3"
+    },
+    "saved.search.already": {
+      "copy": "Saved as \"{name}\" \u00b7 View Saved",
+      "section": "8.3"
+    },
+    "saved.badge.count": {
+      "copy": "{n}",
+      "section": "8.4"
+    },
+    "saved.new.one": {
+      "copy": "{n} new since your last visit",
+      "section": "8.4"
+    },
+    "saved.new.many": {
+      "copy": "{n} new since your last visit",
+      "section": "8.4"
+    },
+    "saved.new.examiner": {
+      "copy": "{n} new openings for {name}",
+      "section": "8.4",
+      "note": "Key present; examiner rows omit until per-examiner seenKeys exist"
+    },
+    "saved.new.search": {
+      "copy": "{n} new openings for this search",
+      "section": "8.4"
+    },
+    "saved.home.teaser": {
+      "copy": "{n} new since your last visit \u00b7 See Saved",
+      "section": "8.4"
+    },
+    "saved.empty.examiners.title": {
+      "copy": "No saved examiners yet",
+      "section": "8.5"
+    },
+    "saved.empty.examiners.body": {
+      "copy": "Tap Save on a sample examiner to keep them here. Stored only in this browser.",
+      "section": "8.5"
+    },
+    "saved.empty.examiners.cta": {
+      "copy": "Find examiners",
+      "section": "8.5"
+    },
+    "saved.empty.searches.title": {
+      "copy": "No saved searches yet",
+      "section": "8.5"
+    },
+    "saved.empty.searches.body": {
+      "copy": "Set your filters, then tap Save this search. You can rename it any time.",
+      "section": "8.5"
+    },
+    "saved.empty.searches.cta": {
+      "copy": "Open search",
+      "section": "8.5"
+    },
+    "saved.empty.all.title": {
+      "copy": "Nothing saved yet",
+      "section": "8.5"
+    },
+    "saved.empty.all.body": {
+      "copy": "Save a sample examiner or a search to build your shortlist. Prototype only; nothing is sent.",
+      "section": "8.5"
+    },
+    "saved.toast.examiner_saved": {
+      "copy": "Saved {name}.",
+      "section": "8.6"
+    },
+    "saved.toast.search_saved": {
+      "copy": "Search saved as \"{name}\".",
+      "section": "8.6"
+    },
+    "saved.toast.search_renamed": {
+      "copy": "Renamed to \"{name}\".",
+      "section": "8.6"
+    },
+    "saved.toast.examiner_removed": {
+      "copy": "Removed {name}.",
+      "section": "8.6",
+      "note": "Undo control appended via saved.toast.undo"
+    },
+    "saved.toast.search_removed": {
+      "copy": "Removed \"{name}\".",
+      "section": "8.6"
+    },
+    "saved.toast.undo": {
+      "copy": "Undo",
+      "section": "8.6"
+    },
+    "saved.toast.undone": {
+      "copy": "Restored.",
+      "section": "8.6"
+    },
+    "saved.error.quota": {
+      "copy": "Couldn't save on this device. Free some browser storage, or remove an older saved item, then try again.",
+      "section": "8.7"
+    },
+    "saved.error.generic": {
+      "copy": "Something went wrong saving that. Nothing was sent. Try again.",
+      "section": "8.7"
+    },
+    "saved.error.missing_examiner": {
+      "copy": "That sample examiner isn't in this demo any more (links can go stale after a reset).",
+      "section": "8.7"
+    },
+    "saved.error.missing_search": {
+      "copy": "That saved search isn't here any more.",
+      "section": "8.7"
+    },
+    "saved.error.duplicate_search": {
+      "copy": "You already saved these filters as \"{name}\".",
+      "section": "8.7"
+    },
+    "saved.view": {
+      "copy": "View Saved",
+      "section": "8.3",
+      "note": "\u00a78-sourced Brand Designer approved Nov 9 RC10; ghost button beside Save this search when something is saved; exact \"View Saved\"",
+      "source": "ux-copy-v3.md \u00a78"
+    },
+    "saved.corrupt_cleared": {
+      "copy": "Some saved items couldn't be read, so they were removed from this browser. Nothing was sent.",
+      "section": "8.7",
+      "note": "\u00a78-sourced Brand Designer approved Nov 9 RC10; straight apostrophe U+0027 (same as saved.error.quota); toast role=status once on load",
+      "source": "ux-copy-v3.md \u00a78"
+    }
+  },
+  "brief_vs_spec_conflicts": [
+    "Earlier brief suggested save toggle on Home saved cards; \u00a714/\u00a78 put bookmark toggle on Search (#/search + #/find) cards and examiner profile only. Home lists saved items with Run/Remove / open profile links, not a card toggle.",
+    "Earlier brief / prior tests used ad-hoc 'Save examiner' / 'Examiner saved' / 'new sample opening \u00b7 Not a notification' / h1 'Saved'; implemented exact \u00a78 strings instead.",
+    "Earlier brief floated a possible 6th Saved tab; \u00a78/\u00a714 require More \u2192 Your checkride \u2192 #/saved only (5 tabs retained).",
+    "\u00a78 Run this search opens #/search (not #/find); Home and Saved use #/search.",
+    "saved.toggle.pending / saved.aria.pending reserved; clicks are sync localStorage so pending UI not shown.",
+    "saved.new.examiner key implemented but examiner rows do not yet show per-examiner 'new' counts (no examiner-level seenKeys)."
+  ]
+}

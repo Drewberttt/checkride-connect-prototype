@@ -50,12 +50,11 @@
   const IS_NC = AREA === "NC" && D.region && D.region.short === "NC";
   // EASY SWITCH (rc2, D41): the example states. Find/landing copy reads it through coveredList().
   const COVERED_STATES = IS_NC ? [["NC", "North Carolina"]] : [["FL", "Florida"], ["TX", "Texas"], ["CA", "California"], ["AZ", "Arizona"]];
-  // EASY SWITCH (rc2, D41): the logo lockups. Default: his Checkride Connect logo (brand/checkride-connect-logo-*.png,
-  // from checkride-connect.vercel.app/logo-full.png, stored locally). BRAND "runway" brings back the Runway lockups:
+  // EASY SWITCH (rc2, D41): the logo lockups. Default: Checkride Connect SVG lockups (QA-085 / final-v2 → brand/checkride-connect-logo-*.svg). On navy #15273F use mark-on-navy (#4167E4) or mono-white, not #3860E3. BRAND "runway" brings back the Runway lockups:
   //   { light: "brand/runway-horizontal-light.svg", dark: "brand/runway-horizontal-dark.svg" }
   // app.js syncs the header and favicons at boot; index.html (first paint) and sw.js (precache) list the files.
   const BRAND_LOGO = BRAND === "runway" ? { light: "brand/runway-horizontal-light.svg", dark: "brand/runway-horizontal-dark.svg" }
-    : { light: "brand/checkride-connect-logo-light.png", dark: "brand/checkride-connect-logo-dark.png" };
+    : { light: "brand/checkride-connect-logo-light.svg", dark: "brand/checkride-connect-logo-dark.svg" };
   const BRAND_WH = BRAND === "runway" ? [164, 26] : [133, 38];
   const coveredList = () => { const n = COVERED_STATES.map(([, x]) => x); return n.length > 1 ? n.slice(0, -1).join(", ") + " and " + n[n.length - 1] : n.join(""); };
   const coveredCodes = () => { const n = COVERED_STATES.map(([c]) => c); return n.length > 1 ? n.slice(0, -1).join(", ") + " and " + n[n.length - 1] : n.join(""); };
@@ -194,7 +193,7 @@
   // QA-039: one shared rule. A slot whose start instant (airport zone) has passed is never listed, alerted, offered or requestable.
   const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
   // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
-  const COPY = { "goal.no_estimate": "No estimate yet for this certificate.", "goal.info_only": "Info only: not bookable in this prototype.", "goal.rotorcraft": "Rotorcraft (info only: not bookable in this prototype)", "digest.title": "Monday digest preview", "digest.label": "Preview, nothing is sent", "digest.open": "Open local preview", "digest.note": "Fictional local data, evaluated when you open Alerts. Monday is a preview title, not a delivery schedule. No email, notifications or reservations are created.", "digest.empty": "No saved alerts or sample waitlists yet. Save a local alert or join a sample waitlist to see relevant openings here.", "digest.filters": "Saved local filters", "digest.waitlists": "Sample waitlists", "digest.openings": "Current matching sample openings", "digest.none": "No current sample openings match these saved filters. Expired, taken and stale-availability openings are excluded.", "digest.limit": "Up to 6 distinct openings per checkride are shown, soonest first. The same opening is shown once per checkride even if several saved filters match.", "digest.view": "View sample opening", "digest.search": "Find sample openings", "digest.waitlist_view": "View sample examiner", "goal.blank": "No default checkride", "goal.label": "Planning checkride", "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",
+  const COPY = { "saved.toggle.save": "Save", "saved.toggle.saved": "Saved", "saved.toggle.pending": "Saving\u2026", "saved.aria.save": "Save {name}", "saved.aria.saved": "Remove {name} from Saved", "saved.aria.pending": "Saving {name}", "nav.saved": "Saved", "saved.eyebrow": "YOUR SHORTLIST", "saved.headline": "Examiners you keep. Searches you reuse.", "saved.helper": "Prototype: saved only in this browser on this device. Nothing is sent. Sample data only.", "saved.section.examiners": "Examiners", "saved.section.searches": "Searches", "saved.examiner.meta": "{cert} \u00b7 {airport} \u00b7 {state}", "saved.examiner.open": "View examiner", "saved.search.meta": "{cert} \u00b7 near {airport} \u00b7 {radius} nm", "saved.search.open": "Run this search", "saved.search.rename": "Rename", "saved.examiner.remove": "Remove", "saved.search.remove": "Remove", "saved.search.action": "Save this search", "saved.search.default_name": "{cert} \u00b7 {airport} \u00b7 {radius} nm", "saved.search.default_name_before": "{cert} \u00b7 {airport} \u00b7 {radius} nm \u00b7 before {before}", "saved.search.rename_label": "Name", "saved.search.rename_save": "Save name", "saved.search.rename_cancel": "Cancel", "saved.search.already": "Saved as \"{name}\" \u00b7 View Saved", "saved.badge.count": "{n}", "saved.new.one": "{n} new since your last visit", "saved.new.many": "{n} new since your last visit", "saved.new.examiner": "{n} new openings for {name}", "saved.new.search": "{n} new openings for this search", "saved.home.teaser": "{n} new since your last visit \u00b7 See Saved", "saved.empty.examiners.title": "No saved examiners yet", "saved.empty.examiners.body": "Tap Save on a sample examiner to keep them here. Stored only in this browser.", "saved.empty.examiners.cta": "Find examiners", "saved.empty.searches.title": "No saved searches yet", "saved.empty.searches.body": "Set your filters, then tap Save this search. You can rename it any time.", "saved.empty.searches.cta": "Open search", "saved.empty.all.title": "Nothing saved yet", "saved.empty.all.body": "Save a sample examiner or a search to build your shortlist. Prototype only; nothing is sent.", "saved.toast.examiner_saved": "Saved {name}.", "saved.toast.search_saved": "Search saved as \"{name}\".", "saved.toast.search_renamed": "Renamed to \"{name}\".", "saved.toast.examiner_removed": "Removed {name}.", "saved.toast.search_removed": "Removed \"{name}\".", "saved.toast.undo": "Undo", "saved.toast.undone": "Restored.", "saved.error.quota": "Couldn't save on this device. Free some browser storage, or remove an older saved item, then try again.", "saved.error.generic": "Something went wrong saving that. Nothing was sent. Try again.", "saved.error.missing_examiner": "That sample examiner isn’t in this demo any more (links can go stale after a reset).", "saved.error.missing_search": "That saved search isn’t here any more.", "saved.error.duplicate_search": "You already saved these filters as \"{name}\".", "saved.view": "View Saved", "saved.corrupt_cleared": "Some saved items couldn't be read, so they were removed from this browser. Nothing was sent.", "goal.no_estimate": "No estimate yet for this certificate.", "goal.info_only": "Info only: not bookable in this prototype.", "goal.rotorcraft": "Rotorcraft (info only: not bookable in this prototype)", "digest.title": "Monday digest preview", "digest.label": "Preview, nothing is sent", "digest.open": "Open local preview", "digest.note": "Fictional local data, evaluated when you open Alerts. Monday is a preview title, not a delivery schedule. No email, notifications or reservations are created.", "digest.empty": "No saved alerts or sample waitlists yet. Save a local alert or join a sample waitlist to see relevant openings here.", "digest.filters": "Saved local filters", "digest.waitlists": "Sample waitlists", "digest.openings": "Current matching sample openings", "digest.none": "No current sample openings match these saved filters. Expired, taken and stale-availability openings are excluded.", "digest.limit": "Up to 6 distinct openings per checkride are shown, soonest first. The same opening is shown once per checkride even if several saved filters match.", "digest.view": "View sample opening", "digest.search": "Find sample openings", "digest.waitlist_view": "View sample examiner", "goal.blank": "No default checkride", "goal.label": "Planning checkride", "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",
     "wl.status.joined": "Joined locally · illustrative position #{position}.", "wl.status.not_joined": "Not joined for this checkride.",
     "wl.sample": "Fictional sample only. Positions are illustrative, not live demand or priority. No notifications are sent; no slot is reserved.",
     "wl.join": "Join sample waitlist", "wl.leave": "Leave sample waitlist", "wl.already": "Already joined locally for this examiner and checkride. Nothing was sent.",
@@ -579,7 +578,7 @@
       // QA-026 / D38 #7: a fresh profile shows a target month and a dated roll-up. Sample KT date (about 10 months ago), example data only.
       target: defaultTarget(), ready9Dates: { kt: addDays(-300) }, ktSample: true,
       pending: D.pendingDpes.map((p) => ({ ...p, status: "pending" })),
-      approvedDpes: [], actingDpe: "d1", p4: 1,
+      approvedDpes: [], actingDpe: "d1", p4: 1, savedExaminers: [], savedSearches: [],
     };
   }
   // Older v3 state (before the Florida sample set and the proposed tiers) is upgraded in place, keeping the user's bookings.
@@ -616,9 +615,119 @@
   }
   function load() { try { const raw = localStorage.getItem(KEY); if (raw) { const s = JSON.parse(raw); if (s && s.v === 3) return migrate(s); } } catch (e) { /* storage unavailable */ } return seed(); }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* storage unavailable */ } }
-  let S = load();
-  const uid = (p) => p + S.nextId++;
   const ui = { profileKey: null, month: null, sel: null, lastPath: null };
+  // ---- Saved examiners + saved searches (local retention only; no delivery) ----
+  function normalizeSaved(s) {
+    let cleared = false;
+    const cleanEx = [];
+    const seenEx = new Set();
+    (Array.isArray(s.savedExaminers) ? s.savedExaminers : []).forEach((row) => {
+      if (!row || typeof row !== "object") { cleared = true; return; }
+      const dpeId = typeof row.dpeId === "string" ? row.dpeId : "";
+      const known = (typeof S !== "undefined" && S && Array.isArray(S.approvedDpes)) ? dpeById(dpeId) : D.dpes.find((d) => d.id === dpeId);
+      if (!dpeId || !known || seenEx.has(dpeId)) { cleared = true; return; }
+      seenEx.add(dpeId);
+      cleanEx.push({ id: typeof row.id === "string" ? row.id : ("sx" + Date.now() + cleanEx.length), dpeId, savedAt: Number(row.savedAt) || Date.now() });
+    });
+    const cleanSe = [];
+    const seenSe = new Set();
+    (Array.isArray(s.savedSearches) ? s.savedSearches : []).forEach((row) => {
+      if (!row || typeof row !== "object") { cleared = true; return; }
+      const cert = typeof row.cert === "string" ? row.cert : "";
+      const near = typeof row.near === "string" ? row.near : "";
+      const radius = +row.radius;
+      const before = typeof row.before === "string" ? row.before : "";
+      if (!(typeof cert === "string" && cert !== "sport" && !!certById(cert)) || !apt(near) || ![25,50,75,100,150,250].includes(radius)) { cleared = true; return; }
+      const key = savedSearchKey({ cert, near, radius, before });
+      if (seenSe.has(key)) { cleared = true; return; }
+      seenSe.add(key);
+      const seenKeys = Array.isArray(row.seenKeys) ? row.seenKeys.filter((k) => typeof k === "string").slice(0, 200) : [];
+      const name = typeof row.name === "string" ? row.name : "";
+      cleanSe.push({ id: typeof row.id === "string" ? row.id : ("ss" + Date.now() + cleanSe.length), cert, near, radius, before, name, savedAt: Number(row.savedAt) || Date.now(), lastVisitAt: Number(row.lastVisitAt) || Number(row.savedAt) || Date.now(), seenKeys });
+    });
+    if (!Array.isArray(s.savedExaminers)) cleared = true;
+    if (!Array.isArray(s.savedSearches)) cleared = true;
+    s.savedExaminers = cleanEx;
+    s.savedSearches = cleanSe;
+    if (cleared) { try { ui.savedCorruptNote = true; } catch (e) { s._savedCorruptNote = true; } }
+    return s;
+  }
+  const savedSearchKey = (f) => JSON.stringify([f.cert, f.near, +f.radius, f.before || ""]);
+  const slotSeenKey = (s) => [s.dpeId, s.airport, s.date, s.time].join("|");
+  const isExaminerSaved = (id) => (S.savedExaminers || []).some((x) => x.dpeId === id);
+  function ensureSavedArrays() {
+    if (!Array.isArray(S.savedExaminers) || !Array.isArray(S.savedSearches)) normalizeSaved(S);
+  }
+  function savedSearchMatches(f) {
+    return openSlots({ cert: f.cert, before: f.before || undefined }).filter((s) => {
+      const dp = dpeById(s.dpeId); if (!dp || !dp.fees[f.cert] || !s.certs.includes(f.cert)) return false;
+      return reachable(dp, f.near, f.radius);
+    });
+  }
+  function savedSearchNewCount(row) {
+    const keys = new Set(row.seenKeys || []);
+    return savedSearchMatches(row).filter((s) => !keys.has(slotSeenKey(s))).length;
+  }
+  function markSavedSearchVisited(row) {
+    row.lastVisitAt = Date.now();
+    row.seenKeys = savedSearchMatches(row).map(slotSeenKey);
+  }
+  const savedFmt = (key, map = {}) => String(COPY[key] || key).replace(/\{(\w+)\}/g, (_, k) => (map[k] != null ? String(map[k]) : ""));
+  const savedSearchName = (row) => {
+    const cert = (certById(row.cert) && certById(row.cert).name) || row.cert;
+    if (row.name && String(row.name).trim()) return String(row.name).trim();
+    if (row.before) {
+      const d = parseIso(row.before);
+      const before = d ? d.toLocaleDateString("en-US", { month: "short", year: "numeric" }) : row.before;
+      return savedFmt("saved.search.default_name_before", { cert, airport: row.near, radius: row.radius, before });
+    }
+    return savedFmt("saved.search.default_name", { cert, airport: row.near, radius: row.radius });
+  };
+  const bookmarkIcon = (on) => {
+    const fill = on ? "currentColor" : "none";
+    return '<svg class="saved-bookmark" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-3.2L5 21V4.5a1 1 0 0 1 1-1z" fill="' + fill + '" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg>';
+  };
+  function announceSaved(msg) {
+    const el = document.getElementById("saved-live");
+    if (el) { el.textContent = ""; requestAnimationFrame(() => { el.textContent = msg; }); }
+  }
+  function toastUndo(msg, undo) {
+    toast(msg);
+    const host = $("#toasts"); if (!host) return;
+    const last = host.lastElementChild; if (!last) return;
+    last.setAttribute("role", "status");
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "btn ghost sm"; b.textContent = COPY["saved.toast.undo"]; b.setAttribute("data-action", "saved-undo");
+    b.style.marginLeft = ".5rem";
+    last.appendChild(b);
+    ui.savedUndo = undo;
+    ui.savedAnnounce = msg;
+    clearTimeout(ui.savedUndoTimer);
+    const arm = () => { clearTimeout(ui.savedUndoTimer); ui.savedUndoTimer = setTimeout(() => { b.remove(); ui.savedUndo = null; }, 5000); };
+    arm();
+    last.addEventListener("mouseenter", () => clearTimeout(ui.savedUndoTimer));
+    last.addEventListener("mouseleave", arm);
+    last.addEventListener("focusin", () => clearTimeout(ui.savedUndoTimer));
+    last.addEventListener("focusout", arm);
+  }
+  function saveToggleButton(dpeId) {
+    const dp = dpeById(dpeId); if (!dp) return "";
+    const on = isExaminerSaved(dpeId);
+    const label = on ? COPY["saved.toggle.saved"] : COPY["saved.toggle.save"];
+    const aria = savedFmt(on ? "saved.aria.saved" : "saved.aria.save", { name: dp.name });
+    return '<button type="button" class="btn ghost sm saved-toggle" data-action="toggle-save-examiner" data-dpe="' + esc(dpeId) + '" aria-pressed="' + (on ? "true" : "false") + '" aria-label="' + esc(aria) + '">' + bookmarkIcon(on) + '<span class="saved-toggle-label">' + esc(label) + "</span></button>";
+  }
+
+
+  let S = load();
+  if (!Array.isArray(S.savedExaminers)) S.savedExaminers = [];
+  if (!Array.isArray(S.savedSearches)) S.savedSearches = [];
+  normalizeSaved(S);
+  if (S._savedCorruptNote) { ui.savedCorruptNote = true; delete S._savedCorruptNote; }
+  if (ui.savedCorruptNote) { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* storage unavailable */ } }
+  const uid = (p) => p + S.nextId++;
+
+
   // ---- Examiner-edited fees & policies (UF#2). Saved in S.dpeEdits and applied over the sample data, so every screen reads the same values. ----
   const EDIT_KEYS = ["fees", "depositUsd", "depositTerms", "travelNm", "travelFee", "retestFee", "cancellation"];
   const ORIG = {};
@@ -1002,6 +1111,23 @@ const closeModal = () => {
         <span class="b-fee mono">${money(dp.fees.ppl)}</span>
       </a>`;
     }).join("");
+    ensureSavedArrays();
+    const homeNewTotal = (S.savedSearches || []).reduce((n, ss) => n + savedSearchNewCount(ss), 0);
+    const homeTeaser = homeNewTotal > 0 ? `<p class="small" id="home-saved-teaser" data-saved-new="${homeNewTotal}"><a href="#/saved"><span class="pill saved-new-pill">${esc(savedFmt("saved.badge.count",{n:homeNewTotal}))}</span> ${esc(savedFmt("saved.home.teaser",{n:homeNewTotal}))}</a></p>` : `<p class="small muted" id="home-saved-teaser" data-saved-new="0"><a href="#/saved">${COPY["nav.saved"]}</a></p>`;
+    const savedSearchCards = (S.savedSearches || []).map((ss) => {
+      const nNew = savedSearchNewCount(ss);
+      const href = `#/search?cert=${encodeURIComponent(ss.cert)}&near=${encodeURIComponent(ss.near)}&radius=${encodeURIComponent(ss.radius)}${ss.before ? `&before=${encodeURIComponent(ss.before)}` : ""}`;
+      return `<div class="card" data-saved-search="${esc(ss.id)}" style="margin:0">
+        <div class="row spread"><b data-saved-search-name>${esc(savedSearchName(ss))}</b>${nNew ? `<span class="pill saved-new-pill" data-saved-new="${nNew}">${esc(savedFmt("saved.badge.count",{n:nNew}))}</span>` : `<span data-saved-new="0" class="sr-only">0</span>`}</div>
+        <p class="small muted" style="margin:.3rem 0">${esc(savedFmt("saved.search.meta",{cert: certById(ss.cert)?.name || ss.cert, airport: ss.near, radius: ss.radius}))}</p>
+        ${nNew ? `<p class="small saved-new">${esc(savedFmt("saved.new.search",{n:nNew}))}</p>` : ""}
+        <div class="row" style="gap:.5rem;flex-wrap:wrap"><a class="btn sm" href="${href}" data-action="open-saved-search" data-id="${esc(ss.id)}">${COPY["saved.search.open"]}</a><button type="button" class="btn ghost sm" data-action="remove-saved-search" data-id="${esc(ss.id)}">${COPY["saved.search.remove"]}</button></div>
+      </div>`;
+    }).join("");
+    const savedExCards = (S.savedExaminers || []).slice(0, 4).map((x) => {
+      const dp = dpeById(x.dpeId); if (!dp) return "";
+      return `<a class="board-row" data-saved-examiner="${esc(dp.id)}" href="#/dpe/${dp.id}"><span class="b-who"><b>${esc(dp.name)}</b><small>${esc(dp.home)}</small></span></a>`;
+    }).join("");
     const cur = activeReq(), n = ready9Count();
     const cdp = cur && dpeById(cur.dpeId), cs = cur && slotOf(cur);
     const ms = cur && cur.status === "confirmed" ? `${chip("good", `Confirmed: ${fmtDate(cs.date)}`)}` : cur ? reqPill(cur) : `<span class="small muted">No request yet</span>`;
@@ -1024,6 +1150,15 @@ const closeModal = () => {
             <div class="row spread">${ms}<span class="small">Open</span></div>
             ${cdp ? `<span class="sr-only">with ${esc(cdp.name)}</span>` : ""}
           </a>
+          <section class="card" id="home-saved" aria-labelledby="home-saved-h">
+            <div class="row spread"><h2 id="home-saved-h" class="h3" style="margin:0">${COPY["nav.saved"]}</h2><a class="small" href="#/saved">${COPY["nav.saved"]}</a></div>
+            <p class="muted small">${COPY["saved.helper"]}</p>
+            ${homeTeaser}
+            <h3 class="h3" style="margin:.75rem 0 .35rem">${COPY["saved.section.searches"]}</h3>
+            ${savedSearchCards || `<p class="muted small" data-saved-empty-searches>${COPY["saved.empty.searches.title"]}</p>`}
+            <h3 class="h3" style="margin:.75rem 0 .35rem">${COPY["saved.section.examiners"]}</h3>
+            <div class="board-rows">${savedExCards || `<p class="muted small" data-saved-empty-examiners>${COPY["saved.empty.examiners.title"]}</p>`}</div>
+          </section>
         </div>
         <aside class="board" aria-label="Next Private Pilot openings">
           <div class="board-head"><span>Next openings \u00b7 Private</span><span class="pill">Sample</span></div>
@@ -1082,8 +1217,9 @@ const closeModal = () => {
           <div class="soonest-big"><b>${fmtDate(top.soonest.date, { weekday: "short", month: "short", day: "numeric" })}</b> · ${slotTime(top.soonest)} · ${top.soonest.airport} <span class="muted small">${top.slotDist <= 2 ? "at your airport" : top.slotDist + " nm away"}</span></div>
           <div class="small">${esc(top.dp.name)} ${sampleBadge()} · ${money(top.fee)} · ${relDays(top.soonest.date, slotTz(top.soonest))}</div>
           <a class="btn sm" style="margin-top:.5rem" href="#/dpe/${top.dp.id}?cert=${f.cert}&date=${top.soonest.date}&near=${f.near}">See this opening</a></div>`; })()}
-        ${f.outside ? "" : `<div class="cta-banner row spread">
-          <div><b>Want an earlier date?</b> <span class="muted">Save this search as a mock alert (stored in this browser, no email sent).</span></div>
+        ${f.outside ? "" : `<div class="row" style="margin:0 0 .75rem;gap:.5rem;flex-wrap:wrap"><button type="button" class="btn secondary sm" data-action="save-search" data-cert="${f.cert}" data-near="${f.near}" data-radius="${f.radius}" data-before="${esc(f.before || "")}" data-copy-key="saved.search.action">${COPY["saved.search.action"]}</button>${(S.savedExaminers?.length||S.savedSearches?.length)?`<a class="btn ghost sm" href="#/saved" data-copy-key="saved.view">${COPY["saved.view"]}</a>`:""}</div>
+        <div class="cta-banner row spread">
+          <div><b>Want an earlier date?</b> <span class="muted">Save a mock alert (stored in this browser, no email sent).</span></div>
           <button class="btn sm" data-action="alert-from-search">Save mock alert</button>
         </div>
         <h2 class="sr-only">Examiners</h2>
@@ -1100,7 +1236,7 @@ const closeModal = () => {
     return `<article class="card result">
       <div class="avatar">${initials(dp.name)}</div>
       <div>
-        <div class="row" style="gap:.5rem"><h3 style="margin:0"><a href="#/dpe/${dp.id}?cert=${f.cert}">${esc(dp.name)}</a></h3>${sampleBadge()}</div>
+        <div class="row" style="gap:.5rem;flex-wrap:wrap"><h3 style="margin:0"><a href="#/dpe/${dp.id}?cert=${f.cert}">${esc(dp.name)}</a></h3>${sampleBadge()}${saveToggleButton(dp.id)}</div>
         <div class="muted small">${esc(apt(dp.home).city)} · ${dp.home}${dp.responseHours != null ? ` · replies in ~${dp.responseHours}h` : ""}${sampleOf(dp).avgDaysToNext != null ? ` · avg wait ${plural(sampleOf(dp).avgDaysToNext, "day")} (sample)` : ""}</div>
         <div class="small">${where}${r.soonest ? ` · next opening ${r.slotDist <= 2 ? "at " + r.soonest.airport : r.slotDist + " nm away at " + r.soonest.airport}` : ""}</div>
         ${freshOf(dp.id).level === "ok" ? "" : `<div class="small" style="margin-top:.25rem">${freshBadge(dp.id)}</div>`}
@@ -1160,6 +1296,7 @@ const closeModal = () => {
               <div style="flex:1;min-width:200px">
                 <p class="eyebrow">Examiner profile</p>
                 <h1 style="margin-bottom:.2rem">${esc(dp.name)}</h1>
+                <div class="row" style="gap:.6rem;flex-wrap:wrap;margin:.35rem 0">${saveToggleButton(dp.id)}</div>
                 <div class="row" style="gap:.6rem">${sampleBadge()}<span class="muted small">Sample DPE since ${dp.since} · ${fsdoLabel(dp.fsdo)}</span></div>
                 <div class="muted small" style="margin-top:.3rem">${dp.home} · ${esc(apt(dp.home).name)}, ${esc(apt(dp.home).city)} · travels up to ${dp.travelNm} nm · Speaks ${dp.languages.map(esc).join(", ")}${dp.languages.length > 1 ? " (practical tests are conducted in English)" : ""}</div>
               </div>
@@ -1274,31 +1411,46 @@ const closeModal = () => {
     </div>`;
   }
 
+
+
   // Read-only, on-demand digest projection. No subscription, timer, notification or new persistence.
   function digestPreview() {
+    ensureSavedArrays();
     const groups = new Map();
+    const addFilter = (cert, key, row) => {
+      if (!D.certs.some(c => c.id === cert) && !supportedGoal(cert)) return;
+      if (!groups.has(cert)) groups.set(cert, new Map());
+      groups.get(cert).set(key, row);
+    };
     S.alerts.forEach(a => {
       if (!D.certs.some(c => c.id === a.cert)) return;
-      if (!groups.has(a.cert)) groups.set(a.cert, new Map());
-      const key = JSON.stringify([a.dpeId || "", a.near, a.radius, a.before || "", a.maxFee || 0]);
-      groups.get(a.cert).set(key, a);
+      addFilter(a.cert, JSON.stringify(["alert", a.dpeId || "", a.near, a.radius, a.before || "", a.maxFee || 0]), { kind: "alert", ...a });
     });
+    (S.savedSearches || []).forEach(ss => {
+      addFilter(ss.cert, JSON.stringify(["saved", ss.cert, ss.near, ss.radius, ss.before || ""]), { kind: "saved", ...ss, maxFee: 0, dpeId: "" });
+    });
+    const savedEx = (S.savedExaminers || []).map(x => dpeById(x.dpeId)).filter(Boolean);
     const content = [...groups].map(([cert, filters]) => {
-      const alerts = [...filters.values()], seen = new Set();
+      const rows = [...filters.values()], seen = new Set();
       const slots = openSlots({cert}).filter(s => {
-        if (!alerts.some(a => alertMatches(a, s))) return false;
+        const hit = rows.some(a => a.kind === "saved" ? savedSearchMatches(a).some(x => x.id === s.id) : alertMatches(a, s));
+        if (!hit) return false;
         const key = JSON.stringify([s.dpeId, s.airport, s.date, s.time]);
         if (seen.has(key)) return false;
         seen.add(key); return true;
       });
-      const members = [...new Set(alerts.map(a => a.dpeId).filter(id => id && dpeById(id)))];
+      const members = [...new Set(rows.filter(a => a.kind === "alert").map(a => a.dpeId).filter(id => id && dpeById(id)))];
+      const savedRows = rows.filter(a => a.kind === "saved");
       return `<section class="inset" data-digest-group="${esc(cert)}" style="margin-top:1rem"><h3>${esc(certById(cert).name)}</h3>
-        <h4>${COPY["digest.filters"]}</h4><ul class="small">${alerts.map(a => `<li>${esc(a.near)} · ${esc(a.radius)} nm${a.before ? ` · before ${fmtDateA(a.before)}` : ""}${a.maxFee ? ` · up to ${money(a.maxFee)}` : ""}${a.dpeId ? ` · ${esc(dpeById(a.dpeId)?.name || "Sample examiner")}` : ""}</li>`).join("")}</ul>
+        <h4>${COPY["digest.filters"]}</h4><ul class="small">${rows.filter(a => a.kind === "alert").map(a => `<li>${esc(a.near)} · ${esc(a.radius)} nm${a.before ? ` · before ${fmtDateA(a.before)}` : ""}${a.maxFee ? ` · up to ${money(a.maxFee)}` : ""}${a.dpeId ? ` · ${esc(dpeById(a.dpeId)?.name || "Sample examiner")}` : ""}</li>`).join("") || `<li class="muted">No mock alerts for this checkride.</li>`}</ul>
+        ${savedRows.length ? `<h4 data-copy-key="saved.section.searches">${COPY["saved.section.searches"]}</h4><ul class="small">${savedRows.map(a => `<li data-digest-saved-search="${esc(a.id)}">${esc(a.near)} · ${esc(a.radius)} nm${a.before ? ` · before ${fmtDateA(a.before)}` : ""}</li>`).join("")}</ul>` : ""}
         ${members.length ? `<h4>${COPY["digest.waitlists"]}</h4>${members.map(id => { const dp = dpeById(id); return `<div data-digest-member="${esc(id)}"><a href="#/dpe/${esc(id)}?${toQuery({cert})}">${COPY["digest.waitlist_view"]}: ${esc(dp.name)}</a>${waitlistControl(dp, cert, "digest", false)}</div>`; }).join("")}` : ""}
         <h4>${COPY["digest.openings"]}</h4>${slots.length ? `<ul>${slots.slice(0, 6).map(s => `<li data-digest-slot="${esc(s.id)}" style="margin-bottom:.75rem"><b>${esc(dpeById(s.dpeId).name)}</b><div class="small">${slotAt(s)}${s.simulated ? ' · Simulated' : ''}</div><a href="#/dpe/${esc(s.dpeId)}?${toQuery({cert, date:s.date})}">${COPY["digest.view"]}</a></li>`).join("")}</ul>` : `<p data-digest-no-openings>${COPY["digest.none"]}</p>`}
       </section>`;
     }).join("");
-    return `<section class="card" id="digest-preview" aria-labelledby="digest-title" style="margin-bottom:1rem"><h2 id="digest-title" data-copy-key="digest.title">${COPY["digest.title"]}</h2><p><b class="pill warn" data-copy-key="digest.label">${COPY["digest.label"]}</b></p><details><summary>${COPY["digest.open"]}</summary><p class="muted small">${COPY["digest.note"]}</p><p class="muted small">${COPY["digest.limit"]}</p>${content || `<p data-digest-empty>${COPY["digest.empty"]}</p><a href="#/search">${COPY["digest.search"]}</a>`}</details></section>`;
+    const exBlock = savedEx.length ? `<section class="inset" data-digest-saved-examiners style="margin-top:1rem"><h3 data-copy-key="saved.section.examiners">${COPY["saved.section.examiners"]}</h3><ul class="small">${savedEx.map(dp => `<li data-digest-saved-examiner="${esc(dp.id)}"><a href="#/dpe/${esc(dp.id)}">${esc(dp.name)}</a> · ${esc(dp.home)}</li>`).join("")}</ul></section>` : "";
+    const empty = !content && !exBlock;
+    return `<section class="card" id="digest-preview" aria-labelledby="digest-title" style="margin-bottom:1rem"><h2 id="digest-title" data-copy-key="digest.title">${COPY["digest.title"]}</h2><p><b class="pill warn" data-copy-key="digest.label">${COPY["digest.label"]}</b></p><details><summary>${COPY["digest.open"]}</summary><p class="muted small">${COPY["digest.note"]}</p><p class="muted small">${COPY["digest.limit"]}</p>${content}${exBlock}${empty ? `<p data-digest-empty>${COPY["digest.empty"]}</p><a href="#/search">${COPY["digest.search"]}</a>` : ""}</details></section>`;
   }
 
   function viewAlerts() {
@@ -2550,12 +2702,76 @@ const closeModal = () => {
     </div>`;
   }
 
+
+  function viewSaved() {
+    ensureSavedArrays();
+    if (ui.savedCorruptNote) { toast(COPY["saved.corrupt_cleared"]); ui.savedCorruptNote = false; }
+    const searches = S.savedSearches || [];
+    const examiners = (S.savedExaminers || []).map((x) => dpeById(x.dpeId)).filter(Boolean);
+    const bothEmpty = !searches.length && !examiners.length;
+    const searchCards = searches.map((ss) => {
+      const nNew = savedSearchNewCount(ss);
+      const href = `#/search?cert=${encodeURIComponent(ss.cert)}&near=${encodeURIComponent(ss.near)}&radius=${encodeURIComponent(ss.radius)}${ss.before ? `&before=${encodeURIComponent(ss.before)}` : ""}`;
+      const nm = savedSearchName(ss);
+      const meta = savedFmt("saved.search.meta",{cert: certById(ss.cert)?.name || ss.cert, airport: ss.near, radius: ss.radius});
+      return `<div class="card saved-row" data-saved-search="${esc(ss.id)}">
+        <div class="row spread" style="gap:.75rem;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <h3 class="h3" style="margin:0" data-saved-search-name>${esc(nm)}</h3>
+            <p class="small muted" style="margin:.25rem 0">${esc(meta)}</p>
+            ${nNew ? `<p class="small saved-new" data-saved-new="${nNew}"><span class="pill saved-new-pill">${esc(savedFmt("saved.badge.count",{n:nNew}))}</span> ${esc(savedFmt("saved.new.search",{n:nNew}))}</p>` : ""}
+          </div>
+        </div>
+        <div class="row" style="gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+          <a class="btn sm" href="${href}" data-action="open-saved-search" data-id="${esc(ss.id)}">${COPY["saved.search.open"]}</a>
+          <button type="button" class="btn ghost sm" data-action="rename-saved-search" data-id="${esc(ss.id)}">${COPY["saved.search.rename"]}</button>
+          <button type="button" class="btn ghost sm" data-action="remove-saved-search" data-id="${esc(ss.id)}">${COPY["saved.search.remove"]}</button>
+        </div>
+      </div>`;
+    }).join("");
+    const examinerCards = examiners.map((dp) => {
+      const cert = Object.keys(dp.fees || {})[0] || "ppl";
+      const meta = savedFmt("saved.examiner.meta",{cert: certById(cert)?.name || cert, airport: dp.home, state: dpeState(dp) || aptState(dp.home) || ""});
+      const nNew = openSlots({ dpeId: dp.id }).length; // openings now; "new" optional — use unseen only if we tracked; keep simple count of current open as optional row only when >0 via examiner-scoped copy when we have seen state — skip numeric new without baseline
+      return `<div class="card saved-row" data-saved-examiner="${esc(dp.id)}">
+        <div class="row" style="gap:.75rem;align-items:flex-start">
+          <div class="avatar">${initials(dp.name)}</div>
+          <div style="flex:1;min-width:0">
+            <h3 class="h3" style="margin:0">${esc(dp.name)}</h3>
+            <p class="small muted" style="margin:.25rem 0">${esc(meta)}</p>
+          </div>
+          ${saveToggleButton(dp.id)}
+        </div>
+        <div class="row" style="gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+          <a class="btn sm" href="#/dpe/${esc(dp.id)}">${COPY["saved.examiner.open"]}</a>
+          <button type="button" class="btn ghost sm" data-action="remove-saved-examiner" data-dpe="${esc(dp.id)}">${COPY["saved.examiner.remove"]}</button>
+        </div>
+      </div>`;
+    }).join("");
+    const headHtml = `<div class="page-head v3-head"><p class="eyebrow" data-copy-key="saved.eyebrow">${COPY["saved.eyebrow"]}</p><h1 class="paired" data-copy-key="saved.headline">Examiners you keep. <span class="b">Searches you reuse.</span></h1><p class="muted" data-copy-key="saved.helper">${COPY["saved.helper"]}</p></div>`;
+    if (bothEmpty) {
+      return `<div class="page narrow">${headHtml}${emptyState({ id: "saved-all-empty", ic: "search", title: COPY["saved.empty.all.title"], body: COPY["saved.empty.all.body"], actions: `<a class="btn" href="#/search">${COPY["saved.empty.examiners.cta"]}</a>` })}
+      </div>`;
+    }
+    return `<div class="page narrow">${headHtml}<section class="stack" aria-labelledby="saved-searches-h">
+        <h2 id="saved-searches-h" class="h3" data-copy-key="saved.section.searches">${COPY["saved.section.searches"]}</h2>
+        ${searchCards || emptyState({ id: "saved-searches-empty", ic: "search", title: COPY["saved.empty.searches.title"], body: COPY["saved.empty.searches.body"], actions: `<a class="btn" href="#/search">${COPY["saved.empty.searches.cta"]}</a>` })}
+      </section>
+      <section class="stack" style="margin-top:1.25rem" aria-labelledby="saved-examiners-h">
+        <h2 id="saved-examiners-h" class="h3" data-copy-key="saved.section.examiners">${COPY["saved.section.examiners"]}</h2>
+        ${examinerCards || emptyState({ id: "saved-examiners-empty", ic: "people", title: COPY["saved.empty.examiners.title"], body: COPY["saved.empty.examiners.body"], actions: `<a class="btn" href="#/search">${COPY["saved.empty.examiners.cta"]}</a>` })}
+      </section>
+    </div>`;
+  }
+
   function viewMore() {
     const theme = (() => { try { return localStorage.getItem("cc-theme") || "system"; } catch (e) { return "system"; } })();
     const L = (h, t) => `<a class="more-row" href="${h}">${t}<span aria-hidden="true">\u203a</span></a>`;
     const groups = {
-      pilot: [["Your checkride", [["#/journey", "Journey"], ["#/readiness", "Readiness checklist"], ["#/checklists", "Checklists by certificate"]]],
-        ["Checkrides and costs", [["#/bookings", "My checkrides"], ["#/my-checklists", "From your examiner"], ["#/compare", "Compare fees"], ["#/pricing", "Pricing"], ["#/pricing#deposit-policy", "How cancellations work"]]]],
+      pilot: [
+        ["Your checkride", [["#/journey", "Journey"], ["#/readiness", "Readiness checklist"], ["#/checklists", "Checklists by certificate"], ["#/saved", COPY["nav.saved"]]]],
+        ["Checkrides and costs", [["#/bookings", "My checkrides"], ["#/my-checklists", "From your examiner"], ["#/compare", "Compare fees"], ["#/pricing", "Pricing"], ["#/pricing#deposit-policy", "How cancellations work"]]]
+      ],
       dpe: [["Your desk", [["#/dpe-fees", "Your terms (fee, deposit and cancellation)"], ["#/dpe/" + S.actingDpe, "My public profile"], ["#/pricing", "Pricing"]]]],
       school: [["Your school", [["#/school/cohort", "Cohort scheduling"], ["#/search", "Search examiners"], ["#/compare", "Compare fees"], ["#/checklists", "Checklists"], ["#/pricing", "Pricing"]]]],
       admin: [["Admin", [["#/admin", "Applications & metrics"], ["#/search", "Browse listings"], ["#/pricing", "Pricing"]]]],
@@ -2719,8 +2935,9 @@ const closeModal = () => {
     dup = dup || {};
     // QA-077: a repeated key uses its first value (noted below); QA-076: case doesn't matter (korl = KORL, PPL = ppl).
     const raw = (k) => (dup[k] ? dup[k][0] : q[k]);
-    const rc = raw("cert"), rn = raw("near"), rr = raw("radius");
+    const rc = raw("cert"), rn = raw("near"), rr = raw("radius"), rb = raw("before");
     const qc = rc == null ? rc : String(rc).trim().toLowerCase(), qn = rn == null ? rn : String(rn).trim().toUpperCase();
+    const before = rb && /^\d{4}-\d{2}-\d{2}$/.test(String(rb)) ? String(rb) : "";
     const cert = qc && planningChoice(qc) ? qc : rc != null ? "ppl" : planningChoice(S.findCert) ? S.findCert : signupGoal();
     const near = qn && apt(qn) ? qn : DEFAULT_NEAR;
     const radius = V4_RADII.includes(+rr) ? +rr : 50;
@@ -2730,7 +2947,7 @@ const closeModal = () => {
     if (qn && near !== qn) fixed.push(`the airport \u201c${rn}\u201d has no sample examiners, so it shows ${near}`);
     if (rr != null && rr !== "" && radius !== +rr) fixed.push(`the distance \u201c${rr}\u201d isn\u2019t 25, 50 or 100 nm, so it shows ${radius} nm`);
     for (const [k, lbl] of [["cert", "checkride"], ["near", "airport"], ["radius", "distance"]]) if (dup[k]) fixed.push(`the link gave more than one ${lbl} (${dup[k].join(", ")}), so it uses the first one`);
-    return { cert, near, state: aptState(near), outside: "", radius, before: "", maxFee: 0, sort: "soonest", fixed, dup: Object.keys(dup).some((k) => ["cert", "near", "radius"].includes(k)) };
+    return { cert, near, state: aptState(near), outside: "", radius, before, maxFee: 0, sort: "soonest", fixed, dup: Object.keys(dup).some((k) => ["cert", "near", "radius", "before"].includes(k)) };
   }
   // QA-078: the #/find history entry keeps its scroll position and "Show more" depth (history.state, same URL), so Back
   // returns to the same card. A fresh link to #/find has no state and starts at the top.
@@ -2738,7 +2955,7 @@ const closeModal = () => {
   const saveFindState = () => { try { if (location.hash.slice(1).split("?")[0].split("#")[0] !== "/find" || !ui.findKey) return; history.replaceState({ ...(history.state || {}), ccFind: { key: ui.findKey, shown: ui.findShown || FIND_PAGE, y: Math.round(window.scrollY) } }, ""); } catch (e) { /* ignore */ } };
   { let tm = 0; window.addEventListener("scroll", () => { if (ui.lastPath !== "/find" || tm) return; tm = setTimeout(() => { tm = 0; saveFindState(); }, 150); }, { passive: true }); }
   const FIND_PAGE = 20; // QA-066 (PM-approved): #/find shows 20 cards at a time with "Show more".
-  const v4FindHref = (f, o = {}) => { const g = { ...f, ...o }; return `#/find?cert=${g.cert}&near=${g.near}&radius=${g.radius}`; };
+  const v4FindHref = (f, o = {}) => { const g = { ...f, ...o }; return `#/find?cert=${g.cert}&near=${g.near}&radius=${g.radius}${g.before ? `&before=${g.before}` : ""}`; };
 
   function v4FindCard(r, f, open) {
     const { dp } = r, stale = isStale(dp.id), home = apt(dp.home);
@@ -2753,6 +2970,7 @@ const closeModal = () => {
         <div class="v4-who"><h2 class="h3"><a href="${prof}">${esc(dp.name)}</a></h2><div class="muted small">${esc(home.city)} \u00b7 ${r.dist} nm</div></div>
         <div class="v4-fee"><b class="mono">${money(r.fee)}</b><span class="muted small">${esc(certById(f.cert).short)}</span></div>
       </div>
+      <div class="row" style="margin-top:.5rem">${saveToggleButton(dp.id)}</div>
       <div class="v4-chips">${v4Sample()}${travels ? `<span class="pill v4-travel">Travels to you</span>` : ""}${apts.map((id) => `<span class="v4-apt"><span class="mono">${id}</span> ${esc(apt(id).city)}</span>`).join("")}</div>
       ${travels ? `<p class="small muted v4-travel-why">Based ${r.dist} nm from ${f.near}, outside your ${f.radius} nm. Listed because this examiner travels up to ${dp.travelNm} nm to meet you (sample).</p>` : ""}
       ${daySlots.length ? `<div class="v4-next">
@@ -2787,7 +3005,9 @@ const closeModal = () => {
           <label class="field v4-f-near"><span class="v4-lbl">Near</span><select name="near" id="find-near">${v4NearOpts(f.near)}</select></label>
           <input type="hidden" name="radius" value="${f.radius}">
           <div class="field v4-f-radius"><span class="v4-lbl" id="find-r-l">Within</span><div class="v4-seg" role="group" aria-labelledby="find-r-l">${V4_RADII.map((r) => `<a class="v4-seg-b" href="${v4FindHref(f, { radius: r })}" ${r === f.radius ? 'aria-current="true" ' : ""}data-radius="${r}">${r} nm</a>`).join("")}</div></div>
+          <label class="field v4-f-before"><span class="v4-lbl">Checkride before (optional)</span><input type="date" name="before" id="find-before" value="${esc(f.before || "")}" min="${addDays(1)}" /></label>
         </form>
+        <div class="row" style="margin:.5rem 0 .75rem;gap:.5rem;flex-wrap:wrap"><button type="button" class="btn secondary sm" data-action="save-search" data-cert="${f.cert}" data-near="${f.near}" data-radius="${f.radius}" data-before="${esc(f.before || "")}" data-copy-key="saved.search.action">${COPY["saved.search.action"]}</button>${(S.savedExaminers?.length||S.savedSearches?.length)?`<a class="btn ghost sm" href="#/saved" data-copy-key="saved.view">${COPY["saved.view"]}</a>`:""}</div>
         <p id="find-count" class="v4-count" aria-live="polite"><b>${plural(res.length, "examiner")}</b> for ${esc(c.name)} within ${f.radius} nm of <span class="mono">${f.near}</span> \u00b7 ${esc(apt(f.near).city)}${nTravel ? ` <span class="small">(${nTravel} based farther away travel to you)</span>` : ""}${res.length > FIND_PAGE ? ` \u00b7 <span id="find-shown">showing ${shown}</span>` : ""}</p>
         <div class="stack" id="find-results">${res.length ? res.slice(0, shown).map((r, i) => v4FindCard(r, f, i === firstOpen)).join("")
           : emptyState({ id: "find-empty", ic: "search", title: "No sample examiners in range", body: `Nobody in the sample data gives the ${esc(c.short)} checkride within ${f.radius} nm of ${f.near}. Try a wider distance or another airport.`, actions: f.radius < 100 ? `<a class="btn secondary sm" href="${v4FindHref(f, { radius: 100 })}">Search 100 nm</a>` : "" })}</div>
@@ -3132,7 +3352,13 @@ const closeModal = () => {
     const e = f.querySelector("#" + errId); if (e && e.textContent === c[2]) e.textContent = "";
   }
   const V4_FORMS = {
-    find: (f, fd, t) => { if (t && t.name === "cert") { S.findCert = fd.get("cert"); save(); } const q = new URLSearchParams({ cert: fd.get("cert"), near: fd.get("near"), radius: fd.get("radius") || 50 }); location.hash = "#/find?" + q.toString(); },
+    "rename-saved-search": (f, fd) => {
+      ensureSavedArrays();
+      const id = fd.get("id"), name = String(fd.get("name") || "").trim().slice(0, 80);
+      const row = S.savedSearches.find((x) => x.id === id); if (!row || !name) return;
+      row.name = name; save(); closeModal(); toast(savedFmt("saved.toast.search_renamed",{name})); ui.savedAnnounce = savedFmt("saved.toast.search_renamed",{name}); rerender();
+    },
+    find: (f, fd, t) => { if (t && t.name === "cert") { S.findCert = fd.get("cert"); save(); } const q = new URLSearchParams({ cert: fd.get("cert"), near: fd.get("near"), radius: fd.get("radius") || 50 }); const before = String(fd.get("before") || ""); if (/^\d{4}-\d{2}-\d{2}$/.test(before)) q.set("before", before); location.hash = "#/find?" + q.toString(); },
     "demo-login": (f, fd) => {
       const role = fd.get("role") || "pilot";
       if (!authValidate(f)) return; // QA-081 (X04): inline message, aria-invalid, focus on the first empty field
@@ -3152,7 +3378,7 @@ const closeModal = () => {
 
   // ---------- router ----------
   const routes = [
-    [/^\/$/, viewLanding], [/^\/find$/, viewFind], [/^\/login$/, viewLogin], [/^\/signup$/, viewSignup], [/^\/home$/, viewHome], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest], [/^\/offer\/(\w+)$/, viewOffer],
+    [/^\/$/, viewLanding], [/^\/find$/, viewFind], [/^\/login$/, viewLogin], [/^\/signup$/, viewSignup], [/^\/home$/, viewHome], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/saved$/, viewSaved], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest], [/^\/offer\/(\w+)$/, viewOffer],
     [/^\/dpe-today$/, viewDpeToday], [/^\/dpe-applicants$/, viewDpeApplicants], [/^\/school\/requests$/, viewSchoolRequests], [/^\/school\/readiness$/, viewSchoolReadiness], [/^\/search$/, viewSearch], [/^\/dpe\/(\w+)$/, viewProfile], [/^\/compare$/, viewCompare],
     [/^\/alerts$/, viewAlerts], [/^\/checklists(?:\/(\w+))?$/, viewChecklists], [/^\/bookings$/, viewBookings], [/^\/my-checklists$/, viewMyChecklists], [/^\/dpe-checklist\/(\w+)$/, viewBuilder],
     [/^\/requests$/, viewDpeDash], [/^\/school$/, viewSchool], [/^\/school\/cohort$/, viewCohort], [/^\/dpe-openings$/, viewOpenings], [/^\/openings$/, viewPublish], [/^\/dpe-fees$/, viewDpeFees], [/^\/admin$/, viewAdmin], [/^\/pricing$/, viewPricing],
@@ -3176,7 +3402,7 @@ const closeModal = () => {
     const pend = S.bookings.filter((b) => b.dpeId === S.actingDpe && b.status === "requested").length;
     const unread = S.notifications.filter((n) => !n.read).length;
     return ({
-      pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/find", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts", "/offer/"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
+      pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/find", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts", "/offer/"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing", "/saved"]]],
       dpe: [["#/dpe-today", "Today", "today", ["/dpe-today"]], ["#/requests", "Requests", "inbox", ["/requests", "/request/", "/openings"], pend], ["#/dpe-openings", "Calendar", "cal", ["/dpe-openings"]], ["#/dpe-applicants", "Applicants", "people", ["/dpe-applicants", "/dpe-checklist/"]], ["#/more", "More", "more", ["/more", "/faq", "/dpe-fees", "/dpe/", "/pricing"]]],
       school: [["#/school", "Roster", "people", ["/school", "/school/cohort"]], ["#/school/requests", "Checkride requests", "inbox", ["/school/requests", "/request/"]], ["#/school/readiness", "Readiness", "list", ["/school/readiness"]], ["#/more", "More", "more", ["/more", "/faq", "/search", "/compare", "/checklists", "/pricing", "/dpe/"]]],
       admin: [["#/admin", "Admin", "shield", ["/admin"]], ["#/search", "Listings", "search", ["/search", "/dpe/"]], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
@@ -3189,7 +3415,7 @@ const closeModal = () => {
     NAV().forEach(([, , , pre], i) => pre.forEach((p) => { const hit = p.endsWith("/") ? path.startsWith(p) : path === p || path.startsWith(p + "/"); if (hit && p.length > len) { best = i; len = p.length; } }));
     return best;
   };
-  const CRUMBS = { "/find": "Find a DPE", "/openings": "Publish an opening", "/home": "Home", "/search": "Search", "/compare": "Compare fees", "/alerts": "Alerts", "/journey": "Journey", "/readiness": "Readiness checklist", "/bookings": "My checkrides", "/my-checklists": "From your examiner", "/checklists": "Checklists", "/more": "More", "/faq": "FAQs", "/pricing": "Pricing", "/dpe-today": "Today", "/requests": "Requests", "/dpe-openings": "Calendar", "/dpe-applicants": "Applicants", "/dpe-fees": "Your terms", "/school": "Roster", "/school/requests": "Checkride requests", "/school/readiness": "Readiness", "/school/cohort": "Cohort scheduling", "/admin": "Admin" };
+  const CRUMBS = { "/find": "Find a DPE", "/openings": "Publish an opening", "/home": "Home", "/search": "Search", "/compare": "Compare fees", "/alerts": "Alerts", "/journey": "Journey", "/readiness": "Readiness checklist", "/bookings": "My checkrides", "/my-checklists": "From your examiner", "/checklists": "Checklists", "/more": "More", "/saved": "Saved", "/faq": "FAQs", "/pricing": "Pricing", "/dpe-today": "Today", "/requests": "Requests", "/dpe-openings": "Calendar", "/dpe-applicants": "Applicants", "/dpe-fees": "Your terms", "/school": "Roster", "/school/requests": "Checkride requests", "/school/readiness": "Readiness", "/school/cohort": "Cohort scheduling", "/admin": "Admin" };
   const crumb = (path) => {
     const tab = NAV()[navActive(path)];
     const leaf = CRUMBS[path] || (path.startsWith("/request/") ? "Request" : path.startsWith("/dpe/") ? "Examiner profile" : path.startsWith("/dpe-checklist/") ? "Checklist" : path.startsWith("/checklists/") ? "Checklists" : "");
@@ -3251,8 +3477,10 @@ const closeModal = () => {
     const fKey = focusKey(document.activeElement), pathChanged = ui.lastPath !== path && ui.lastPath !== null;
     document.body.classList.toggle("is-landing", pub);
     document.body.classList.toggle("is-auth", path === "/login" || path === "/signup");
-    $("#app").innerHTML = (landing ? "" : PROTO_STRIP) + (html ?? notFound(path));
+    $("#app").innerHTML = (landing ? "" : PROTO_STRIP) + `<div id="saved-live" class="sr-only" role="status" aria-live="polite"></div>` + (html ?? notFound(path));
+    if (ui.savedCorruptNote) { toast(COPY["saved.corrupt_cleared"]); ui.savedCorruptNote = false; }
     a11yFix($("#app"));
+    if (ui.savedAnnounce) { const m = ui.savedAnnounce; ui.savedAnnounce = ""; setTimeout(() => announceSaved(m), 0); }
     if (!/^\/dpe\/[^/]+$/.test(path)) ui.profileKey = null;
     const act = navActive(path);
     $("#nav").innerHTML = pub ? "" : NAV().map(([href, label, ic, , badge], i) => `<a href="${href}" class="${i === act ? "active" : ""}"${i === act ? ' aria-current="page"' : ""}>${tabIcon(ic)}<span class="t">${label}</span>${badge ? `<span class="badge"${ic === "bell" ? ' id="alerts-badge"' : ""} aria-label="${badge} ${ic === "bell" ? "unread" : "awaiting review"}">${badge}</span>` : ""}</a>`).join("");
@@ -3541,6 +3769,62 @@ function countUp(root) {
     },
     "close-modal": (el) => { closeModal(); return el.tagName === "A"; },
     "modal-bg": (el, e) => { if (e.target === el) closeModal(); },
+    "toggle-save-examiner": (el) => {
+      ensureSavedArrays();
+      const id = el.dataset.dpe; if (!id || !dpeById(id)) return;
+      const existing = S.savedExaminers.find((x) => x.dpeId === id);
+      if (existing) {
+        const removed = existing;
+        S.savedExaminers = S.savedExaminers.filter((x) => x.dpeId !== id); save();
+        const nm=dpeById(id).name; toastUndo(savedFmt("saved.toast.examiner_removed",{name:nm}), () => { ensureSavedArrays(); if (!S.savedExaminers.some((x) => x.dpeId === id)) { S.savedExaminers.unshift(removed); save(); ui.savedAnnounce = COPY["saved.toast.undone"]; } rerender(); });
+      } else {
+        const row = { id: uid("sx"), dpeId: id, savedAt: Date.now() };
+        S.savedExaminers.unshift(row); save();
+        const savedMsg = savedFmt("saved.toast.examiner_saved",{name:dpeById(id).name}); toast(savedMsg); ui.savedAnnounce = savedMsg;
+      }
+      rerender();
+      document.querySelector(`[data-action="toggle-save-examiner"][data-dpe="${id}"]`)?.focus();
+    },
+    "save-search": (el) => {
+      ensureSavedArrays();
+      const cert = el.dataset.cert, near = el.dataset.near, radius = +el.dataset.radius, before = el.dataset.before || "";
+      if (!supportedGoal(cert) || infoGoal(cert) || !apt(near) || ![25,50,75,100,150,250].includes(radius)) { toast(COPY["goal.no_estimate"]); return; }
+      const key = savedSearchKey({ cert, near, radius, before });
+      const existing = S.savedSearches.find((s) => savedSearchKey(s) === key);
+      if (existing) { const nm = savedSearchName(existing); toast(savedFmt("saved.search.already",{name:nm})); ui.savedAnnounce = savedFmt("saved.error.duplicate_search",{name:nm}); rerender(); return; }
+      const row = { id: uid("ss"), cert, near, radius, before, name: "", savedAt: Date.now(), lastVisitAt: Date.now(), seenKeys: savedSearchMatches({ cert, near, radius, before }).map(slotSeenKey) };
+      try {
+        S.savedSearches.unshift(row); save();
+      } catch (err) { toast(COPY["saved.error.quota"]); return; }
+      const savedMsg = savedFmt("saved.toast.search_saved",{name:savedSearchName(row)}); toast(savedMsg); ui.savedAnnounce = savedMsg;
+      rerender();
+    },
+    "remove-saved-search": (el) => {
+      ensureSavedArrays();
+      const row = S.savedSearches.find((x) => x.id === el.dataset.id); if (!row) return;
+      const nm = savedSearchName(row);
+      S.savedSearches = S.savedSearches.filter((x) => x.id !== row.id); save();
+      toastUndo(savedFmt("saved.toast.search_removed",{name:nm}), () => { ensureSavedArrays(); if (!S.savedSearches.some((x) => savedSearchKey(x) === savedSearchKey(row))) { S.savedSearches.unshift(row); save(); ui.savedAnnounce = COPY["saved.toast.undone"]; } rerender(); });
+      rerender();
+    },
+    "remove-saved-examiner": (el) => { el.dataset.action = "toggle-save-examiner"; return actions["toggle-save-examiner"](el); },
+    "rename-saved-search": (el) => {
+      ensureSavedArrays();
+      const row = S.savedSearches.find((x) => x.id === el.dataset.id); if (!row) return;
+      openModal(`<h2>${COPY["saved.search.rename"]}</h2>
+        <form class="stack" data-form="rename-saved-search"><input type="hidden" name="id" value="${esc(row.id)}" />
+          <label class="field"><span>${COPY["saved.search.rename_label"]}</span><input name="name" id="saved-rename" value="${esc(savedSearchName(row))}" maxlength="80" required /></label>
+          <div class="row"><button class="btn" type="submit">${COPY["saved.search.rename_save"]}</button><button type="button" class="btn ghost" data-action="close-modal">${COPY["saved.search.rename_cancel"]}</button></div>
+        </form>`);
+      $("#saved-rename")?.select();
+    },
+    "open-saved-search": (el) => {
+      ensureSavedArrays();
+      const row = S.savedSearches.find((x) => x.id === el.dataset.id);
+      if (row) { markSavedSearchVisited(row); save(); }
+      return true; // allow navigation
+    },
+    "saved-undo": () => { const fn = ui.savedUndo; ui.savedUndo = null; if (fn) { fn(); toast(COPY["saved.toast.undone"]); } },
     "alert-from-search": (el) => {
       const f = searchFilters(parseHash().q);
       addAlert({ cert: f.cert, near: f.near, radius: f.radius, before: f.before || addDays(60), maxFee: f.maxFee, dpeId: el.dataset.dpe || "" });

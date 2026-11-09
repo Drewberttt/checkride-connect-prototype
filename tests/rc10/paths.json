@@ -1,0 +1,10 @@
+{
+  "OUT": "/workspace/checkride-test-tools/evidence/rc10-saved-full-20261109-153733",
+  "SHOTS": "/workspace/checkride-connect-shots/rc10-saved-full-20261109-153733",
+  "sw": "cc-proto-v7.14.0",
+  "matrix": {
+    "suite_pass_sum": 4036,
+    "suite_fail_sum": 11,
+    "new_regressions": 0
+  }
+}

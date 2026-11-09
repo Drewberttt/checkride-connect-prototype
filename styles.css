@@ -541,7 +541,8 @@ textarea { resize: vertical; }
 #all-in .summary .line > span { min-width: 0; }
 
 /* Toasts must never block taps on the buttons underneath (found at 390px: a toast covered the modal's Submit button). */
-.toasts, .toast { pointer-events: none; }
+.toasts { pointer-events: none; }
+.toast { pointer-events: auto; }
 @media (max-width: 640px) { .toasts { bottom: auto; top: calc(64px + env(safe-area-inset-top, 0px)); right: 12px; left: 12px; max-width: none; } }
 
 h1 .pill, h2 .pill { letter-spacing: 0; font-family: inherit; }
@@ -761,7 +762,7 @@ a.card:active, .result:active { transform: scale(.985); box-shadow: var(--shadow
 
 /* =====================================================================
    v3 visual overhaul (design-spec-v3, mockups-v3 01–16). Components + app chrome.
-   Logo stays #2B59FF (lockup SVG, theme-color); UI accent is #3860E3. Intentional, do not unify (spec §2.1, §10).
+   Logo brand blue is #3860E3 on light/dark surfaces; on navy #15273F use mark-on-navy #4167E4 or mono-white (QA-085). UI accent #3860E3 (spec §2.1, §10).
    ===================================================================== */
 body { font: var(--fs-body, 1rem)/1.6 var(--font-body); background: var(--bg); }
 h1, h2, .display, .big-num, .stat .v { font-family: var(--font-display); }
@@ -811,7 +812,7 @@ label.field > span { color: var(--label); font-size: .75rem; letter-spacing: .08
   padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
 }
 .brand { min-height: 44px; flex-shrink: 0; }
-.lockup { height: 38px; width: auto; display: block; } /* D41: his Checkride Connect PNG lockup (370x106) */
+.lockup { height: 38px; width: auto; display: block; } /* D41/QA-085: Checkride Connect SVG lockup (final-v2; display 133×38) */
 :root[data-brand="runway"] .lockup { height: 26px; } /* BRAND "runway" switch */
 .lockup-dark, :root[data-theme="dark"] .lockup-light { display: none; }
 :root[data-theme="dark"] .lockup-dark { display: block; }
@@ -1235,3 +1236,19 @@ body.is-auth .topbar-right { min-width: 0; flex-shrink: 1; }
 body.is-auth .v4-authbar { min-width: 0; flex-shrink: 1; }
 body.is-auth .v4-hi { min-width: 0; flex-shrink: 1; }
 body.is-auth .v4-authbar .btn { flex-shrink: 0; }
+
+
+/* §14 Saved examiners / searches */
+.saved-toggle { position: relative; display: inline-flex; align-items: center; gap: .35rem; min-width: 44px; min-height: 44px; color: var(--text); }
+.saved-toggle[aria-pressed="true"] { color: var(--text); }
+.saved-toggle[aria-pressed="true"] .saved-bookmark { color: var(--accent, #3660E1); }
+.saved-toggle:focus-visible { outline: 2px solid var(--accent, #3660E1); outline-offset: 2px; }
+.saved-bookmark { flex-shrink: 0; color: inherit; }
+.saved-new-pill { background: var(--accent, #3660E1); color: #fff; }
+.saved-row { min-height: 56px; }
+@media (max-width: 359px) {
+  .saved-toggle-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .saved-toggle, .toast { transition: none !important; animation: none !important; }
+}
