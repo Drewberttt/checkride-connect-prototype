@@ -248,6 +248,75 @@ async function seedPage(page, availPatch, extra) {
       check(bname + " Calendar has Confirm this week link", cal.link && cal.link.href === "#/dpe-week" && cal.link.text === "Confirm this week", cal);
       check(bname + " Looks right, confirm week not on Calendar", !cal.weekPhrase, cal);
 
+      // RC15-I02: locked-day text contrast ≥ 4.5:1 (token --muted, not 0.6 opacity)
+      await page.goto(BASE + "?demo=promo#/dpe-week");
+      await page.waitForSelector(".wk-page");
+      await page.evaluate(() => document.fonts && document.fonts.ready);
+      await page.waitForTimeout(200);
+      const contrast = await page.evaluate(() => {
+        const lum = (r, g, b) => {
+          const f = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+          return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+        };
+        const parse = (c) => {
+          const m = String(c).match(/rgba?\((\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([0-9.]+))?\)/);
+          if (!m) return null;
+          return { r: +m[1], g: +m[2], b: +m[3], a: m[4] == null ? 1 : +m[4] };
+        };
+        const blend = (fg, bg) => {
+          const a = fg.a == null ? 1 : fg.a;
+          return { r: fg.r * a + bg.r * (1 - a), g: fg.g * a + bg.g * (1 - a), b: fg.b * a + bg.b * (1 - a), a: 1 };
+        };
+        const bgOf = (el) => {
+          let n = el;
+          while (n && n !== document.documentElement) {
+            const s = getComputedStyle(n);
+            const p = parse(s.backgroundColor);
+            if (p && p.a > 0.01 && s.backgroundColor !== "transparent") {
+              const parent = n.parentElement ? bgOf(n.parentElement) : { r: 255, g: 255, b: 255, a: 1 };
+              return p.a >= 0.99 ? p : blend(p, parent);
+            }
+            n = n.parentElement;
+          }
+          return { r: 247, g: 250, b: 253, a: 1 };
+        };
+        const ratio = (fg, bg) => {
+          const L1 = lum(fg.r, fg.g, fg.b), L2 = lum(bg.r, bg.g, bg.b);
+          return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+        };
+        const hex = (c) => "#" + [c.r, c.g, c.b].map((x) => Math.round(x).toString(16).padStart(2, "0")).join("");
+        const day = document.querySelector(".wk-day.is-locked, .wk-day[data-locked]");
+        if (!day) return { ok: false, reason: "no locked day" };
+        const nodes = [
+          ["legend", day.querySelector("legend")],
+          ["summary", day.querySelector(".wk-summary")],
+          ["locked", day.querySelector(".wk-locked, [data-copy-key='wk.day.locked']")],
+        ].filter(([, el]) => el);
+        const fieldOp = getComputedStyle(day).opacity;
+        const rows = nodes.map(([name, el]) => {
+          const cs = getComputedStyle(el);
+          let fg = parse(cs.color);
+          const bg = bgOf(el);
+          const op = parseFloat(cs.opacity) * parseFloat(fieldOp);
+          if (op < 0.999) fg = blend({ ...fg, a: op }, bg);
+          const r = ratio(fg, bg);
+          return { name, color: hex(fg), bg: hex(bg), ratio: +r.toFixed(2), opacity: op, text: (el.textContent || "").trim() };
+        });
+        return { ok: true, fieldOpacity: fieldOp, rows };
+      });
+      const allPass = contrast.ok && contrast.rows.length >= 3 && contrast.rows.every((r) => r.ratio >= 4.5) && parseFloat(contrast.fieldOpacity) >= 0.999;
+      check(bname + " locked-day contrast >= 4.5:1 via --muted", allPass, contrast);
+
+      const axePath = process.env.AXE_MODULE || "/workspace/checkride-test-tools/node_modules/axe-core/axe.min.js";
+      await page.addScriptTag({ path: axePath });
+      const axe = await page.evaluate(async () => {
+        const res = await axe.run(document.querySelector(".wk-page") || document, { runOnly: { type: "tag", values: ["wcag2aa"] } });
+        const cc = res.violations.filter((v) => v.id === "color-contrast");
+        const lockedHits = cc.flatMap((v) => v.nodes.filter((n) => /wk-day|wk-summary|wk-locked|legend/i.test((n.target || []).join(" ") + (n.html || "")))).map((n) => n.target);
+        return { contrastViolations: cc.length, lockedHits };
+      });
+      check(bname + " axe color-contrast has no locked-day fails", axe.lockedHits.length === 0, axe);
+
       await ctx.close();
     }
 

@@ -64,6 +64,11 @@
     "sha256": "6e36e3cc31f5256af28200af4c1724751c03d31d45a6327bc29b4e1e647ec272",
     "size": 6370
   },
+  "QA-HANDOFF-RC16.md": {
+    "mtime_ns": 1794329767080899533,
+    "sha256": "9bda75458954ebafd7d591c4258ef0478ea48546054a33d6e6c79c69412a83fb",
+    "size": 8297
+  },
   "QA-HANDOFF-RC6.md": {
     "mtime_ns": 1794081664521256915,
     "sha256": "627327800ac219fc469ca2ffbf533b7fc4e6ba04d26bd546b8a89a8f11ad8e08",
@@ -85,19 +90,19 @@
     "size": 12020
   },
   "READY.txt": {
-    "mtime_ns": 1794325483467915883,
-    "sha256": "ffc96b1ba4cfc73b6b5b6aa2cdcaa40148c7e37bc1d631843d22f250bd419608",
-    "size": 624
+    "mtime_ns": 1794329745572892225,
+    "sha256": "22067bb6a61806df666d86e717d94f33860f2f6c99535e503ed7209aa2ca470b",
+    "size": 649
   },
   "SOURCE-SHA256.json": {
-    "mtime_ns": 1794325483547917333,
-    "sha256": "03de300e5eb1fc3673dd4689ba5e803ff9d42338dc1748491dba31c0596c06c8",
-    "size": 10673
+    "mtime_ns": 1794329767132899544,
+    "sha256": "1d557b83c33886137d912f7a6b6f73422bb9c5685dd1fb5b854a6c3a5c5fd311",
+    "size": 10803
   },
   "app.js": {
-    "mtime_ns": 1794323369764363975,
-    "sha256": "1bcf8557cc00cc8d95b6ebe8d0a30ef23128e17a2f2d4c03806d12af15dc662e",
-    "size": 549187
+    "mtime_ns": 1794328553325796762,
+    "sha256": "b8aa0a229ddcc67428a57ebc11d643702571272f074ef35b7077d32d5547aeca",
+    "size": 552195
   },
   "brand/archive-png-pre-v2/checkride-connect-icon.png": {
     "mtime_ns": 1794081656585212522,
@@ -198,6 +203,11 @@
     "mtime_ns": 1794081645905142420,
     "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
     "size": 29319
+  },
+  "data/wait-time-sample-nc.json": {
+    "mtime_ns": 1794322800322630977,
+    "sha256": "f6dae16d1a4281bf787a02b3876206153ba887abd0d5fce59a30bfc6f3bff264",
+    "size": 231433
   },
   "demo-date.js": {
     "mtime_ns": 1794081647341154613,
@@ -375,9 +385,9 @@
     "size": 11309
   },
   "index.html": {
-    "mtime_ns": 1794240395677707255,
-    "sha256": "35279982077dd991c36eee09f38bb0f39a63ff7187eb6163b318078980735eb9",
-    "size": 7901
+    "mtime_ns": 1794328565773729892,
+    "sha256": "fe27c853d186633743dfd8aae2447fd11c0a76a141de23448be0ea65e691dfdf",
+    "size": 7997
   },
   "runway.webmanifest": {
     "mtime_ns": 1794081660981233350,
@@ -415,19 +425,19 @@
     "size": 1010
   },
   "styles.css": {
-    "mtime_ns": 1794323285648678323,
-    "sha256": "fba0b3ece69b002a581a7ec92bdc7febd1b3330ee79daf390c8570353a27403b",
-    "size": 101324
+    "mtime_ns": 1794328565749730021,
+    "sha256": "6211e45cc2c1cd866aad71b5b6d9a27cac31adc1287520788810f9ebb97261eb",
+    "size": 102246
   },
   "sw.js": {
-    "mtime_ns": 1794323309324563571,
-    "sha256": "d5ecb3d8e9931ee77bfcb3de0f4baa2f1638f3a87c7aaf3f88d0187ca238b33c",
-    "size": 6619
+    "mtime_ns": 1794328565793729784,
+    "sha256": "0f56b2a911b35893465dc20469dbf093db8d3743947e033b7e9f90e3308910aa",
+    "size": 6699
   },
   "tests/after/COPY-CHANGES.md": {
-    "mtime_ns": 1794262867641090165,
-    "sha256": "3d7d24a777a8c82db3a4ae973776631e0d32a963da24b34e6e1ec88b46486f10",
-    "size": 1410
+    "mtime_ns": 1794328712524924737,
+    "sha256": "e45561939cff38e0ff87e7957b6c2cb2f6338e3f4c602d3323b215906d83ac3e",
+    "size": 2604
   },
   "tests/after/RC13-FIXES.md": {
     "mtime_ns": 1794264948602253098,
@@ -455,14 +465,14 @@
     "size": 2811
   },
   "tests/after/dpe-week.js": {
-    "mtime_ns": 1794323558199659934,
-    "sha256": "253c881d6af61be5d03f76a7506c52606289494fa69508c5278d0c12e531a359",
-    "size": 18673
+    "mtime_ns": 1794328592393586083,
+    "sha256": "e37822253e363a3c0dcc976aec5df52588cfdf866c02968dbbf7e51c3ea88396",
+    "size": 22582
   },
   "tests/after/overflow-audit.js": {
-    "mtime_ns": 1794323309300563688,
-    "sha256": "b12e151f34f7e277e9d53716d2a7528b06a55eb36443684b0ce20685f77f46e6",
-    "size": 5525
+    "mtime_ns": 1794328581193646720,
+    "sha256": "cf68744d21b2bf5ab2f4184d172b97a2ad65f717e4a1063b6b7066525e2b8adc",
+    "size": 5764
   },
   "tests/after/reference.py": {
     "mtime_ns": 1794259298150440300,
@@ -475,9 +485,14 @@
     "size": 59039
   },
   "tests/after/run-matrix.sh": {
-    "mtime_ns": 1794323309364563377,
-    "sha256": "d5dbb49ea4c60795731a8052c26c3f80d163f096fa5e7193b5f2a7b6c75c7d85",
-    "size": 7855
+    "mtime_ns": 1794328565813729677,
+    "sha256": "0998da34d9993148764d8ea0aa033c3f7a5e7a1c8111a5d6e727dc56dde888e5",
+    "size": 7925
+  },
+  "tests/after/wait-time.js": {
+    "mtime_ns": 1794328788264498771,
+    "sha256": "01941062f7db8ed0b63dc496c15539fd909330bb8c46df65f8025f6ca453b0f4",
+    "size": 21868
   },
   "tests/next-pass/README.md": {
     "mtime_ns": 1794081665189268647,
@@ -555,13 +570,13 @@
     "size": 8860
   },
   "tests/rc10/freeze-tree.sh": {
-    "mtime_ns": 1794264652111141231,
+    "mtime_ns": 1794328667437175172,
     "sha256": "17f504a508c27e58a72710a3df565234c295f366d88fd43ea1385c7e81c25813",
     "size": 5876
   },
   "tests/rc10/logo-qa085.js": {
-    "mtime_ns": 1794323309364563377,
-    "sha256": "df65040b267819d1f3244e5821c412315c2bccd7d6d63c13b16613e375aa2e96",
+    "mtime_ns": 1794328565813729677,
+    "sha256": "ffc9e0dd75377ab3db33a07a324d65517b8cff6e06d2617b887fb505edb70161",
     "size": 6094
   },
   "tests/rc10/paths.json": {
@@ -570,9 +585,9 @@
     "size": 294
   },
   "tests/rc10/pwa-saved.js": {
-    "mtime_ns": 1794323309364563377,
-    "sha256": "afc9352c91775525f013cfc1080fd8d8d0cf829e74a60a14f39c53ba62d8fd50",
-    "size": 13683
+    "mtime_ns": 1794328565813729677,
+    "sha256": "3da908532f05801125f2e54687b6b77a862b94eb386c1feb702ff1a96c8a40d8",
+    "size": 13768
   },
   "tests/rc10/saved-quota.js": {
     "mtime_ns": 1794243155488142486,
@@ -627,6 +642,11 @@
   "tests/rc10/scope-v723.py": {
     "mtime_ns": 1794323309344563474,
     "sha256": "cf93a821d9578a4c13555c6c2413e40709e61abc8d078106114169ba6e045010",
+    "size": 5843
+  },
+  "tests/rc10/scope-v724.py": {
+    "mtime_ns": 1794328565813729677,
+    "sha256": "a6661c65ed699ae81bbbb03f40efa62fd74d9e52414454c3454f5cfaacced7c2",
     "size": 5843
   },
   "tests/rc10/upgrade-server.py": {
@@ -2018,5 +2038,15 @@
     "mtime_ns": 1794085113206536595,
     "sha256": "25dfbe246e78ececae3a974df70b49955ff4b5bcd3b0c9ae3fdd6544d38e7959",
     "size": 543
+  },
+  "wait-time-sample-nc.js": {
+    "mtime_ns": 1794328479942185715,
+    "sha256": "7e5bd1c7a53466558d60e27ecf5c86e5b6562ea2a46dc93ace45555ab380e76b",
+    "size": 231648
+  },
+  "wait-time.js": {
+    "mtime_ns": 1794328507370041433,
+    "sha256": "bef46ec6f41004f49efa128eed50cf1ecdaf540df9ea3ce9c9d76ba56278513c",
+    "size": 11058
   }
 }

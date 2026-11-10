@@ -316,6 +316,23 @@
     "wk.fresh.proto": "Prototype: fictional stamp, stored in this browser.",
     "wk.live.confirmed": "Week confirmed [Tue, Nov 10 · 10:00 AM ET].",
     "wk.live.unsaved": "[3] unsaved changes.",
+    "wk.cal.students_amber": "They also see “Last confirmed [n] days ago.”",
+    "wk.cal.students_stale": "They see “Not recently confirmed,” and your slots are hidden from search and requests until you confirm.",
+    "wk.cal.students_note": "Students see when you last confirmed, in the same wording they see on your openings.",
+    "wait.headline.under": "Typical wait: under 1 week",
+    "wait.headline.week": "Typical wait: about 1 week",
+    "wait.headline.weeks": "Typical wait: about [3] weeks",
+    "wait.detail": "Median [18] days; most students waited [12]–[25] days. Based on [9] bookings in the last 180 days.",
+    "wait.empty.headline": "Not enough bookings yet.",
+    "wait.empty.detail_zero": "We'll show a typical wait after 8 bookings in the last 180 days.",
+    "wait.empty.detail_some": "Based on [N] bookings in the last 180 days — we need 8 to show a typical wait.",
+    "wait.empty.detail_one": "Based on 1 booking in the last 180 days — we need 8 to show a typical wait.",
+    "wait.stale": "No new bookings in the last 60 days — this may be out of date.",
+    "wait.how_label": "How this is measured",
+    "wait.how": "Typical wait is the number of calendar days from a student's booking request to the first confirmed test date, using verified in-app bookings only. It is not a guarantee.",
+    "wait.aria": "Typical wait: [about 3 weeks]. Median [18] days; most students waited [12] to [25] days. Based on [9] bookings in the last 180 days.",
+    "wait.aria.empty": "Not enough bookings yet. [We'll show a typical wait after 8 bookings in the last 180 days.]",
+    "wait.proto": "Prototype: fictional sample bookings, not real wait times.",
   };
   // D41: areas without cost data (NC) never get aircraft / CFI / travel / retest estimates. Only examiner-published sample fees show.
   // Nov 2: NC now has sourced cost data (sample-nc-examiners.js costData + per-examiner costModel). Areas without it still show estimate.no_area_data.
@@ -1958,6 +1975,25 @@ const closeModal = () => {
     </article>`;
   }
 
+
+  function waitTimeCard(dp) {
+    const W = (typeof window !== "undefined" && window.CC_WAIT) || (typeof CC_WAIT !== "undefined" ? CC_WAIT : null);
+    if (!W || !dp || !W.showsCard(dp.id)) return "";
+    const card = W.cardForExaminer(dp.id, { copy: COPY });
+    if (!card) return "";
+    const d = card.display;
+    return `<section class="card wait-card" id="wait-card" data-wait-id="${esc(dp.id)}" data-wait-enough="${d.enough ? "true" : "false"}" data-wait-n="${d.n}" data-wait-stale="${d.stale ? "true" : "false"}" role="region" aria-label="${esc(d.aria)}">
+      <p class="wait-proto" data-copy-key="wait.proto">${esc(COPY["wait.proto"])}</p>
+      <h2 class="wait-headline" style="margin:0 0 .35rem" data-copy-key="${d.headlineKey}">${esc(d.headline)}</h2>
+      <p class="wait-detail" data-copy-key="${d.detailKey}">${esc(d.detail)}</p>
+      ${d.staleNote ? `<p class="wait-stale" data-copy-key="wait.stale">${esc(d.staleNote)}</p>` : ""}
+      <details class="wait-how">
+        <summary class="wait-how-label" data-copy-key="wait.how_label" title="${esc(COPY["wait.how_label"] + " \u00b7 " + COPY["wait.proto"])}">${esc(COPY["wait.how_label"])}</summary>
+        <p class="wait-how-body" data-copy-key="wait.how">${esc(COPY["wait.how"])}</p>
+      </details>
+    </section>`;
+  }
+
   function viewProfile(q, id) {
     const dp = dpeById(id);
     if (!dp) return `<div class="page">${emptyState({ id: "dpe-not-found", ic: "search", h: "h1", title: "Examiner not found", body: "This sample examiner isn\u2019t in the data set (links can go stale after a reset).", actions: `<a class="btn" href="#/find">Back to Find a DPE</a>` })}</div>`; // QA-072
@@ -2009,6 +2045,7 @@ const closeModal = () => {
             </div>
             <p style="margin-top:1rem">${esc(dp.bio)}</p>
           </section>
+          ${waitTimeCard(dp)}
           ${v4Openings(dp, cert, slots, own, q, pick)}
       </div>
       <div class="v4-prof-more">
@@ -2699,11 +2736,11 @@ const closeModal = () => {
             <div class="small muted">Last updated</div>
             <div class="avail-stamp" id="avail-stamp"><b>${a.updatedAt ? fmtTs(a.updatedAt) : esc(COPY["wk.fresh.never"])}</b>${a.updatedAt ? ` <span class="muted small">(${agoText(Math.max(0, Math.floor((Date.now() - a.updatedAt) / DAY)))})</span>` : ""}</div>
             <div style="margin-top:.4rem">${freshBadge(dp.id)}</div>
-            <p class="small" style="margin:.5rem 0 0">Students currently see your next open date as <b id="avail-next">${next ? fmtDate(next.date, { weekday: "short", month: "short", day: "numeric" }) + " (" + relDays(next.date, slotTz(next)) + ")" : "none: no openings are shown"}</b>.${fr.level === "amber" ? " They also see a \u201cmay be out of date\u201d tag." : ""}${fr.level === "stale" || fr.level === "reverify" ? " Your slots are hidden from search and requests until you confirm." : ""}</p>
+            <p class="small" style="margin:.5rem 0 0">Students currently see your next open date as <b id="avail-next">${next ? fmtDate(next.date, { weekday: "short", month: "short", day: "numeric" }) + " (" + relDays(next.date, slotTz(next)) + ")" : "none: no openings are shown"}</b>.${fr.level === "amber" ? " " + esc(wkFill("wk.cal.students_amber", [String(fr.days)])) : ""}${fr.level === "stale" || fr.level === "reverify" ? " " + esc(COPY["wk.cal.students_stale"]) : ""}</p>
           </div>
           <div class="row"><button class="btn good" data-action="avail-confirm" id="avail-confirm">Yes, nothing changed</button><a class="btn ghost" href="#/dpe-week" data-copy-key="wk.cal.link">${esc(COPY["wk.cal.link"])}</a><a class="btn ghost" href="#/dpe/${dp.id}">See what students see</a></div>
         </div>
-        <p class="muted small" style="margin:.6rem 0 0">One tap on <b>Yes, nothing changed</b> re-confirms your current openings. Saving any edit below also refreshes the stamp. Students always see a \u201cconfirm with the examiner\u201d line.</p>
+        <p class="muted small" style="margin:.6rem 0 0">One tap on <b>Yes, nothing changed</b> re-confirms your current openings. Saving any edit below also refreshes the stamp. <span data-copy-key="wk.cal.students_note">${esc(COPY["wk.cal.students_note"])}</span></p>
       </section>
       <section class="card" id="sim-card" style="margin-bottom:1rem">
         <div class="row spread"><h2 style="margin:0">Simulate an opening <span class="pill warn" style="vertical-align:middle">Demo · simulated</span></h2><button class="btn ghost sm" data-action="sim-open" data-dpe="${dp.id}" id="sim-open-dpe">Simulate opening</button></div>

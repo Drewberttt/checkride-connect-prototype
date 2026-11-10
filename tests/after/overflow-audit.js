@@ -90,6 +90,10 @@ const measure = () => {
         await page.waitForTimeout(120);
         const m2 = await page.evaluate(measure);
         check(`${bname} 360 dark #/dpe/nc14?cert=ppl no h-overflow`, !m2.overflow, m2);
+        await page.goto(BASE + "?demo=promo#/dpe/d1?cert=ppl");
+        await page.waitForTimeout(120);
+        const m3 = await page.evaluate(measure);
+        check(`${bname} 360 dark #/dpe/d1?cert=ppl no h-overflow`, !m3.overflow, m3);
       }
       await ctx.close();
     }

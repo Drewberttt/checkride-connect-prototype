@@ -1459,7 +1459,13 @@ body.is-auth .v4-authbar .btn { flex-shrink: 0; }
 .wk-days { display: grid; grid-template-columns: 1fr; gap: .75rem; min-width: 0; }
 .wk-day { margin: 0; padding: .85rem; border: 1px solid var(--border); border-radius: var(--r-md, 12px); background: var(--bg); min-width: 0; }
 .wk-day.is-open { background: var(--accent-soft); border-color: var(--accent); }
-.wk-day.is-locked { opacity: .6; }
+/* RC15-I02: don't composite locked text through 0.6 opacity (#717d8c on #F7FAFD = 3.99:1).
+   Use --muted (#4A5A73 light / #AEBACC dark), which is ≥4.5:1 on --bg and --accent-soft. */
+.wk-day.is-locked { opacity: 1; }
+.wk-day.is-locked legend,
+.wk-day.is-locked .wk-summary,
+.wk-day.is-locked .wk-locked { color: var(--muted); }
+.wk-day.is-locked .wk-switch .track { opacity: .6; }
 .wk-day legend { font-weight: 700; padding: 0 .25rem; }
 .wk-switch { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; min-width: 44px; border: 0; background: transparent; color: inherit; cursor: pointer; padding: 0; font: inherit; }
 .wk-switch:disabled { cursor: not-allowed; }
@@ -1509,3 +1515,13 @@ body.is-auth .v4-authbar .btn { flex-shrink: 0; }
   .wk-bar { transition: none; }
   .wk-switch .track::after { transition: none; }
 }
+
+/* D49 wait-time stats card (design-spec-v3 §21) */
+.wait-card { margin: 0 0 1rem; }
+.wait-proto { margin: 0 0 .5rem; font-size: .72rem; color: var(--muted); line-height: 1.45; }
+.wait-headline { font-weight: 800; color: var(--text); }
+.wait-detail { margin: 0; color: var(--muted); }
+.wait-stale { margin: .5rem 0 0; color: var(--text); }
+.wait-how { margin-top: .75rem; }
+.wait-how-label { min-height: 44px; display: inline-flex; align-items: center; cursor: pointer; color: var(--text); font-weight: 600; }
+.wait-how-body { margin: .35rem 0 0; color: var(--muted); }
