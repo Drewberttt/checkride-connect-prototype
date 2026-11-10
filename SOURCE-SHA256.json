@@ -1,19 +1,19 @@
 {
   "app.js": {
-    "sha256": "b8aa0a229ddcc67428a57ebc11d643702571272f074ef35b7077d32d5547aeca",
-    "size": 552195
+    "sha256": "e494eaa5fe117404f9a2ea21bf744ab57fd710cecfb7008741add8416111b4a4",
+    "size": 552949
   },
   "sw.js": {
-    "sha256": "0f56b2a911b35893465dc20469dbf093db8d3743947e033b7e9f90e3308910aa",
-    "size": 6699
+    "sha256": "daa30a0a3bc6bef4b5e927c853ee45be8ba8bd44b7364bd5fb11458a997fc685",
+    "size": 6696
   },
   "styles.css": {
-    "sha256": "6211e45cc2c1cd866aad71b5b6d9a27cac31adc1287520788810f9ebb97261eb",
-    "size": 102246
+    "sha256": "9708ce2984bd6825cb6a666e88d7a1b024f6692561d7d12074bc3d05acad0f3e",
+    "size": 108563
   },
   "index.html": {
-    "sha256": "fe27c853d186633743dfd8aae2447fd11c0a76a141de23448be0ea65e691dfdf",
-    "size": 7997
+    "sha256": "937ed9116cf3015e5066c5b4dcb7492425a4951ca84ae4028f4edbd45540097b",
+    "size": 8558
   },
   "data.js": {
     "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
@@ -64,8 +64,8 @@
     "size": 541
   },
   "tests/rc10/freeze-tree.sh": {
-    "sha256": "17f504a508c27e58a72710a3df565234c295f366d88fd43ea1385c7e81c25813",
-    "size": 5876
+    "sha256": "466ad3678c20967ebbd26c9be8aa789fbaf43593b8b93caa4690c6d1f733591f",
+    "size": 6392
   },
   "brand/archive-png-pre-v2/checkride-connect-icon.png": {
     "sha256": "d97b64b4a3f30420683b8193a9ca46bae0b6b1d27727ac2475a220a3463e0db9",
@@ -291,6 +291,14 @@
     "sha256": "9bda75458954ebafd7d591c4258ef0478ea48546054a33d6e6c79c69412a83fb",
     "size": 8297
   },
+  "QA-HANDOFF-RC17.md": {
+    "sha256": "cb8cab141edc49695038f8d93111a5d24fb0c9fc26acf01be1532ec98735eee7",
+    "size": 11344
+  },
+  "QA-HANDOFF-RC18.md": {
+    "sha256": "5ece5716fa8dfec01fa61309b975fc04ad9e3f7ddc8654a13766327db47495cc",
+    "size": 38072
+  },
   "QA-HANDOFF-RC6.md": {
     "sha256": "627327800ac219fc469ca2ffbf533b7fc4e6ba04d26bd546b8a89a8f11ad8e08",
     "size": 8531
@@ -308,8 +316,8 @@
     "size": 12020
   },
   "READY.txt": {
-    "sha256": "22067bb6a61806df666d86e717d94f33860f2f6c99535e503ed7209aa2ca470b",
-    "size": 649
+    "sha256": "0d904ee8cd5c8a0825e48d80927acb0f8aed9b04f1dac18d7064be0f2a8bb0e6",
+    "size": 650
   },
   "PLAN.md": {
     "sha256": "432fa0e61bce34ed53505e61a3f2a8942ee0174ac5eab6a2fb2c4f12a7547103",

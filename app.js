@@ -4640,16 +4640,36 @@ const closeModal = () => {
     return `<span aria-current="page">${leaf}</span>`;
   };
   const getTheme = () => { try { return localStorage.getItem("cc-theme") || "system"; } catch (e) { return "system"; } };
+  const applyThemeChrome = (resolved) => {
+    const dark = resolved === "dark";
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
+      m.setAttribute("content", dark ? "#0B1424" : "#ffffff");
+      m.setAttribute("media", "all");
+    });
+    if (typeof BRAND !== "undefined" && BRAND === "runway") return;
+    const hrefs = {
+      ico: dark ? "icons/favicon-dark-48.png" : "favicon.ico",
+      svg: dark ? "icons/favicon-dark.svg" : "icons/favicon.svg",
+      png16: dark ? "icons/favicon-dark-16.png" : "icons/favicon-16.png",
+      png32: dark ? "icons/favicon-dark-32.png" : "icons/favicon-32.png",
+      png48: dark ? "icons/favicon-dark-48.png" : "icons/favicon-48.png",
+    };
+    document.querySelectorAll('link[rel~="icon"][data-cc-icon]').forEach((l) => {
+      const k = l.getAttribute("data-cc-icon");
+      if (hrefs[k]) {
+        l.setAttribute("href", hrefs[k]);
+        l.setAttribute("media", "all");
+      }
+    });
+  };
   const applyTheme = (t) => {
     try { localStorage.setItem("cc-theme", t); } catch (e) { /* private mode */ }
     const r = t === "system" ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : t;
     document.documentElement.dataset.theme = r;
-    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
-      const k = m.getAttribute("content") === "#10141d" ? "dark" : "light";
-      m.setAttribute("media", t === "system" ? `(prefers-color-scheme: ${k})` : (k === r ? "all" : "not all"));
-    });
+    applyThemeChrome(r);
     document.querySelectorAll("[data-theme-select]").forEach((x) => { x.value = t; });
   };
+  applyTheme(getTheme());
   try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (getTheme() === "system") applyTheme("system"); }); } catch (e) { /* old browser */ }
 
   function parseHash() {
@@ -4990,7 +5010,7 @@ function countUp(root) {
       const field = fb
         ? `<label class="field"><span>Month (YYYY-MM)</span><input type="text" name="month" id="target-month" inputmode="numeric" autocomplete="off" placeholder="YYYY-MM" pattern="\\d{4}-(0?[1-9]|1[0-2])" title="Year and month as YYYY-MM, for example ${min}" value="${S.target}" required aria-describedby="target-month-hint target-month-err" data-month-fallback="1" /></label>
           <p class="small muted" id="target-month-hint" style="margin:-.4rem 0 0">Type the year and month as YYYY-MM, for example ${min} for ${fmtMonth(min)}. ${fmtMonth(min)} or later.</p>
-          <p class="small" id="target-month-err" role="alert" style="margin:0;color:var(--bad, #b42318)"></p>`
+          <p class="small" id="target-month-err" role="alert" style="margin:0;color:var(--bad-text, var(--bad))"></p>`
         : `<label class="field"><span>Month</span><input type="month" name="month" id="target-month" min="${min}" value="${S.target}" required /></label>`;
       openModal(`<h2 id="modal-title">Target month</h2><p class="muted small">When you hope to take your checkride. It only changes the heads-up on your journey; nothing is booked.</p>
         <form class="stack" data-form="target"${fb ? " novalidate" : ""}>${field}

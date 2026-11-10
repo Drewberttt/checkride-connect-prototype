@@ -4,7 +4,7 @@
    - Versioned cache; old versions are deleted on activate.
    - Network first for same-origin GETs (so edits show up), cache fallback when offline; navigations fall back to index.html.
    - No push, no background sync, no third-party requests. Bump VERSION when the shell changes. */
-const VERSION = "cc-proto-v7.24.0"; // RC16: RC15-I01 Calendar student labels, RC15-I02 locked-day contrast, D49 wait-time card.
+const VERSION = "cc-proto-v7.25.0"; // RC17: dark-mode polish (D51, design-spec-v3 §23.4, prefers-contrast / forced-colors).
 const CACHE = "checkride-connect-" + VERSION;
 const SHELL = [
   "./",

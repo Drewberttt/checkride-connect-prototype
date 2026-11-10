@@ -1,6 +1,8 @@
 #!/bin/bash
 # Dev helper for a future freeze. Sev1 hygiene: MD5SUMS.txt must NOT list its own checksum
 # (self-entry fails by construction). Do not rewrite existing frozen trees with this.
+# RC18: freeze-guard.py must pass on the source and the dest (no leftover
+# screenshots / audit output). App images are allow-listed under icons/ and brand/.
 # Always writes SOURCE-SHA256.json (curated runtime) and INVENTORY-SHA256.json (all files)
 # into the dest tree BEFORE MD5SUMS.txt so both are covered by the manifest.
 # RC13-I02: INVENTORY must NEVER list itself (self-hash can never verify 100%).
@@ -9,7 +11,15 @@ APP="${1:-/workspace/checkride-v4}"
 DST="${2:-}"
 if [ -z "$DST" ]; then echo "usage: freeze-tree.sh <src-app> <dest-freeze-dir>"; exit 2; fi
 if [ -e "$DST" ]; then echo "REFUSE: $DST exists"; exit 2; fi
+
+# RC18: refuse screenshot / audit-output artifacts (png/jpg/webp/zip/trace/video,
+# shots/ dirs, known tests/dark output dirs). App images live only under icons/ and brand/.
+GUARD="$APP/tests/rc10/freeze-guard.py"
+if [ ! -f "$GUARD" ]; then echo "REFUSE: missing $GUARD"; exit 2; fi
+python3 "$GUARD" "$APP"
+
 cp -a "$APP" "$DST"
+python3 "$DST/tests/rc10/freeze-guard.py" "$DST"
 
 python3 - "$DST" <<'PY'
 import hashlib, json, os, sys, subprocess

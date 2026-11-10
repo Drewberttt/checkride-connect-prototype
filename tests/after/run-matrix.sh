@@ -95,7 +95,7 @@ wait_suites
 
 run_suite boundaries bash -c "cd \"$ROOT/tests/rc6\" && python3 boundaries.py"
 run_suite precision-parity python3 "$ROOT/tests/rc7/precision-parity.py"
-run_suite scope python3 "$ROOT/tests/rc10/scope-v724.py"
+run_suite scope python3 "$ROOT/tests/rc10/scope-v725.py"
 wait_suites
 
 # Also run D45-aligned focused-features (optional honesty lane; not in 4391 sum historically as "features"=d45)
@@ -160,7 +160,7 @@ for name in order:
     if name not in ('focused-features','onboarding','credit-parity','after-checkride','after-entry','overflow-audit'):
         pass_sum+=p; fail_sum+=f
 
-summary={'OUT':str(OUT),'SHOTS':os.environ.get('SHOTS'),'sw':'cc-proto-v7.24.0','suites':suites,
+summary={'OUT':str(OUT),'SHOTS':os.environ.get('SHOTS'),'sw':'cc-proto-v7.25.0','suites':suites,
          'pass_sum_core':pass_sum,'fail_sum_core':fail_sum,
          'pass_sum_all':sum(s['pass'] for s in suites),'fail_sum_all':sum(s['fail'] for s in suites)}
 (OUT/'matrix-summary.json').write_text(json.dumps(summary,indent=2))
