@@ -3,10 +3,12 @@
 # (self-entry fails by construction). Do not rewrite existing frozen trees with this.
 # RC18: freeze-guard.py must pass on the source and the dest (no leftover
 # screenshots / audit output). App images are allow-listed under icons/ and brand/.
+# RC19: PYTHONDONTWRITEBYTECODE=1; __pycache__ and *.pyc are forbidden.
 # Always writes SOURCE-SHA256.json (curated runtime) and INVENTORY-SHA256.json (all files)
 # into the dest tree BEFORE MD5SUMS.txt so both are covered by the manifest.
 # RC13-I02: INVENTORY must NEVER list itself (self-hash can never verify 100%).
 set -euo pipefail
+export PYTHONDONTWRITEBYTECODE=1
 APP="${1:-/workspace/checkride-v4}"
 DST="${2:-}"
 if [ -z "$DST" ]; then echo "usage: freeze-tree.sh <src-app> <dest-freeze-dir>"; exit 2; fi
@@ -28,7 +30,7 @@ root = Path(sys.argv[1])
 
 SOURCE_KEYS = [
     "app.js", "sw.js", "styles.css", "index.html", "data.js", "demo-date.js",
-    "cost-model.js", "elig-clock.js",
+    "cost-model.js", "elig-clock.js", "ics.js",
     "sample-fl-examiners.js", "sample-tx-examiners.js", "sample-ca-examiners.js",
     "sample-az-examiners.js", "sample-nc-examiners.js",
     "site.webmanifest", "runway.webmanifest", "favicon.ico",

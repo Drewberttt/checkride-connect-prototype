@@ -1,19 +1,19 @@
 {
   "app.js": {
-    "sha256": "e494eaa5fe117404f9a2ea21bf744ab57fd710cecfb7008741add8416111b4a4",
-    "size": 552949
+    "sha256": "ca2195cccf0977cbef49970d7f5cc94f3f57a7b74d580eca63551a48ba99bad7",
+    "size": 558131
   },
   "sw.js": {
-    "sha256": "daa30a0a3bc6bef4b5e927c853ee45be8ba8bd44b7364bd5fb11458a997fc685",
-    "size": 6696
+    "sha256": "7191658699b83bc9769db4d9e13bbd02484ffe807d119e4e0e78c3c60545f78d",
+    "size": 6686
   },
   "styles.css": {
-    "sha256": "9708ce2984bd6825cb6a666e88d7a1b024f6692561d7d12074bc3d05acad0f3e",
-    "size": 108563
+    "sha256": "8dafc2962956007540d30dee0931b9da389afc4ea485f4cabdc61aca066d798b",
+    "size": 109781
   },
   "index.html": {
-    "sha256": "937ed9116cf3015e5066c5b4dcb7492425a4951ca84ae4028f4edbd45540097b",
-    "size": 8558
+    "sha256": "0b2c6ec3cf9ff216d2ffb9fa7654fc4e6b36e52f9df398a2c083b3bc72aad67d",
+    "size": 8595
   },
   "data.js": {
     "sha256": "7b569b9be5be2af92840288ad9ce17a68a7fde4894eeb0d546e522ba834baf3a",
@@ -30,6 +30,10 @@
   "elig-clock.js": {
     "sha256": "19da1b77aebbb7ae6562892dea191dbb453bfa083c3a335b520fddce46395912",
     "size": 21039
+  },
+  "ics.js": {
+    "sha256": "daff47474e206fdbdbb31bd001e1b9f42bcb00293cdc3e9ab6eb1d405cf17f42",
+    "size": 12171
   },
   "sample-fl-examiners.js": {
     "sha256": "e780618fec39ce863c255eae09761874d56c2bf03c6646fdaf18990a5292d961",
@@ -64,8 +68,8 @@
     "size": 541
   },
   "tests/rc10/freeze-tree.sh": {
-    "sha256": "466ad3678c20967ebbd26c9be8aa789fbaf43593b8b93caa4690c6d1f733591f",
-    "size": 6392
+    "sha256": "16d87a2d4577fa098350bdcadcfa765ebe60b01925347b714e5b1fb04f65ce12",
+    "size": 6507
   },
   "brand/archive-png-pre-v2/checkride-connect-icon.png": {
     "sha256": "d97b64b4a3f30420683b8193a9ca46bae0b6b1d27727ac2475a220a3463e0db9",
@@ -299,6 +303,10 @@
     "sha256": "5ece5716fa8dfec01fa61309b975fc04ad9e3f7ddc8654a13766327db47495cc",
     "size": 38072
   },
+  "QA-HANDOFF-RC19.md": {
+    "sha256": "4ff000667b65b45d38f1ce8a952a56a02cd5ef04a0399818ed41f93a412f8379",
+    "size": 11952
+  },
   "QA-HANDOFF-RC6.md": {
     "sha256": "627327800ac219fc469ca2ffbf533b7fc4e6ba04d26bd546b8a89a8f11ad8e08",
     "size": 8531
@@ -316,8 +324,8 @@
     "size": 12020
   },
   "READY.txt": {
-    "sha256": "0d904ee8cd5c8a0825e48d80927acb0f8aed9b04f1dac18d7064be0f2a8bb0e6",
-    "size": 650
+    "sha256": "5f550e70d23c4c31f9bb05248d258032c8fb0e6f155ce2c538512442a74b9a55",
+    "size": 678
   },
   "PLAN.md": {
     "sha256": "432fa0e61bce34ed53505e61a3f2a8942ee0174ac5eab6a2fb2c4f12a7547103",

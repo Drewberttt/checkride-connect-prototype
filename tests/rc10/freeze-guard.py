@@ -6,8 +6,8 @@ Allowed image roots (the app's own assets only):
   brand/   (lockups, marks, including brand/archive-png-pre-v2/)
 
 Everywhere else, including tests/, these are forbidden:
-  - files with suffix .png .jpg .jpeg .webp .zip .webm .mp4 .trace
-  - directories named as screenshot / trace / video / known audit output dirs
+  - files with suffix .png .jpg .jpeg .webp .zip .webm .mp4 .trace .pyc .pyo
+  - directories named as screenshot / trace / video / known audit output dirs / __pycache__
 
 Exit 0 if clean, 1 if any artifact remains (prints each path).
 Usage: freeze-guard.py <tree-root>
@@ -57,6 +57,7 @@ ALLOWED_IMAGES = frozenset({
 
 FORBIDDEN_SUFFIXES = frozenset({
     ".png", ".jpg", ".jpeg", ".webp", ".zip", ".webm", ".mp4", ".trace",
+    ".pyc", ".pyo",
 })
 
 # Directory names that always mean test/audit output (any depth).
@@ -74,6 +75,7 @@ FORBIDDEN_DIR_NAMES = frozenset({
     "out-after",
     "out-d51",
     "after-final",
+    "__pycache__",
 })
 
 # Exact relative dir paths that are known audit output (names too generic to ban globally).

@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+import os
+import sys
+os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+sys.dont_write_bytecode = True
 """Tests for tests/rc10/freeze-guard.py — must fail a freeze tree that still has audit artifacts."""
 import shutil
 import sys
@@ -85,6 +89,14 @@ class FreezeGuardTest(unittest.TestCase):
         self.write("app.js", b"x")
         self.assertEqual(fg.main([str(self.tmp)]), 0)
 
+
+
+    def test_pycache_and_pyc_are_rejected(self):
+        self.write("tests/rc10/__pycache__/freeze-guard.cpython-313.pyc", b"\x00")
+        hits = fg.find_artifacts(self.tmp)
+        joined = " ".join(hits)
+        self.assertTrue("__pycache__" in joined or joined.endswith(".pyc"), hits)
+        self.assertEqual(fg.main([str(self.tmp)]), 1)
 
 if __name__ == "__main__":
     # The hyphen module is loaded as fg; also expose names used if imported as freeze_guard

@@ -36,29 +36,41 @@ function dpeIdsFromSample() {
   return unique;
 }
 
-const DARK_TOKENS = {
-  "--bg": "#0B1424", "--bg-tint": "#0E1830",
-  "--surface": "#121E33", "--surface-inset": "#0F1A2C", "--surface-hero": "#152645",
-  "--surface-hero-2": "#132240", "--surface-2": "#1E2A40", "--surface-3": "#24324A",
-  "--text": "#EAF0F8", "--muted": "#AEBACC", "--faint": "#9DA9BC", "--subtle": "#9DA9BC",
-  "--label": "#B3BFD1", "--placeholder": "#8C98AC",
-  "--border": "#24334C", "--border-strong": "#2B3B57", "--rule": "#2B3B57",
-  "--rule-accent": "#35508A", "--border-control": "#71819B",
-  "--brand": "#EAF0F8",
-  "--accent": "#3860E3", "--accent-strong": "#B4C7FF", "--accent-text": "#9DB4FF",
-  "--accent-soft": "#1B2C4F", "--accent-soft-2": "#22355C", "--on-accent": "#FFFFFF",
-  "--headline-accent": "#8FA9FF", "--date-num": "#B4C7FF", "--indicator": "#9DB4FF", "--focus": "#9DB4FF",
-  "--navy": "#050C18", "--on-navy": "#E6EEF9", "--on-navy-muted": "#B9C7DB",
-  "--navy-dot": "#A6C6F9", "--strip-text": "#B9CBE6",
-  "--on-warn": "#121E33",
-  "--good": "#4DBA6E", "--good-text": "#A3DDB0", "--good-soft": "#13301F",
-  "--warn": "#F0D48C", "--warn-text": "#F0D48C", "--warn-soft": "#33290F",
-  "--bad": "#F4ABA9", "--bad-text": "#F4ABA9", "--bad-soft": "#3A1C20",
-  "--info-soft": "#1B2C4F", "--info-text": "#AFC4FF",
-  "--neutral-soft": "#1E2A40", "--neutral-text": "#C0CADA", "--track": "#24324A",
-  "--verify-soft": "#2A2148", "--verify-text": "#CDBDFF",
-  "--board-bg": "#050C18", "--board-row": "#0F1A2C", "--board-text": "#E6EEF9", "--board-dim": "#B9C7DB",
-};
+function parseCustomProps(block) {
+  const out = {};
+  const re = /--([a-z0-9-]+)\s*:\s*([^;]+);/gi;
+  let m;
+  while ((m = re.exec(block))) out["--" + m[1]] = m[2].trim();
+  return out;
+}
+function tokensFromStyles(css, wantDark) {
+  const src = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  const re = wantDark
+    ? /:root\[data-theme=["']dark["']\]\s*\{/g
+    : /:root\s*,\s*:root\[data-theme=["']light["']\]\s*\{|:root\[data-theme=["']light["']\]\s*\{/g;
+  const out = {};
+  let match, found = 0;
+  while ((match = re.exec(src))) {
+    let i = match.index + match[0].length;
+    let depth = 1, body = "";
+    for (; i < src.length && depth > 0; i++) {
+      const ch = src[i];
+      if (ch === "{") depth++;
+      else if (ch === "}") { depth--; if (depth === 0) break; }
+      if (depth >= 1) body += ch;
+    }
+    Object.assign(out, parseCustomProps(body));
+    found++;
+  }
+  if (!found) throw new Error("theme block not found (" + (wantDark ? "dark" : "light") + ")");
+  return out;
+}
+const _stylesCss = fs.readFileSync(path.join(ROOT, "styles.css"), "utf8");
+const DARK_TOKENS = tokensFromStyles(_stylesCss, true);
+const LIGHT_TOKENS = tokensFromStyles(_stylesCss, false);
+if (!DARK_TOKENS["--focus"]) throw new Error("dark --focus missing from styles.css");
+if (!LIGHT_TOKENS["--focus"]) throw new Error("light --focus missing from styles.css");
+
 const LIGHT_ONLY = {
   "#F7FAFD": "--bg", "#F3F6FF": "--bg-tint", "#FFFFFF": "--surface", "#FFF": "--surface",
   "#F6F9FB": "--surface-inset", "#EDF5FC": "--surface-hero", "#F0F3F9": "--surface-2",
@@ -96,7 +108,7 @@ function suggestFor(kind, sel, fg, bg) {
     if (/muted|small|faint|placeholder|subtle|label/.test(sel)) bits.push("If --muted/--placeholder stays below 4.5:1, darken or lighten the dark token (pending BD).");
     else bits.push("Prefer --text on --bg/--surface, or --accent-text for links.");
   } else if (kind === "focus") {
-    bits.push("Use --focus (#9DB4FF, 9.13:1 on --bg) for the visible ring; avoid outline:none with a --accent-soft glow (1.2:1 on --surface). --accent (#3860E3) is only ~3.1:1 on --surface.");
+    bits.push("Use --focus (" + (DARK_TOKENS["--focus"] || "") + ") for the visible ring; avoid outline:none with a --accent-soft glow (1.2:1 on --surface). --accent (" + (DARK_TOKENS["--accent"] || "#3860E3") + ") is only ~3.1:1 on --surface.");
   } else if (kind === "ui") {
     bits.push("Component boundary: --border/#24334C is ~1.3–1.5:1 on --bg/--surface; use --border-control (#71819B, ≥3:1) or a new dark border token pending BD.");
   } else {

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Full prior matrix vs rc11 4391 lanes + onboarding. America/New_York box clock.
 set -uo pipefail
+export PYTHONDONTWRITEBYTECODE=1
 ROOT=/workspace/checkride-v4
 TOOLS=/workspace/checkride-test-tools
 STAMP=${STAMP:-$(date +%Y%m%d-%H%M%S)}
@@ -95,7 +96,7 @@ wait_suites
 
 run_suite boundaries bash -c "cd \"$ROOT/tests/rc6\" && python3 boundaries.py"
 run_suite precision-parity python3 "$ROOT/tests/rc7/precision-parity.py"
-run_suite scope python3 "$ROOT/tests/rc10/scope-v725.py"
+run_suite scope python3 "$ROOT/tests/rc10/scope-v726.py"
 wait_suites
 
 # Also run D45-aligned focused-features (optional honesty lane; not in 4391 sum historically as "features"=d45)
@@ -107,6 +108,8 @@ run_suite after-entry node "$ROOT/tests/after/after-entry.js"
 run_suite overflow-audit node "$ROOT/tests/after/overflow-audit.js"
 run_suite dpe-week node "$ROOT/tests/after/dpe-week.js"
 run_suite wait-time node "$ROOT/tests/after/wait-time.js"
+run_suite ics-unit node "$ROOT/tests/ics/ics-test.js"
+run_suite cal-ui node "$ROOT/tests/ics/cal-ui.js"
 wait_suites
 
 # Summarize
@@ -117,7 +120,7 @@ OUT=Path(os.environ['OUT'])
 suites=[]
 pass_sum=fail_sum=0
 # Parse each suite dir for pass/fail from json or log
-order=['gate','evidence-defaults','header','digest','features','legacy-place','raw-hours','signup-a11y','saved','saved-quota','text-precision','settled-pages','saved-booleans','native-browsers','pwa-saved','logo-qa085','boundaries','precision-parity','scope','focused-features','onboarding','credit-parity','after-checkride','after-entry','overflow-audit','dpe-week','wait-time']
+order=['gate','evidence-defaults','header','digest','features','legacy-place','raw-hours','signup-a11y','saved','saved-quota','text-precision','settled-pages','saved-booleans','native-browsers','pwa-saved','logo-qa085','boundaries','precision-parity','scope','focused-features','onboarding','credit-parity','after-checkride','after-entry','overflow-audit','dpe-week','wait-time','ics-unit','cal-ui']
 for name in order:
     d=OUT/name
     if not d.exists(): continue
@@ -160,7 +163,7 @@ for name in order:
     if name not in ('focused-features','onboarding','credit-parity','after-checkride','after-entry','overflow-audit'):
         pass_sum+=p; fail_sum+=f
 
-summary={'OUT':str(OUT),'SHOTS':os.environ.get('SHOTS'),'sw':'cc-proto-v7.25.0','suites':suites,
+summary={'OUT':str(OUT),'SHOTS':os.environ.get('SHOTS'),'sw':'cc-proto-v7.26.0','suites':suites,
          'pass_sum_core':pass_sum,'fail_sum_core':fail_sum,
          'pass_sum_all':sum(s['pass'] for s in suites),'fail_sum_all':sum(s['fail'] for s in suites)}
 (OUT/'matrix-summary.json').write_text(json.dumps(summary,indent=2))

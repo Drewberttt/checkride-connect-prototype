@@ -333,6 +333,19 @@
     "wait.aria": "Typical wait: [about 3 weeks]. Median [18] days; most students waited [12] to [25] days. Based on [9] bookings in the last 180 days.",
     "wait.aria.empty": "Not enough bookings yet. [We'll show a typical wait after 8 bookings in the last 180 days.]",
     "wait.proto": "Prototype: fictional sample bookings, not real wait times.",
+    "cal.ride.btn": "Add to calendar",
+    "cal.ride.aria": "Download a calendar file for this sample checkride. Nothing is sent.",
+    "cal.deadline.btn": "Add credit deadline to calendar",
+    "cal.deadline.aria": "Download a calendar file for the estimated retest credit deadline. Nothing is sent.",
+    "cal.helper": "Downloads a calendar file to this device. The file has no reminders. Nothing is sent.",
+    "cal.deadline.helper": "This date is an estimate. Confirm it with your examiner.",
+    "cal.toast.done": "Calendar file downloaded. Nothing was sent.",
+    "cal.err": "Couldn't download the calendar file on this device. Try again. Nothing was sent.",
+    "cal.ride.title": "Demo: [Private Pilot] checkride with [Linda Brooks] at [KVDF]",
+    "cal.ride.desc": "Prototype demo. Fictional sample data. [Private Pilot] with [Linda Brooks] on [Fri, Dec 4, 2026 · 9:00 AM ET, at KVDF]. Default length is 2 hours, in the airport's time zone. This file has no reminders or alarms. Nothing was booked or sent. Confirm the time with your examiner.",
+    "cal.deadline.title": "Demo: estimated retest credit deadline",
+    "cal.deadline.desc.lead": "Prototype demo. Fictional sample data. Estimated last day to keep credit: [Jul 9, 2026]. Confirm this date with your examiner.",
+    "cal.deadline.desc.foot": "This file has no reminders or alarms. Nothing was booked or sent.",
   };
   // D41: areas without cost data (NC) never get aircraft / CFI / travel / retest estimates. Only examiner-published sample fees show.
   // Nov 2: NC now has sourced cost data (sample-nc-examiners.js costData + per-examiner costModel). Areas without it still show estimate.no_area_data.
@@ -1474,13 +1487,17 @@
 
   // ---------- UI primitives ----------
   let lastToast = { msg: "", at: 0 };
-  function toast(msg, kind) {
+  function toast(msg, kind, opts) {
     // QA-016: one action can reach the same handler twice (Enter fires change + submit); show an identical message once.
     if (msg === lastToast.msg && Date.now() - lastToast.at < 1000) return;
     lastToast = { msg, at: Date.now() };
     const el = document.createElement("div");
     el.className = "toast" + (kind ? " " + kind : ""); // QA-073: kind "crit" = critical styling (stale-slot refusal)
     el.textContent = msg;
+    if (opts && (opts.role || opts.live)) {
+      el.setAttribute("role", opts.role || "status");
+      el.setAttribute("aria-live", opts.live || "polite");
+    }
     $("#toasts").appendChild(el);
     setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 260); }, 4200);
   }
@@ -2207,7 +2224,7 @@ const closeModal = () => {
         <p class="muted small" style="margin:.3rem 0">Within ${a.radius} nm of ${a.near}${a.before ? ` · before ${fmtDateA(a.before)}` : ""}${a.maxFee ? ` · up to ${money(a.maxFee)}` : ""}${dp ? ` · only ${esc(dp.name)}` : ""}</p>
         ${dp ? waitlistControl(dp, a.cert, a.id, false) : ""}
         <div class="row small"><span class="pill">Mock: email only (not sent)</span>
-        <a href="#/search?${toQuery({ cert: a.cert, near: a.near, radius: a.radius, before: a.before, maxFee: a.maxFee })}">${plural(matches, "matching opening")} now →</a></div>
+        <a class="target-44" data-cal-openings href="#/search?${toQuery({ cert: a.cert, near: a.near, radius: a.radius, before: a.before, maxFee: a.maxFee })}">${plural(matches, "matching opening")} now →</a></div>
         <div class="row small" style="margin-top:.6rem"><button class="btn ghost sm" data-action="sim-open" data-alert="${a.id}">Simulate a matching opening</button><span class="muted">Demo only: adds a labelled simulated slot and runs this alert.</span></div>
       </div>`;
     };
@@ -3594,6 +3611,10 @@ const closeModal = () => {
             <div style="margin-top:.75rem" id="req-status">${reqPill(b)}${holdEnded(b, slotOf(b)) ? holdEndedLine(b) : ""}${!isDpe && b.mine && b.status === "requested" ? `<p class="small muted" data-nodeposit style="margin:.4rem 0 0">No deposit until ${f} accepts</p>` : ""}${isDpe ? dpeHoldLine(b, s) + (b.status === "requested" ? dpeNoShowLine(b) : "") : ""}</div>
             ${!isDpe ? noShowCard(b, s, dp) : b.noShow ? `<p class="small" data-ns-marked="${b.id}"><span class="pill bad">No-show</span></p>` : ""}
             ${!isDpe && b.mine ? afterOutcomeEntry(b, s) : ""}
+            ${!isDpe && b.mine && b.status === "confirmed" ? `<div class="cal-ics" data-cal="ride">
+              <button type="button" class="btn secondary target-44" data-action="cal-ride" data-id="${b.id}" data-copy-key="cal.ride.btn" aria-label="${esc(COPY["cal.ride.aria"])}">${esc(COPY["cal.ride.btn"])}</button>
+              <p class="small muted" data-copy-key="cal.helper">${esc(COPY["cal.helper"])}</p>
+            </div>` : ""}
             ${b.status === "declined" && !isDpe ? `<p class="small" style="margin:.5rem 0 0">${f} couldn\u2019t take this request. Nothing was confirmed, so nothing changes on your side. <a href="#/search?cert=${b.cert}">See other openings</a></p>` : ""}
             ${b.status === "cancelled" ? `<div class="small cancel-outcome"><b>${cancelLine(b, s)}</b></div>` : ""}
           </section>
@@ -4573,6 +4594,11 @@ const closeModal = () => {
       <section class="card stack after-card">
         <p data-copy-key="${prefix}.body">${esc(COPY[prefix + ".body"])}</p>
         ${credit}
+        <div class="cal-ics" data-cal="deadline">
+          <p class="small muted" data-copy-key="cal.deadline.helper">${esc(COPY["cal.deadline.helper"])}</p>
+          <button type="button" class="btn secondary target-44" data-action="cal-deadline" data-copy-key="cal.deadline.btn" aria-label="${esc(COPY["cal.deadline.aria"])}">${esc(COPY["cal.deadline.btn"])}</button>
+          <p class="small muted" data-copy-key="cal.helper">${esc(COPY["cal.helper"])}</p>
+        </div>
         <h2 class="h3" data-copy-key="${prefix}.next_title">${esc(COPY[prefix + ".next_title"])}</h2>
         ${steps}
         <p class="small" data-copy-key="after.stop_failed_task">${esc(COPY["after.stop_failed_task"])}</p>
@@ -4979,7 +5005,61 @@ function countUp(root) {
     return s;
   }
 
+
+  const icsWhen = (sl) => `${fmtDate(sl.date, { weekday: "short", month: "short", day: "numeric", year: "numeric" })} \u00b7 ${slotTime(sl)}, at ${sl.airport}`;
+  const icsLocation = (sl) => {
+    const ap = apt(sl.airport);
+    return ap && ap.name ? `${ap.name} (${sl.airport})` : sl.airport;
+  };
+  const icsToastDone = () => toast(COPY["cal.toast.done"], null, { role: "status", live: "polite" });
+  const icsToastErr = () => toast(COPY["cal.err"], "crit", { role: "status", live: "polite" });
+  function downloadRideIcs(bookingId) {
+    try {
+      const ICS = window.CC_ICS;
+      if (!ICS) throw new Error("ics module missing");
+      const b = S.bookings.find((x) => x.id === bookingId && x.mine);
+      if (!b || b.status !== "confirmed") throw new Error("no confirmed booking");
+      const sl = slotOf(b), dp = dpeById(b.dpeId);
+      const certName = (certById(b.cert) || {}).name || b.cert;
+      const who = first(dp.name);
+      const icao = sl.airport;
+      const when = icsWhen(sl);
+      const summary = ICS.fillBrackets(COPY["cal.ride.title"], [certName, who, icao]);
+      const description = ICS.fillBrackets(COPY["cal.ride.desc"], [certName, who, when]);
+      const ev = ICS.buildCheckrideEvent({
+        bookingId: b.id, tz: slotTz(sl), startYmd: sl.date, startHm: sl.time,
+        summary, description, location: icsLocation(sl), airport: icao
+      });
+      const ics = ICS.buildCalendar({ events: [ev] });
+      ICS.downloadIcs(ICS.rideFilename(sl.date, icao), ics);
+      icsToastDone();
+    } catch (e) { icsToastErr(); }
+  }
+  function downloadDeadlineIcs() {
+    try {
+      const ICS = window.CC_ICS;
+      if (!ICS) throw new Error("ics module missing");
+      const q = Object.fromEntries(new URLSearchParams((location.hash.split("?")[1] || "")));
+      const ctx = afterDemoCtx(q);
+      const m = afterCreditMath(ctx.testBegan, ctx.stoppedOn);
+      const ymd = m.effective;
+      const lead = ICS.fillBrackets(COPY["cal.deadline.desc.lead"], [ICS.fmtYmdLong(ymd)]);
+      const description = ICS.deadlineDescription({
+        lead, window: COPY["after.credit.window"], day60: COPY["after.verify.day60"], foot: COPY["cal.deadline.desc.foot"]
+      });
+      const ev = ICS.buildDeadlineEvent({
+        bookingId: ctx.bookingId || ("demo-" + ctx.testBegan + "-" + ctx.stoppedOn),
+        startYmd: ymd, summary: COPY["cal.deadline.title"], description
+      });
+      const ics = ICS.buildCalendar({ events: [ev] });
+      ICS.downloadIcs(ICS.deadlineFilename(ymd), ics);
+      icsToastDone();
+    } catch (e) { icsToastErr(); }
+  }
+
   const actions = {
+    "cal-ride": (el) => downloadRideIcs(el.dataset.id),
+    "cal-deadline": () => downloadDeadlineIcs(),
     "set-role": (el) => { S.role = el.dataset.role; go(el.dataset.to || HOME[S.role]); },
     "view-note": (el) => { const b = S.bookings.find((x) => x.id === el.dataset.id); if (!b || !b.note) return; const f = first(dpeById(b.dpeId).name);
       openModal(`<h2>${S.role === "dpe" ? `${esc(first(b.applicant))}\u2019s note` : `Your note to ${esc(f)}`}</h2><blockquote class="review">${esc(b.note)}</blockquote><p class="small muted">Read-only. Messaging isn\u2019t part of this prototype.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-modal">Close</button></div>`); },
