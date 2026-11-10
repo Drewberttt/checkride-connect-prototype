@@ -29,6 +29,11 @@
     "sha256": "9de4a78a29aa39ac414be96ab89377c8dad84b545dc19f010f7e791f6e738b2f",
     "size": 3202
   },
+  "QA-HANDOFF-DEV-RC14-I01.md": {
+    "mtime_ns": 1794322644955394171,
+    "sha256": "50a06db8efe629cb64f3bdf2c24912b6c4db4fec6bcbd72376c9ff2674858957",
+    "size": 3213
+  },
   "QA-HANDOFF-DEV-SAVED.md": {
     "mtime_ns": 1794241477520593083,
     "sha256": "7625e3c17c4c3abd9251d4798c91bb801c3c25e5b8cb5afad11720bc43a19e44",
@@ -54,6 +59,11 @@
     "sha256": "0efa8290573f940ad2cda85839990d24c5ff82a61aec92a91fcfde606451cb40",
     "size": 3137
   },
+  "QA-HANDOFF-RC15.md": {
+    "mtime_ns": 1794325483467915883,
+    "sha256": "6e36e3cc31f5256af28200af4c1724751c03d31d45a6327bc29b4e1e647ec272",
+    "size": 6370
+  },
   "QA-HANDOFF-RC6.md": {
     "mtime_ns": 1794081664521256915,
     "sha256": "627327800ac219fc469ca2ffbf533b7fc4e6ba04d26bd546b8a89a8f11ad8e08",
@@ -75,19 +85,19 @@
     "size": 12020
   },
   "READY.txt": {
-    "mtime_ns": 1794265718368048261,
-    "sha256": "e6eeae0bb4124a4a724143336d7554d9ec3cb0a8f69773f558cf6634661a35fb",
-    "size": 396
+    "mtime_ns": 1794325483467915883,
+    "sha256": "ffc96b1ba4cfc73b6b5b6aa2cdcaa40148c7e37bc1d631843d22f250bd419608",
+    "size": 624
   },
   "SOURCE-SHA256.json": {
-    "mtime_ns": 1794265718440048022,
-    "sha256": "03ee6733d5caad9ef1442732010253366cad9dcaff928e368b48470a08f7bdab",
-    "size": 10404
+    "mtime_ns": 1794325483547917333,
+    "sha256": "03de300e5eb1fc3673dd4689ba5e803ff9d42338dc1748491dba31c0596c06c8",
+    "size": 10673
   },
   "app.js": {
-    "mtime_ns": 1794264805202551953,
-    "sha256": "f469f3c6e23d390254557311f5a21c65c85829288e7a909ffc28bc4954e49e0f",
-    "size": 513245
+    "mtime_ns": 1794323369764363975,
+    "sha256": "1bcf8557cc00cc8d95b6ebe8d0a30ef23128e17a2f2d4c03806d12af15dc662e",
+    "size": 549187
   },
   "brand/archive-png-pre-v2/checkride-connect-icon.png": {
     "mtime_ns": 1794081656585212522,
@@ -405,14 +415,14 @@
     "size": 1010
   },
   "styles.css": {
-    "mtime_ns": 1794264890082372078,
-    "sha256": "bc73893ace6902ede6c8b8c08ab723fe5bf1503fe5b297061adf797b15bd8881",
-    "size": 96554
+    "mtime_ns": 1794323285648678323,
+    "sha256": "fba0b3ece69b002a581a7ec92bdc7febd1b3330ee79daf390c8570353a27403b",
+    "size": 101324
   },
   "sw.js": {
-    "mtime_ns": 1794264676611047098,
-    "sha256": "8183e9ffd08c15fb5310288a6b22a0480451705189bfa3478840d1b85381bca4",
-    "size": 6622
+    "mtime_ns": 1794323309324563571,
+    "sha256": "d5ecb3d8e9931ee77bfcb3de0f4baa2f1638f3a87c7aaf3f88d0187ca238b33c",
+    "size": 6619
   },
   "tests/after/COPY-CHANGES.md": {
     "mtime_ns": 1794262867641090165,
@@ -444,10 +454,15 @@
     "sha256": "526019139e645fca1571f1967b48519fb37b4a1d073f68105d510f06fca30dc9",
     "size": 2811
   },
+  "tests/after/dpe-week.js": {
+    "mtime_ns": 1794323558199659934,
+    "sha256": "253c881d6af61be5d03f76a7506c52606289494fa69508c5278d0c12e531a359",
+    "size": 18673
+  },
   "tests/after/overflow-audit.js": {
-    "mtime_ns": 1794264676595047159,
-    "sha256": "4b22b8410fb835f3614929fc6d77aaaae3128656db059929a60ed40f05a5ebe7",
-    "size": 4193
+    "mtime_ns": 1794323309300563688,
+    "sha256": "b12e151f34f7e277e9d53716d2a7528b06a55eb36443684b0ce20685f77f46e6",
+    "size": 5525
   },
   "tests/after/reference.py": {
     "mtime_ns": 1794259298150440300,
@@ -460,9 +475,9 @@
     "size": 59039
   },
   "tests/after/run-matrix.sh": {
-    "mtime_ns": 1794264676631047021,
-    "sha256": "ae458acd891145359e0271961f697927e8522dc97934a082e0a4f88928d3087c",
-    "size": 7788
+    "mtime_ns": 1794323309364563377,
+    "sha256": "d5dbb49ea4c60795731a8052c26c3f80d163f096fa5e7193b5f2a7b6c75c7d85",
+    "size": 7855
   },
   "tests/next-pass/README.md": {
     "mtime_ns": 1794081665189268647,
@@ -545,8 +560,8 @@
     "size": 5876
   },
   "tests/rc10/logo-qa085.js": {
-    "mtime_ns": 1794264676631047021,
-    "sha256": "02be2e2ba527b13198fb9b6d5fb2a59ded3d243a07d2106ae9c2a173aeec29f3",
+    "mtime_ns": 1794323309364563377,
+    "sha256": "df65040b267819d1f3244e5821c412315c2bccd7d6d63c13b16613e375aa2e96",
     "size": 6094
   },
   "tests/rc10/paths.json": {
@@ -555,9 +570,9 @@
     "size": 294
   },
   "tests/rc10/pwa-saved.js": {
-    "mtime_ns": 1794264676631047021,
-    "sha256": "3e28ba98bf202668916732aa0bcff337a42d006fb3bb55a4b20b8fc2c0866f22",
-    "size": 13513
+    "mtime_ns": 1794323309364563377,
+    "sha256": "afc9352c91775525f013cfc1080fd8d8d0cf829e74a60a14f39c53ba62d8fd50",
+    "size": 13683
   },
   "tests/rc10/saved-quota.js": {
     "mtime_ns": 1794243155488142486,
@@ -603,6 +618,16 @@
     "mtime_ns": 1794264676631047021,
     "sha256": "1e92fe0425a0b7c55efddfd9038568a6ecbd30d4564068b4341adf050c39cd97",
     "size": 5212
+  },
+  "tests/rc10/scope-v722.py": {
+    "mtime_ns": 1794322562251636180,
+    "sha256": "836ace32d5cfd492072a98c2681242e0de9e9cdacff863ff72c5299bc2bbd0c2",
+    "size": 5843
+  },
+  "tests/rc10/scope-v723.py": {
+    "mtime_ns": 1794323309344563474,
+    "sha256": "cf93a821d9578a4c13555c6c2413e40709e61abc8d078106114169ba6e045010",
+    "size": 5843
   },
   "tests/rc10/upgrade-server.py": {
     "mtime_ns": 1794241303657679545,

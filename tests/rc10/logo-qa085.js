@@ -14,7 +14,7 @@ const check=(name,yes,data)=>{results.push({name,pass:!!yes,data});yes?pass++:fa
   const sw=fs.readFileSync(APP+'/sw.js','utf8');
   check('BRAND_LOGO site uses SVG lockups', /checkride-connect-logo-light\.svg/.test(app)&&/checkride-connect-logo-dark\.svg/.test(app)&&!/checkride-connect-logo-light\.png/.test(app.split('BRAND_LOGO')[1].slice(0,500)));
   check('index.html SVG lockups 133x38 alt preserved', /src="brand\/checkride-connect-logo-light\.svg" width="133" height="38" alt="Checkride Connect"/.test(idx)&&/src="brand\/checkride-connect-logo-dark\.svg" width="133" height="38" alt="Checkride Connect"/.test(idx));
-  check('SW v7.21.0', /const VERSION = "cc-proto-v7\.21\.0"/.test(sw));
+  check('SW v7.23.0', /const VERSION = "cc-proto-v7\.23\.0"/.test(sw));
   check('SW precaches SVG lockups + mark-on-navy', /brand\/checkride-connect-logo-light\.svg/.test(sw)&&/brand\/checkride-connect-mark-on-navy\.svg/.test(sw)&&!/brand\/checkride-connect-logo-light\.png/.test(sw));
   for (const rel of [
     'brand/checkride-connect-logo-light.svg','brand/checkride-connect-logo-dark.svg',

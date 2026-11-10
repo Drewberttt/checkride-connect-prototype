@@ -234,7 +234,89 @@
     "clock.more.retest_legend": "Retesting", "clock.more.retest_toggle": "I\u2019m retaking a checkride I didn\u2019t pass",
     "clock.more.fail_date": "Date of the test you didn\u2019t pass", "clock.more.end_date": "Retest endorsement date",
     "clock.more.trainer": "Did the instructor who endorsed you give the extra training?", "clock.more.rec": "Does your new application have a new instructor recommendation?",
-    "clock.more.spin_fail": "Was the area you didn\u2019t pass stall awareness, spin entry, spins or spin recovery?", "clock.more.spin_ac": "Will you bring an aircraft certificated for spins?" };
+    "clock.more.spin_fail": "Was the area you didn\u2019t pass stall awareness, spin entry, spins or spin recovery?", "clock.more.spin_ac": "Will you bring an aircraft certificated for spins?",
+    "wk.today.prompt.title": "Confirm this week's availability",
+    "wk.today.prompt.body_never": "Students don't see your openings until you confirm a week. Takes about a minute. Prototype: saved in this browser only.",
+    "wk.today.prompt.body": "A quick look at this week (Nov 9–15). One tap if it still looks right.",
+    "wk.today.prompt.body_amber": "Last confirmed [10 days ago]. A fresh confirm keeps your openings visible as usual.",
+    "wk.today.prompt.body_stale": "Your openings are hidden from students until you confirm this week. Nothing was sent.",
+    "wk.today.prompt.body_ok": "Confirmed [today]. You can update any time.",
+    "wk.today.prompt.cta": "Review this week",
+    "wk.cal.link": "Confirm this week",
+    "wk.nudge.due": "Week not confirmed yet",
+    "wk.nudge.stale": "Confirmation is out of date",
+    "wk.eyebrow": "YOUR WEEK",
+    "wk.headline": "Confirm this week. Keep it current.",
+    "wk.range": "[Mon, Nov 9] – [Sun, Nov 15] · [KVDF]",
+    "wk.helper": "One tap if this still looks right. Edits stay in this browser. Nothing is sent. Requested or confirmed checkrides are never removed.",
+    "wk.proto": "Prototype: fictional sample openings. Saved on this device only.",
+    "wk.back_cal": "Calendar",
+    "wk.confirm": "Looks right, confirm week",
+    "wk.confirm.aria": "Confirm this week's availability as shown",
+    "wk.toast.confirmed": "Week confirmed. Students can see it's current. Nothing was sent.",
+    "wk.toast.undo": "Undo",
+    "wk.toast.undone": "Confirmation undone.",
+    "wk.confirmed.stamp": "Confirmed [Tue, Nov 10 · 10:00 AM ET]",
+    "wk.confirmed.edit": "Edit week",
+    "wk.day.legend": "[Mon, Nov 9]",
+    "wk.day.open": "Open",
+    "wk.day.closed": "Closed",
+    "wk.day.aria.off": "[Monday, Nov 9] closed",
+    "wk.day.aria.on": "[Monday, Nov 9] open",
+    "wk.day.summary": "[2 openings] · [9:00 AM] and [1:00 PM] · [KVDF]",
+    "wk.day.summary_empty": "Open, no times yet · Add a time",
+    "wk.day.summary_closed": "Closed · no openings",
+    "wk.day.summary_booked": "[1] requested or confirmed · kept",
+    "wk.day.summary_oneoff": "[1] one-off opening, not part of the weekly pattern",
+    "wk.day.locked": "This day has started. Times aren't edited here.",
+    "wk.day.add": "Add a time",
+    "wk.sheet.add_title": "Add a time · [Mon, Nov 9]",
+    "wk.sheet.edit_title": "Edit time · [Mon, Nov 9]",
+    "wk.sheet.start": "Start time (airport local)",
+    "wk.sheet.airport": "Airport",
+    "wk.sheet.note": "Note (optional)",
+    "wk.sheet.save": "Save time",
+    "wk.sheet.cancel": "Cancel",
+    "wk.sheet.remove": "Remove this time",
+    "wk.err.duplicate": "That start time is already on [Mon, Nov 9]. Pick a different start.",
+    "wk.err.past": "That start time has already passed. Pick a later time.",
+    "wk.err.held": "This time has a request or confirmed checkride, so it stays on the calendar.",
+    "wk.bar.one": "[1] unsaved change",
+    "wk.bar.many": "[3] unsaved changes",
+    "wk.bar.save": "Save and confirm week",
+    "wk.bar.discard": "Discard",
+    "wk.discard.title": "Discard unsaved changes?",
+    "wk.discard.body": "[3] unsaved changes will be lost. Your last confirmation stays as it is. Nothing was sent.",
+    "wk.discard.confirm": "Discard changes",
+    "wk.discard.keep": "Keep editing",
+    "wk.empty.title": "No openings this week",
+    "wk.empty.body": "You can still confirm a closed week, or add a time. Students won't see dates until something is open and confirmed.",
+    "wk.empty.cta": "Add a time",
+    "wk.toast.closed_week": "Week confirmed with nothing open. Students won't see new dates until you add some. Nothing was sent.",
+    "wk.loading": "Loading this week's openings…",
+    "wk.err.save": "Couldn't save on this device. Try again. Nothing was sent.",
+    "wk.partial": "You have unsaved edits. Save and confirm, or discard them.",
+    "wk.next.title": "Next week",
+    "wk.next.helper": "A look ahead. Confirming this week doesn't change next week.",
+    "wk.next.link": "Open next week",
+    "wk.next.summary": "[3] days open · [5] openings",
+    "wk.fresh.just_now": "Just now",
+    "wk.fresh.minute": "Confirmed 1 minute ago",
+    "wk.fresh.minutes": "Confirmed [12] minutes ago",
+    "wk.fresh.hour": "Confirmed 1 hour ago",
+    "wk.fresh.hours": "Confirmed [3] hours ago",
+    "wk.fresh.today": "Confirmed today",
+    "wk.fresh.yesterday": "Confirmed yesterday",
+    "wk.fresh.days": "Confirmed [2] days ago",
+    "wk.fresh.amber": "Last confirmed [10] days ago",
+    "wk.fresh.stale": "Not recently confirmed",
+    "wk.fresh.stale_detail": "Openings are hidden until the examiner confirms this week.",
+    "wk.fresh.never": "Availability not yet confirmed",
+    "wk.fresh.abs": "Last confirmed [Tue, Nov 10, 2026, 10:00 AM ET]",
+    "wk.fresh.proto": "Prototype: fictional stamp, stored in this browser.",
+    "wk.live.confirmed": "Week confirmed [Tue, Nov 10 · 10:00 AM ET].",
+    "wk.live.unsaved": "[3] unsaved changes.",
+  };
   // D41: areas without cost data (NC) never get aircraft / CFI / travel / retest estimates. Only examiner-published sample fees show.
   // Nov 2: NC now has sourced cost data (sample-nc-examiners.js costData + per-examiner costModel). Areas without it still show estimate.no_area_data.
   const NO_EST_AREA = IS_NC && !(NC && NC.costData === true);
@@ -743,16 +825,17 @@
     const el = document.getElementById("saved-live");
     if (el) { el.textContent = ""; requestAnimationFrame(() => { el.textContent = msg; }); }
   }
-  function toastUndo(msg, undo) {
+  function toastUndo(msg, undo, opts) {
     toast(msg);
     const host = $("#toasts"); if (!host) return;
     const last = host.lastElementChild; if (!last) return;
     last.setAttribute("role", "status");
     const b = document.createElement("button");
-    b.type = "button"; b.className = "btn ghost sm"; b.textContent = COPY["saved.toast.undo"]; b.setAttribute("data-action", "saved-undo");
+    b.type = "button"; b.className = "btn ghost sm"; b.textContent = (opts && opts.undoLabel) || COPY["saved.toast.undo"]; b.setAttribute("data-action", "saved-undo");
     b.style.marginLeft = ".5rem";
     last.appendChild(b);
     ui.savedUndo = undo;
+    ui.undoDoneMsg = (opts && opts.undone) || null;
     ui.savedAnnounce = msg;
     clearTimeout(ui.savedUndoTimer);
     const arm = () => { clearTimeout(ui.savedUndoTimer); ui.savedUndoTimer = setTimeout(() => { b.remove(); ui.savedUndo = null; }, 5000); };
@@ -803,26 +886,361 @@
   };
 
   // ---------- availability freshness (per /workspace/dpe-availability-proposal.md) ----------
+  const wkFill = (key, fills) => {
+    let s = COPY[key] || "";
+    (fills || []).forEach((v) => { s = s.replace(/\[[^\]]*\]/, String(v)); });
+    return s;
+  };
+  const fmtTsParts = (ts, withYear) => {
+    if (ts == null || !Number.isFinite(+ts)) return "";
+    const opts = { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
+    if (withYear) opts.year = "numeric";
+    const parts = new Intl.DateTimeFormat("en-US", opts).formatToParts(new Date(ts));
+    const g = (t) => (parts.find((p) => p.type === t) || {}).value || "";
+    const clock = `${g("hour")}:${g("minute")} ${g("dayPeriod")}`;
+    const day = `${g("weekday")}, ${g("month")} ${g("day")}`;
+    return (withYear ? `${day}, ${g("year")}, ${clock}` : `${day} · ${clock}`) + " " + readerZoneLabel();
+  };
+  const fmtTsConfirm = (ts) => fmtTsParts(ts, false).replace(/\s+/g, " ").trim();
+  const fmtTsAbs = (ts) => fmtTsParts(ts, true).replace(/\s+/g, " ").trim();
+  const weekDates = (tz, offset) => {
+    const today = todayIn(tz);
+    const dt = parseIso(today);
+    const mon = new Date(dt);
+    mon.setDate(dt.getDate() - ((dt.getDay() + 6) % 7) + (offset || 0) * 7);
+    return Array.from({ length: 7 }, (_, i) => iso(new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i)));
+  };
+  const wkSlotStartMs = (date, time, tz) => zonedEpoch(date, time, tz);
+  // Start-only validation (D48): duplicate start on the same day, past start, lead time (date <= today in airport TZ).
+  const validateWeekSlot = (opts) => {
+    const date = opts.date, time = opts.time, tz = opts.tz, today = opts.today || todayIn(tz);
+    const used = opts.used || [];
+    const excludeTime = opts.excludeTime;
+    if (!time) return "wk.err.past";
+    if (date < today) return "wk.err.past";
+    if (date === today) return "wk.day.locked";
+    const check = used.filter((t) => t !== excludeTime);
+    if (check.includes(time)) return "wk.err.duplicate";
+    if (wkSlotStartMs(date, time, tz) <= Date.now()) return "wk.err.past";
+    return null;
+  };
+
   const availOf = (id) => {
     S.avail = S.avail || {};
-    if (!S.avail[id]) S.avail[id] = { confirmedAt: Date.now(), updatedAt: Date.now(), reminderDay: 0, pauseReminders: false };
+    if (!S.avail[id]) S.avail[id] = { confirmedAt: null, updatedAt: null, reminderDay: 0, pauseReminders: false };
     return S.avail[id];
   };
-  // ok: 0-7 days since confirmation. amber: 8-14 (shown with a tag). stale: over 14 (slots hidden from search/booking). reverify: over 90.
+  // ok: 0-7 days since confirmation. amber: 8-14 (shown with a tag). stale: over 14 (slots hidden). reverify: over 90.
+  // Never-confirmed (null) is its own level; isStale treats it like hidden openings (D48 rec 5).
   const freshOf = (id) => {
     const a = availOf(id);
+    if (a.confirmedAt == null) return { days: null, a, level: "never" };
     const days = Math.max(0, Math.floor((Date.now() - a.confirmedAt) / DAY));
     return { days, a, level: days > 90 ? "reverify" : days > 14 ? "stale" : days > 7 ? "amber" : "ok" };
   };
-  const isStale = (id) => { const l = freshOf(id).level; return l === "stale" || l === "reverify"; };
+  const isStale = (id) => { const l = freshOf(id).level; return l === "stale" || l === "reverify" || l === "never"; };
   const agoText = (days) => (days <= 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`);
-  const freshBadge = (id) => {
+  const freshVisible = (id) => {
+    const a = availOf(id);
+    if (a.confirmedAt == null) return { level: "never", text: COPY["wk.fresh.never"], key: "wk.fresh.never", abs: "" };
+    const ts = a.confirmedAt;
     const f = freshOf(id);
-    if (f.level === "ok") return `<span class="pill good">Availability confirmed ${agoText(f.days)}</span>`;
-    if (f.level === "amber") return `<span class="pill warn">Confirmed ${agoText(f.days)}: may be out of date, confirm with the examiner</span>`;
-    return `<span class="pill bad">Availability not recently confirmed. Contact the examiner</span>`;
+    const rTz = readerTz();
+    const calDays = Math.round((parseIso(ymdIn(Date.now(), rTz)) - parseIso(ymdIn(ts, rTz))) / DAY);
+    const mins = Math.floor((Date.now() - ts) / 60000);
+    const hours = Math.floor((Date.now() - ts) / 3600000);
+    let text, key;
+    if (f.level === "stale" || f.level === "reverify") { text = COPY["wk.fresh.stale"]; key = "wk.fresh.stale"; }
+    else if (f.level === "amber") { text = wkFill("wk.fresh.amber", [String(f.days)]); key = "wk.fresh.amber"; }
+    else if (calDays >= 2) { text = wkFill("wk.fresh.days", [String(calDays)]); key = "wk.fresh.days"; }
+    else if (calDays === 1) { text = COPY["wk.fresh.yesterday"]; key = "wk.fresh.yesterday"; }
+    else if (hours >= 12) { text = COPY["wk.fresh.today"]; key = "wk.fresh.today"; }
+    else if (hours >= 2) { text = wkFill("wk.fresh.hours", [String(hours)]); key = "wk.fresh.hours"; }
+    else if (hours === 1) { text = COPY["wk.fresh.hour"]; key = "wk.fresh.hour"; }
+    else if (mins >= 2) { text = wkFill("wk.fresh.minutes", [String(mins)]); key = "wk.fresh.minutes"; }
+    else if (mins === 1) { text = COPY["wk.fresh.minute"]; key = "wk.fresh.minute"; }
+    else { text = COPY["wk.fresh.just_now"]; key = "wk.fresh.just_now"; }
+    return { level: f.level, text, key, abs: wkFill("wk.fresh.abs", [fmtTsAbs(ts)]) };
+  };
+  const freshBadge = (id) => {
+    const v = freshVisible(id);
+    const title = (v.abs ? v.abs + " · " : "") + COPY["wk.fresh.proto"];
+    const aria = v.abs || v.text;
+    const tone = v.level === "ok" ? "wk-fresh-ok" : v.level === "amber" ? "wk-fresh-amber" : v.level === "never" ? "wk-fresh-never" : "wk-fresh-stale";
+    return `<span class="pill wk-fresh ${tone}" data-copy-key="${v.key}" data-fresh-level="${v.level}" title="${esc(title)}" aria-label="${esc(aria)}">${esc(v.text)}</span>`;
   };
   const touchAvail = (id) => { const a = availOf(id); a.confirmedAt = a.updatedAt = Date.now(); };
+
+  function weekConfirmPrompt(dp) {
+    if (!dp) return "";
+    const tz = aptTz(dp.home);
+    const dates = weekDates(tz, 0);
+    const f = freshOf(dp.id);
+    const ca = availOf(dp.id).confirmedAt;
+    const thisWeek = !!(ca && ymdIn(ca, tz) >= dates[0] && ymdIn(ca, tz) <= dates[6]);
+    let bodyKey = "wk.today.prompt.body", fills = [], nudge = "";
+    if (f.level === "never") { bodyKey = "wk.today.prompt.body_never"; nudge = "due"; }
+    else if (f.level === "stale" || f.level === "reverify") { bodyKey = "wk.today.prompt.body_stale"; nudge = "stale"; }
+    else if (f.level === "amber") { bodyKey = "wk.today.prompt.body_amber"; fills = [agoText(f.days)]; nudge = "due"; }
+    else if (!thisWeek) { bodyKey = "wk.today.prompt.body"; nudge = "due"; }
+    else { bodyKey = "wk.today.prompt.body_ok"; const vis = freshVisible(dp.id); fills = [(vis.text || "").replace(/^Confirmed\s+/i, "").replace(/\.$/, "") || "today"]; }
+    let body = fills.length ? wkFill(bodyKey, fills) : COPY[bodyKey];
+    if (bodyKey === "wk.today.prompt.body") {
+      const range = `${fmtDate(dates[0], { month: "short", day: "numeric" })}–${fmtDate(dates[6], { month: "short", day: "numeric" })}`;
+      body = body.replace("Nov 9–15", range);
+    }
+    const quiet = bodyKey === "wk.today.prompt.body_ok";
+    const chip = nudge === "stale" ? `<span class="pill wk-nudge wk-nudge-stale" data-copy-key="wk.nudge.stale">${esc(COPY["wk.nudge.stale"])}</span>`
+      : nudge === "due" ? `<span class="pill wk-nudge wk-nudge-due" data-copy-key="wk.nudge.due">${esc(COPY["wk.nudge.due"])}</span>` : "";
+    const cta = quiet
+      ? `<a class="text-link" href="#/dpe-week" data-copy-key="wk.today.prompt.cta">${esc(COPY["wk.today.prompt.cta"])}</a>`
+      : `<a class="btn" href="#/dpe-week" data-copy-key="wk.today.prompt.cta">${esc(COPY["wk.today.prompt.cta"])}</a>`;
+    return `<section class="card wk-today-prompt${quiet ? " is-quiet" : ""}" id="wk-today-prompt">
+      <div class="row spread" style="align-items:flex-start;gap:.75rem">
+        <div>
+          <h2 style="margin:0 0 .35rem" data-copy-key="wk.today.prompt.title">${esc(COPY["wk.today.prompt.title"])}</h2>
+          <p class="small" style="margin:0" data-copy-key="${bodyKey}">${esc(body)}</p>
+          <div style="margin-top:.45rem">${freshBadge(dp.id)} ${chip}</div>
+        </div>
+        <div class="row">${cta}</div>
+      </div>
+    </section>`;
+  }
+
+  const wkPlain = (days) => days.map((d) => ({ date: d.date, open: !!d.open, slots: (d.slots || []).map((s) => ({ id: s.id, time: s.time, airport: s.airport, note: s.note || "", status: s.status, src: s.src || "", simulated: !!s.simulated, bookingId: s.bookingId || null })) }));
+  const wkLoadDays = (dp, dates) => dates.map((d) => {
+    const all = S.slots.filter((x) => x.dpeId === dp.id && x.date === d && x.status !== "removed").sort((a, b) => a.time.localeCompare(b.time)).map((s) => ({ ...s }));
+    const pattern = all.filter((x) => !isOneOff(x));
+    return { date: d, open: pattern.length > 0, slots: all };
+  });
+  const wkDirty = () => !!(ui.wk && ui.wk.snap && JSON.stringify(wkPlain(ui.wk.days)) !== ui.wk.snap);
+  const wkChangeCount = () => {
+    if (!ui.wk || !ui.wk.snap) return 0;
+    const a = JSON.stringify(wkPlain(ui.wk.days)), b = ui.wk.snap;
+    if (a === b) return 0;
+    const prev = JSON.parse(ui.wk.snap), cur = wkPlain(ui.wk.days);
+    let n = 0;
+    cur.forEach((d, i) => {
+      const p = prev[i] || { open: false, slots: [] };
+      if (!!d.open !== !!p.open) n++;
+      const pk = p.slots.map((s) => s.id + "|" + s.time + "|" + s.airport + "|" + (s.note || "") + "|" + s.status).sort().join(";");
+      const ck = d.slots.map((s) => s.id + "|" + s.time + "|" + s.airport + "|" + (s.note || "") + "|" + s.status).sort().join(";");
+      if (pk !== ck) n += Math.max(1, Math.abs((d.slots || []).length - (p.slots || []).length) || 1);
+    });
+    return Math.max(1, n);
+  };
+  const wkEnsure = (dp, q) => {
+    const offset = (q && (q.week === "1" || q.week === "next")) ? 1 : 0;
+    const tz = aptTz(dp.home);
+    const dates = weekDates(tz, offset);
+    const key = dp.id + ":" + dates[0] + ":" + offset;
+    if (!ui.wk || ui.wk.key !== key) {
+      const days = wkLoadDays(dp, dates);
+      ui.wk = { key, dpeId: dp.id, offset, dates, days, snap: JSON.stringify(wkPlain(days)), sheet: null, discard: false, confirmedJust: false, live: "", opener: null };
+    }
+    return ui.wk;
+  };
+  const wkDaySummary = (day, dp) => {
+    const pattern = (day.slots || []).filter((s) => !isOneOff(s) && s.status === "open");
+    const held = (day.slots || []).filter((s) => s.status && s.status !== "open" && s.status !== "removed");
+    const ones = (day.slots || []).filter(isOneOff);
+    const bits = [];
+    if (!day.open) bits.push(COPY["wk.day.summary_closed"]);
+    else if (!pattern.length) bits.push(COPY["wk.day.summary_empty"]);
+    else {
+      const times = pattern.map((s) => fmtTime(s.time));
+      const apt = pattern[0].airport || dp.home;
+      const count = pattern.length === 1 ? "1 opening" : `${pattern.length} openings`;
+      if (times.length === 1) {
+        let s = wkFill("wk.day.summary", [count, times[0], "\u0000", apt]);
+        s = s.replace(" and \u0000", "").replace(" and  ·", " ·");
+        bits.push(s);
+      } else {
+        bits.push(wkFill("wk.day.summary", [count, times.slice(0, -1).join(", "), times[times.length - 1], apt]));
+      }
+    }
+    if (held.length) bits.push(wkFill("wk.day.summary_booked", [String(held.length)]));
+    if (ones.length) bits.push(wkFill("wk.day.summary_oneoff", [String(ones.length)]));
+    return bits.join(" ");
+  };
+  function applyWeekDraft(dp, days) {
+    const tz = aptTz(dp.home);
+    const today = todayIn(tz);
+    let partial = false, changed = 0;
+    days.forEach((day) => {
+      if (day.date <= today) return;
+      const all = S.slots.filter((x) => x.dpeId === dp.id && x.date === day.date && x.status !== "removed");
+      const cur = all.filter((x) => !isOneOff(x));
+      const taken = cur.filter((x) => x.status !== "open");
+      const opens = cur.filter((x) => x.status === "open");
+      if (!day.open) {
+        opens.forEach((x) => { x.status = "removed"; changed++; });
+        if (taken.length) partial = true;
+        return;
+      }
+      const draft = (day.slots || []).filter((s) => !isOneOff(s) && s.status === "open");
+      const keepIds = new Set(draft.map((s) => s.id).filter(Boolean));
+      opens.forEach((x) => { if (!keepIds.has(x.id)) { x.status = "removed"; changed++; } });
+      draft.forEach((s) => {
+        const used = S.slots.filter((y) => y.dpeId === dp.id && y.date === day.date && y.status !== "removed").map((y) => y.time);
+        if (s.id) {
+          const curS = S.slots.find((x) => x.id === s.id);
+          if (!curS || curS.status === "removed") return;
+          if (curS.status !== "open") { partial = true; return; }
+          const otherUsed = used.filter((t) => t !== curS.time);
+          if (otherUsed.includes(s.time)) { partial = true; return; }
+          if (curS.time !== s.time || curS.airport !== s.airport || (curS.note || "") !== (s.note || "")) { curS.time = s.time; curS.airport = s.airport; curS.note = s.note || ""; changed++; }
+        } else {
+          if (used.includes(s.time)) { partial = true; return; }
+          S.slots.push({ id: uid("s"), dpeId: dp.id, date: day.date, time: s.time, airport: s.airport || dp.home, certs: Object.keys(dp.fees), status: "open", bookingId: null, note: s.note || "", src: "weekly" });
+          changed++;
+        }
+      });
+    });
+    return { partial, changed };
+  }
+  function wkStampConfirm(dp, closed) {
+    const a = availOf(dp.id);
+    const prev = { confirmedAt: a.confirmedAt, updatedAt: a.updatedAt };
+    a.confirmedAt = a.updatedAt = Date.now();
+    if (!save()) { a.confirmedAt = prev.confirmedAt; a.updatedAt = prev.updatedAt; toast(COPY["wk.err.save"]); return false; }
+    const msg = closed ? COPY["wk.toast.closed_week"] : COPY["wk.toast.confirmed"];
+    if (ui.wk) { ui.wk.confirmedJust = true; ui.wk.live = wkFill("wk.live.confirmed", [fmtTsConfirm(a.confirmedAt)]); ui.wk.snap = JSON.stringify(wkPlain(ui.wk.days)); }
+    toastUndo(msg, () => {
+      const cur = availOf(dp.id);
+      cur.confirmedAt = prev.confirmedAt; cur.updatedAt = prev.updatedAt;
+      if (!save()) { toast(COPY["wk.err.save"]); return false; }
+      if (ui.wk) { ui.wk.confirmedJust = false; ui.wk.live = ""; }
+      rerender();
+    }, { undoLabel: COPY["wk.toast.undo"], undone: COPY["wk.toast.undone"] });
+    return true;
+  }
+  function viewDpeWeek(q) {
+    const dp = dpeById(S.actingDpe) || D.dpes[0];
+    const tz = aptTz(dp.home);
+    const today = todayIn(tz);
+    const st = wkEnsure(dp, q);
+    const dirty = wkDirty();
+    const n = wkChangeCount();
+    const fr = freshOf(dp.id);
+    const dates = st.dates;
+    const range = wkFill("wk.range", [fmtDate(dates[0]), fmtDate(dates[6]), dp.home]);
+    const nudge = (fr.level === "stale" || fr.level === "reverify")
+      ? `<span class="pill wk-nudge wk-nudge-stale" data-copy-key="wk.nudge.stale">${esc(COPY["wk.nudge.stale"])}</span>`
+      : (fr.level === "never" || !(availOf(dp.id).confirmedAt && ymdIn(availOf(dp.id).confirmedAt, tz) >= dates[0] && ymdIn(availOf(dp.id).confirmedAt, tz) <= dates[6]))
+        ? `<span class="pill wk-nudge wk-nudge-due" data-copy-key="wk.nudge.due">${esc(COPY["wk.nudge.due"])}</span>` : "";
+    const stamp = availOf(dp.id).confirmedAt
+      ? `<p class="wk-stamp" data-copy-key="wk.confirmed.stamp">${esc(wkFill("wk.confirmed.stamp", [fmtTsConfirm(availOf(dp.id).confirmedAt)]))}</p>`
+      : "";
+    const near = D.airports.filter((x) => x.id === dp.home || distNm(dp.home, x.id) <= dp.travelNm).map((x) => x.id);
+    const empty = st.days.every((d) => !d.open && !(d.slots || []).length);
+    const nextDates = weekDates(tz, (st.offset || 0) + 1);
+    const nextDays = wkLoadDays(dp, nextDates);
+    const nextOpenDays = nextDays.filter((d) => d.open).length;
+    const nextOpens = nextDays.reduce((n, d) => n + (d.slots || []).filter((s) => s.status === "open").length, 0);
+
+    const sheetHtml = (day) => {
+      const sh = st.sheet;
+      if (!sh || sh.date !== day.date) return "";
+      const titleKey = sh.slotId ? "wk.sheet.edit_title" : "wk.sheet.add_title";
+      const title = wkFill(titleKey, [fmtDate(day.date)]);
+      const times = [...new Set([...SLOT_TIMES, sh.time, ...day.slots.map((s) => s.time)].filter(Boolean))].sort();
+      const apts = [...new Set([...near, sh.airport, dp.home].filter(Boolean))];
+      const err = sh.err ? `<p class="wk-err" id="wk-sheet-err" role="alert" data-copy-key="${esc(sh.errKey || "")}">${esc(sh.err)}</p>` : "";
+      const canRemove = sh.slotId && !(day.slots.find((s) => s.id === sh.slotId) && day.slots.find((s) => s.id === sh.slotId).status !== "open");
+      const held = sh.slotId && day.slots.some((s) => s.id === sh.slotId && s.status !== "open");
+      return `<div class="wk-sheet-bg" data-action="wk-sheet-bg"></div>
+        <div class="wk-sheet" id="wk-sheet" role="dialog" aria-modal="true" aria-labelledby="wk-sheet-title" tabindex="-1">
+          <h2 id="wk-sheet-title" data-copy-key="${titleKey}">${esc(title)}</h2>
+          <form class="stack" data-form="wk-sheet" data-date="${day.date}">
+            <label class="field"><span data-copy-key="wk.sheet.start">${esc(COPY["wk.sheet.start"])}</span>
+              <select name="start" id="wk-sheet-start">${times.map((tm) => `<option value="${tm}" ${tm === sh.time ? "selected" : ""}>${fmtTime(tm)}</option>`).join("")}</select>
+            </label>
+            <label class="field"><span data-copy-key="wk.sheet.airport">${esc(COPY["wk.sheet.airport"])}</span>
+              <select name="airport" id="wk-sheet-airport">${apts.map((x) => `<option value="${x}" ${x === (sh.airport || dp.home) ? "selected" : ""}>${x}</option>`).join("")}</select>
+            </label>
+            <label class="field"><span data-copy-key="wk.sheet.note">${esc(COPY["wk.sheet.note"])}</span>
+              <input name="note" id="wk-sheet-note" maxlength="80" value="${esc(sh.note || "")}" />
+            </label>
+            ${err}${held ? `<p class="small" data-copy-key="wk.err.held">${esc(COPY["wk.err.held"])}</p>` : ""}
+            <div class="row wk-sheet-actions">
+              <button class="btn" type="submit" data-copy-key="wk.sheet.save">${esc(COPY["wk.sheet.save"])}</button>
+              <button class="btn ghost" type="button" data-action="wk-sheet-cancel" data-copy-key="wk.sheet.cancel">${esc(COPY["wk.sheet.cancel"])}</button>
+              ${canRemove && !held ? `<button class="btn ghost bad" type="button" data-action="wk-sheet-remove" data-copy-key="wk.sheet.remove">${esc(COPY["wk.sheet.remove"])}</button>` : ""}
+            </div>
+          </form>
+        </div>`;
+    };
+
+    const dayCard = (day) => {
+      const locked = day.date <= today;
+      const long = fmtDate(day.date, { weekday: "long", month: "short", day: "numeric" });
+      const short = fmtDate(day.date);
+      const aria = day.open ? wkFill("wk.day.aria.on", [long]) : wkFill("wk.day.aria.off", [long]);
+      const slots = (day.slots || []).filter((s) => s.status !== "removed");
+      const list = slots.map((s) => {
+        const held = s.status !== "open";
+        const edit = (!locked && !held && !isOneOff(s)) ? `<button type="button" class="btn ghost sm" data-action="wk-edit" data-date="${day.date}" data-slot="${s.id}">${esc(fmtTime(s.time))}</button>` : `<span class="wk-slot-locked">${esc(fmtTime(s.time))}</span>`;
+        return `<li class="wk-slot${held ? " is-held" : ""}">${edit}<span class="small muted">${esc(s.airport)}${s.note ? " · " + esc(s.note) : ""}</span></li>`;
+      }).join("");
+      return `<fieldset class="wk-day${day.open ? " is-open" : " is-closed"}${locked ? " is-locked" : ""}" data-date="${day.date}" ${locked ? "data-locked" : ""}>
+        <legend data-copy-key="wk.day.legend">${esc(wkFill("wk.day.legend", [short]))}</legend>
+        <button type="button" class="wk-switch" role="switch" aria-checked="${day.open ? "true" : "false"}" aria-label="${esc(aria)}" data-action="wk-day-toggle" data-date="${day.date}" ${locked ? "disabled" : ""}>
+          <span class="track" aria-hidden="true"></span>
+          <span class="lbl on" data-copy-key="wk.day.open">${esc(COPY["wk.day.open"])}</span>
+          <span class="lbl off" data-copy-key="wk.day.closed">${esc(COPY["wk.day.closed"])}</span>
+        </button>
+        <p class="wk-summary small">${esc(wkDaySummary(day, dp))}</p>
+        ${list ? `<ul class="wk-slots plain">${list}</ul>` : ""}
+        ${locked ? `<p class="wk-locked small" data-copy-key="wk.day.locked">${esc(COPY["wk.day.locked"])}</p>` : ""}
+        ${!locked && day.open ? `<button type="button" class="btn ghost sm wk-add" data-action="wk-add" data-date="${day.date}" data-copy-key="wk.day.add">${esc(COPY["wk.day.add"])}</button>` : ""}
+        ${sheetHtml(day)}
+      </fieldset>`;
+    };
+
+    const liveUnsaved = dirty ? esc(wkFill("wk.live.unsaved", [String(n)])) : "";
+    const liveConf = st.live ? esc(st.live) : "";
+    const bar = dirty ? `<div class="wk-bar" id="wk-bar" role="region" aria-label="${esc(n === 1 ? wkFill("wk.bar.one", ["1"]) : wkFill("wk.bar.many", [String(n)]))}">
+      <p class="wk-bar-count" data-copy-key="${n === 1 ? "wk.bar.one" : "wk.bar.many"}">${esc(n === 1 ? wkFill("wk.bar.one", ["1"]) : wkFill("wk.bar.many", [String(n)]))}</p>
+      <div class="row wk-bar-actions">
+        <button type="button" class="btn ghost" data-action="wk-bar-discard" data-copy-key="wk.bar.discard">${esc(COPY["wk.bar.discard"])}</button>
+        <button type="button" class="btn" data-action="wk-bar-save" data-copy-key="wk.bar.save">${esc(COPY["wk.bar.save"])}</button>
+      </div>
+    </div>` : "";
+
+    return `<div class="page wk-page" data-week-offset="${st.offset}">
+      <p class="wk-proto small muted" data-copy-key="wk.proto">${esc(COPY["wk.proto"])}</p>
+      <div class="page-head wk-head">
+        <p class="wk-back"><a href="#/dpe-openings" data-copy-key="wk.back_cal">${esc(COPY["wk.back_cal"])}</a></p>
+        <p class="eyebrow" data-copy-key="wk.eyebrow">${esc(COPY["wk.eyebrow"])}</p>
+        <h1 style="margin:0 0 .35rem" data-copy-key="wk.headline">${afterPair("wk.headline")}</h1>
+        <p class="wk-range" data-copy-key="wk.range">${esc(range)}</p>
+        <p class="muted" style="margin:0" data-copy-key="wk.helper">${esc(COPY["wk.helper"])}</p>
+      </div>
+      <section class="card wk-status ${fr.level}">
+        <div class="row spread wk-status-row" style="align-items:flex-start;gap:.75rem">
+          <div>
+            ${freshBadge(dp.id)} ${nudge}
+            ${stamp}
+            ${st.confirmedJust && !dirty ? `<button type="button" class="btn ghost sm" data-action="wk-edit-again" data-copy-key="wk.confirmed.edit">${esc(COPY["wk.confirmed.edit"])}</button>` : ""}
+          </div>
+          ${dirty ? "" : `<button type="button" class="btn wk-confirm" data-action="wk-confirm" id="wk-confirm" aria-label="${esc(COPY["wk.confirm.aria"])}" data-copy-key="wk.confirm">${esc(COPY["wk.confirm"])}</button>`}
+        </div>
+      </section>
+      ${dirty ? `<p class="wk-partial small" data-copy-key="wk.partial">${esc(COPY["wk.partial"])}</p>` : ""}
+      ${empty ? `<section class="card wk-empty" id="wk-empty"><h2 data-copy-key="wk.empty.title">${esc(COPY["wk.empty.title"])}</h2><p data-copy-key="wk.empty.body">${esc(COPY["wk.empty.body"])}</p><button type="button" class="btn ghost" data-action="wk-empty-add" data-copy-key="wk.empty.cta">${esc(COPY["wk.empty.cta"])}</button></section>` : ""}
+      <div class="wk-days" id="wk-days">${st.days.map(dayCard).join("")}</div>
+      <section class="card wk-next">
+        <h2 style="margin:0 0 .35rem" data-copy-key="wk.next.title">${esc(COPY["wk.next.title"])}</h2>
+        <p class="small muted" data-copy-key="wk.next.helper">${esc(COPY["wk.next.helper"])}</p>
+        <p class="small" data-copy-key="wk.next.summary">${esc(wkFill("wk.next.summary", [String(nextOpenDays), String(nextOpens)]))}</p>
+        <a class="btn ghost sm" href="#/dpe-week?week=${st.offset + 1}" data-copy-key="wk.next.link">${esc(COPY["wk.next.link"])}</a>
+      </section>
+      <div class="sr-only" aria-live="polite" id="wk-live">${liveConf}${liveUnsaved}</div>
+      ${bar}
+    </div>`;
+  }
+
   const SLOT_TIMES = ["08:00", "08:30", "09:00", "10:30", "12:30", "13:00", "15:30"];
   // Apply a DPE's weekly grid to the real slot list. Booked/held slots are never removed.
   // QA-040: the weekly pattern only manages pattern slots. One-off openings (Publish form, simulated) are never moved,
@@ -2279,11 +2697,11 @@ const closeModal = () => {
         <div class="row spread" style="align-items:flex-start">
           <div>
             <div class="small muted">Last updated</div>
-            <div class="avail-stamp" id="avail-stamp"><b>${fmtTs(a.updatedAt)}</b> <span class="muted small">(${agoText(Math.max(0, Math.floor((Date.now() - a.updatedAt) / DAY)))})</span></div>
+            <div class="avail-stamp" id="avail-stamp"><b>${a.updatedAt ? fmtTs(a.updatedAt) : esc(COPY["wk.fresh.never"])}</b>${a.updatedAt ? ` <span class="muted small">(${agoText(Math.max(0, Math.floor((Date.now() - a.updatedAt) / DAY)))})</span>` : ""}</div>
             <div style="margin-top:.4rem">${freshBadge(dp.id)}</div>
             <p class="small" style="margin:.5rem 0 0">Students currently see your next open date as <b id="avail-next">${next ? fmtDate(next.date, { weekday: "short", month: "short", day: "numeric" }) + " (" + relDays(next.date, slotTz(next)) + ")" : "none: no openings are shown"}</b>.${fr.level === "amber" ? " They also see a \u201cmay be out of date\u201d tag." : ""}${fr.level === "stale" || fr.level === "reverify" ? " Your slots are hidden from search and requests until you confirm." : ""}</p>
           </div>
-          <div class="row"><button class="btn good" data-action="avail-confirm" id="avail-confirm">Yes, nothing changed</button><a class="btn ghost" href="#/dpe/${dp.id}">See what students see</a></div>
+          <div class="row"><button class="btn good" data-action="avail-confirm" id="avail-confirm">Yes, nothing changed</button><a class="btn ghost" href="#/dpe-week" data-copy-key="wk.cal.link">${esc(COPY["wk.cal.link"])}</a><a class="btn ghost" href="#/dpe/${dp.id}">See what students see</a></div>
         </div>
         <p class="muted small" style="margin:.6rem 0 0">One tap on <b>Yes, nothing changed</b> re-confirms your current openings. Saving any edit below also refreshes the stamp. Students always see a \u201cconfirm with the examiner\u201d line.</p>
       </section>
@@ -3195,6 +3613,7 @@ const closeModal = () => {
     return `<div class="page">
       <div class="row spread">${head("YOUR EXAMINER DESK", `Today \u00b7 ${fmtDate(t, { weekday: "short", month: "short", day: "numeric" })}`, "")}${actingSelect(dp)}</div>
       ${dpeTiles(mine)}
+      ${weekConfirmPrompt(dp)}
       <section class="card"><h2>On the schedule</h2>
         ${todays.length ? todays.map(row).join("") : `<p class="muted" id="today-empty">Nothing on the schedule today.</p>`}
       </section>
@@ -3351,7 +3770,7 @@ const closeModal = () => {
     const alertMsg = alertPick ? `<div class="cta-banner small" id="alert-pick" style="margin:.75rem 0 0"><b>From your alert:</b> ${slotTime(alertPick)} is preselected.${alertPick.simulated ? ` <span class="pill warn">Simulated opening</span>` : ""}</div>` : q.slot ? `<p class="v4-note" id="alert-pick-gone"><b>That opening is no longer available.</b> Pick another time below.</p>` : "";
     const foot = `<div class="v4-op-foot small"><span>${freshBadge(dp.id)}</span>${waitlistControl(dp, cert)}</div>
       <p class="muted small" style="margin:.5rem 0 0">${plural(slots.length, "open slot")} \u00b7 sample calendar, generated for this demo. Always confirm the date with the examiner; this prototype guarantees nothing.</p>`;
-    if (stale || !days.length) return `<section class="card v4-openings" id="v4-openings" aria-labelledby="v4-op-h"><h2 id="v4-op-h">Openings</h2>${lostMsg}${alertMsg}<p class="muted small" style="margin:0">${stale ? "<b>Availability not recently confirmed.</b> Contact the examiner. Openings are hidden until the examiner confirms." : `No open ${esc(certById(cert).short)} slots right now.`} </p>${waitlistControl(dp, cert)}</section>`;
+    if (stale || !days.length) return `<section class="card v4-openings" id="v4-openings" aria-labelledby="v4-op-h"><h2 id="v4-op-h">Openings</h2>${lostMsg}${alertMsg}<p class="muted small" style="margin:0">${stale ? `<b>${esc(COPY["wk.fresh.stale"])}</b> ${esc(COPY["wk.fresh.stale_detail"])}` : `No open ${esc(certById(cert).short)} slots right now.`} </p>${waitlistControl(dp, cert)}</section>`;
     // The shown day is the student's: a fixed day (a ?date= link, or the day of a slot that started) is never swapped for another.
     const day = days.includes(ui.sel) ? ui.sel : ui.selFixed && ui.sel ? null : days[0];
     const times = day ? S.slots.filter((s) => s.dpeId === dp.id && s.date === day && s.status !== "removed" && !(s.status === "open" && slotPast(s))).sort((a, b) => a.time.localeCompare(b.time)) : [];
@@ -4141,7 +4560,7 @@ const closeModal = () => {
     [/^\/$/, viewLanding], [/^\/find$/, viewFind], [/^\/login$/, viewLogin], [/^\/signup$/, viewSignup], [/^\/home$/, viewHome], [/^\/onboarding$/, (q) => viewOnboarding(q)], [/^\/after\/pass$/, (q) => viewAfterPass(q)], [/^\/after\/dis$/, (q) => viewAfterDis(q)], [/^\/after\/inc$/, (q) => viewAfterInc(q)], [/^\/journey$/, viewJourney], [/^\/readiness$/, viewReadiness], [/^\/more$/, viewMore], [/^\/saved$/, viewSaved], [/^\/faq$/, viewFaq], [/^\/request\/(\w+)$/, viewRequest], [/^\/offer\/(\w+)$/, viewOffer],
     [/^\/dpe-today$/, viewDpeToday], [/^\/dpe-applicants$/, viewDpeApplicants], [/^\/school\/requests$/, viewSchoolRequests], [/^\/school\/readiness$/, viewSchoolReadiness], [/^\/search$/, viewSearch], [/^\/dpe\/(\w+)$/, viewProfile], [/^\/compare$/, viewCompare],
     [/^\/alerts$/, viewAlerts], [/^\/checklists(?:\/(\w+))?$/, viewChecklists], [/^\/bookings$/, viewBookings], [/^\/my-checklists$/, viewMyChecklists], [/^\/dpe-checklist\/(\w+)$/, viewBuilder],
-    [/^\/requests$/, viewDpeDash], [/^\/school$/, viewSchool], [/^\/school\/cohort$/, viewCohort], [/^\/dpe-openings$/, viewOpenings], [/^\/openings$/, viewPublish], [/^\/dpe-fees$/, viewDpeFees], [/^\/admin$/, viewAdmin], [/^\/pricing$/, viewPricing],
+    [/^\/requests$/, viewDpeDash], [/^\/school$/, viewSchool], [/^\/school\/cohort$/, viewCohort], [/^\/dpe-openings$/, viewOpenings], [/^\/dpe-week$/, (q) => viewDpeWeek(q)], [/^\/openings$/, viewPublish], [/^\/dpe-fees$/, viewDpeFees], [/^\/admin$/, viewAdmin], [/^\/pricing$/, viewPricing],
   ];
   // v3 navigation: bottom tab bar (<1024px) / 248px rail (>=1024px), per role (design-spec-v3 §5, ux-copy-v3 §6.3).
   const IC = {
@@ -4163,7 +4582,7 @@ const closeModal = () => {
     const unread = S.notifications.filter((n) => !n.read).length;
     return ({
       pilot: [["#/home", "Home", "home", ["/home"]], ["#/search", "Search", "search", ["/search", "/find", "/dpe/", "/compare"]], ["#/journey", "Journey", "journey", ["/journey", "/readiness", "/request/", "/bookings", "/my-checklists", "/checklists"]], ["#/alerts", "Alerts", "bell", ["/alerts", "/offer/"], unread], ["#/more", "More", "more", ["/more", "/faq", "/pricing", "/saved", "/onboarding", "/after/"]]],
-      dpe: [["#/dpe-today", "Today", "today", ["/dpe-today"]], ["#/requests", "Requests", "inbox", ["/requests", "/request/", "/openings"], pend], ["#/dpe-openings", "Calendar", "cal", ["/dpe-openings"]], ["#/dpe-applicants", "Applicants", "people", ["/dpe-applicants", "/dpe-checklist/"]], ["#/more", "More", "more", ["/more", "/faq", "/dpe-fees", "/dpe/", "/pricing"]]],
+      dpe: [["#/dpe-today", "Today", "today", ["/dpe-today"]], ["#/requests", "Requests", "inbox", ["/requests", "/request/", "/openings"], pend], ["#/dpe-openings", "Calendar", "cal", ["/dpe-openings", "/dpe-week"]], ["#/dpe-applicants", "Applicants", "people", ["/dpe-applicants", "/dpe-checklist/"]], ["#/more", "More", "more", ["/more", "/faq", "/dpe-fees", "/dpe/", "/pricing"]]],
       school: [["#/school", "Roster", "people", ["/school", "/school/cohort"]], ["#/school/requests", "Checkride requests", "inbox", ["/school/requests", "/request/"]], ["#/school/readiness", "Readiness", "list", ["/school/readiness"]], ["#/more", "More", "more", ["/more", "/faq", "/search", "/compare", "/checklists", "/pricing", "/dpe/"]]],
       admin: [["#/admin", "Admin", "shield", ["/admin"]], ["#/search", "Listings", "search", ["/search", "/dpe/"]], ["#/more", "More", "more", ["/more", "/faq", "/pricing"]]],
     }[S.role]);
@@ -4175,7 +4594,7 @@ const closeModal = () => {
     NAV().forEach(([, , , pre], i) => pre.forEach((p) => { const hit = p.endsWith("/") ? path.startsWith(p) : path === p || path.startsWith(p + "/"); if (hit && p.length > len) { best = i; len = p.length; } }));
     return best;
   };
-  const CRUMBS = { "/find": "Find a DPE", "/openings": "Publish an opening", "/home": "Home", "/onboarding": "Your plan", "/after/pass": "Checkride complete", "/after/dis": "Not this time", "/after/inc": "Paused, not finished", "/search": "Search", "/compare": "Compare fees", "/alerts": "Alerts", "/journey": "Journey", "/readiness": "Readiness checklist", "/bookings": "My checkrides", "/my-checklists": "From your examiner", "/checklists": "Checklists", "/more": "More", "/saved": "Saved", "/faq": "FAQs", "/pricing": "Pricing", "/dpe-today": "Today", "/requests": "Requests", "/dpe-openings": "Calendar", "/dpe-applicants": "Applicants", "/dpe-fees": "Your terms", "/school": "Roster", "/school/requests": "Checkride requests", "/school/readiness": "Readiness", "/school/cohort": "Cohort scheduling", "/admin": "Admin" };
+  const CRUMBS = { "/find": "Find a DPE", "/openings": "Publish an opening", "/home": "Home", "/onboarding": "Your plan", "/after/pass": "Checkride complete", "/after/dis": "Not this time", "/after/inc": "Paused, not finished", "/search": "Search", "/compare": "Compare fees", "/alerts": "Alerts", "/journey": "Journey", "/readiness": "Readiness checklist", "/bookings": "My checkrides", "/my-checklists": "From your examiner", "/checklists": "Checklists", "/more": "More", "/saved": "Saved", "/faq": "FAQs", "/pricing": "Pricing", "/dpe-today": "Today", "/requests": "Requests", "/dpe-openings": "Calendar", "/dpe-week": "Confirm this week", "/dpe-applicants": "Applicants", "/dpe-fees": "Your terms", "/school": "Roster", "/school/requests": "Checkride requests", "/school/readiness": "Readiness", "/school/cohort": "Cohort scheduling", "/admin": "Admin" };
   const crumb = (path) => {
     const tab = NAV()[navActive(path)];
     const leaf = CRUMBS[path] || (path.startsWith("/request/") ? "Request" : path.startsWith("/dpe/") ? "Examiner profile" : path.startsWith("/dpe-checklist/") ? "Checklist" : path.startsWith("/checklists/") ? "Checklists" : "");
@@ -4624,9 +5043,11 @@ function countUp(root) {
     },
     "saved-undo": () => {
       const fn = ui.savedUndo; ui.savedUndo = null;
+      const done = ui.undoDoneMsg || COPY["saved.toast.undone"];
+      ui.undoDoneMsg = null;
       if (!fn) return;
       // RC10-I01: undo callback returns false when persist failed (already toasted quota)
-      if (fn() !== false) toast(COPY["saved.toast.undone"]);
+      if (fn() !== false) toast(done);
     },
     "alert-from-search": (el) => {
       const f = searchFilters(parseHash().q);
@@ -4774,6 +5195,103 @@ function countUp(root) {
       const q = parseHash().q;
       go("#/search?" + toQuery({ cert: fd.get("cert") || q.cert || "ppl", near, radius: fd.get("radius") || q.radius || "", before: fd.get("before") || q.before || "", maxFee: fd.get("maxFee") || q.maxFee || "", sort: fd.get("sort") || q.sort || "" }));
     },
+    "wk-confirm": () => {
+      const dp = dpeById(S.actingDpe); if (!dp || !ui.wk) return;
+      if (wkDirty()) return;
+      const closed = ui.wk.days.every((d) => !d.open && !(d.slots || []).filter((s) => s.status === "open").length);
+      wkStampConfirm(dp, closed);
+      rerender();
+    },
+    "wk-day-toggle": (el) => {
+      if (!ui.wk) return;
+      const day = ui.wk.days.find((d) => d.date === el.dataset.date); if (!day) return;
+      const dp = dpeById(ui.wk.dpeId); const tz = aptTz(dp.home);
+      if (day.date <= todayIn(tz)) return;
+      const held = (day.slots || []).some((s) => s.status !== "open" && s.status !== "removed");
+      if (day.open && held) { toast(COPY["wk.err.held"]); return; }
+      day.open = !day.open;
+      if (!day.open) day.slots = (day.slots || []).filter((s) => isOneOff(s) || s.status !== "open");
+      rerender();
+    },
+    "wk-add": (el) => {
+      if (!ui.wk) return;
+      const day = ui.wk.days.find((d) => d.date === el.dataset.date); if (!day || !day.open) return;
+      const dp = dpeById(ui.wk.dpeId);
+      const used = day.slots.filter((s) => s.status !== "removed").map((s) => s.time);
+      const time = SLOT_TIMES.find((tm) => !used.includes(tm)) || SLOT_TIMES[0];
+      ui.wk.opener = `[data-action="wk-add"][data-date="${day.date}"]`;
+      ui.wk.sheet = { date: day.date, slotId: null, time, airport: dp.home, note: "", err: null, errKey: null };
+      rerender();
+      requestAnimationFrame(() => { const el2 = document.getElementById("wk-sheet-title"); if (el2) el2.focus(); });
+    },
+    "wk-edit": (el) => {
+      if (!ui.wk) return;
+      const day = ui.wk.days.find((d) => d.date === el.dataset.date); if (!day) return;
+      const slot = day.slots.find((s) => s.id === el.dataset.slot); if (!slot) return;
+      ui.wk.opener = `[data-action="wk-edit"][data-slot="${slot.id}"]`;
+      ui.wk.sheet = { date: day.date, slotId: slot.id, time: slot.time, airport: slot.airport, note: slot.note || "", err: null, errKey: null };
+      rerender();
+      requestAnimationFrame(() => { const el2 = document.getElementById("wk-sheet-title"); if (el2) el2.focus(); });
+    },
+    "wk-sheet-cancel": () => {
+      if (!ui.wk) return;
+      ui.wk.sheet = null;
+      const opener = ui.wk.opener; ui.wk.opener = null;
+      rerender();
+      if (opener) { const el = document.querySelector(opener); if (el) el.focus(); }
+    },
+    "wk-sheet-bg": () => { if (ui.wk && ui.wk.sheet) actions["wk-sheet-cancel"](); },
+    "wk-sheet-remove": () => {
+      if (!ui.wk || !ui.wk.sheet || !ui.wk.sheet.slotId) return;
+      const day = ui.wk.days.find((d) => d.date === ui.wk.sheet.date); if (!day) return;
+      const slot = day.slots.find((s) => s.id === ui.wk.sheet.slotId);
+      if (slot && slot.status !== "open") { toast(COPY["wk.err.held"]); return; }
+      day.slots = day.slots.filter((s) => s.id !== ui.wk.sheet.slotId);
+      ui.wk.sheet = null;
+      rerender();
+    },
+    "wk-bar-save": () => {
+      const dp = dpeById(S.actingDpe); if (!dp || !ui.wk) return;
+      const res = applyWeekDraft(dp, ui.wk.days);
+      if (!save()) { toast(COPY["wk.err.save"]); return; }
+      ui.wk.days = wkLoadDays(dp, ui.wk.dates);
+      ui.wk.snap = JSON.stringify(wkPlain(ui.wk.days));
+      const closed = ui.wk.days.every((d) => !d.open && !(d.slots || []).filter((s) => s.status === "open").length);
+      wkStampConfirm(dp, closed);
+      if (res.partial) toast(COPY["wk.partial"]);
+      rerender();
+    },
+    "wk-bar-discard": () => {
+      if (!ui.wk) return;
+      const n = wkChangeCount();
+      openModal(`<h2 id="wk-discard-title" data-copy-key="wk.discard.title">${esc(COPY["wk.discard.title"])}</h2>
+        <p data-copy-key="wk.discard.body">${esc(wkFill("wk.discard.body", [String(n)]))}</p>
+        <div class="row" style="justify-content:flex-end"><button class="btn bad" type="button" data-action="wk-discard-confirm" data-copy-key="wk.discard.confirm">${esc(COPY["wk.discard.confirm"])}</button><button class="btn ghost" type="button" data-action="wk-discard-keep" data-copy-key="wk.discard.keep">${esc(COPY["wk.discard.keep"])}</button></div>`);
+      const k = document.getElementById("wk-discard-title"); if (k) k.focus();
+    },
+    "wk-discard-confirm": () => {
+      closeModal();
+      if (!ui.wk) return;
+      const dp = dpeById(ui.wk.dpeId);
+      ui.wk.days = wkLoadDays(dp, ui.wk.dates);
+      ui.wk.snap = JSON.stringify(wkPlain(ui.wk.days));
+      ui.wk.sheet = null;
+      rerender();
+    },
+    "wk-discard-keep": () => { closeModal(); },
+    "wk-edit-again": () => { if (ui.wk) { ui.wk.confirmedJust = false; rerender(); } },
+    "wk-empty-add": () => {
+      if (!ui.wk) return;
+      const dp = dpeById(ui.wk.dpeId); const tz = aptTz(dp.home); const today = todayIn(tz);
+      const day = ui.wk.days.find((d) => d.date > today) || ui.wk.days[0];
+      if (!day || day.date <= today) return;
+      day.open = true;
+      const used = day.slots.filter((s) => s.status !== "removed").map((s) => s.time);
+      const time = SLOT_TIMES.find((tm) => !used.includes(tm)) || SLOT_TIMES[0];
+      ui.wk.sheet = { date: day.date, slotId: null, time, airport: dp.home, note: "", err: null, errKey: null };
+      rerender();
+      requestAnimationFrame(() => { const el2 = document.getElementById("wk-sheet-title"); if (el2) el2.focus(); });
+    },
     "avail-confirm": () => {
       const dp = dpeById(S.actingDpe); const a = availOf(dp.id); a.confirmedAt = Date.now();
       toast("Thanks. Your openings are confirmed as they are (mock: nobody was emailed). Students now see “confirmed today”.");
@@ -4861,6 +5379,37 @@ function countUp(root) {
   };
 
   const forms = {
+    "wk-sheet": (f, fd) => {
+      if (!ui.wk) return;
+      const date = f.dataset.date || (ui.wk.sheet && ui.wk.sheet.date);
+      const day = ui.wk.days.find((d) => d.date === date); if (!day) return;
+      const dp = dpeById(ui.wk.dpeId); const tz = aptTz(dp.home);
+      const time = String(fd.get("start") || "");
+      const airport = String(fd.get("airport") || dp.home);
+      const note = String(fd.get("note") || "").slice(0, 80);
+      const sh = ui.wk.sheet || {};
+      const used = day.slots.filter((s) => s.status !== "removed" && s.id !== sh.slotId).map((s) => s.time);
+      const errKey = validateWeekSlot({ date, time, tz, used, excludeTime: null });
+      if (errKey) {
+        const err = errKey === "wk.err.duplicate" ? wkFill(errKey, [fmtDate(date)]) : COPY[errKey];
+        ui.wk.sheet = { ...sh, date, time, airport, note, err, errKey };
+        rerender();
+        requestAnimationFrame(() => { const el = document.getElementById("wk-sheet-title"); if (el) el.focus(); });
+        return;
+      }
+      if (sh.slotId) {
+        const slot = day.slots.find((s) => s.id === sh.slotId);
+        if (slot && slot.status !== "open") { ui.wk.sheet = { ...sh, err: COPY["wk.err.held"], errKey: "wk.err.held" }; rerender(); return; }
+        if (slot) { slot.time = time; slot.airport = airport; slot.note = note; }
+      } else {
+        day.slots.push({ id: "", time, airport, note, status: "open", src: "weekly" });
+        day.open = true;
+      }
+      day.slots.sort((a, b) => a.time.localeCompare(b.time));
+      ui.wk.sheet = null;
+      rerender();
+      if (ui.wk.opener) { const el = document.querySelector(ui.wk.opener); if (el) el.focus(); ui.wk.opener = null; }
+    },
     "ns-dispute": (f, fd) => {
       const b = S.bookings.find((x) => x.id === fd.get("bid"));
       if (!b || !b.noShow || b.noShow.dispute) { closeModal(); return; } // lock: one dispute
@@ -5202,7 +5751,7 @@ function countUp(root) {
     }
     if (t.dataset.r9date) { S.ready9Dates = S.ready9Dates || {}; S.ready9Dates[t.dataset.r9date] = t.value; if (t.dataset.r9date === "kt") S.ktSample = false; save(); rerender(); return; }
     if (t.dataset.r9) { S.ready9 = S.ready9 || {}; S.ready9[t.dataset.r9] = t.checked; save(); rerender(); return; }
-    if (t.dataset.actionChange === "acting-dpe") { S.actingDpe = t.value; rerender(); return; }
+    if (t.dataset.actionChange === "acting-dpe") { S.actingDpe = t.value; ui.wk = null; rerender(); return; }
     if (t.dataset.actionChange === "req-cert") {
       const s = S.slots.find((x) => x.id === t.form.slot.value);
       const dp = dpeById(s.dpeId);
@@ -5260,7 +5809,20 @@ function countUp(root) {
   // Safety net: no form in this prototype ever submits to a server.
   document.addEventListener("submit", (e) => { const f = e.target; if (!f.dataset.form || !forms[f.dataset.form]) e.preventDefault(); }, true);
   document.addEventListener("keydown", (e) => {
+    const sheet = $("#wk-sheet");
     const dlg = $("#modal-root .modal");
+    if (sheet && (!dlg || $("#modal-root .modal-bg.closing"))) {
+      if (e.key === "Escape") { e.preventDefault(); if (actions["wk-sheet-cancel"]) actions["wk-sheet-cancel"](); return; }
+      if (e.key === "Tab") {
+        const items = [...sheet.querySelectorAll(FOCUSABLE)].filter((el) => el.offsetParent !== null || el === document.activeElement);
+        if (!items.length) { e.preventDefault(); sheet.focus(); return; }
+        const first = items[0], last = items[items.length - 1];
+        if (!sheet.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+        else if (e.shiftKey && (document.activeElement === first || document.activeElement === sheet)) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+      if (e.key === "Tab" || e.key === "Escape") return;
+    }
     if (!dlg || $("#modal-root .modal-bg.closing")) return;
     if (e.key === "Escape") { e.preventDefault(); closeModal(); return; }
     if (e.key === "Tab") {
@@ -5334,6 +5896,14 @@ function countUp(root) {
       if (mq.matches) { if (nav.nextElementSibling !== main) main.before(nav); } else if (foot.nextElementSibling !== nav) foot.after(nav); };
     place(); if (mq.addEventListener) mq.addEventListener("change", place); else if (mq.addListener) mq.addListener(place);
   })();
+  window.CC_WK = {
+    validateSlot: validateWeekSlot,
+    copyHas: (k) => Object.prototype.hasOwnProperty.call(COPY, k),
+    copy: (k) => COPY[k],
+    keys: () => Object.keys(COPY).filter((k) => k.startsWith("wk.")),
+    freshOf, availOf, isStale, freshVisible, fmtTsConfirm, fmtTsAbs, weekDates, wkFill, readerZoneLabel,
+    mutate: (fn) => { fn(S); save(); }
+  };
   window.CC_STALE_RECHECK = staleRecheck; // test hook (mocked clock)
   window.CC_ONE_IN = oneIn; // test hook (QA-047 labels)
   setInterval(staleRecheck, 60000);
