@@ -14,7 +14,7 @@ fs.mkdirSync(OUT, { recursive: true }); fs.mkdirSync(SH, { recursive: true });
 const BASE = process.env.BASE_URL || "http://127.0.0.1:8020/";
 const WIDTHS = [320, 360, 390, 768];
 const STATIC_ROUTES = [
-  "#/", "#/find", "#/login", "#/signup", "#/home", "#/onboarding",
+  "#/", "#/find", "#/login", "#/signup", "#/home", "#/onboarding", "#/onboarding?step=2",
   "#/after/pass", "#/after/inc", "#/after/dis",
   "#/journey", "#/readiness", "#/more", "#/saved", "#/faq",
   "#/search", "#/alerts", "#/bookings", "#/my-checklists", "#/checklists",

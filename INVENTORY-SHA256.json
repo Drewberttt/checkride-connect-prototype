@@ -84,6 +84,11 @@
     "sha256": "4ff000667b65b45d38f1ce8a952a56a02cd5ef04a0399818ed41f93a412f8379",
     "size": 11952
   },
+  "QA-HANDOFF-RC20.md": {
+    "mtime_ns": 1794347543121697657,
+    "sha256": "45d9786595e35deba330420ff50087d33ad31571f8e4effec386f7a329879e0c",
+    "size": 10942
+  },
   "QA-HANDOFF-RC6.md": {
     "mtime_ns": 1794081664521256915,
     "sha256": "627327800ac219fc469ca2ffbf533b7fc4e6ba04d26bd546b8a89a8f11ad8e08",
@@ -105,19 +110,19 @@
     "size": 12020
   },
   "READY.txt": {
-    "mtime_ns": 1794340333022001071,
-    "sha256": "5f550e70d23c4c31f9bb05248d258032c8fb0e6f155ce2c538512442a74b9a55",
-    "size": 678
+    "mtime_ns": 1794347543121697657,
+    "sha256": "7aece3258dbc0b73b93c94a6c1e37847fdda8334661026bda18bb8f657786e0f",
+    "size": 688
   },
   "SOURCE-SHA256.json": {
-    "mtime_ns": 1794340336553987606,
-    "sha256": "cffe1f2df09192e8ae0376d6fda591aeecb5a90fbbceb881a64cfecc8d4cc317",
-    "size": 11315
+    "mtime_ns": 1794347548093688404,
+    "sha256": "8af6ddc081688e0b88878e8790826418f0945cc36280db8bd62576cfcfb412ce",
+    "size": 11446
   },
   "app.js": {
-    "mtime_ns": 1794338590240720849,
-    "sha256": "ca2195cccf0977cbef49970d7f5cc94f3f57a7b74d580eca63551a48ba99bad7",
-    "size": 558131
+    "mtime_ns": 1794343974567596562,
+    "sha256": "9ed5398fa9db51cb372d83363057b3659c0b0003b0a4dcc7af2871d9494cc030",
+    "size": 570368
   },
   "brand/archive-png-pre-v2/checkride-connect-icon.png": {
     "mtime_ns": 1794081656585212522,
@@ -400,9 +405,9 @@
     "size": 11309
   },
   "ics.js": {
-    "mtime_ns": 1794338590240720849,
-    "sha256": "daff47474e206fdbdbb31bd001e1b9f42bcb00293cdc3e9ab6eb1d405cf17f42",
-    "size": 12171
+    "mtime_ns": 1794343974563596577,
+    "sha256": "d87b179382c5b89b2596da98aa51f7f091ba6a2614f09db25cf1258499b31ff0",
+    "size": 12695
   },
   "index.html": {
     "mtime_ns": 1794338272409934232,
@@ -445,14 +450,14 @@
     "size": 1010
   },
   "styles.css": {
-    "mtime_ns": 1794338272409934232,
-    "sha256": "8dafc2962956007540d30dee0931b9da389afc4ea485f4cabdc61aca066d798b",
-    "size": 109781
+    "mtime_ns": 1794343974571596546,
+    "sha256": "d5a5a53861d8850a1217db98844b300a15595a0c0d6a47aa2b4db857069f4db8",
+    "size": 112664
   },
   "sw.js": {
-    "mtime_ns": 1794338272409934232,
-    "sha256": "7191658699b83bc9769db4d9e13bbd02484ffe807d119e4e0e78c3c60545f78d",
-    "size": 6686
+    "mtime_ns": 1794344340214179460,
+    "sha256": "35793e628f21819ec1554653e87c17ec4523c097ab456cc77f4bb3ac996672d1",
+    "size": 9493
   },
   "tests/a11y/AFTER-COUNT.md": {
     "mtime_ns": 1794338835371767187,
@@ -465,9 +470,9 @@
     "size": 1670
   },
   "tests/a11y/target-size-audit.js": {
-    "mtime_ns": 1794338233934078537,
-    "sha256": "d1028cb075b82a7e19af370e6b5349265c103e5b38482c325d586583da4ab92d",
-    "size": 16278
+    "mtime_ns": 1794342859228009917,
+    "sha256": "c233b2141232cbd45bcd3e8646f59737b136cfb2d678b60e1eef6376c215649f",
+    "size": 16301
   },
   "tests/after/COPY-CHANGES.md": {
     "mtime_ns": 1794328712524924737,
@@ -505,9 +510,9 @@
     "size": 22582
   },
   "tests/after/overflow-audit.js": {
-    "mtime_ns": 1794328581193646720,
-    "sha256": "cf68744d21b2bf5ab2f4184d172b97a2ad65f717e4a1063b6b7066525e2b8adc",
-    "size": 5764
+    "mtime_ns": 1794342859228009917,
+    "sha256": "57328a5e3a02ff0190541ec26983e07440e81a71ac2a2db39f341cd9579e94d9",
+    "size": 5787
   },
   "tests/after/reference.py": {
     "mtime_ns": 1794259298150440300,
@@ -520,9 +525,9 @@
     "size": 59039
   },
   "tests/after/run-matrix.sh": {
-    "mtime_ns": 1794339496945157057,
-    "sha256": "61bffbb936ecfd42ce5657f90a9433fcae659247b7dc6e8604c3429941bbd5f7",
-    "size": 8082
+    "mtime_ns": 1794344569153284541,
+    "sha256": "ce0c5ac6e30bb095b702eb09b9fd9423a382841f9a0aa3b1ada7e0bf52f67085",
+    "size": 11153
   },
   "tests/after/wait-time.js": {
     "mtime_ns": 1794328788264498771,
@@ -545,19 +550,19 @@
     "size": 21908
   },
   "tests/dark/dark-audit.js": {
-    "mtime_ns": 1794337616432301816,
-    "sha256": "07677f6d5b46d4ef624ced8fc9af54425829107814de6c6cd3f1caeef3e22e78",
-    "size": 57462
+    "mtime_ns": 1794342859228009917,
+    "sha256": "684f742ee1256adcf8c8ef66b3e3fa6c8885fbaa70271da3814212bc39fe0fdd",
+    "size": 57485
   },
   "tests/ics/cal-ui.js": {
-    "mtime_ns": 1794338629384569372,
-    "sha256": "5b9d1d4153c24cb473e3defbe8e55b41165d0b623eee27285cd316b7c36808c5",
-    "size": 11087
+    "mtime_ns": 1794343991419531724,
+    "sha256": "41da7886d1570a17879afa297792d86087e3279b8905f4de61ea30d8f175bf5e",
+    "size": 12396
   },
   "tests/ics/ics-test.js": {
-    "mtime_ns": 1794337676028059804,
-    "sha256": "f8e081a1101c5d40963cdfaa1ef96d781c0766255a874d03b385384728f44016",
-    "size": 11810
+    "mtime_ns": 1794343986751549689,
+    "sha256": "8bdc1367fd8bdc0bb5e57481e8c51a3d5a7499f2cb45b95bc349cbf2f8e20a55",
+    "size": 13201
   },
   "tests/next-pass/README.md": {
     "mtime_ns": 1794081665189268647,
@@ -650,8 +655,8 @@
     "size": 6507
   },
   "tests/rc10/logo-qa085.js": {
-    "mtime_ns": 1794339496945157057,
-    "sha256": "6b5ba9624cbbbd92381047e455e4da8a1e7792af925033fbb1d5421c760b6e66",
+    "mtime_ns": 1794341953107653725,
+    "sha256": "b4a202a5843b5392fbf3dcced3d01d35aa50baf9d07baf1f8a3ad68721f5a6c7",
     "size": 6094
   },
   "tests/rc10/paths.json": {
@@ -660,9 +665,14 @@
     "size": 294
   },
   "tests/rc10/pwa-saved.js": {
-    "mtime_ns": 1794339496945157057,
-    "sha256": "fc4d991b7eb7020034dd1008490ccffa3c0755d7c8d498eea50991e711de541c",
-    "size": 13922
+    "mtime_ns": 1794344340214179460,
+    "sha256": "a0d54ae74e2bd8f428a6d4bb2e54cd16a43eeadfcc9ba9a4a4d61fe7d1d42afd",
+    "size": 14250
+  },
+  "tests/rc10/qa089-burst.js": {
+    "mtime_ns": 1794342836572100256,
+    "sha256": "cb235ffb20ccbaa6f97db42c6bc4926a4aa500997056e8f122b468f0d5f44227",
+    "size": 5097
   },
   "tests/rc10/saved-quota.js": {
     "mtime_ns": 1794243155488142486,
@@ -733,6 +743,11 @@
     "mtime_ns": 1794339508521111130,
     "sha256": "546ac094c5497680fa954d31c1f4f4bfe3d5205df9609b713d70d2283314f9bd",
     "size": 7687
+  },
+  "tests/rc10/scope-v727.py": {
+    "mtime_ns": 1794344340214179460,
+    "sha256": "a5ef540d5116998c7e83a61c8844226acea2ec3a7b6cb6c79f441582e69a6840",
+    "size": 10070
   },
   "tests/rc10/upgrade-server.py": {
     "mtime_ns": 1794241303657679545,
@@ -1155,9 +1170,9 @@
     "size": 60672
   },
   "tests/rc7/saved-booleans-browsers.js": {
-    "mtime_ns": 1794082237325351689,
-    "sha256": "5d7eac2f2d9153540e2f7af547cb02ff052ff8d27183435ac6177f76ccc61be4",
-    "size": 9957
+    "mtime_ns": 1794342771888358296,
+    "sha256": "0410312166a816525a52bea5780be161d6ada4876ef29d235792116407d1c648",
+    "size": 10772
   },
   "tests/rc7/scope-audit.py": {
     "mtime_ns": 1794082078351693753,

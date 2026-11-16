@@ -46,6 +46,13 @@
     return parts.map((p, idx) => (idx === 0 ? p : " " + p)).join(CRLF);
   }
 
+  function isValidYmd(s) {
+    if (typeof s !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+    const [y, m, d] = s.split("-").map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    return dt.getUTCFullYear() === y && (dt.getUTCMonth() + 1) === m && dt.getUTCDate() === d;
+  }
+
   function ymdCompact(ymd) { return String(ymd).replace(/-/g, ""); }
 
   function hmCompact(hm) {
@@ -219,9 +226,12 @@
   function buildCalendar(opts) {
     const events = (opts && opts.events) || [];
     if (!events.length) throw new Error("at least one event is required");
-    events.forEach((e) => assertUidSafe(e.uid));
+    events.forEach((e) => {
+      assertUidSafe(e.uid);
+      if (!isValidYmd(e.startYmd)) throw new Error("invalid startYmd");
+    });
     const stamp = utcStamp((opts && opts.now) || new Date());
-    const year = events[0].startYmd ? +events[0].startYmd.slice(0, 4) : new Date().getUTCFullYear();
+    const year = +events[0].startYmd.slice(0, 4);
     const lines = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
@@ -241,6 +251,8 @@
   }
 
   function buildCheckrideEvent(o) {
+    o = o || {};
+    if (!isValidYmd(o.startYmd)) throw new Error("invalid startYmd");
     const duration = o.durationMinutes || DEFAULT_DURATION_MIN;
     return {
       uid: o.uid || ("checkride-connect.demo.ride." + (o.bookingId || "unknown")),
@@ -256,6 +268,8 @@
   }
 
   function buildDeadlineEvent(o) {
+    o = o || {};
+    if (!isValidYmd(o.startYmd)) throw new Error("invalid startYmd");
     return {
       uid: o.uid || ("checkride-connect.demo.credit." + (o.bookingId || o.startYmd)),
       allDay: true,
@@ -309,7 +323,7 @@
   return {
     CRLF, PRODID, DEFAULT_DURATION_MIN,
     escapeText, foldLine, fillBrackets, fmtYmdLong, addMinutesWall, nextYmd,
-    ymdCompact, localDateTime, utcStamp, formatOffset, offsetMinutes,
+    isValidYmd, ymdCompact, localDateTime, utcStamp, formatOffset, offsetMinutes,
     buildVTimezone, buildCalendar, buildCheckrideEvent, buildDeadlineEvent,
     rideFilename, deadlineFilename, deadlineDescription, downloadIcs,
     assertNoForbidden, assertUidSafe

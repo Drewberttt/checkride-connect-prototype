@@ -14,6 +14,18 @@ const WINDOW = "To keep credit for what you already passed, finish by the earlie
 const DAY60 = "Day 60 is treated as the last valid day (Interpretation; [VERIFY] #10).";
 const FOOT = "This file has no reminders or alarms. Nothing was booked or sent.";
 
+
+const AXE = process.env.AXE_MODULE || "/workspace/checkride-test-tools/node_modules/axe-core/axe.min.js";
+async function axeLabelInName(page, scope) {
+  const has = await page.evaluate(() => typeof axe !== "undefined");
+  if (!has) await page.addScriptTag({ path: AXE });
+  return page.evaluate(async (sel) => {
+    const root = sel ? document.querySelector(sel) : document;
+    const r = await axe.run(root || document, { runOnly: { type: "rule", values: ["label-content-name-mismatch"] } });
+    return r.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.html).slice(0, 4) }));
+  }, scope || ".cal-ics");
+}
+
 async function seedPilot(page) {
   await page.goto(BASE + "?demo=promo#/home", { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => window.CC_WK && window.CC_ICS);
@@ -59,8 +71,11 @@ async function seedPilot(page) {
     const rideBtn = page.locator('[data-cal="ride"] [data-action="cal-ride"]');
     check(bname + " ride btn on confirmed", await rideBtn.count() === 1);
     check(bname + " ride btn copy", (await rideBtn.textContent()).trim() === "Add to calendar");
-    check(bname + " ride aria", await rideBtn.getAttribute("aria-label") === "Download a calendar file for this sample checkride. Nothing is sent.");
+    const rideAria = await rideBtn.getAttribute("aria-label");
+    check(bname + " ride aria starts with visible text", typeof rideAria === "string" && rideAria.startsWith("Add to calendar") && rideAria.includes("Download a calendar file for this sample checkride. Nothing is sent."), rideAria);
     check(bname + " ride helper", await page.locator('[data-cal="ride"] [data-copy-key="cal.helper"]').textContent() === "Downloads a calendar file to this device. The file has no reminders. Nothing is sent.");
+    const rideAxe = await axeLabelInName(page, '[data-cal="ride"]');
+    check(bname + " ride axe label-content-name-mismatch", rideAxe.length === 0, rideAxe);
 
     // Target size + overflow of ride button
     const rideBox = await rideBtn.evaluate((el) => {
@@ -113,9 +128,12 @@ async function seedPilot(page) {
       const btn = page.locator('[data-cal="deadline"] [data-action="cal-deadline"]');
       check(bname + " deadline btn on " + kind, await btn.count() === 1);
       check(bname + " deadline copy on " + kind, (await btn.textContent()).trim() === "Add credit deadline to calendar");
-      check(bname + " deadline aria on " + kind, await btn.getAttribute("aria-label") === "Download a calendar file for the estimated retest credit deadline. Nothing is sent.");
+      const deadlineAria = await btn.getAttribute("aria-label");
+      check(bname + " deadline aria starts with visible text on " + kind, typeof deadlineAria === "string" && deadlineAria.startsWith("Add credit deadline to calendar") && deadlineAria.includes("Download a calendar file for the estimated retest credit deadline. Nothing is sent."), deadlineAria);
       check(bname + " deadline helper on " + kind, await page.locator('[data-copy-key="cal.deadline.helper"]').textContent() === "This date is an estimate. Confirm it with your examiner.");
       check(bname + " helper also on " + kind, await page.locator('[data-cal="deadline"] [data-copy-key="cal.helper"]').count() === 1);
+      const deadlineAxe = await axeLabelInName(page, '[data-cal="deadline"]');
+      check(bname + " deadline axe label-content-name-mismatch on " + kind, deadlineAxe.length === 0, deadlineAxe);
       const box = await btn.evaluate((el) => {
         const r = el.getBoundingClientRect();
         const overflowX = document.documentElement.scrollWidth > document.documentElement.clientWidth + 0.5;

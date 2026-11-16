@@ -213,6 +213,32 @@ check("stable UID for the same booking id", () => {
   assert.strictEqual(a.uid, b.uid);
 });
 
+
+check("missing startYmd throws or is rejected at buildCalendar", () => {
+  const bad = [undefined, null, "", "2026-13-01", "2026-02-30", "not-a-date", "20261204"];
+  bad.forEach((startYmd) => {
+    let evThrew = false, calThrew = false;
+    try {
+      ICS.buildCheckrideEvent({ bookingId: "miss", tz: "America/New_York", startYmd, startHm: "09:00", summary: "Demo" });
+    } catch (e) { evThrew = /invalid startYmd/.test(String(e)); }
+    try {
+      ICS.buildCalendar({ events: [{ uid: "checkride-connect.demo.ride.miss", tz: "America/New_York", startYmd, startHm: "09:00", summary: "Demo" }] });
+    } catch (e) { calThrew = /invalid startYmd/.test(String(e)); }
+    assert.ok(evThrew, "buildCheckrideEvent accepted " + JSON.stringify(startYmd));
+    assert.ok(calThrew, "buildCalendar accepted " + JSON.stringify(startYmd));
+  });
+  let deadlineThrew = false;
+  try { ICS.buildDeadlineEvent({ bookingId: "miss", startYmd: "", summary: "Demo" }); }
+  catch (e) { deadlineThrew = /invalid startYmd/.test(String(e)); }
+  assert.ok(deadlineThrew);
+});
+
+check("buildCalendar still accepts a valid startYmd", () => {
+  const ev = ICS.buildCheckrideEvent({ bookingId: "ok", tz: "America/New_York", startYmd: "2026-12-04", startHm: "09:00", summary: "Demo: ok" });
+  const ics = ICS.buildCalendar({ events: [ev] });
+  assert.ok(/DTSTART;TZID=America\/New_York:20261204T090000/.test(ics));
+});
+
 check("downloadIcs mocked Blob failure throws", () => {
   let threw = false;
   try {

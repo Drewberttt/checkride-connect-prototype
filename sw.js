@@ -2,9 +2,9 @@
    - Precaches the app shell, sample data, icons and self-hosted fonts on install (paths are relative to this file,
      so the app also works when served under a subpath).
    - Versioned cache; old versions are deleted on activate.
-   - Network first for same-origin GETs (so edits show up), cache fallback when offline; navigations fall back to index.html.
+   - Navigations, tab/home-screen icons, and shell subresources (scripts, styles, fonts, sample data): cache first, network on miss or shift-reload. Bodies are buffered and aborted requests settle with 204 so a torn-down reload cannot leave respondWith pending (QA-089). Offline navigations fall back to index.html.
    - No push, no background sync, no third-party requests. Bump VERSION when the shell changes. */
-const VERSION = "cc-proto-v7.26.0"; // RC19: QA-011 tap targets, add-to-calendar (.ics), tooling fixes.
+const VERSION = "cc-proto-v7.27.0"; // RC20: QA-089 SW abort handling on interrupted reloads.
 const CACHE = "checkride-connect-" + VERSION;
 const SHELL = [
   "./",
@@ -84,47 +84,104 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
-  const url = new URL(req.url);
+  let url;
+  try { url = new URL(req.url); } catch (e) { return; }
   if (url.origin !== self.location.origin || !url.href.startsWith(self.registration.scope)) return;
-  // QA-089: tab and home-screen icons (favicon*, apple-touch-icon, icon-*, the manifests' icons) are answered from the
-  // precache first. They only change with a VERSION bump, and answering at once means a page that is torn down mid-load
-  // (Firefox test runs that freeze the page clock) no longer leaves a pending network fetch inside respondWith.
+  // QA-089: Always respondWith for navigations, icons, and every other in-scope GET
+  // (scripts, styles, fonts, sample data). Firefox drops control if a fetch listener
+  // skips a navigation. Shell subresources must be served from the precache on an
+  // offline reload — the HTTP cache is not reliable (reload often bypasses it), and
+  // skipping intercept left the inline load-error fallback in place of the app.
+  // Icons stay on the precache path (they only change with a VERSION bump).
+  // Already-aborted requests get a synchronous 204. settle() buffers bodies and
+  // races the page abort signal so a torn-down reload cannot leave respondWith
+  // pending (Firefox "ServiceWorker intercepted … unexpected error", including on
+  // the large app.js body). Never fall through without respondWith for in-scope GETs.
   const ICON = /\/(favicon[^/]*|apple-touch-icon\.png|icon-[^/]*\.png)$/.test(url.pathname);
-  event.respondWith(answer(req, url, ICON).catch(() => offline(req)));
+  if (req.signal && req.signal.aborted) {
+    event.respondWith(new Response(null, { status: 204, statusText: "Aborted" }));
+    return;
+  }
+  event.respondWith(settle(event, req, url, ICON));
 });
 
-// rc5 (QA-089 re-scoped): Firefox logged "A ServiceWorker intercepted the request and encountered an unexpected error"
-// for app.js (and other scripts) during rapid, interrupted reloads. Two guards:
-// 1. The network fetch no longer carries the page's abort signal, and its body is read in full before we answer, so
-//    an aborted page load can't hand respondWith a half-read stream; a failed read falls back to the cache.
-// 2. Every step (caches.open, match, fetch, body read) sits inside one promise with a final .catch, so respondWith
-//    always gets a Response (cached copy, index.html for navigations, or a plain 503), never a rejection.
-async function answer(req, url, icon) {
+// QA-089 (rc20): Firefox logs "A ServiceWorker intercepted the request and encountered an unexpected error"
+// (sometimes with an empty URL) when respondWith is still pending after the page aborts the request —
+// the usual pattern in rapid, interrupted reloads. rc5 already (1) dropped the page abort signal from
+// subresource fetches, (2) read the body in full, and (3) caught so respondWith would not reject. That
+// stopped named-file failures, but a network/blob round-trip still left the promise pending after
+// teardown. An early rc20 draft skipped script/style/font intercept so HTTP cache would serve them;
+// offline reload then missed those precached files (reload bypasses the HTTP cache) and painted the
+// inline load-error fallback instead of the app. Fix:
+//   * Always respondWith for every in-scope GET, including shell subresources, so offline reload
+//     serves precached scripts/styles/fonts/data (Firefox also drops control if a navigation is skipped).
+//   * Already-aborted requests get a synchronous 204.
+//   * Cached bodies are buffered so Firefox is not handed a stream it can cancel mid-read.
+//   * If the request aborts mid-flight, settle immediately with an empty 204 (no Cache Storage I/O).
+//   * Shift/reload (cache: "reload" / "no-store") stays network-first so edits still show up.
+// respondWith must never reject, and must never be given undefined.
+function settle(event, req, url, icon) {
+  const work = answer(event, req, url, icon);
+  const signal = req.signal;
+  const done = work.catch(() => cancelled(req));
+  if (!signal) return done;
+  const aborted = new Promise((resolve) => {
+    if (signal.aborted) { resolve("aborted"); return; }
+    signal.addEventListener("abort", () => resolve("aborted"), { once: true });
+  });
+  return Promise.race([
+    done.then((res) => ({ res })),
+    aborted.then(() => ({ aborted: true }))
+  ]).then((winner) => {
+    if (winner && winner.res) return winner.res;
+    // The page is already gone; do not touch Cache Storage or a body stream here.
+    return new Response(null, { status: 204, statusText: "Aborted" });
+  }).catch(() => new Response(null, { status: 204, statusText: "Aborted" }));
+}
+async function buffered(res) {
+  if (!res) return res;
+  const body = await res.blob();
+  return new Response(body, { status: res.status, statusText: res.statusText, headers: res.headers });
+}
+async function answer(event, req, url, icon) {
   const cache = await caches.open(CACHE);
   const key = url.href.split("#")[0];
-  if (icon) { const hit = await cache.match(key, { ignoreSearch: true }); if (hit) return hit; }
+  const bypass = req.cache === "reload" || req.cache === "no-store";
+  if (!bypass) {
+    const hit = (await cache.match(key, { ignoreSearch: true }))
+      || (req.mode === "navigate" && ((await cache.match(new URL("index.html", self.registration.scope))) || (await cache.match(self.registration.scope))));
+    if (hit) return buffered(hit);
+  }
+  // Cache miss (or shift-reload): go to the network. Honor the page's abort signal so a torn-down
+  // reload fails the fetch immediately; cancelled() then settles respondWith with a cache hit or 204.
   try {
-    const res = await fetch(req.mode === "navigate" ? req : new Request(req.url, { credentials: req.credentials, cache: req.cache === "only-if-cached" ? "default" : req.cache, redirect: req.redirect }));
-    if (!res || res.type !== "basic" || req.mode === "navigate") {
-      // Cache under the URL without its #fragment so "./" and "./#/..." share one entry.
-      if (res && res.ok && res.type === "basic") cache.put(key, res.clone()).catch(() => {});
-      return res;
-    }
-    const body = await res.blob(); // whole body in memory (small static files), so the answer can't break mid-stream
+    const res = await fetch(req);
+    if (!res || res.type !== "basic") return res || (await cancelled(req));
+    const body = await res.blob();
     const out = new Response(body, { status: res.status, statusText: res.statusText, headers: res.headers });
     if (res.ok) cache.put(key, out.clone()).catch(() => {});
     return out;
   } catch (e) {
-    return offline(req, cache, key);
+    return cancelled(req);
   }
+}
+async function cancelled(req) {
+  try {
+    const hit = await offline(req);
+    if (hit && hit.status !== 503) return hit;
+  } catch (e) { /* fall through */ }
+  return new Response(null, { status: 204, statusText: "Aborted" });
 }
 async function offline(req, cache, key) {
   try {
     cache = cache || (await caches.open(CACHE));
     key = key || req.url.split("#")[0];
     const hit = await cache.match(key, { ignoreSearch: true });
-    if (hit) return hit;
-    if (req.mode === "navigate") { const shell = (await cache.match(new URL("index.html", self.registration.scope))) || (await cache.match(self.registration.scope)); if (shell) return shell; }
+    if (hit) return buffered(hit);
+    if (req.mode === "navigate") {
+      const shell = (await cache.match(new URL("index.html", self.registration.scope))) || (await cache.match(self.registration.scope));
+      if (shell) return buffered(shell);
+    }
   } catch (e) { /* fall through to the plain 503 */ }
   return new Response("Offline and not cached (prototype).", { status: 503, headers: { "Content-Type": "text/plain" } });
 }
