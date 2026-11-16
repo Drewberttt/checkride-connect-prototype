@@ -72,7 +72,8 @@ async function seedPilot(page) {
     check(bname + " ride btn on confirmed", await rideBtn.count() === 1);
     check(bname + " ride btn copy", (await rideBtn.textContent()).trim() === "Add to calendar");
     const rideAria = await rideBtn.getAttribute("aria-label");
-    check(bname + " ride aria starts with visible text", typeof rideAria === "string" && rideAria.startsWith("Add to calendar") && rideAria.includes("Download a calendar file for this sample checkride. Nothing is sent."), rideAria);
+    check(bname + " ride aria is full cal.ride.aria (no prepend)", rideAria === "Add to calendar: downloads a calendar file for this sample checkride. Nothing is sent.", rideAria);
+    check(bname + " ride btn has no aria-describedby on cal.helper", await rideBtn.getAttribute("aria-describedby") === null);
     check(bname + " ride helper", await page.locator('[data-cal="ride"] [data-copy-key="cal.helper"]').textContent() === "Downloads a calendar file to this device. The file has no reminders. Nothing is sent.");
     const rideAxe = await axeLabelInName(page, '[data-cal="ride"]');
     check(bname + " ride axe label-content-name-mismatch", rideAxe.length === 0, rideAxe);
@@ -129,7 +130,8 @@ async function seedPilot(page) {
       check(bname + " deadline btn on " + kind, await btn.count() === 1);
       check(bname + " deadline copy on " + kind, (await btn.textContent()).trim() === "Add credit deadline to calendar");
       const deadlineAria = await btn.getAttribute("aria-label");
-      check(bname + " deadline aria starts with visible text on " + kind, typeof deadlineAria === "string" && deadlineAria.startsWith("Add credit deadline to calendar") && deadlineAria.includes("Download a calendar file for the estimated retest credit deadline. Nothing is sent."), deadlineAria);
+      check(bname + " deadline aria is full cal.deadline.aria on " + kind, deadlineAria === "Add credit deadline to calendar: downloads a calendar file for the estimated retest credit deadline. Nothing is sent.", deadlineAria);
+      check(bname + " deadline btn has no aria-describedby on " + kind, await btn.getAttribute("aria-describedby") === null);
       check(bname + " deadline helper on " + kind, await page.locator('[data-copy-key="cal.deadline.helper"]').textContent() === "This date is an estimate. Confirm it with your examiner.");
       check(bname + " helper also on " + kind, await page.locator('[data-cal="deadline"] [data-copy-key="cal.helper"]').count() === 1);
       const deadlineAxe = await axeLabelInName(page, '[data-cal="deadline"]');
@@ -181,6 +183,61 @@ async function seedPilot(page) {
     check(bname + " err toast shown", (await err.count()) >= 1 && (await err.first().textContent()).includes("Couldn't download the calendar file"));
     check(bname + " err toast role status", await err.first().getAttribute("role") === "status");
     check(bname + " err toast aria-live polite", await err.first().getAttribute("aria-live") === "polite");
+
+    // D55 Label in Name (rc21): extend axe coverage to proto.details, fr.s2.suggest, after.saved
+    await page.goto(BASE + "?demo=promo#/home", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".proto-details, .page");
+    const protoBtn = page.locator("button.proto-details").first();
+    check(bname + " proto.details.aria closed verbatim", (await protoBtn.getAttribute("aria-label")) === "Details: more about this prototype");
+    const protoAxeClosed = await axeLabelInName(page, ".proto-merged");
+    check(bname + " proto.details closed axe label-content-name-mismatch", protoAxeClosed.length === 0, protoAxeClosed);
+    await protoBtn.click();
+    check(bname + " proto.details.aria_open swapped verbatim", (await protoBtn.getAttribute("aria-label")) === "Details: hide the extra prototype notes");
+    check(bname + " proto.details expanded", (await protoBtn.getAttribute("aria-expanded")) === "true");
+    const protoAxeOpen = await axeLabelInName(page, ".proto-merged");
+    check(bname + " proto.details open axe label-content-name-mismatch", protoAxeOpen.length === 0, protoAxeOpen);
+
+    await page.goto(BASE + "?demo=promo#/onboarding?edit=1&step=2", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector('[data-action="fr-suggest-airport"], .page');
+    const suggest = page.locator('[data-action="fr-suggest-airport"]');
+    if (await suggest.count()) {
+      const suggestAria = await suggest.getAttribute("aria-label");
+      const suggestText = (await suggest.textContent()).trim();
+      check(bname + " fr.s2.suggest visible starts the aria name", suggestText === "Use XNC01 Tarwick?" && suggestAria === "Use XNC01 Tarwick? A suggestion. XNC01 Tarwick is a fictional sample airport.", { suggestText, suggestAria });
+      const suggestAxe = await axeLabelInName(page, '[data-action="fr-suggest-airport"]');
+      check(bname + " fr.s2.suggest axe label-content-name-mismatch", suggestAxe.length === 0, suggestAxe);
+    } else {
+      check(bname + " fr.s2.suggest CTA present for axe", false, await page.locator("body").innerText().then((x) => x.slice(0, 200)));
+    }
+
+    await page.evaluate(() => {
+      const keys = Object.keys(localStorage).filter((k) => k.startsWith("cc-connect-proto-v3"));
+      for (const key of keys) {
+        const s = JSON.parse(localStorage.getItem(key) || "{}");
+        const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+        const g = (ty) => parts.find((p) => p.type === ty).value;
+        const today = `${g("year")}-${g("month")}-${g("day")}`;
+        const [Y, M, D] = today.split("-").map(Number);
+        const yday = new Date(Date.UTC(Y, M - 1, D - 1)).toISOString().slice(0, 10);
+        s.slots = s.slots || [];
+        s.bookings = s.bookings || [];
+        s.slots = s.slots.filter((x) => x.id !== "slotd55");
+        s.bookings = s.bookings.filter((b) => b.id !== "bkd55");
+        s.slots.push({ id: "slotd55", dpeId: "d5", date: yday, time: "09:00", airport: "XNC08", status: "booked", certs: ["ppl"], bookingId: "bkd55" });
+        s.bookings.push({ id: "bkd55", slotId: "slotd55", dpeId: "d5", cert: "ppl", status: "confirmed", mine: true, outcome: "pass", outcomeAt: Date.now(), applicant: "Alex Demo", createdAt: Date.now() - 864e5 });
+        localStorage.setItem(key, JSON.stringify(s));
+      }
+    });
+    await page.reload();
+    await page.goto(BASE + "?demo=promo#/bookings", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector('[data-outcome="pass"], .page');
+    const saved = page.locator('[data-outcome="pass"]').first();
+    check(bname + " after.saved pill present", await saved.count() === 1);
+    const savedLabel = (await saved.textContent()).trim();
+    const savedAria = await saved.getAttribute("aria-label");
+    check(bname + " after.saved.aria starts with visible Passed · date", typeof savedAria === "string" && savedAria.startsWith(savedLabel) && savedAria.endsWith("Saved checkride result.") && /^Passed · /.test(savedLabel), { savedLabel, savedAria });
+    const savedAxe = await axeLabelInName(page, '[data-outcome="pass"]');
+    check(bname + " after.saved axe label-content-name-mismatch", savedAxe.length === 0, savedAxe);
 
     await browser.close();
   }

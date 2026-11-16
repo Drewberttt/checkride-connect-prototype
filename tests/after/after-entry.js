@@ -28,8 +28,8 @@ const check = (name, yes, data) => { results.push({ name, pass: !!yes, data }); 
       const tmrw = new Date(Date.UTC(Y, M - 1, D + 1)).toISOString().slice(0, 10);
       const mkSlot = (id, date) => ({ id: "slotentry" + id, dpeId: "d5", date, time: "09:00", airport: "KVDF", status: "booked", certs: ["ppl"], bookingId: "bkentry" + id });
       const mkBook = (id, status) => ({ id: "bkentry" + id, slotId: "slotentry" + id, dpeId: "d5", cert: "ppl", status, mine: true, applicant: "Alex Demo", createdAt: Date.now() - 864e5, feeUsd: 700, depositUsd: 200 });
-      const slots = [mkSlot("past", yday), mkSlot("today", today), mkSlot("future", tmrw), mkSlot("pastreq", yday)];
-      const bookings = [mkBook("past", "confirmed"), mkBook("today", "confirmed"), mkBook("future", "confirmed"), mkBook("pastreq", "requested")];
+      const slots = [mkSlot("past", yday), mkSlot("today", today), mkSlot("future", tmrw), mkSlot("pastreq", yday), mkSlot("inc", yday), mkSlot("dis", yday)];
+      const bookings = [mkBook("past", "confirmed"), mkBook("today", "confirmed"), mkBook("future", "confirmed"), mkBook("pastreq", "requested"), mkBook("inc", "confirmed"), mkBook("dis", "confirmed")];
       // past-req shares date with past but distinct slot id already
       slots[3].bookingId = "bkentrypastreq";
       const state = {
@@ -80,14 +80,19 @@ const check = (name, yes, data) => { results.push({ name, pass: !!yes, data }); 
     check(bname + " Not finished → #/after/inc (LOD)", await pastEntry.locator('[data-after-choice="inc"]').getAttribute("href") === "#/after/inc?bookingId=bkentrypast");
     check(bname + " Not passed → #/after/dis (NOD)", await pastEntry.locator('[data-after-choice="dis"]').getAttribute("href") === "#/after/dis?bookingId=bkentrypast");
 
+    const entry = pastEntry;
+    check(bname + " entry prompt §10.0", (await entry.locator('[data-copy-key="after.entry.prompt"]').textContent()).trim() === "How did it go?");
+    check(bname + " entry passed label", (await entry.locator('[data-copy-key="after.entry.passed"]').textContent()).trim() === "Passed");
+    check(bname + " entry inc Not finished (no discontinued)", (await entry.locator('[data-copy-key="after.entry.inc"]').textContent()).trim() === "Not finished");
+    check(bname + " entry dis Not passed", (await entry.locator('[data-copy-key="after.entry.dis"]').textContent()).trim() === "Not passed");
+    const helper = (await entry.locator('[data-copy-key="after.entry.helper"]').textContent()).trim();
+    check(bname + " entry helper §10.0", helper === "Pick what your examiner handed you: a temporary certificate (Passed), a letter of discontinuance (Not finished) or a notice of disapproval (Not passed). If the test stopped after an unsatisfactory task, choose Not passed. Prototype only; nothing is filed or sent.", helper);
+    check(bname + " entry aria §10.0", await entry.locator('.after-entry-actions').getAttribute("aria-label") === "Checkride result for this booking");
+    check(bname + " entry group_label §10.0", (await entry.locator('[data-copy-key="after.entry.group_label"]').textContent()).trim() === "Checkride result");
+    check(bname + " no PLACEHOLDER on entry", !(await entry.innerText()).includes("PLACEHOLDER"));
+
     await pastEntry.locator('[data-after-choice="pass"]').focus();
     check(bname + " choice is focusable link", await page.evaluate(() => document.activeElement?.getAttribute("data-after-choice") === "pass"));
-
-    await pastEntry.locator('[data-after-choice="pass"]').click();
-    await page.waitForSelector('[data-after="pass"]');
-    check(bname + " routed to pass", page.url().includes("#/after/pass"));
-    const sub = await page.locator('[data-copy-key="pass.sub"]').textContent();
-    check(bname + " pass sub has cert/examiner context", /Private|Pilot|with/i.test(sub) && sub.length > 10, sub);
 
     await page.emulateMedia({ colorScheme: "dark" });
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -99,26 +104,60 @@ const check = (name, yes, data) => { results.push({ name, pass: !!yes, data }); 
     await page.goto(BASE + "#/request/bkentrypast");
     await page.waitForSelector(".page");
     check(bname + " request page shows entry for past", await page.locator('[data-after-entry][data-booking="bkentrypast"]').count() === 1);
+
+    await page.goto(BASE + "#/bookings");
+    await page.locator('[data-after-entry][data-booking="bkentrypast"] [data-after-choice="pass"]').click();
+    await page.waitForSelector('[data-after="pass"]');
+    check(bname + " routed to pass", page.url().includes("#/after/pass"));
+    const sub = await page.locator('[data-copy-key="pass.sub"]').textContent();
+    const bareFirst = (txt) => /with Lauren(?! Pike)/.test(txt);
+    check(bname + " pass sub has cert/examiner context", /Private|Pilot|with/i.test(sub) && sub.length > 10, sub);
+    check(bname + " RC20-I02 pass booking sub uses Lauren Pike", /with Lauren Pike/.test(sub) && !bareFirst(sub), sub);
+    check(bname + " pass screen offers next certificate", await page.locator('[data-after-next] [data-copy-key="after.next.headline"]').count() === 1);
+
+    await page.goto(BASE + "#/bookings");
+    check(bname + " saved outcome hides entry on bookings", await page.locator('[data-after-entry][data-booking="bkentrypast"]').count() === 0);
+    check(bname + " bookings shows after.saved.passed", await page.locator('[data-outcome="pass"]').count() === 1);
+    check(bname + " Cancel hidden after saved outcome", await page.locator('[data-action="pilot-cancel"][data-id="bkentrypast"]').count() === 0);
+
+    await page.goto(BASE + "#/request/bkentryinc");
+    await page.waitForSelector(".page");
     await page.locator('[data-after-choice="inc"]').click();
     await page.waitForSelector('[data-after="inc"]');
     check(bname + " Not finished routes to inc/LOD", page.url().includes("#/after/inc") && await page.locator('[data-copy-key="after.inc.no_endorse"]').count() === 1);
+    check(bname + " inc screen has no after.next offer", await page.locator('[data-after-next]').count() === 0);
 
-    await page.goto(BASE + "#/request/bkentrypast");
+    await page.goto(BASE + "#/request/bkentrydis");
     await page.locator('[data-after-choice="dis"]').click();
     await page.waitForSelector('[data-after="dis"]');
     check(bname + " Not passed routes to dis/NOD", page.url().includes("#/after/dis") && await page.locator('[data-copy-key="after.dis.endorse"]').count() === 1);
+    check(bname + " dis screen has no after.next offer", await page.locator('[data-after-next]').count() === 0);
+    const disSub = (await page.locator('[data-copy-key="after.dis.sub"]').textContent() || "").replace(/\s+/g, " ").trim();
+    check(bname + " RC20-I02 dis booking sub uses Lauren Pike", /with Lauren Pike/.test(disSub) && !bareFirst(disSub), disSub);
+
+    await page.goto(BASE + "?demo=promo#/after/inc");
+    await page.waitForSelector('[data-after="inc"]');
+    const incDemo = (await page.locator('[data-copy-key="after.inc.sub"]').textContent() || "").replace(/\s+/g, " ").trim();
+    check(bname + " RC20-I02 inc demo sub is F20 Lauren Pike fill", incDemo === "Private Pilot with Lauren Pike · Fri, Oct 30, 2026 · 9:00 AM ET, at XNC08", incDemo);
+
+    await page.goto(BASE + "?demo=promo#/after/pass");
+    await page.waitForSelector('[data-after="pass"]');
+    const passDemo = (await page.locator('[data-copy-key="pass.sub"]').textContent() || "").replace(/\s+/g, " ").trim();
+    check(bname + " RC20-I02 pass demo sub is F20 Lauren Pike fill", passDemo === "Private Pilot with Lauren Pike · Fri, Oct 30, 2026 · 9:00 AM ET, at XNC08", passDemo);
+
+    await page.goto(BASE + "?demo=promo#/after/dis");
+    await page.waitForSelector('[data-after="dis"]');
+    const disDemo = (await page.locator('[data-copy-key="after.dis.sub"]').textContent() || "").replace(/\s+/g, " ").trim();
+    check(bname + " RC20-I02 dis demo sub is F20 Lauren Pike fill", disDemo === "Private Pilot with Lauren Pike · Fri, Oct 30, 2026 · 9:00 AM ET, at XNC08", disDemo);
 
     await page.goto(BASE + "#/bookings");
-    const entry = page.locator('[data-after-entry][data-booking="bkentrypast"]');
-    check(bname + " entry prompt §10.0", (await entry.locator('[data-copy-key="after.entry.prompt"]').textContent()).trim() === "How did it go?");
-    check(bname + " entry passed label", (await entry.locator('[data-copy-key="after.entry.passed"]').textContent()).trim() === "Passed");
-    check(bname + " entry inc Not finished (no discontinued)", (await entry.locator('[data-copy-key="after.entry.inc"]').textContent()).trim() === "Not finished");
-    check(bname + " entry dis Not passed", (await entry.locator('[data-copy-key="after.entry.dis"]').textContent()).trim() === "Not passed");
-    const helper = (await entry.locator('[data-copy-key="after.entry.helper"]').textContent()).trim();
-    check(bname + " entry helper §10.0", helper === "Pick what your examiner handed you: a temporary certificate (Passed), a letter of discontinuance (Not finished) or a notice of disapproval (Not passed). If the test stopped after an unsatisfactory task, choose Not passed. Prototype only; nothing is filed or sent.", helper);
-    check(bname + " entry aria §10.0", await entry.locator('.after-entry-actions').getAttribute("aria-label") === "Checkride result for this booking");
-    check(bname + " entry group_label §10.0", (await entry.locator('[data-copy-key="after.entry.group_label"]').textContent()).trim() === "Checkride result");
-    check(bname + " no PLACEHOLDER on entry", !(await entry.innerText()).includes("PLACEHOLDER"));
+    await page.waitForSelector(".page");
+    const incSubPage = await page.locator('[data-after-entry][data-booking="bkentryinc"]').count();
+    // inc was already saved earlier in this run; check the inc screen we already visited if still in results
+    await page.goto(BASE + "#/after/inc?bookingId=bkentryinc");
+    await page.waitForSelector('[data-after="inc"]');
+    const incSub = (await page.locator('[data-copy-key="after.inc.sub"]').textContent() || "").replace(/\s+/g, " ").trim();
+    check(bname + " RC20-I02 inc booking sub uses Lauren Pike", /with Lauren Pike/.test(incSub) && !bareFirst(incSub), incSub);
 
     await browser.close();
   }

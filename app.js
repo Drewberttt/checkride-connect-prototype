@@ -195,9 +195,63 @@
   // QA-039: one shared rule. A slot whose start instant (airport zone) has passed is never listed, alerted, offered or requestable.
   const slotPast = (sl) => !!sl && slotStart(sl) <= Date.now();
   // ux-copy-v3 §7.6 (Marlo, Nov 2): copy keys used by the v4 build. "That date has passed" stays for onboarding date fields only.
-  const COPY = { "saved.toggle.save": "Save", "saved.toggle.saved": "Saved", "saved.toggle.pending": "Saving\u2026", "saved.aria.save": "Save {name}", "saved.aria.saved": "Remove {name} from Saved", "saved.aria.pending": "Saving {name}", "nav.saved": "Saved", "saved.eyebrow": "YOUR SHORTLIST", "saved.headline": "Examiners you keep. Searches you reuse.", "saved.helper": "Prototype: saved only in this browser on this device. Nothing is sent. Sample data only.", "saved.section.examiners": "Examiners", "saved.section.searches": "Searches", "saved.examiner.meta": "{cert} \u00b7 {airport} \u00b7 {state}", "saved.examiner.open": "View examiner", "saved.search.meta": "{cert} \u00b7 near {airport} \u00b7 {radius} nm", "saved.search.open": "Run this search", "saved.search.rename": "Rename", "saved.examiner.remove": "Remove", "saved.search.remove": "Remove", "saved.search.action": "Save this search", "saved.search.default_name": "{cert} \u00b7 {airport} \u00b7 {radius} nm", "saved.search.default_name_before": "{cert} \u00b7 {airport} \u00b7 {radius} nm \u00b7 before {before}", "saved.search.rename_label": "Name", "saved.search.rename_save": "Save name", "saved.search.rename_cancel": "Cancel", "saved.search.already": "Saved as \"{name}\" \u00b7 View Saved", "saved.badge.count": "{n}", "saved.new.one": "{n} new since your last visit", "saved.new.many": "{n} new since your last visit", "saved.new.examiner": "{n} new openings for {name}", "saved.new.search": "{n} new openings for this search", "saved.home.teaser": "{n} new since your last visit \u00b7 See Saved", "saved.empty.examiners.title": "No saved examiners yet", "saved.empty.examiners.body": "Tap Save on a sample examiner to keep them here. Stored only in this browser.", "saved.empty.examiners.cta": "Find examiners", "saved.empty.searches.title": "No saved searches yet", "saved.empty.searches.body": "Set your filters, then tap Save this search. You can rename it any time.", "saved.empty.searches.cta": "Open search", "saved.empty.all.title": "Nothing saved yet", "saved.empty.all.body": "Save a sample examiner or a search to build your shortlist. Prototype only; nothing is sent.", "saved.toast.examiner_saved": "Saved {name}.", "saved.toast.search_saved": "Search saved as \"{name}\".", "saved.toast.search_renamed": "Renamed to \"{name}\".", "saved.toast.examiner_removed": "Removed {name}.", "saved.toast.search_removed": "Removed \"{name}\".", "saved.toast.undo": "Undo", "saved.toast.undone": "Restored.", "saved.error.quota": "Couldn't save on this device. Free some browser storage, or remove an older saved item, then try again.", "saved.error.generic": "Something went wrong saving that. Nothing was sent. Try again.", "saved.error.missing_examiner": "That sample examiner isn’t in this demo any more (links can go stale after a reset).", "saved.error.missing_search": "That saved search isn’t here any more.", "saved.error.duplicate_search": "You already saved these filters as \"{name}\".", "saved.view": "View Saved", "saved.corrupt_cleared": "Some saved items couldn't be read, so they were removed from this browser. Nothing was sent.", "goal.no_estimate": "No estimate yet for this certificate.", "goal.info_only": "Info only: not bookable in this prototype.", "goal.rotorcraft": "Rotorcraft (info only: not bookable in this prototype)", "digest.title": "Monday digest preview", "digest.label": "Preview, nothing is sent", "digest.open": "Open local preview", "digest.note": "Fictional local data, evaluated when you open Alerts. Monday is a preview title, not a delivery schedule. No email, notifications or reservations are created.", "digest.empty": "No saved alerts or sample waitlists yet. Save a local alert or join a sample waitlist to see relevant openings here.", "digest.filters": "Saved local filters", "digest.waitlists": "Sample waitlists", "digest.openings": "Current matching sample openings", "digest.none": "No current sample openings match these saved filters. Expired, taken and stale-availability openings are excluded.", "digest.limit": "Up to 6 distinct openings per checkride are shown, soonest first. The same opening is shown once per checkride even if several saved filters match.", "digest.view": "View sample opening", "digest.search": "Find sample openings", "digest.waitlist_view": "View sample examiner", "goal.blank": "No default checkride", "goal.label": "Planning checkride", "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",  "fr.progress": "Step {n} of 3", "fr.progress.aria": "Step {n} of 3", "fr.proto": "Prototype: sample data only. Saved in this browser on this device. Nothing is sent.", "fr.skip": "Skip for now", "fr.skip_all": "Skip setup", "fr.back": "Back", "fr.next": "Next", "fr.finish": "See my Home", "fr.escape_hint": "Press Escape to skip setup and go to Home.", "fr.s1.eyebrow": "STEP 1 OF 3", "fr.s1.headline": "Your checkride. Your pick.", "fr.s1.question": "What are you working toward?", "fr.s1.helper": "Pick the checkride you're planning next. A planning default only — not eligibility or CFI approval. You can change it any time in More.", "fr.s1.opt.ppl": "Private Pilot", "fr.s1.sub.ppl": "Airplane Single-Engine Land", "fr.s1.opt.ir": "Instrument Rating", "fr.s1.sub.ir": "Airplane", "fr.s1.opt.cpl": "Commercial Pilot", "fr.s1.sub.cpl": "Airplane Single-Engine Land", "fr.s1.opt.me": "Multi-Engine Add-on", "fr.s1.sub.me": "Airplane Multi-Engine Land", "fr.s1.opt.cfi": "Flight Instructor (CFI)", "fr.s1.sub.cfi": "Airplane Single-Engine", "fr.s1.opt.cfii": "Instrument Instructor (CFII)", "fr.s1.sub.cfii": "Airplane", "fr.s1.opt.mei": "Multi-Engine Instructor (MEI)", "fr.s1.sub.mei": "Airplane Multi-Engine", "fr.s1.opt.atp": "ATP", "fr.s1.sub.atp": "Info only: not bookable in this prototype.", "fr.s1.opt.rh": "Rotorcraft (info only: not bookable in this prototype)", "fr.s1.info_note": "Info only: not bookable in this prototype. Estimators and openings stay on airplane certificates.", "fr.s1.err": "Pick a checkride to continue, or tap Skip for now.", "fr.s1.skip_note": "We'll leave your planning checkride unset. You can set it later in More.", "fr.s1.group": "Planning checkride", "fr.s2.eyebrow": "STEP 2 OF 3", "fr.s2.headline": "Your airport. Examiners nearby.", "fr.s2.question": "Where do you fly from?", "fr.s2.helper": "Search by ICAO code or airport name. We use it to show sample examiners nearby.", "fr.s2.field": "Airport", "fr.s2.placeholder": "e.g. XNC01 or Tarwick", "fr.s2.sample": "Use the sample airport", "fr.s2.sample_helper": "Mock: picks a sample airport. No GPS in this prototype.", "fr.s2.empty_query": "Start typing an ICAO code or name.", "fr.s2.err.nomatch": "We couldn't find \"{q}\". Try the ICAO code (like {hint}) or the airport name.", "fr.s2.err.outside": "This prototype only has sample examiners in {states} so far. Pick an airport there, or use the sample airport.", "fr.s2.err.required": "Pick an airport to continue, or tap Skip for now.", "fr.s2.skip_note": "Home will ask you to add an airport before showing nearby examiners.", "fr.s2.listbox": "Airport matches", "fr.s2.suggest": "This prototype uses fictional North Carolina sample airports.", "fr.s2.suggest.cta": "Use XNC01 Tarwick?", "fr.s2.suggest.note": "A suggestion. XNC01 Tarwick is a fictional sample airport.", "fr.s2.suggest.aria": "Suggestion: use fictional sample airport XNC01 Tarwick.", "fr.s3.eyebrow": "STEP 3 OF 3", "fr.s3.headline": "A rough target. A clear path.", "fr.s3.question": "When are you hoping to test?", "fr.s3.helper": "A month is enough. Your CFI is the best judge of timing.", "fr.s3.choice.month": "Pick a month", "fr.s3.choice.unsure": "Not sure yet", "fr.s3.err.past": "That month has passed. Pick this month or later.", "fr.s3.note.soon": "That's coming up soon. If an examiner has already confirmed your checkride, add it under My checkrides so we can track it.", "fr.s3.skip_note": "No target month set. Your clock uses \"no target\" copy until you add one in More.", "fr.home.greeting": "Welcome, {name}. Here's your starting point.", "fr.home.greeting_anon": "Welcome aboard. Here's your starting point.", "fr.home.chips_label": "Your plan", "fr.home.chip.cert": "{name} · Change", "fr.home.chip.cert_unset": "Checkride: not set · Set it", "fr.home.chip.cert_info": "{name} · Info only · Change", "fr.home.chip.airport": "Home: {id} · Change", "fr.home.chip.airport_unset": "Airport: not set · Add one", "fr.home.chip.target": "Target: {month} · Change", "fr.home.chip.target_unset": "Target: not sure yet · Set a month", "fr.home.airport_prompt": "Add your home airport to see sample examiners nearby. · Add airport", "fr.home.cert_prompt": "Choose a planning checkride so Search and Journey know what to show. · Set checkride", "fr.toast.done": "You're set. Preferences stay in this browser only.", "fr.toast.partial": "Saved what you picked. You can finish the rest any time in More.", "fr.more.row": "Your plan", "fr.more.title": "Your plan", "fr.more.airport": "Home airport", "fr.more.target": "Target month", "fr.more.save": "Save", "fr.more.toast": "Plan updated.", "fr.more.err": "Couldn't save on this device. Try again. Nothing was sent.", "fr.err.storage": "We couldn't save that on this device. Try again, or keep browsing. Nothing is lost.", "fr.live.step": "Step {n} of 3: {headline}",
+  const COPY = { "saved.toggle.save": "Save", "saved.toggle.saved": "Saved", "saved.toggle.pending": "Saving\u2026", "saved.aria.save": "Save {name}", "saved.aria.saved": "Remove {name} from Saved", "saved.aria.pending": "Saving {name}", "nav.saved": "Saved", "saved.eyebrow": "YOUR SHORTLIST", "saved.headline": "Examiners you keep. Searches you reuse.", "saved.helper": "Prototype: saved only in this browser on this device. Nothing is sent. Sample data only.", "saved.section.examiners": "Examiners", "saved.section.searches": "Searches", "saved.examiner.meta": "{cert} \u00b7 {airport} \u00b7 {state}", "saved.examiner.open": "View examiner", "saved.search.meta": "{cert} \u00b7 near {airport} \u00b7 {radius} nm", "saved.search.open": "Run this search", "saved.search.rename": "Rename", "saved.examiner.remove": "Remove", "saved.search.remove": "Remove", "saved.search.action": "Save this search", "saved.search.default_name": "{cert} \u00b7 {airport} \u00b7 {radius} nm", "saved.search.default_name_before": "{cert} \u00b7 {airport} \u00b7 {radius} nm \u00b7 before {before}", "saved.search.rename_label": "Name", "saved.search.rename_save": "Save name", "saved.search.rename_cancel": "Cancel", "saved.search.already": "Saved as \"{name}\" \u00b7 View Saved", "saved.badge.count": "{n}", "saved.new.one": "{n} new since your last visit", "saved.new.many": "{n} new since your last visit", "saved.new.examiner": "{n} new openings for {name}", "saved.new.search": "{n} new openings for this search", "saved.home.teaser": "{n} new since your last visit \u00b7 See Saved", "saved.empty.examiners.title": "No saved examiners yet", "saved.empty.examiners.body": "Tap Save on a sample examiner to keep them here. Stored only in this browser.", "saved.empty.examiners.cta": "Find examiners", "saved.empty.searches.title": "No saved searches yet", "saved.empty.searches.body": "Set your filters, then tap Save this search. You can rename it any time.", "saved.empty.searches.cta": "Open search", "saved.empty.all.title": "Nothing saved yet", "saved.empty.all.body": "Save a sample examiner or a search to build your shortlist. Prototype only; nothing is sent.", "saved.toast.examiner_saved": "Saved {name}.", "saved.toast.search_saved": "Search saved as \"{name}\".", "saved.toast.search_renamed": "Renamed to \"{name}\".", "saved.toast.examiner_removed": "Removed {name}.", "saved.toast.search_removed": "Removed \"{name}\".", "saved.toast.undo": "Undo", "saved.toast.undone": "Restored.", "saved.error.quota": "Couldn't save on this device. Free some browser storage, or remove an older saved item, then try again.", "saved.error.generic": "Something went wrong saving that. Nothing was sent. Try again.", "saved.error.missing_examiner": "That sample examiner isn’t in this demo any more (links can go stale after a reset).", "saved.error.missing_search": "That saved search isn’t here any more.", "saved.error.duplicate_search": "You already saved these filters as \"{name}\".", "saved.view": "View Saved", "saved.corrupt_cleared": "Some saved items couldn't be read, so they were removed from this browser. Nothing was sent.", "goal.no_estimate": "No estimate yet for this certificate.", "goal.info_only": "Info only: not bookable in this prototype.", "goal.rotorcraft": "Rotorcraft (info only: not bookable in this prototype)", "digest.title": "Monday digest preview", "digest.label": "Preview, nothing is sent", "digest.open": "Open local preview", "digest.note": "Fictional local data, evaluated when you open Alerts. Monday is a preview title, not a delivery schedule. No email, notifications or reservations are created.", "digest.empty": "No saved alerts or sample waitlists yet. Save a local alert or join a sample waitlist to see relevant openings here.", "digest.filters": "Saved local filters", "digest.waitlists": "Sample waitlists", "digest.openings": "Current matching sample openings", "digest.none": "No current sample openings match these saved filters. Expired, taken and stale-availability openings are excluded.", "digest.limit": "Up to 6 distinct openings per checkride are shown, soonest first. The same opening is shown once per checkride even if several saved filters match.", "digest.view": "View sample opening", "digest.search": "Find sample openings", "digest.waitlist_view": "View sample examiner", "goal.blank": "No default checkride", "goal.label": "Planning checkride", "goal.note": "A planning default only, not eligibility or CFI approval. Saved evidence is kept; check that it applies to this checkride.",  "fr.progress": "Step {n} of 3", "fr.progress.aria": "Step {n} of 3", "fr.proto": "Prototype: sample data only. Saved in this browser on this device. Nothing is sent.", "fr.skip": "Skip for now", "fr.skip_all": "Skip setup", "fr.back": "Back", "fr.next": "Next", "fr.finish": "See my Home", "fr.escape_hint": "Press Escape to skip setup and go to Home.", "fr.s1.eyebrow": "STEP 1 OF 3", "fr.s1.headline": "Your checkride. Your pick.", "fr.s1.question": "What are you working toward?", "fr.s1.helper": "Pick the checkride you're planning next. A planning default only — not eligibility or CFI approval. You can change it any time in More.", "fr.s1.opt.ppl": "Private Pilot", "fr.s1.sub.ppl": "Airplane Single-Engine Land", "fr.s1.opt.ir": "Instrument Rating", "fr.s1.sub.ir": "Airplane", "fr.s1.opt.cpl": "Commercial Pilot", "fr.s1.sub.cpl": "Airplane Single-Engine Land", "fr.s1.opt.me": "Multi-Engine Add-on", "fr.s1.sub.me": "Airplane Multi-Engine Land", "fr.s1.opt.cfi": "Flight Instructor (CFI)", "fr.s1.sub.cfi": "Airplane Single-Engine", "fr.s1.opt.cfii": "Instrument Instructor (CFII)", "fr.s1.sub.cfii": "Airplane", "fr.s1.opt.mei": "Multi-Engine Instructor (MEI)", "fr.s1.sub.mei": "Airplane Multi-Engine", "fr.s1.opt.atp": "ATP", "fr.s1.sub.atp": "Info only: not bookable in this prototype.", "fr.s1.opt.rh": "Rotorcraft (info only: not bookable in this prototype)", "fr.s1.info_note": "Info only: not bookable in this prototype. Estimators and openings stay on airplane certificates.", "fr.s1.err": "Pick a checkride to continue, or tap Skip for now.", "fr.s1.skip_note": "We'll leave your planning checkride unset. You can set it later in More.", "fr.s1.group": "Planning checkride", "fr.s2.eyebrow": "STEP 2 OF 3", "fr.s2.headline": "Your airport. Examiners nearby.", "fr.s2.question": "Where do you fly from?", "fr.s2.helper": "Search by ICAO code or airport name. We use it to show sample examiners nearby.", "fr.s2.field": "Airport", "fr.s2.placeholder": "e.g. XNC01 or Tarwick", "fr.s2.sample": "Use the sample airport", "fr.s2.sample_helper": "Mock: picks a sample airport. No GPS in this prototype.", "fr.s2.empty_query": "Start typing an ICAO code or name.", "fr.s2.err.nomatch": "We couldn't find \"{q}\". Try the ICAO code (like {hint}) or the airport name.", "fr.s2.err.outside": "This prototype only has sample examiners in {states} so far. Pick an airport there, or use the sample airport.", "fr.s2.err.required": "Pick an airport to continue, or tap Skip for now.", "fr.s2.skip_note": "Home will ask you to add an airport before showing nearby examiners.", "fr.s2.listbox": "Airport matches", "fr.s2.suggest": "This prototype uses fictional North Carolina sample airports.", "fr.s2.suggest.cta": "Use XNC01 Tarwick?", "fr.s2.suggest.note": "A suggestion. XNC01 Tarwick is a fictional sample airport.", "fr.s2.suggest.aria": "Use XNC01 Tarwick? A suggestion. XNC01 Tarwick is a fictional sample airport.", "fr.s3.eyebrow": "STEP 3 OF 3", "fr.s3.headline": "A rough target. A clear path.", "fr.s3.question": "When are you hoping to test?", "fr.s3.helper": "A month is enough. Your CFI is the best judge of timing.", "fr.s3.choice.month": "Pick a month", "fr.s3.choice.unsure": "Not sure yet", "fr.s3.err.past": "That month has passed. Pick this month or later.", "fr.s3.note.soon": "That's coming up soon. If an examiner has already confirmed your checkride, add it under My checkrides so we can track it.", "fr.s3.skip_note": "No target month set. Your clock uses \"no target\" copy until you add one in More.", "fr.home.greeting": "Welcome, {name}. Here's your starting point.", "fr.home.greeting_anon": "Welcome aboard. Here's your starting point.", "fr.home.chips_label": "Your plan", "fr.home.chip.cert": "{name} · Change", "fr.home.chip.cert_unset": "Checkride: not set · Set it", "fr.home.chip.cert_info": "{name} · Info only · Change", "fr.home.chip.airport": "Home: {id} · Change", "fr.home.chip.airport_unset": "Airport: not set · Add one", "fr.home.chip.target": "Target: {month} · Change", "fr.home.chip.target_unset": "Target: not sure yet · Set a month", "fr.home.airport_prompt": "Add your home airport to see sample examiners nearby. · Add airport", "fr.home.cert_prompt": "Choose a planning checkride so Search and Journey know what to show. · Set checkride", "fr.toast.done": "You're set. Preferences stay in this browser only.", "fr.toast.partial": "Saved what you picked. You can finish the rest any time in More.", "fr.more.row": "Your plan", "fr.more.title": "Your plan", "fr.more.airport": "Home airport", "fr.more.target": "Target month", "fr.more.save": "Save", "fr.more.toast": "Plan updated.", "fr.more.err": "Couldn't save on this device. Try again. Nothing was sent.", "fr.err.storage": "We couldn't save that on this device. Try again, or keep browsing. Nothing is lost.", "fr.live.step": "Step {n} of 3: {headline}",
     "pass.eyebrow": "CHECKRIDE COMPLETE", "pass.headline": "You earned it. Well done.", "pass.sub": "{cert} with {name} · {when}", "pass.body": "Take a breath. Log the flight. Tell your CFI. Whenever you're ready, here are calm next steps — no rush.", "pass.proto": "Prototype celebration. Fictional demo data. Nothing was filed with the FAA.", "pass.next.log": "Log the checkride with your CFI", "pass.next.certificate": "Watch for your temporary certificate from your examiner", "pass.next.plan": "Thinking about Instrument or Commercial next? Update your plan in More.", "pass.next.share": "Download a keepsake card", "pass.cta.home": "Back to Home", "pass.cta.journey": "See your Journey", "pass.confetti.note": "Light confetti on by default when motion is allowed (~2 seconds, no sound). Never shown when `prefers-reduced-motion: reduce`.", "share.title": "Keepsake card", "share.helper": "Download an image for yourself. This prototype never posts anywhere.", "share.card.proto": "Prototype", "share.card.eyebrow": "CHECKRIDE PASSED", "share.card.headline": "{cert}", "share.card.detail": "{when} · {airport}", "share.card.examiner": "With {name}", "share.include_examiner": "Include examiner name on the card", "share.download": "Download image", "share.toast.done": "Image saved. Nothing was posted.", "share.cancel": "Not now", "share.err": "Couldn't build the image on this device. Try again. Nothing was posted.", "after.credit.window": "To keep credit for what you already passed, finish by the earlier of (a) 60 days after the day the test stopped, and (b) the last day of the second calendar month after the month you started. After that, expect the full test again. Ask your CFI / DPE.", "after.credit.example": "Example (fictional): you started and stopped on May 10, 2026. Sixty days later is July 9. The end of the second calendar month after May is July 31. Credit runs through **July 9, 2026** — the earlier date.", "after.credit.inside": "Inside this window, only the remaining or unsuccessful areas are retested. You keep credit for areas already passed.", "after.credit.after": "After this window closes, the full practical test is retested.", "after.verify.examiner_plan": "Your examiner decides the plan for the remaining test; bring your NOD/LOD and ask them what will be covered.", "after.stop_failed_task": "If the test stopped after an unsatisfactory task, that is a Notice of Disapproval — not a Letter of Discontinuance. Weather, aircraft, or illness with no unsuccessful task is the discontinuance path.", "after.nod_vs_lod": "Same credit clock either way. What differs is training, endorsements and the 8710 — see the path below.", "after.dis.eyebrow": "AFTER THE CHECKRIDE", "after.dis.headline": "Not this time. Here's the path back.", "after.dis.sub": "{cert} with {name} · {when}", "after.dis.body": "A notice of disapproval means some areas still need work. That is common. You keep credit for areas you already passed if you finish the rest inside the credit window. Before you go back: more training, a new instructor endorsement, and a new recommendation on your 8710.", "after.dis.next_title": "What happens next", "after.dis.step1": "Review the notice with your CFI. Focus on the areas marked.", "after.dis.step2": "Get the additional training your instructor decides you need, then a new endorsement from that same instructor.", "after.dis.8710": "Get a new instructor recommendation on your 8710 for the retest.", "after.dis.step3": "When you're ready, request another checkride. Bring the original notice of disapproval and a properly completed, signed application.", "after.dis.endorse": "Before you reapply you need more training and a new endorsement from the instructor who gave it (§61.49), and a new recommendation on your 8710. Bring the original Notice of Disapproval. Ask your CFI.", "after.dis.timing": "Use the shared credit window (`after.credit.window`). Example: started and stopped May 10, 2026 → finish by **July 9, 2026** to keep credit (`after.credit.example`).", "after.dis.cite": "Source: 14 CFR 61.49 (retesting after failure); 14 CFR 61.43(f) (credit); 14 CFR 61.39(g)/(h) (2-calendar-month increment limit); AC 61-65K §14.2. Not legal advice. Confirm with your CFI and examiner.", "after.proto": "Prototype recovery screen. Fictional demo data. Nothing was filed or sent.", "after.rebook": "Rebook with {name}", "after.find_other": "Find another examiner", "after.dis.cta": "Talk through a plan with your CFI", "after.cta.home": "Back to Home", "after.inc.eyebrow": "AFTER THE CHECKRIDE", "after.inc.headline": "Paused, not finished. You can pick this up.", "after.inc.sub": "{cert} with {name} · {when}", "after.inc.body": "A letter of discontinuance means the test stopped before everything was done — weather, aircraft, illness, or another safety reason — with no unsuccessful task. This was not a disapproval. You keep credit for what you passed if you finish the rest inside the credit window.", "after.inc.next_title": "What happens next", "after.inc.step1": "Keep the letter of discontinuance. You'll show it when the test resumes.", "after.inc.step2": "Finish the remaining areas inside the credit window (earlier of 60 days from the stop, or the end of the 2nd calendar month after the month you started).", "after.inc.step3": "Bring the original letter and a properly completed, signed application. No new §61.49 failure-retest endorsement is required.", "after.inc.no_endorse": "No new failure-retest endorsement is required. Bring the original Letter of Discontinuance and a completed application. Confirm with your CFI that your other endorsements and prep hours are still in date.", "after.inc.other_clocks": "Your 2-calendar-month practical-test endorsement and your 3-hour prep are still checked against the retest date. Neither the letter nor a notice extends them.", "after.inc.timing": "Same shared window as disapproval. Example: started and stopped May 10, 2026 → credit through **July 9, 2026** (`after.credit.example`). After that, expect the full test again.", "after.inc.cite": "Source: 14 CFR 61.43(e)–(f); 14 CFR 61.39(g)/(h); AC 61-65K §14.3. Not legal advice. Confirm with your CFI and examiner.", "after.inc.cta": "Schedule the rest of the test", "after.verify.day60": "Day 60 is treated as the last valid day (Interpretation; [VERIFY] #10).", "after.verify.no_reset": "First discontinuance date; do not reset on a later stop ([VERIFY] via current 8900.1A — cancelled 8900.2C said this).", "after.verify.a6_fresh": "Whether a *fresh* (a)(6) is formally required inside the credit window is [VERIFY] (Flag #5). After LOD, AC 61-65K §14.3 says no *additional* endorsements, but (a)(6) may still have lapsed on its own clock (§2.4) → needs-check.", "after.verify.prep_counts": "Whether original prep still counts for a partial credit-window retest is [VERIFY] (Flag #5).", "after.verify.no_extend": "The knowledge test, medical, (a)(6) and 3-hour prep keep running on their own clocks the whole time (Rules 1, 2, 4, 5). Neither paper extends them (historical 8900.2C Note; [VERIFY] in current 8900.1A).", "after.verify.8900": "Active FSIMS order is 8900.1A (issued 2022-10-27). Body text still [VERIFY].", "after.err.missing": "We couldn't find that sample checkride in this browser (links can go stale after a reset).", "after.err.generic": "Something went wrong opening this screen. Nothing was sent.", "after.more.group": "After the checkride (demo)", "after.more.pass": "Pass celebration (demo)", "after.more.dis": "Notice of disapproval path (demo)", "after.more.inc": "Letter of discontinuance path (demo)", "after.credit.card_title": "Credit window (same after a notice of disapproval or a discontinuance)", "after.credit.example_short": "Example (fictional): started and stopped May 10, 2026 → 60 days = July 9; end of 2nd month after May = July 31 → credit through July 9, 2026.", "after.verify.chip": "VERIFY · with CFI & examiner", "after.sources.label": "Sources", "after.sources.helper": "Citations and open questions for your CFI.", "after.sources.aria": "Sources, collapsed", "after.sources.aria_open": "Sources, expanded",
     "after.entry.prompt": "How did it go?", "after.entry.passed": "Passed", "after.entry.inc": "Not finished", "after.entry.dis": "Not passed", "after.entry.helper": "Pick what your examiner handed you: a temporary certificate (Passed), a letter of discontinuance (Not finished) or a notice of disapproval (Not passed). If the test stopped after an unsatisfactory task, choose Not passed. Prototype only; nothing is filed or sent.", "after.entry.aria": "Checkride result for this booking", "after.entry.group_label": "Checkride result",
+    "ready.eyebrow": "CHECKRIDE-READY",
+    "ready.cert": "[Private Pilot]",
+    "ready.headline.not_started": "Start your checklist.",
+    "ready.headline.progress": "[6] of [9] ready",
+    "ready.headline.review": "Ready for review.",
+    "ready.headline.ready": "You marked that your CFI has reviewed this.",
+    "ready.status.not_started": "Not started",
+    "ready.status.progress": "In progress",
+    "ready.status.review": "Ready for review",
+    "ready.status.ready": "CFI review noted",
+    "ready.progress": "[6] of [9] ready",
+    "ready.progress.aria": "[6] of [9] ready, [In progress]",
+    "ready.proto": "Prototype: fictional sample data. Nothing is sent.",
+    "ready.draft": "Draft: verify with your CFI. Not legal or FAA advice.",
+    "ready.aria": "Checkride-ready. [Private Pilot]. [6] of [9] ready, [In progress]. [Checkride in 21 days.] [Heads-up. For your information only.]",
+    "ready.tick.label": "My CFI has reviewed this",
+    "ready.tick.helper": "You marked this. The app can't verify it.",
+    "ready.tick.aria": "My CFI has reviewed this. You marked this. The app can't verify it. This is not an FAA determination.",
+    "ready.tick.cleared": "Your CFI review note was cleared because an item is no longer marked done. Nothing was sent.",
+    "ready.next.item": "Next: [Knowledge test passed]",
+    "ready.next.request": "Time to request your examiner.",
+    "ready.next.review": "Ask your CFI to look this over.",
+    "ready.next.requested": "Request sent to [Linda]. It's confirmed once [Linda] accepts.",
+    "ready.next.confirmed": "Confirmed: [Fri, Dec 4 \u00b7 9:00 AM ET, at KVDF] with [Linda]. Next: your readiness checklist.",
+    "ready.next.past": "Your checkride date has passed.",
+    "ready.cta.checklist": "Open the checklist",
+    "ready.cta.search": "Find an examiner",
+    "ready.cta.request": "View request",
+    "ready.flag.closed": "Closed",
+    "ready.flag.heads_up": "Heads-up",
+    "ready.flag.frame": "For your information only. Confirm with your CFI or examiner.",
+    "ready.count.ride.future": "Checkride in [21] days.",
+    "ready.count.ride.future_one": "Checkride in 1 day.",
+    "ready.count.ride.today": "Your checkride is today.",
+    "ready.count.ride.past": "Your checkride date has passed.",
+    "ready.count.target.future": "[21] days until your [Dec 2026] target.",
+    "ready.count.target.future_one": "1 day until your [Dec 2026] target.",
+    "ready.count.target.month": "This is your target month ([Dec 2026]).",
+    "ready.count.target.past": "Your [Dec 2026] target month has passed. Pick a new month in More.",
+    "ready.count.none": "No target month set.",
+    "after.saved.passed": "Passed \u00b7 [Fri, Oct 30]",
+    "after.saved.inc": "Not finished \u00b7 [Fri, Oct 30]",
+    "after.saved.dis": "Not passed \u00b7 [Fri, Oct 30]",
+    "after.saved.aria": "[Passed] \u00b7 [Fri, Oct 30]. Saved checkride result.",
+    "after.next.headline": "Set a next checkride?",
+    "after.next.body": "Thinking about Instrument or Commercial next? You can update your plan in More. This is a planning default only, not eligibility or CFI approval.",
+    "after.next.body_generic": "You can update your planning checkride in More. This is a planning default only, not eligibility or CFI approval.",
+    "after.next.cta": "Update your plan",
+    "ready.due.days": "[2] days to go \u00b7 [0] of [9] ready \u00b7 Review with your CFI",
+    "ready.due.day": "1 day to go \u00b7 [0] of [9] ready \u00b7 Review with your CFI",
+    "ready.due.today": "Your checkride is today \u00b7 [0] of [9] ready \u00b7 Review with your CFI",
+    "ready.due.target": "Target month starts in [2] days \u00b7 [0] of [9] ready \u00b7 Review with your CFI",
+    "ready.due.target_one": "Target month starts in 1 day \u00b7 [0] of [9] ready \u00b7 Review with your CFI",
+    "ready.due.target_month": "This is your target month \u00b7 [0] of [9] ready \u00b7 Review with your CFI",
     "wl.status.joined": "Joined locally · illustrative position #{position}.", "wl.status.not_joined": "Not joined for this checkride.",
     "wl.sample": "Fictional sample only. Positions are illustrative, not live demand or priority. No notifications are sent; no slot is reserved.",
     "wl.join": "Join sample waitlist", "wl.leave": "Leave sample waitlist", "wl.already": "Already joined locally for this examiner and checkride. Nothing was sent.",
@@ -315,7 +369,7 @@
     "wk.fresh.stale_detail": "Openings are hidden until the examiner confirms this week.",
     "wk.fresh.never": "Availability not yet confirmed",
     "wk.fresh.abs": "Last confirmed [Tue, Nov 10, 2026, 10:00 AM ET]",
-    "wk.fresh.proto": "Prototype: fictional stamp, stored in this browser.", "open.updated.just": "Calendar updated just now.", "open.updated.minute": "[Avery] updated this calendar 1 minute ago.", "open.updated.minutes": "[Avery] updated this calendar [12] minutes ago.", "open.updated.hour": "[Avery] updated this calendar 1 hour ago.", "open.updated.hours": "[Avery] updated this calendar [3] hours ago.", "open.updated.today": "[Avery] updated this calendar today.", "open.updated.yesterday": "[Avery] updated this calendar yesterday.", "open.updated.days": "[Avery] updated this calendar [2] days ago.", "proto.merged": "Private prototype \u00b7 Fictional demo data", "proto.details": "Details", "proto.details.aria": "Show prototype details", "proto.details.aria_open": "Hide prototype details", "proto.strip": "Private prototype \u00b7 Fictional demo data \u00b7 No real requests are sent.", "proto.payments": "Prototype: no real payments.", "proto.advice": "Prototype, not legal or FAA advice.",
+    "wk.fresh.proto": "Prototype: fictional stamp, stored in this browser.", "open.updated.just": "Calendar updated just now.", "open.updated.minute": "[Avery] updated this calendar 1 minute ago.", "open.updated.minutes": "[Avery] updated this calendar [12] minutes ago.", "open.updated.hour": "[Avery] updated this calendar 1 hour ago.", "open.updated.hours": "[Avery] updated this calendar [3] hours ago.", "open.updated.today": "[Avery] updated this calendar today.", "open.updated.yesterday": "[Avery] updated this calendar yesterday.", "open.updated.days": "[Avery] updated this calendar [2] days ago.", "proto.merged": "Private prototype \u00b7 Fictional demo data", "proto.details": "Details", "proto.details.aria": "Details: more about this prototype", "proto.details.aria_open": "Details: hide the extra prototype notes", "proto.strip": "Private prototype \u00b7 Fictional demo data \u00b7 No real requests are sent.", "proto.payments": "Prototype: no real payments.", "proto.advice": "Prototype, not legal or FAA advice.",
     "wk.live.confirmed": "Week confirmed [Tue, Nov 10 · 10:00 AM ET].",
     "wk.live.unsaved": "[3] unsaved changes.",
     "wk.cal.students_amber": "They also see “Last confirmed [n] days ago.”",
@@ -336,9 +390,9 @@
     "wait.aria.empty": "Not enough bookings yet. [We'll show a typical wait after 8 bookings in the last 180 days.]",
     "wait.proto": "Prototype: fictional sample bookings, not real wait times.",
     "cal.ride.btn": "Add to calendar",
-    "cal.ride.aria": "Download a calendar file for this sample checkride. Nothing is sent.",
+    "cal.ride.aria": "Add to calendar: downloads a calendar file for this sample checkride. Nothing is sent.",
     "cal.deadline.btn": "Add credit deadline to calendar",
-    "cal.deadline.aria": "Download a calendar file for the estimated retest credit deadline. Nothing is sent.",
+    "cal.deadline.aria": "Add credit deadline to calendar: downloads a calendar file for the estimated retest credit deadline. Nothing is sent.",
     "cal.helper": "Downloads a calendar file to this device. The file has no reminders. Nothing is sent.",
     "cal.deadline.helper": "This date is an estimate. Confirm it with your examiner.",
     "cal.toast.done": "Calendar file downloaded. Nothing was sent.",
@@ -690,13 +744,31 @@
       notifications: [{ id: "n1", ts: Date.now(), title: "Your first sample alert is active", body: "Mock alert, nothing is emailed. In a real version we would tell you when a Private Pilot checkride opens within 75 nm of ${DEFAULT_NEAR} in the next 45 days for $1,300 or less.", read: false }],
       checklist: {}, curated: {}, ticks: {}, tier: "free",
       // QA-026 / D38 #7: a fresh profile shows a target month and a dated roll-up. Sample KT date (about 10 months ago), example data only.
-      target: defaultTarget(), ready9Dates: { kt: addDays(-300) }, ktSample: true,
+      target: defaultTarget(), ready9: {}, ready9Dates: { kt: addDays(-300) }, ready9CfiReviewed: {}, ktSample: true,
       pending: D.pendingDpes.map((p) => ({ ...p, status: "pending" })),
       approvedDpes: [], actingDpe: "d1", p4: 1, savedExaminers: [], savedSearches: [],
       onboarding: { status: "pending", step: 1 },
     };
   }
   // Older v3 state (before the Florida sample set and the proposed tiers) is upgraded in place, keeping the user's bookings.
+
+  function isReady9Id(k) { return ["kt", "exp", "end", "med", "iacra", "docs", "id", "terms", "prep"].includes(k); }
+  function migrateReady9Maps(s) {
+    const hasFlatOrMap = (obj) => !!(obj && typeof obj === "object" && !Array.isArray(obj) && Object.keys(obj).length);
+    const evidence = !!(s && ((s.clock && typeof s.clock === "object" && Object.keys(s.clock).length) || hasFlatOrMap(s.ready9) || hasFlatOrMap(s.ready9Dates) || (s.medical && typeof s.medical === "object" && Object.keys(s.medical).length)));
+    const cert = (s && s.readinessCert) || (evidence ? "ppl" : ((s && (s.findCert || (s.demoUser && s.demoUser.goal))) || "ppl"));
+    const wrap = (obj) => {
+      if (!obj || typeof obj !== "object" || Array.isArray(obj)) return {};
+      if (!Object.keys(obj).length) return obj;
+      if (Object.keys(obj).some(isReady9Id)) return { [cert]: obj };
+      return obj;
+    };
+    s.ready9 = wrap(s.ready9 || {});
+    s.ready9Dates = wrap(s.ready9Dates || {});
+    if (typeof s.ready9CfiReviewed === "boolean") s.ready9CfiReviewed = { [cert]: s.ready9CfiReviewed };
+    else if (!s.ready9CfiReviewed || typeof s.ready9CfiReviewed !== "object" || Array.isArray(s.ready9CfiReviewed)) s.ready9CfiReviewed = {};
+    return s;
+  }
   function migrate(s) {
     if (!s.target) s.target = defaultTarget();
     if (!s.fl) {
@@ -749,9 +821,9 @@
         prior: s.onboarding.status || null };
       s._onbMigrated = 1;
     }
-    return s;
+    return migrateReady9Maps(s);
   }
-  function load() { try { const raw = localStorage.getItem(KEY); if (raw) { const s = JSON.parse(raw); if (s && s.v === 3) return migrate(s); } } catch (e) { /* storage unavailable */ } return seed(); }
+  function load() { try { const raw = localStorage.getItem(KEY); if (raw) { const s = JSON.parse(raw); if (s && s.v === 3) { const migrated = migrate(s); try { const next = JSON.stringify(migrated); if (next !== raw) localStorage.setItem(KEY, next); } catch (e) { /* quota */ } return migrated; } } } catch (e) { /* storage unavailable */ } return seed(); }
   // RC10-I01: return false on QuotaExceeded/unavailable so callers can show failure and revert in-memory saved state.
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch (e) { return false; } }
   function snapSaved() {
@@ -1567,7 +1639,7 @@ const closeModal = () => {
   const isWithdrawn = (b) => !!b && b.status === "cancelled" && !!(b.cancel && b.cancel.request);
   const WITHDRAWN_PILL = '<span class="pill" data-req-status="withdrawn">Withdrawn</span>';
   const bookingPill = (b) => (isWithdrawn(b) ? WITHDRAWN_PILL : statusPill(b.status));
-  const reqPill = (b) => { if (isWithdrawn(b)) return WITHDRAWN_PILL; const f = first(dpeById(b.dpeId).name); return { requested: (() => { const sl = slotOf(b), he = sl && b.mine ? holdEnd(b, sl) : null; const held = he && he > Date.now(), ended = he && !held; const nohold = !!(sl && b.mine && b.createdAt && he === null); if (ended) return `<span class="pill" data-req-status="hold-ended" data-hold-ended>Hold ended</span>`; // QA-043: one state, no contradiction (wording pending PM)
+  const reqPill = (b) => { if (isWithdrawn(b)) return WITHDRAWN_PILL; if (b && b.outcome) return afterSavedPill(b, slotOf(b)); const f = first(dpeById(b.dpeId).name); return { requested: (() => { const sl = slotOf(b), he = sl && b.mine ? holdEnd(b, sl) : null; const held = he && he > Date.now(), ended = he && !held; const nohold = !!(sl && b.mine && b.createdAt && he === null); if (ended) return `<span class="pill" data-req-status="hold-ended" data-hold-ended>Hold ended</span>`; // QA-043: one state, no contradiction (wording pending PM)
  if (nohold) return `<span class="pill warn" data-req-status="pending" data-nohold>Awaiting ${esc(f)} \u00b7 No hold \u00b7 First to be accepted gets it</span>`; return `<span class="pill warn" data-req-status="pending"${held ? ` data-held-until="${he}"` : ""}${ended ? " data-hold-ended" : ""}>Awaiting ${esc(f)} \u00b7 ${held ? `Held for you until ${tsWhen(he, slotTz(sl))} \u00b7 ` : ended ? "Hold ended \u00b7 " : ""}Not confirmed yet</span>`; })(), confirmed: '<span class="pill good" data-req-status="confirmed">Confirmed</span>', declined: '<span class="pill bad" data-req-status="declined">Declined</span>', cancelled: '<span class="pill" data-req-status="cancelled">Cancelled</span>' }[b.status] || ""; };
   // v3 eyebrow + paired headline (ink line, accent line).
   const head = (eyebrow, a, b, lead = "", tag = "h1", extra = "") => `<div class="page-head v3-head"><p class="eyebrow">${eyebrow}</p><${tag} class="paired">${a}${b ? ` <span class="b">${b}</span>` : ""}${extra}</${tag}>${lead ? `<p class="lead muted">${lead}</p>` : ""}</div>`;
@@ -1919,15 +1991,16 @@ const closeModal = () => {
       const dp = dpeById(x.dpeId); if (!dp) return "";
       return `<a class="board-row" data-saved-examiner="${esc(dp.id)}" href="#/dpe/${dp.id}"><span class="b-who"><b>${esc(dp.name)}</b><small>${esc(dp.home)}</small></span></a>`;
     }).join("");
-    const cur = activeReq(), n = ready9Count();
-    const cdp = cur && dpeById(cur.dpeId), cs = cur && slotOf(cur);
-    const ms = cur && cur.status === "confirmed" ? `${chip("good", `Confirmed: ${fmtDate(cs.date)}`)}` : cur ? reqPill(cur) : `<span class="small muted">No request yet</span>`;
+    const cur = activeReq();
     return `
     <div class="page home-v3">
       <div class="ws-grid">
         <div class="stack">
           ${head("FOR STUDENT PILOTS", "Find your checkride.", "Sooner.", "Compare openings, fees and wait times across examiners near you.")}
           ${homePlanChips()}
+          ${homeAfterPrompt()}
+          ${homeReadyCard()}
+          ${homeAfterNext()}
           <form class="card search-box stack" data-form="search">
             ${certSelect("cert", homeCert)}
             ${locationField(homeNear, "loc-h")}
@@ -1935,13 +2008,6 @@ const closeModal = () => {
             <label class="field"><span>Before (optional)</span><input type="date" name="before" min="${addDays(1)}" /></label>
             <button class="btn cta" type="submit">Search openings</button>
           </form>
-          <a class="card milestone" href="#/journey">
-            <p class="eyebrow">YOUR NEXT MILESTONE</p>
-            <div class="row spread"><b>${esc(certLong(cur ? cur.cert : "ppl"))}</b><span class="mono small">${readyText(n)}</span></div>
-            ${seg9(n)}
-            <div class="row spread">${ms}<span class="small">Open</span></div>
-            ${cdp ? `<span class="sr-only">with ${esc(cdp.name)}</span>` : ""}
-          </a>
           <section class="card" id="home-saved" aria-labelledby="home-saved-h">
             <div class="row spread"><h2 id="home-saved-h" class="h3" style="margin:0">${COPY["nav.saved"]}</h2><a class="small" href="#/saved">${COPY["nav.saved"]}</a></div>
             <p class="muted small">${COPY["saved.helper"]}</p>
@@ -2580,8 +2646,8 @@ const closeModal = () => {
             </div></div>
             <div class="row">
               <a class="btn secondary sm" href="#/request/${b.id}">Open request</a>
-              ${b.status === "requested" ? `<button class="btn secondary sm" data-action="as-dpe" data-dpe="${dp.id}">Respond as ${esc(first(dp.name))} (demo)</button><button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Withdraw request</button>` : ""}
-              ${b.status === "confirmed" && !b.noShow ? `<a class="btn secondary sm" href="#/my-checklists">From your examiner</a><button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Cancel checkride</button>` : ""}
+              ${b.status === "requested" ? `<button class="btn secondary sm" data-action="as-dpe" data-dpe="${dp.id}">Respond as ${esc(first(dp.name))} (demo)</button>${canCancelBooking(b, s) ? `<button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Withdraw request</button>` : ""}` : ""}
+              ${b.status === "confirmed" && !b.noShow ? `<a class="btn secondary sm" href="#/my-checklists">From your examiner</a>${canCancelBooking(b, s) ? `<button class="btn bad sm" data-action="pilot-cancel" data-id="${b.id}">Cancel checkride</button>` : ""}` : ""}
             </div>
           </div>
           <div class="summary small" style="margin-top:.8rem">
@@ -2689,7 +2755,7 @@ const closeModal = () => {
                 <div class="small">${fmtDate(s.date)} · ${slotTime(s)} · ${s.airport}</div>
                 <div class="muted small">${esc(b.aircraft)} · CFI: ${esc(b.cfi)}</div>
                 ${dpeHoldLine(b, s)}${dpeNoShowLine(b)}
-                <div class="row small" style="margin-top:.3rem;gap:.5rem"><div style="width:120px">${seg9(of9(b.readiness))}</div>${countPill(of9(b.readiness))}${b.selfCheck ? ` · <span class="pill">Self-attested readiness${b.selfCheck.warnings ? `, ${plural(b.selfCheck.warnings, "warning")}` : ""} (unverified)</span>` : ""}</div>
+                <div class="row small" style="margin-top:.3rem;gap:.5rem"><div style="width:120px">${seg9(readyApplicantCount(b))}</div>${countPill(readyApplicantCount(b))}${b.mine ? rollChip(eligRollup(b.cert), b.cert) : ""}${b.selfCheck ? ` · <span class="pill">Self-attested readiness${b.selfCheck.warnings ? `, ${plural(b.selfCheck.warnings, "warning")}` : ""} (unverified)</span>` : ""}</div>
                 ${selfCheckDetails(b)}
               </div>
               <div class="row"><button class="btn bad sm" data-action="decline" data-id="${b.id}">Decline</button><button class="btn good sm" data-action="accept" data-id="${b.id}">Accept request</button><button class="btn sm" data-action="accept-checklist" data-id="${b.id}">Accept + checklist</button></div>
@@ -3327,7 +3393,7 @@ const closeModal = () => {
     { id: "prep", t: "Checkride-day prep", h: "Mark it done when you feel set." },
   ];
   // Segmented n-of-9 bar (D38 #5, QA-004: counts, never percentages).
-  const seg9 = (n, total = 9) => `<div class="seg9" role="img" aria-label="${n} of ${total} ready" data-seg="${n}/${total}"${total !== 9 ? ` style="grid-template-columns:repeat(${total},1fr)"` : ""}>${Array.from({ length: total }, (_, i) => `<i class="${i < n ? "on" : ""}"></i>`).join("")}</div>`;
+  const seg9 = (n, total = 9, opts) => `<div class="seg9"${opts && (opts.bare || opts.progressbar) ? "" : ` role="img" aria-label="${n} of ${total} ready"`} data-seg="${n}/${total}"${total !== 9 ? ` style="grid-template-columns:repeat(${total},1fr)"` : ""}>${Array.from({ length: total }, (_, i) => `<i class="${i < n ? "on" : ""}"></i>`).join("")}</div>`;
   // Eligibility roll-up (D38 #5, ux-copy-v3 journey.chip.*): On track · Heads-up · Closed · Not set, most serious wins
   // (Closed > Heads-up > On track); "Not set" when nothing is entered. The only dated input in this prototype is the
   // optional knowledge-test date on the readiness checklist (24-calendar-month rule, draft; Heads-up within 90 days, D8).
@@ -3356,8 +3422,9 @@ const closeModal = () => {
   const targetChip = () => `<span class="pill" id="journey-target" data-target="${S.target}">Target: ${fmtMonth(S.target)} \u00b7 <button class="linkish" type="button" data-action="target-change" aria-haspopup="dialog">Change</button></span>`;
   // Rules 5/6 (Marlo, Nov 2): "CFI review" = warn/fails (needs the CFI tick), "Confirm with CFI" = needs-check (note, no tick, v2.1).
   const ROLL = { bad: ["bad", "Closed"], review: ["warn", COPY["clock.chip.review"]], warn: ["warn", "Heads-up"], check: ["", COPY["clock.chip.confirm"]], good: ["good", "On track"], none: ["", "Not set"] };
-  const eligRollup = () => {
-    const r9 = S.ready9 || {}, dates = S.ready9Dates || {};
+  const eligRollup = (cert) => {
+    const useCert = cert || ready9FallbackCert();
+    const r9 = ready9Of(useCert), dates = ready9DatesOf(useCert);
     const cur = activeReq(), sl = cur && slotOf(cur);
     const ref = sl ? sl.date : iso(today0());
     const goal = sl ? sl.date : S.target ? targetEnd(S.target) : ref;
@@ -3382,7 +3449,7 @@ const closeModal = () => {
   // needs-check row never asks for it (QA-090, rc5). The roll-up order is bad > review > warn > check, so k is "bad" or
   // "review" exactly when such a row exists.
   const journeyFlagged = () => ["bad", "review"].includes(eligRollup().k);
-  const rollChip = (r) => `<span class="pill ${r.cls}" data-rollup="${r.k}">${r.label}</span>`;
+  const rollChip = (r, cert) => { if (r && (r.k === "good" || r.k === "none")) { const due = dueSuppressText(cert); if (due) return `<span class="pill warn" data-rollup="due" data-ready-due>${esc(due)}</span>`; } return `<span class="pill ${r.cls}" data-rollup="${r.k}">${r.label}</span>`; };
   // ---- Eligibility clock, Rules 5 (3 h practical-test prep) and 6 (retest after a failure, §61.49): elig-clock.js.
   // Informational labels only; warn, never block (decision #18). Dates are document dates; the checkride date is the
   // airport-local slot date (D38), labelled with the airport, so results are the same in any reader zone.
@@ -3394,7 +3461,15 @@ const closeModal = () => {
   const infoGoal = v => v === "atp" || v === "rh";
   const planningChoice = v => supportedGoal(v) || infoGoal(v);
   const signupGoal = () => planningChoice(S.demoUser && S.demoUser.goal) ? S.demoUser.goal : "ppl";
-  const hasReadinessEvidence = () => Object.keys(CK()).length > 0 || Object.values(S.ready9 || {}).some(Boolean) || (!S.ktSample && Object.values(S.ready9Dates || {}).some(Boolean)) || Object.keys(S.medical || {}).length > 0;
+  const ready9MapHasValue = (obj) => {
+    if (!obj || typeof obj !== "object") return false;
+    return Object.keys(obj).some((k) => {
+      const v = obj[k];
+      if (v && typeof v === "object" && !Array.isArray(v)) return Object.values(v).some(Boolean);
+      return !!v && isReady9Id(k);
+    });
+  };
+  const hasReadinessEvidence = () => Object.keys(CK()).length > 0 || ready9MapHasValue(S.ready9) || (!S.ktSample && ready9MapHasValue(S.ready9Dates)) || Object.keys(S.medical || {}).length > 0;
   const planningCert = () => planningChoice(S.readinessCert) ? S.readinessCert : hasReadinessEvidence() ? "ppl" : signupGoal();
   const clockCert = () => { const cur = activeReq(); return cur ? cur.cert : planningCert(); };
   const pinReadiness = () => { if (!activeReq() && !supportedGoal(S.readinessCert)) S.readinessCert = planningCert(); };
@@ -3487,7 +3562,318 @@ const closeModal = () => {
       </fieldset>
     </details>`;
   }
-  const ready9Count = () => { const r = S.ready9 || {}; return ["kt", "exp", "end", "med", "iacra", "docs", "id", "terms", "prep"].filter((k) => r[k]).length; };
+  const READY9_IDS = ["kt", "exp", "end", "med", "iacra", "docs", "id", "terms", "prep"];
+  const isNestedReadyMap = (obj) => {
+    if (!obj || typeof obj !== "object" || Array.isArray(obj)) return false;
+    const keys = Object.keys(obj);
+    if (!keys.length) return true;
+    return !keys.some(isReady9Id);
+  };
+  const ensureReady9Shape = () => migrateReady9Maps(S);
+  const ready9FallbackCert = () => (planningChoice(S.readinessCert) ? S.readinessCert : (planningChoice(S.findCert) ? S.findCert : ((S.demoUser && planningChoice(S.demoUser.goal)) ? S.demoUser.goal : "ppl")));
+  const ready9Of = (cert) => {
+    ensureReady9Shape();
+    const c = cert || ready9FallbackCert();
+    if (!S.ready9[c] || typeof S.ready9[c] !== "object") S.ready9[c] = {};
+    return S.ready9[c];
+  };
+  const ready9DatesOf = (cert) => {
+    ensureReady9Shape();
+    const c = cert || ready9FallbackCert();
+    if (!S.ready9Dates[c] || typeof S.ready9Dates[c] !== "object") S.ready9Dates[c] = {};
+    return S.ready9Dates[c];
+  };
+  const ready9Count = (cert) => { const r = ready9Of(cert); return READY9_IDS.filter((k) => r[k]).length; };
+  const cfiReviewedOf = (cert) => { ensureReady9Shape(); return !!(S.ready9CfiReviewed && S.ready9CfiReviewed[cert || ready9FallbackCert()]); };
+  const setCfiReviewed = (cert, on) => { ensureReady9Shape(); S.ready9CfiReviewed[cert] = !!on; };
+  const setReady9Item = (cert, id, on) => {
+    const r = ready9Of(cert);
+    const was = !!r[id];
+    r[id] = !!on;
+    if (was && !on && cfiReviewedOf(cert)) {
+      setCfiReviewed(cert, false);
+      ui.readyTickCleared = true;
+    }
+    if (!on && id === "kt") { const d = ready9DatesOf(cert); /* date may remain until cleared separately */ }
+  };
+  const readyFill = (key, values) => {
+    const raw = COPY[key];
+    if (raw == null) throw new Error("missing copy key: " + key);
+    const ICS = window.CC_ICS;
+    if (ICS && ICS.fillBrackets) return ICS.fillBrackets(raw, values || []);
+    let i = 0;
+    return raw.replace(/\[[^\]]*\]/g, () => {
+      if (i >= (values || []).length) throw new Error("fillBrackets: not enough values for " + key);
+      return String(values[i++]);
+    });
+  };
+  const reqReadyCountHtml = (cert) => {
+    const n = ready9Count(cert);
+    return `Your <a href="#/readiness" data-action="close-modal">${esc(certById(cert).short)} checklist</a>: <b>${esc(readyFill("ready.progress", [n, 9]))}</b>. The examiner will see this.`;
+  };
+  const daysBetweenYmd = (from, to) => {
+    const a = parseIso(from), b = parseIso(to);
+    return Math.round((b - a) / 86400000);
+  };
+  const dueSuppressText = (cert) => {
+    const c = cert || clockCert();
+    if (ready9Count(c) !== 0) return "";
+    const cur = activeReq();
+    const sl = cur && cur.cert === c && cur.status === "confirmed" ? slotOf(cur) : (cur && cur.status === "confirmed" ? slotOf(cur) : null);
+    // Confirmed date of the active request wins, even if the cert differs, then fall back to a confirmed booking for this cert.
+    const refSlot = (cur && cur.status === "confirmed" && slotOf(cur)) || (() => {
+      const b = S.bookings.find((x) => x.mine && x.status === "confirmed" && x.cert === c && slotOf(x));
+      return b ? slotOf(b) : null;
+    })();
+    if (refSlot && refSlot.date) {
+      const d = daysUntil(refSlot.date, slotTz(refSlot));
+      if (d >= 0 && d <= 7) {
+        if (d === 0) return readyFill("ready.due.today", [0, 9]);
+        if (d === 1) return readyFill("ready.due.day", [0, 9]);
+        return readyFill("ready.due.days", [d, 0, 9]);
+      }
+      return "";
+    }
+    const ym = S.target || "";
+    if (/^\d{4}-\d{2}$/.test(ym)) {
+      const today = iso(today0());
+      if (today.slice(0, 7) === ym) {
+        const day = +today.slice(8);
+        if (day >= 1 && day <= 7) return readyFill("ready.due.target_month", [0, 9]);
+        return "";
+      }
+      const first = ym + "-01";
+      const d = daysBetweenYmd(today, first);
+      if (d >= 0 && d <= 7) {
+        if (d === 1) return readyFill("ready.due.target_one", [0, 9]);
+        return readyFill("ready.due.target", [d, 0, 9]);
+      }
+    }
+    return "";
+  };
+  const rollChipFor = (cert) => {
+    const roll = eligRollup(cert);
+    if (roll.k === "good") {
+      const due = dueSuppressText(cert);
+      if (due) return `<span class="pill warn" data-ready-due="${esc(cert || clockCert())}">${esc(due)}</span>`;
+    }
+    return chip(ROLL[roll.k][0], ROLL[roll.k][1]);
+  };
+  const readyApplicantCount = (b) => (b && b.mine ? ready9Count(b.cert) : of9(b && b.readiness));
+  const syncAttestationsFromAnswers = (cert, A) => {
+    if (!cert || !A) return;
+    const rDef = readyOf(cert);
+    if (rDef.end && rDef.end.length) setReady9Item(cert, "end", A.end.every(Boolean));
+    if (rDef.hours && rDef.hours.length) {
+      const ok = rDef.hours.every(([k, , min]) => {
+        const v = A.h[k];
+        return v !== undefined && v !== null && v !== "" && +v >= min;
+      });
+      setReady9Item(cert, "exp", ok);
+    }
+    if (rDef.test) {
+      const on = !!(A.ktPass && A.ktDate);
+      setReady9Item(cert, "kt", on);
+      if (A.ktDate) ready9DatesOf(cert).kt = A.ktDate;
+    }
+    if (A.iacra) setReady9Item(cert, "iacra", true);
+    else if ("iacra" in A) setReady9Item(cert, "iacra", !!A.iacra);
+  };
+  const prefillRequestAttestations = (form, cert) => {
+    if (!form || !cert) return;
+    const r9 = ready9Of(cert), dates = ready9DatesOf(cert), rDef = readyOf(cert);
+    if (r9.end && rDef.end) rDef.end.forEach((_, i) => { const el = form.querySelector(`[name="end-${i}"]`); if (el) el.checked = true; });
+    if (r9.kt) {
+      const pass = form.querySelector('[name="kt-pass"]'); if (pass) pass.checked = true;
+      const dt = form.querySelector('[name="kt-date"]'); if (dt && dates.kt) dt.value = dates.kt;
+    }
+    const iacra = form.querySelector('[name="iacra"]'); if (iacra && r9.iacra) iacra.checked = true;
+  };
+  const canCancelBooking = (b, sl) => {
+    if (!b || !b.mine) return false;
+    if (b.outcome) return false;
+    if (sl && bookingDatePast(sl)) return false;
+    if (b.noShow) return false;
+    return b.status === "requested" || b.status === "confirmed";
+  };
+  const persistAfterOutcome = (kind, q) => {
+    const id = q && q.bookingId;
+    if (!id) return;
+    const b = S.bookings.find((x) => x.id === id && x.mine);
+    if (!b) return;
+    if (b.outcome === kind) return;
+    b.outcome = kind;
+    b.outcomeAt = Date.now();
+    save();
+  };
+  function afterSavedPill(b, sl) {
+    if (!b || !b.outcome) return "";
+    const key = b.outcome === "pass" ? "after.saved.passed" : b.outcome === "inc" ? "after.saved.inc" : "after.saved.dis";
+    const when = sl && sl.date ? fmtDate(sl.date, { weekday: "short", month: "short", day: "numeric" }) : "";
+    const word = b.outcome === "pass" ? "Passed" : b.outcome === "inc" ? "Not finished" : "Not passed";
+    const label = readyFill(key, [when]);
+    // D55: first clause of after.saved.aria is the visible after.saved.* label.
+    const ariaText = readyFill("after.saved.aria", [word, when]);
+    return `<span class="pill" data-req-status="outcome" data-outcome="${esc(b.outcome)}" aria-label="${esc(ariaText)}">${esc(label)}</span>`;
+  }
+  const afterNextOffer = (from) => {
+    const goal = (S.demoUser && S.demoUser.goal) || "";
+    const bodyKey = goal === "ppl" || !goal ? "after.next.body" : "after.next.body_generic";
+    const href = "#/more#fr-more-plan";
+    return `<section class="card stack after-next" data-after-next data-from="${esc(from || "")}">
+      <h2 class="h4" data-copy-key="after.next.headline">${esc(COPY["after.next.headline"])}</h2>
+      <p data-copy-key="${bodyKey}">${esc(COPY[bodyKey])}</p>
+      <a class="btn secondary" href="${href}" data-copy-key="after.next.cta" style="min-height:44px">${esc(COPY["after.next.cta"])}</a>
+    </section>`;
+  };
+  const homeAfterPrompt = () => {
+    if (S.role && S.role !== "pilot") return "";
+    const past = S.bookings.filter((b) => {
+      if (!b.mine || b.outcome) return false;
+      const sl = slotOf(b);
+      return sl && bookingDatePast(sl) && (b.status === "confirmed" || b.status === "requested");
+    });
+    if (!past.length) return "";
+    return past.map((b) => afterOutcomeEntry(b, slotOf(b))).join("");
+  };
+  const homeAfterNext = () => {
+    if (S.role && S.role !== "pilot") return "";
+    const passed = S.bookings.some((b) => b.mine && b.outcome === "pass");
+    return passed ? afterNextOffer("home") : "";
+  };
+  const savedOutcomeLabel = (outcome) => outcome === "pass" ? "Passed" : outcome === "inc" ? "Not finished" : outcome === "dis" ? "Not passed" : "";
+
+
+  function readyStatusOf(cert) {
+    const n = ready9Count(cert);
+    const tick = cfiReviewedOf(cert);
+    if (n <= 0) return { n, id: "not_started", status: COPY["ready.status.not_started"], headline: COPY["ready.headline.not_started"] };
+    if (n < 9) return { n, id: "progress", status: COPY["ready.status.progress"], headline: readyFill("ready.headline.progress", [n, 9]) };
+    if (!tick) return { n, id: "review", status: COPY["ready.status.review"], headline: COPY["ready.headline.review"] };
+    return { n, id: "ready", status: COPY["ready.status.ready"], headline: COPY["ready.headline.ready"] };
+  }
+  function readyTickHtml(cert, st) {
+    if (st.n < 9) return "";
+    const on = cfiReviewedOf(cert);
+    return `<label class="ready-tick check-item" data-ready-cert="${esc(cert)}" style="min-height:44px">
+      <input type="checkbox" data-action-change="ready9-cfi" ${on ? "checked" : ""} aria-label="${esc(COPY["ready.tick.aria"])}" />
+      <span>
+        <span class="t" data-copy-key="ready.tick.label">${esc(COPY["ready.tick.label"])}</span>
+        <span class="muted small" data-copy-key="ready.tick.helper" id="ready-tick-help-${esc(cert)}">${esc(COPY["ready.tick.helper"])}</span>
+      </span>
+    </label>`;
+  }
+  function readyTickClearedHtml() {
+    if (!ui.readyTickCleared) return "";
+    queueMicrotask(() => { ui.readyTickCleared = false; });
+    return `<p class="ready-tick-cleared" role="status" aria-live="polite" data-copy-key="ready.tick.cleared">${esc(COPY["ready.tick.cleared"])}</p>`;
+  }
+  function readyCountdown(cert) {
+    const cur = activeReq();
+    const sl = cur && cur.status === "confirmed" ? slotOf(cur) : null;
+    if (sl && sl.date) {
+      const d = daysUntil(sl.date, slotTz(sl));
+      if (d > 1) return { text: readyFill("ready.count.ride.future", [d]), past: false };
+      if (d === 1) return { text: COPY["ready.count.ride.future_one"], past: false };
+      if (d === 0) return { text: COPY["ready.count.ride.today"], past: false };
+      return { text: COPY["ready.count.ride.past"], past: true };
+    }
+    const ym = S.target || "";
+    if (!ym) return { text: COPY["ready.count.none"], past: false, none: true };
+    const today = iso(today0());
+    const month = today.slice(0, 7);
+    const label = fmtTargetMonth(ym);
+    if (month === ym) return { text: readyFill("ready.count.target.month", [label]), past: false };
+    if (month > ym) return { text: readyFill("ready.count.target.past", [label]), past: true };
+    const d = daysBetweenYmd(today, ym + "-01");
+    if (d === 1) return { text: readyFill("ready.count.target.future_one", [label]), past: false };
+    return { text: readyFill("ready.count.target.future", [d, label]), past: false };
+  }
+  function readyFlagsHtml(cert) {
+    const roll = eligRollup(cert);
+    if (!["bad", "review", "warn", "check"].includes(roll.k)) return "";
+    const label = roll.k === "bad" ? COPY["ready.flag.closed"] : roll.k === "warn" ? COPY["ready.flag.heads_up"] : roll.k === "review" ? COPY["clock.chip.review"] : COPY["clock.chip.confirm"];
+    const note = roll.k === "check" ? `<p class="small muted" data-copy-key="clock.needs_check.note">${esc(COPY["clock.needs_check.note"])}</p>` : "";
+    return `<div class="ready-flag" data-ready-flag="${esc(roll.k)}">${chip(ROLL[roll.k][0], label)} <span class="small muted" data-copy-key="ready.flag.frame">${esc(COPY["ready.flag.frame"])}</span>${note}
+      <p class="small muted" data-copy-key="clock.disclaimer">${esc(COPY["clock.disclaimer"])}</p></div>`;
+  }
+  function readyNextBlock(cert, st) {
+    const cur = activeReq();
+    const sl = cur && slotOf(cur);
+    const dp = cur && dpeById(cur.dpeId);
+    const name = dp ? first(dp.name) : "";
+    if (cur && sl && (cur.status === "confirmed" || cur.status === "requested") && bookingDatePast(sl) && cur.status === "confirmed") {
+      return { line: COPY["ready.next.past"], cta: "", past: true };
+    }
+    if (cur && cur.status === "confirmed" && sl && !bookingDatePast(sl)) {
+      return { line: readyFill("ready.next.confirmed", [icsWhen(sl), name]), cta: `<a class="btn cta" href="#/readiness" data-copy-key="ready.cta.checklist" style="min-height:44px">${esc(COPY["ready.cta.checklist"])}</a>` };
+    }
+    if (cur && cur.status === "requested") {
+      return { line: readyFill("ready.next.requested", [name, name]), cta: `<a class="btn cta" href="#/request/${cur.id}" data-copy-key="ready.cta.request" style="min-height:44px">${esc(COPY["ready.cta.request"])}</a>` };
+    }
+    if (st.n >= 9) {
+      const primary = `<a class="btn cta" href="#/search" data-copy-key="ready.cta.search" style="min-height:44px">${esc(COPY["ready.cta.search"])}</a>`;
+      const review = st.id === "review" ? `<p class="ready-next-review" data-copy-key="ready.next.review">${esc(COPY["ready.next.review"])}</p>
+        <a class="btn secondary" href="#/readiness" data-copy-key="ready.cta.checklist" style="min-height:44px">${esc(COPY["ready.cta.checklist"])}</a>` : "";
+      return { line: COPY["ready.next.request"], cta: primary + review };
+    }
+    const items = READY9(cert);
+    const next = (items || []).find((it) => !ready9Of(cert)[it.id]);
+    const title = next ? next.t : "";
+    return { line: readyFill("ready.next.item", [title]), cta: `<a class="btn cta" href="#/readiness" data-copy-key="ready.cta.checklist" style="min-height:44px">${esc(COPY["ready.cta.checklist"])}</a>` };
+  }
+  function homeReadyCard() {
+    if (S.role && S.role !== "pilot") return "";
+    const goal = (S.demoUser && S.demoUser.goal) || S.readinessCert || "";
+    const certUnset = !planningChoice(goal) && !planningChoice(S.readinessCert) && !planningChoice(planningCert());
+    const cert = clockCert();
+    const info = infoGoal(cert) || infoGoal(goal);
+    if (info || (!supportedGoal(cert) && !planningChoice(S.readinessCert) && !(activeReq()))) {
+      const prompt = COPY["fr.home.cert_prompt"];
+      const parts = prompt.split(" \u00b7 ");
+      return `<section class="card ready-card ready-card-empty" data-ready-card="empty" aria-label="${esc(COPY["ready.eyebrow"])}">
+        <p class="eyebrow" data-copy-key="ready.eyebrow">${esc(COPY["ready.eyebrow"])}</p>
+        ${info ? `<p data-copy-key="goal.info_only">${esc(COPY["goal.info_only"])}</p><p class="small muted" data-copy-key="goal.no_estimate">${esc(COPY["goal.no_estimate"])}</p><p class="small muted" data-copy-key="goal.note">${esc(COPY["goal.note"])}</p>` : `<p>${esc(parts[0])}</p><a class="btn cta" href="#/onboarding?edit=1&step=1" style="min-height:44px">${esc(parts.slice(1).join(" \u00b7 "))}</a>`}
+        <p class="small muted" data-copy-key="ready.proto">${esc(COPY["ready.proto"])}</p>
+      </section>`;
+    }
+    const st = readyStatusOf(cert);
+    const count = readyCountdown(cert);
+    const next = readyNextBlock(cert, st);
+    const flags = readyFlagsHtml(cert);
+    const progress = readyFill("ready.progress", [st.n, 9]);
+    const progressAria = readyFill("ready.progress.aria", [st.n, 9, st.status]);
+    const certName = certById(cert).name;
+    const ariaParts = ["Checkride-ready.", certName + ".", progressAria + "."];
+    if (count && count.text) ariaParts.push(count.text.endsWith(".") ? count.text : count.text + ".");
+    if (flags) {
+      const roll = eligRollup(cert);
+      const fl = roll.k === "bad" ? COPY["ready.flag.closed"] : roll.k === "warn" ? COPY["ready.flag.heads_up"] : roll.k === "review" ? COPY["clock.chip.review"] : COPY["clock.chip.confirm"];
+      ariaParts.push(fl + ". " + COPY["ready.flag.frame"]);
+    }
+    const regionAria = ariaParts.join(" ");
+    const showCount = !next.past || !homeAfterPrompt();
+    const monthCta = count.none ? `<a class="btn secondary" href="#/onboarding?edit=1&step=3" style="min-height:44px">${esc(COPY["fr.home.chip.target_unset"].split(" \u00b7 ").pop())}</a>` : "";
+    const journeyLink = `<a class="ready-journey" href="#/journey" data-copy-key="pass.cta.journey">${esc(COPY["pass.cta.journey"])}</a>`;
+    return `<section class="card ready-card" data-ready-card="${esc(st.id)}" data-ready-cert="${esc(cert)}" role="region" aria-label="${esc(regionAria)}">
+      <p class="eyebrow" data-copy-key="ready.eyebrow">${esc(COPY["ready.eyebrow"])}</p>
+      <p class="ready-cert" data-copy-key="ready.cert">${esc(certName)}</p>
+      <h2 class="ready-headline" data-copy-key="ready.headline.${esc(st.id)}">${esc(st.headline)}</h2>
+      <p class="ready-status"><span class="pill" data-ready-status="${esc(st.id)}">${esc(st.status)}</span></p>
+      <div class="ready-progress" role="progressbar" aria-valuemin="0" aria-valuemax="9" aria-valuenow="${st.n}" aria-valuetext="${esc(progressAria)}">${seg9(st.n, 9, { progressbar: true })}
+        <p class="small" data-copy-key="ready.progress">${esc(progress)}</p>
+      </div>
+      ${readyTickHtml(cert, st)}
+      ${readyTickClearedHtml()}
+      ${showCount ? `<p class="ready-count" data-ready-count>${esc(count.text)}</p>${monthCta}` : ""}
+      ${next.past && homeAfterPrompt() ? "" : `<p class="ready-next">${esc(next.line)}</p>${next.cta}`}
+      ${flags}
+      <p class="small muted" data-copy-key="ready.draft">${esc(COPY["ready.draft"])}</p>
+      <p class="small muted" data-copy-key="ready.proto">${esc(COPY["ready.proto"])}</p>
+      ${journeyLink}
+    </section>`;
+  }
+
 
   function infoCertificate(cert, find = false, f = {}) {
     const name = cert === "atp" ? "ATP" : "Rotorcraft";
@@ -3502,10 +3888,10 @@ const closeModal = () => {
     const s = cur && slotOf(cur), dp = cur && dpeById(cur.dpeId);
     const cert = cur ? cur.cert : planningCert();
     if (infoGoal(cert)) return infoCertificate(cert);
-    const n = ready9Count();
-    const items = READY9(cert, dp), r9 = S.ready9 || {};
+    const n = ready9Count(cert);
+    const items = READY9(cert, dp), r9 = ready9Of(cert);
     const nextItem = items.find((it) => !r9[it.id]);
-    const roll = eligRollup();
+    const roll = eligRollup(cert);
     let state;
     if (cur && cur.status === "confirmed") state = `<p data-journey-state="confirmed">Confirmed: ${slotAt(s)} with ${esc(first(dp.name))}. Next: your readiness checklist. \u00b7 <a href="#/readiness">Open</a></p><p class="small muted">Checkride in ${plural(Math.max(daysUntil(s.date, slotTz(s)), 0), "day")} \u00b7 ${fmtDate(s.date)} with ${esc(first(dp.name))}</p>`;
     else if (cur) state = `<p data-journey-state="requested">Request sent to ${esc(first(dp.name))} for ${slotAt(s)}. It\u2019s confirmed once ${esc(first(dp.name))} accepts. \u00b7 <a href="#/request/${cur.id}">View request</a></p>${(() => { const he = holdEnd(cur, s); return he && he > Date.now() ? `<p class="small muted" data-hold-end>Held for you until ${tsWhen(he, slotTz(s))} \u00b7 Not confirmed yet</p>` : holdEnded(cur, s) ? holdEndedLine(cur) : ""; })()}`;
@@ -3519,7 +3905,7 @@ const closeModal = () => {
         <div class="stack">
           <section class="card" id="journey-ready">
             <div class="row spread"><h2 class="h3" style="margin:0">${esc(certLong(cert))}</h2><a class="small" href="#/readiness">Open</a></div>
-            <div class="row" style="margin-top:.5rem"><b class="big-num">${n} of 9 ready</b> ${rollChip(roll)}</div>
+            <div class="row" style="margin-top:.5rem"><b class="big-num">${n} of 9 ready</b> ${rollChip(roll, cert)}</div>
             <div class="row" style="margin-top:.4rem">${targetChip()}</div>
             ${seg9(n)}
             ${roll.why ? `<p class="small" style="margin:0 0 .25rem">${esc(roll.why)}</p>` : roll.k === "none" ? `<p class="small muted" style="margin:0 0 .25rem">Nothing entered yet. Tick items on your <a href="#/readiness">readiness checklist</a>.</p>` : ""}
@@ -3528,6 +3914,7 @@ const closeModal = () => {
           </section>
           ${nextItem ? `<section class="card next-step"><p class="eyebrow">YOUR NEXT STEP</p><h3>${esc(nextItem.t)}</h3><a class="btn secondary sm" href="#/readiness">Open the checklist</a></section>` : ""}
           <section class="card">${state}</section>
+          ${S.bookings.some((b) => b.mine && b.outcome === "pass") ? afterNextOffer("journey") : ""}
           <section class="card" id="from-examiner"><h2>From your examiner</h2>${exam}</section>
         </div>
         <aside class="stack">
@@ -3545,18 +3932,20 @@ const closeModal = () => {
     const cur = activeReq(), dp = cur && dpeById(cur.dpeId), s = cur && slotOf(cur);
     const cert = cur ? cur.cert : planningCert();
     if (infoGoal(cert)) return infoCertificate(cert);
-    const items = READY9(cert, dp), r9 = S.ready9 || {}, n = ready9Count();
+    const items = READY9(cert, dp), r9 = ready9Of(cert), n = ready9Count(cert);
+    const st = readyStatusOf(cert);
     const cs = cur && cur.status === "confirmed" ? S.curated[cur.id] : null;
     return `<div class="page">
       ${head("YOUR READINESS CHECKLIST", "Ready on paper.", "Ready on the ramp.")}
-      <section class="card">
+      <section class="card" data-ready-cert="${esc(cert)}">
         <div class="row spread"><h2 style="margin:0">Readiness checklist <span class="pill warn" style="vertical-align:middle">Unverified draft</span></h2><span class="row" style="gap:.5rem"><b class="mono">${n} of 9 ready</b>${countPill(n).replace(/>[^<]*</, ">" + readyLabel(n, 9) + "<")}</span></div>
         <p class="muted small">${cur ? `For your ${esc(certById(cert).name)} checkride with ${esc(dp.name)} \u00b7 ${slotAt(s)}` : `For your ${esc(certById(cert).name)} checkride`}</p>
         ${cs && cs.sent ? `<p class="small">${esc(dp.name)} confirmed this list on ${fmtDate(iso(new Date(cs.sent.sentAt)), { month: "short", day: "numeric" })}.</p>` : ""}
-        <div class="row" style="margin:.25rem 0 .5rem;gap:.75rem;align-items:end"><label class="field" style="max-width:240px"><span>Knowledge test date (optional)</span><input type="date" id="kt-date-r9" data-r9date="kt" value="${esc((S.ready9Dates || {}).kt || "")}" /></label>${rollChip(eligRollup())}</div>
+        <div class="row" style="margin:.25rem 0 .5rem;gap:.75rem;align-items:end"><label class="field" style="max-width:240px"><span>Knowledge test date (optional)</span><input type="date" id="kt-date-r9" data-r9date="kt" value="${esc(ready9DatesOf(cert).kt || "")}" /></label>${rollChip(eligRollup(cert), cert)}</div>
         ${!cur ? `<label class="field" style="max-width:420px"><span data-copy-key="goal.label">${COPY["goal.label"]}</span><select id="readiness-cert" data-planning-cert aria-describedby="planning-note">${D.certs.filter(c => c.id !== "sport").map(c => `<option value="${c.id}" ${c.id === cert ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></label><p class="small muted" id="planning-note" data-copy-key="goal.note">${COPY["goal.note"]}</p>` : ""}
         ${clockInputs()}${clockBlock("elig-clock-r9")}
-        <ol class="ready9">${items.map((it, i) => { const d = !!r9[it.id]; return `<li><label class="check-item ${d ? "done" : ""}"><input type="checkbox" data-r9="${it.id}" ${d ? "checked" : ""} /><div><div class="t"><span class="mono muted">${i + 1}</span> ${esc(it.t)}</div><div class="muted small">${it.h}</div>${it.lbl ? `<div class="small"><b>${it.lbl}</b></div>` : ""}${it.id === "prep" && cs && cs.sent ? `<a class="small" href="#/my-checklists">Open prep list</a>` : ""}</div></label>${it.id === "med" ? medicalBlock() : it.id === "prep" ? prepStudent(cur && cur.status === "confirmed" ? cur : null, dp) : ""}</li>`; }).join("")}</ol>
+        ${readyTickClearedHtml()}${readyTickHtml(cert, st)}
+        <ol class="ready9" data-ready-cert="${esc(cert)}">${items.map((it, i) => { const d = !!r9[it.id]; return `<li><label class="check-item ${d ? "done" : ""}"><input type="checkbox" data-r9="${it.id}" ${d ? "checked" : ""} /><div><div class="t"><span class="mono muted">${i + 1}</span> ${esc(it.t)}</div><div class="muted small">${it.h}</div>${it.lbl ? `<div class="small"><b>${it.lbl}</b></div>` : ""}${it.id === "prep" && cs && cs.sent ? `<a class="small" href="#/my-checklists">Open prep list</a>` : ""}</div></label>${it.id === "med" ? medicalBlock() : it.id === "prep" ? prepStudent(cur && cur.status === "confirmed" ? cur : null, dp) : ""}</li>`; }).join("")}</ol>
         <p class="small muted" style="margin:.75rem 0 0">A checklist to help you prepare, not an FAA requirement list. Your CFI and examiner have the final word.</p>
         <p class="small muted" style="margin:.25rem 0 0">Draft: verify with your CFI. Not legal or FAA advice. Ticks are saved in this browser only.</p>
       </section>
@@ -3736,7 +4125,7 @@ const closeModal = () => {
             ${!isDpe ? noShowCard(b, s, dp) : b.noShow ? `<p class="small" data-ns-marked="${b.id}"><span class="pill bad">No-show</span></p>` : ""}
             ${!isDpe && b.mine ? afterOutcomeEntry(b, s) : ""}
             ${!isDpe && b.mine && b.status === "confirmed" ? `<div class="cal-ics" data-cal="ride">
-              <button type="button" class="btn secondary target-44" data-action="cal-ride" data-id="${b.id}" data-copy-key="cal.ride.btn" aria-label="${esc(COPY["cal.ride.btn"])}. ${esc(COPY["cal.ride.aria"])}">${esc(COPY["cal.ride.btn"])}</button>
+              <button type="button" class="btn secondary target-44" data-action="cal-ride" data-id="${b.id}" data-copy-key="cal.ride.btn" aria-label="${esc(COPY["cal.ride.aria"])}">${esc(COPY["cal.ride.btn"])}</button>
               <p class="small muted" data-copy-key="cal.helper">${esc(COPY["cal.helper"])}</p>
             </div>` : ""}
             ${b.status === "declined" && !isDpe ? `<p class="small" style="margin:.5rem 0 0">${f} couldn\u2019t take this request. Nothing was confirmed, so nothing changes on your side. <a href="#/search?cert=${b.cert}">See other openings</a></p>` : ""}
@@ -3745,7 +4134,7 @@ const closeModal = () => {
           <ol class="ws-steps">
             <li class="card"><span class="step-n mono">01</span><div><h2 class="h3">Request sent</h2><p class="small muted mono" style="margin:0" data-sent-at>${tsReader(b.createdAt)}</p></div></li>
             <li class="card"><span class="step-n mono">02</span><div><h2 class="h3">${isDpe ? "You review this request" : `${f} reviews your request`}</h2>${step2}
-              ${isDpe ? `<div class="row small" style="margin-top:.6rem;gap:.5rem" data-dpe-ready><span class="muted">Applicant checklist</span> ${countPill(b.mine ? ready9Count() : of9(b.readiness || 0))}${b.selfCheck ? ` <span class="muted">\u00b7 self-attested readiness</span>` : ""}</div>` : ""}${isDpe && b.status === "requested" ? `<div class="row" style="margin-top:.6rem"><button class="btn good" data-action="accept" data-id="${b.id}">Accept request</button><button class="btn bad" data-action="decline" data-id="${b.id}">Decline</button></div>` : ""}</div></li>
+              ${isDpe ? `<div class="row small" style="margin-top:.6rem;gap:.5rem" data-dpe-ready><span class="muted">Applicant checklist</span> ${countPill(readyApplicantCount(b))}${b.mine ? " " + rollChip(eligRollup(b.cert), b.cert) : ""}${b.selfCheck ? ` <span class="muted">\u00b7 self-attested readiness</span>` : ""}</div>` : ""}${isDpe && b.status === "requested" ? `<div class="row" style="margin-top:.6rem"><button class="btn good" data-action="accept" data-id="${b.id}">Accept request</button><button class="btn bad" data-action="decline" data-id="${b.id}">Decline</button></div>` : ""}</div></li>
             <li class="card"><span class="step-n mono">03</span><div><h2 class="h3">From your examiner</h2>${step3}</div></li>
           </ol>
         </div>
@@ -3766,8 +4155,8 @@ const closeModal = () => {
           ${examinerTerms(dp)}
           <div class="stack" style="margin-top:.75rem">
             ${b.note ? `<button class="btn secondary" data-action="view-note" data-id="${b.id}">${isDpe ? `See ${esc(first(b.applicant))}\u2019s note` : `See your note to ${f}`}</button>` : ""}
-            ${!isDpe && b.mine && b.status === "requested" ? `<button class="btn bad" data-action="pilot-cancel" data-id="${b.id}">Withdraw request</button>` : ""}
-            ${!isDpe && b.mine && b.status === "confirmed" && !b.noShow ? `<button class="btn bad" data-action="pilot-cancel" data-id="${b.id}">Cancel checkride</button>` : ""}
+            ${!isDpe && b.mine && b.status === "requested" && canCancelBooking(b, s) ? `<button class="btn bad" data-action="pilot-cancel" data-id="${b.id}">Withdraw request</button>` : ""}
+            ${!isDpe && b.mine && b.status === "confirmed" && !b.noShow && canCancelBooking(b, s) ? `<button class="btn bad" data-action="pilot-cancel" data-id="${b.id}">Cancel checkride</button>` : ""}
             ${isDpe && b.status === "confirmed" && !b.noShow && slotStart(s) <= Date.now() ? `<button class="btn ghost" data-action="ns-mark" data-id="${b.id}">Mark no-show</button>` : ""}
             ${!isDpe && b.mine && b.status === "requested" ? `<button class="btn ghost sm" data-action="as-dpe" data-dpe="${dp.id}" data-to="#/request/${b.id}">Respond as ${f} (demo)</button>` : ""}
           </div>
@@ -4465,7 +4854,7 @@ const closeModal = () => {
     return sl.date < todayIn(tz);
   };
   const afterOutcomeEntry = (b, sl) => {
-    if (!b || !sl || !bookingDatePast(sl)) return "";
+    if (!b || !sl || !bookingDatePast(sl) || b.outcome) return "";
     if (b.status !== "confirmed" && b.status !== "requested") return "";
     const q = `bookingId=${encodeURIComponent(b.id)}`;
     return `<section class="after-entry" data-after-entry data-booking="${esc(b.id)}" data-slot-date="${esc(sl.date)}" data-slot-tz="${esc(slotTz(sl))}" aria-labelledby="after-entry-h-${esc(b.id)}">
@@ -4506,6 +4895,11 @@ const closeModal = () => {
     const dp = dpeById(b.dpeId);
     return { b, sl, dp };
   };
+  // RC20-I02 / F20: after-screen and after-demo sub lines use the examiner's full fictional name (e.g. "Lauren Pike"), not first().
+  const afterExaminerName = (dp) => {
+    const n = String((dp && dp.name) || "").trim();
+    return n || "Lauren Pike";
+  };
   const afterDemoCtx = (q) => {
     const from = afterBookingFromQuery(q);
     if (from && from.dp && from.sl) {
@@ -4514,14 +4908,14 @@ const closeModal = () => {
       const whenShort = fmtDate(from.sl.date, { weekday: "short", month: "short", day: "numeric" });
       const whenCard = fmtDateY(from.sl.date);
       return {
-        dp: from.dp, cert, name: first(from.dp.name), certName: cert.name || from.b.cert,
+        dp: from.dp, cert, name: afterExaminerName(from.dp), certName: cert.name || from.b.cert,
         whenPass, whenShort, whenCard, airport: from.sl.airport, bookingId: from.b.id,
         testBegan: from.sl.date, stoppedOn: from.sl.date,
       };
     }
     const dp = dpeById(AFTER_DEMO.dpeId) || { id: "d5", name: "Lauren Pike" };
     const cert = (certById(AFTER_DEMO.cert) || { id: "ppl", name: "Private Pilot", short: "Private" });
-    return { dp, cert, name: first(dp.name) || "Lauren Pike", certName: cert.name || "Private Pilot",
+    return { dp, cert, name: afterExaminerName(dp), certName: cert.name || "Private Pilot",
       whenPass: AFTER_DEMO.whenPass, whenShort: AFTER_DEMO.whenShort, whenCard: AFTER_DEMO.whenCard,
       airport: AFTER_DEMO.airport, bookingId: null,
       testBegan: AFTER_DEMO.testBegan, stoppedOn: AFTER_DEMO.stoppedOn };
@@ -4594,6 +4988,7 @@ const closeModal = () => {
   }
 
   function viewAfterPass(q) {
+    persistAfterOutcome("pass", q);
     const ctx = afterDemoCtx(q); const { dp, certName, name } = ctx;
     const sub = afterFmt("pass.sub", { cert: certName, name, when: ctx.whenPass });
     // Confetti after paint
@@ -4610,6 +5005,7 @@ const closeModal = () => {
         <a class="btn secondary" href="#/more#fr-more-plan" data-copy-key="pass.next.plan">${esc(COPY["pass.next.plan"])}</a>
         <button type="button" class="btn secondary" data-action="after-share-open" data-copy-key="pass.next.share">${esc(COPY["pass.next.share"])}</button>
       </section>
+      ${afterNextOffer("pass")}
       <div class="row after-ctas" style="gap:.75rem;flex-wrap:wrap;margin-top:1rem">
         <a class="btn cta" href="#/home" data-copy-key="pass.cta.home">${esc(COPY["pass.cta.home"])}</a>
         <a class="btn ghost" href="#/journey" data-copy-key="pass.cta.journey">${esc(COPY["pass.cta.journey"])}</a>
@@ -4687,6 +5083,7 @@ const closeModal = () => {
   }
 
   function viewAfterRecovery(kind, q) {
+    persistAfterOutcome(kind, q);
     // kind: "dis" (NOD) | "inc" (LOD)
     const isNod = kind === "dis";
     const ctx = afterDemoCtx(q); const { dp, certName, name } = ctx;
@@ -4718,7 +5115,7 @@ const closeModal = () => {
         ${credit}
         <div class="cal-ics" data-cal="deadline">
           <p class="small muted" data-copy-key="cal.deadline.helper">${esc(COPY["cal.deadline.helper"])}</p>
-          <button type="button" class="btn secondary target-44" data-action="cal-deadline" data-copy-key="cal.deadline.btn" aria-label="${esc(COPY["cal.deadline.btn"])}. ${esc(COPY["cal.deadline.aria"])}">${esc(COPY["cal.deadline.btn"])}</button>
+          <button type="button" class="btn secondary target-44" data-action="cal-deadline" data-copy-key="cal.deadline.btn" aria-label="${esc(COPY["cal.deadline.aria"])}">${esc(COPY["cal.deadline.btn"])}</button>
           <p class="small muted" data-copy-key="cal.helper">${esc(COPY["cal.helper"])}</p>
         </div>
         <h2 class="h3" data-copy-key="${prefix}.next_title">${esc(COPY[prefix + ".next_title"])}</h2>
@@ -5047,7 +5444,7 @@ function countUp(root) {
     const cert = form.cert.value;
     if (form.dataset.form === "cohort-ready") return readinessEval(cert, answersFromForm(form), { pct: +form.dataset.pct, pctMin: 90, who: form.dataset.who, iacra: true });
     const s = S.slots.find((x) => x.id === form.slot.value);
-    return readinessEval(cert, answersFromForm(form), { slotDate: s && s.date, pct: checklistPct(cert), count: (() => { const k = checklistCount(cert); return readyText(k.n, k.total); })() });
+    return readinessEval(cert, answersFromForm(form), { slotDate: s && s.date, pct: Math.round(ready9Count(cert) / 9 * 100), count: readyFill("ready.progress", [ready9Count(cert), 9]) });
   }
   function showGate(form, submitted) {
     const g = $("#req-gate"); if (!g) return { block: [] };
@@ -5086,13 +5483,13 @@ function countUp(root) {
         <label class="check-row small"><input type="checkbox" name="iacra" required /> <span>My IACRA application is started, and my instructor will sign the recommendation before the checkride.</span></label>
         ${!rs && journeyFlagged() ? `<label class="check-row small" data-req-cfi-reviewed><input type="checkbox" name="cfiReviewed" id="req-cfi-reviewed" aria-describedby="req-cfi-reviewed-hint" /> <span data-copy-key="request.cfi_reviewed">${COPY["request.cfi_reviewed"]}</span></label>
         <p class="small muted" id="req-cfi-reviewed-hint" style="margin:-.35rem 0 0"><span data-copy-key="request.cfi_reviewed.hint">${COPY["request.cfi_reviewed.hint"]}</span> <a href="#/journey" data-action="close-modal">See your Journey</a></p>` : ""}
-        <div class="small" id="req-ready">Your <a href="#/checklists/${cert}" data-action="close-modal">${esc(certById(cert).short)} checklist</a>: <b>${(() => { const k = checklistCount(cert); return readyText(k.n, k.total); })()}</b>. The examiner will see this.</div>
+        <div class="small" id="req-ready">${reqReadyCountHtml(cert)}</div><div id="req-roll">${rollChip(eligRollup(cert), cert)}</div>
         <label class="field"><span>Note to examiner (optional)</span><textarea name="note" rows="2" maxlength="500" placeholder="Anything ${esc(first(dp.name))} should know"></textarea></label>
         <div class="summary small" id="req-summary">${requestSummary(dp, cert, s)}</div>
         <p class="small muted" data-noshow-note style="margin:0">When you send a request, the examiner sees only how many no-shows you\u2019ve had in the last 12 months. A no-show you\u2019re disputing isn\u2019t counted until it\u2019s resolved.</p>
         <div class="row" style="justify-content:flex-end"><button type="button" class="btn ghost" data-action="close-modal">Cancel</button><button class="btn cta" type="submit">Send request (mock)</button></div>
         <p class="small muted" data-hold-rule style="margin:0">We hold a requested slot while the examiner reviews it, until 48 hours after you send it or 12 hours before it starts, whichever comes first. No deposit is taken until the examiner accepts.</p>
-      </form>`);  showGate($("#modal-root form[data-form=request]"));
+      </form>`);  const reqForm = $("#modal-root form[data-form=request]"); showGate(reqForm); if (reqForm) prefillRequestAttestations(reqForm, cert);
   }
   const requestSummary = (dp, cert, sl) => {
     const fee = dp.fees[cert], dep = depositFor(dp, cert);
@@ -5396,6 +5793,7 @@ function countUp(root) {
       const d = sec.querySelector('input[name="date"]'); (d || sec).focus({ preventScroll: true });
     },
     "pilot-cancel": (el) => {
+      const bx = S.bookings.find((x) => x.id === el.dataset.id); const slx = bx && slotOf(bx); if (bx && !canCancelBooking(bx, slx)) { toast(COPY["after.entry.helper"]); return; }
       const b = S.bookings.find((x) => x.id === el.dataset.id); if (!b) return;
       const s = S.slots.find((x) => x.id === b.slotId), dp = dpeById(b.dpeId);
       if (b.status !== "confirmed") {
@@ -5780,7 +6178,8 @@ function countUp(root) {
       if (isStale(s.dpeId)) { closeModal(); toast("This examiner has not confirmed their availability recently. Contact the examiner."); rerender(); return; }
       const cert = fd.get("cert");
       const dpx = dpeById(s.dpeId);
-      const b = { id: uid("b"), slotId: s.id, dpeId: s.dpeId, applicant: fd.get("name").trim() || "Alex Pilot", mine: true, cert, aircraft: fd.get("aircraft").trim(), cfi: fd.get("cfi").trim(), readiness: checklistPct(cert), selfCheck: { attested: true, by: "student", warnings: gate.warn.length, warn: gate.warn, answers: { ...answersFromForm(f), iacra: true }, ktDate: fd.get("kt-date") || "", hours: Object.fromEntries([...fd.entries()].filter(([k]) => k.startsWith("h-")).map(([k, v]) => [k.slice(2), +v])) }, status: "requested", createdAt: Date.now(), feeUsd: dpx.fees[cert], depositUsd: depositFor(dpx, cert), bookingFeeUsd: BOOKING_FEE };
+      syncAttestationsFromAnswers(cert, answersFromForm(f));
+      const b = { id: uid("b"), slotId: s.id, dpeId: s.dpeId, applicant: fd.get("name").trim() || "Alex Pilot", mine: true, cert, aircraft: fd.get("aircraft").trim(), cfi: fd.get("cfi").trim(), readiness: Math.round(ready9Count(cert) / 9 * 100), selfCheck: { attested: true, by: "student", warnings: gate.warn.length, warn: gate.warn, answers: { ...answersFromForm(f), iacra: true }, ktDate: fd.get("kt-date") || "", hours: Object.fromEntries([...fd.entries()].filter(([k]) => k.startsWith("h-")).map(([k, v]) => [k.slice(2), +v])) }, status: "requested", createdAt: Date.now(), feeUsd: dpx.fees[cert], depositUsd: depositFor(dpx, cert), bookingFeeUsd: BOOKING_FEE };
       const note = (fd.get("note") || "").trim(); if (note) b.note = note;
       if (f.querySelector("#req-cfi-reviewed")) b.cfiReviewed = !!fd.get("cfiReviewed"); // D42: optional, informational only
       b.near = fd.get("near") || DEFAULT_NEAR;
@@ -5993,9 +6392,10 @@ function countUp(root) {
       rerender();
       return;
     }
-    if (t.form && (t.form.dataset.form === "request" || t.form.dataset.form === "cohort-ready") && t.name !== "cert") { showGate(t.form); return; }
+    if (t.form && (t.form.dataset.form === "request" || t.form.dataset.form === "cohort-ready") && t.name !== "cert") { showGate(t.form); if (t.form.dataset.form === "request" && t.form.cert) { const c = t.form.cert.value; syncAttestationsFromAnswers(c, answersFromForm(t.form)); save(); const el = $("#req-ready"); if (el) el.innerHTML = reqReadyCountHtml(c); const roll = $("#req-roll"); if (roll) roll.innerHTML = rollChip(eligRollup(c), c); } return; }
     if (t.dataset.actionChange === "avail-age") { availOf(S.actingDpe).confirmedAt = Date.now() - Number(t.value) * DAY; rerender(); return; }
     if (t.dataset.actionChange === "after-share-toggle") { window.__afterShareIncludeExaminer = !!t.checked; openShareSheet(); return; }
+    if (t.dataset.actionChange === "ready9-cfi") { const cert = (t.closest("[data-ready-cert]") && t.closest("[data-ready-cert]").dataset.readyCert) || ready9FallbackCert(); setCfiReviewed(cert, t.checked); save(); rerender(); return; }
     if (t.dataset.actionChange === "theme") { applyTheme(t.value); return; }
     if (t.dataset.actionChange === "role") { S.role = t.value; go(HOME[S.role]); return; }
     if (t.dataset.med) { pinReadiness();
@@ -6021,8 +6421,8 @@ function countUp(root) {
       if (p[0] === "prep") { c.prep = c.prep || []; c.prep[+p[1]] = c.prep[+p[1]] || {}; c.prep[+p[1]][p[2]] = v; if (p[2] === "hours") c.prep[+p[1]].hoursBad = !!(t.validity && t.validity.badInput); } else c[p[0]] = v;
       ui.clockOpen = true; save(); const id = t.id; rerender(); const back = id && document.getElementById(id); if (back) back.focus(); return;
     }
-    if (t.dataset.r9date) { S.ready9Dates = S.ready9Dates || {}; S.ready9Dates[t.dataset.r9date] = t.value; if (t.dataset.r9date === "kt") S.ktSample = false; save(); rerender(); return; }
-    if (t.dataset.r9) { S.ready9 = S.ready9 || {}; S.ready9[t.dataset.r9] = t.checked; save(); rerender(); return; }
+    if (t.dataset.r9date) { const cert = (t.closest("[data-ready-cert]") && t.closest("[data-ready-cert]").dataset.readyCert) || clockCert(); ready9DatesOf(cert)[t.dataset.r9date] = t.value; if (t.dataset.r9date === "kt") S.ktSample = false; save(); rerender(); return; }
+    if (t.dataset.r9) { const cert = (t.closest("[data-ready-cert]") && t.closest("[data-ready-cert]").dataset.readyCert) || clockCert(); setReady9Item(cert, t.dataset.r9, t.checked); save(); rerender(); return; }
     if (t.dataset.actionChange === "acting-dpe") { S.actingDpe = t.value; ui.wk = null; rerender(); return; }
     if (t.dataset.actionChange === "req-cert") {
       const s = S.slots.find((x) => x.id === t.form.slot.value);
@@ -6030,7 +6430,9 @@ function countUp(root) {
       $("#req-summary").innerHTML = requestSummary(dp, t.value, s); // QA-009: keep the slot's all-in
       $("#req-check").outerHTML = readinessFields(t.value);
       showGate(t.form);
-      $("#req-ready").innerHTML = `Your <a href="#/checklists/${t.value}" data-action="close-modal">${esc(certById(t.value).short)} checklist</a>: <b>${(() => { const k = checklistCount(t.value); return readyText(k.n, k.total); })()}</b>. The examiner will see this.`;
+      prefillRequestAttestations(t.form, t.value);
+      $("#req-ready").innerHTML = reqReadyCountHtml(t.value);
+      const rollEl = $("#req-roll"); if (rollEl) rollEl.innerHTML = rollChip(eligRollup(t.value), t.value);
       return;
     }
     // QA-042: a keyboard change of the state selector doesn't navigate at once; Enter or leaving the field applies it.

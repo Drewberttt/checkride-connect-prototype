@@ -4,7 +4,7 @@
    - Versioned cache; old versions are deleted on activate.
    - Navigations, tab/home-screen icons, and shell subresources (scripts, styles, fonts, sample data): cache first, network on miss or shift-reload. Bodies are buffered and aborted requests settle with 204 so a torn-down reload cannot leave respondWith pending (QA-089). Offline navigations fall back to index.html.
    - No push, no background sync, no third-party requests. Bump VERSION when the shell changes. */
-const VERSION = "cc-proto-v7.27.0"; // RC20: QA-089 SW abort handling on interrupted reloads.
+const VERSION = "cc-proto-v7.28.0"; // RC21: F06 single readiness model, D53 Checkride-ready Home card, F03 after-checkride outcome.
 const CACHE = "checkride-connect-" + VERSION;
 const SHELL = [
   "./",

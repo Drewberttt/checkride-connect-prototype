@@ -89,6 +89,11 @@
     "sha256": "45d9786595e35deba330420ff50087d33ad31571f8e4effec386f7a329879e0c",
     "size": 10942
   },
+  "QA-HANDOFF-RC21.md": {
+    "mtime_ns": 1794852846001282933,
+    "sha256": "162678d1e3470acccd0b42179e272fa3e8263f62564b201fdbaf49bb2cb2520b",
+    "size": 11648
+  },
   "QA-HANDOFF-RC6.md": {
     "mtime_ns": 1794081664521256915,
     "sha256": "627327800ac219fc469ca2ffbf533b7fc4e6ba04d26bd546b8a89a8f11ad8e08",
@@ -110,19 +115,19 @@
     "size": 12020
   },
   "READY.txt": {
-    "mtime_ns": 1794347543121697657,
-    "sha256": "7aece3258dbc0b73b93c94a6c1e37847fdda8334661026bda18bb8f657786e0f",
-    "size": 688
+    "mtime_ns": 1794852826497415528,
+    "sha256": "93741b20c776abba7d807c28d9b23820db19d055941ed15a186bb47d1263a1e4",
+    "size": 1167
   },
   "SOURCE-SHA256.json": {
-    "mtime_ns": 1794347548093688404,
-    "sha256": "8af6ddc081688e0b88878e8790826418f0945cc36280db8bd62576cfcfb412ce",
-    "size": 11446
+    "mtime_ns": 1794852849201261138,
+    "sha256": "da0042f1d389eb0f9aa07196856a27fe75526c11d139dca86e65a597ab964978",
+    "size": 11578
   },
   "app.js": {
-    "mtime_ns": 1794343974567596562,
-    "sha256": "9ed5398fa9db51cb372d83363057b3659c0b0003b0a4dcc7af2871d9494cc030",
-    "size": 570368
+    "mtime_ns": 1794843443222403355,
+    "sha256": "56ce8bc71f5fd684c02f68995ce42f024f5d63b70b8da20ea58f2f7b1f8827f5",
+    "size": 595301
   },
   "brand/archive-png-pre-v2/checkride-connect-icon.png": {
     "mtime_ns": 1794081656585212522,
@@ -450,14 +455,14 @@
     "size": 1010
   },
   "styles.css": {
-    "mtime_ns": 1794343974571596546,
-    "sha256": "d5a5a53861d8850a1217db98844b300a15595a0c0d6a47aa2b4db857069f4db8",
-    "size": 112664
+    "mtime_ns": 1794841993743029976,
+    "sha256": "d1f89c9e05ebeceff9a4f88966080c46b2ecfdeb4d2c81f3d81fd3f2ad8cd957",
+    "size": 114105
   },
   "sw.js": {
-    "mtime_ns": 1794344340214179460,
-    "sha256": "35793e628f21819ec1554653e87c17ec4523c097ab456cc77f4bb3ac996672d1",
-    "size": 9493
+    "mtime_ns": 1794842098498193053,
+    "sha256": "3206ee86ef1b97e10f9816e282c8dd77a5321f71913b1781ccf1edd3b4ce3824",
+    "size": 9532
   },
   "tests/a11y/AFTER-COUNT.md": {
     "mtime_ns": 1794338835371767187,
@@ -470,9 +475,9 @@
     "size": 1670
   },
   "tests/a11y/target-size-audit.js": {
-    "mtime_ns": 1794342859228009917,
-    "sha256": "c233b2141232cbd45bcd3e8646f59737b136cfb2d678b60e1eef6376c215649f",
-    "size": 16301
+    "mtime_ns": 1794842182637289436,
+    "sha256": "622033d5b7fbe091eebaea3faf4da30f9c2eb67ad8cb7a474d2008d230df8f62",
+    "size": 17168
   },
   "tests/after/COPY-CHANGES.md": {
     "mtime_ns": 1794328712524924737,
@@ -495,9 +500,9 @@
     "size": 8943
   },
   "tests/after/after-entry.js": {
-    "mtime_ns": 1794262850417121492,
-    "sha256": "f78b22959c93507daba256749b33211b66e0c90c5d76c9abf18b71bddddca38a",
-    "size": 9727
+    "mtime_ns": 1794843552114739998,
+    "sha256": "26848a389c5e4d7b56d945aa1b69dd171559c0177b211a1d7dd1b84f81280f4c",
+    "size": 13046
   },
   "tests/after/credit-parity.js": {
     "mtime_ns": 1794259751329780008,
@@ -510,9 +515,9 @@
     "size": 22582
   },
   "tests/after/overflow-audit.js": {
-    "mtime_ns": 1794342859228009917,
-    "sha256": "57328a5e3a02ff0190541ec26983e07440e81a71ac2a2db39f341cd9579e94d9",
-    "size": 5787
+    "mtime_ns": 1794842191989181661,
+    "sha256": "6f858d0a310f44f890a72c2f2eb77a12174feb5c557955b5d8ab1e48da47c7cc",
+    "size": 7127
   },
   "tests/after/reference.py": {
     "mtime_ns": 1794259298150440300,
@@ -525,9 +530,9 @@
     "size": 59039
   },
   "tests/after/run-matrix.sh": {
-    "mtime_ns": 1794344569153284541,
-    "sha256": "ce0c5ac6e30bb095b702eb09b9fd9423a382841f9a0aa3b1ada7e0bf52f67085",
-    "size": 11153
+    "mtime_ns": 1794847047230052700,
+    "sha256": "ff08a0425b3cbd75d7d846a4fbdbd3974454c69429c6a1f17bd2e7fab7b5acaf",
+    "size": 13406
   },
   "tests/after/wait-time.js": {
     "mtime_ns": 1794328788264498771,
@@ -550,14 +555,14 @@
     "size": 21908
   },
   "tests/dark/dark-audit.js": {
-    "mtime_ns": 1794342859228009917,
-    "sha256": "684f742ee1256adcf8c8ef66b3e3fa6c8885fbaa70271da3814212bc39fe0fdd",
-    "size": 57485
+    "mtime_ns": 1794842182637289436,
+    "sha256": "595ecdc91c9990088d78d1ca0b96bb687452da6af8406014428ba957037cb606",
+    "size": 58461
   },
   "tests/ics/cal-ui.js": {
-    "mtime_ns": 1794343991419531724,
-    "sha256": "41da7886d1570a17879afa297792d86087e3279b8905f4de61ea30d8f175bf5e",
-    "size": 12396
+    "mtime_ns": 1794842282200095326,
+    "sha256": "c64c52afc02b7f5dfc89695ecba44a9fe05893202fe8d38f469e41ec1d6a7e6b",
+    "size": 16817
   },
   "tests/ics/ics-test.js": {
     "mtime_ns": 1794343986751549689,
@@ -655,8 +660,8 @@
     "size": 6507
   },
   "tests/rc10/logo-qa085.js": {
-    "mtime_ns": 1794341953107653725,
-    "sha256": "b4a202a5843b5392fbf3dcced3d01d35aa50baf9d07baf1f8a3ad68721f5a6c7",
+    "mtime_ns": 1794842098530192737,
+    "sha256": "60475486477cc9b081848a3a51840bc0d93a5660c65dd7ef4ba313074dde6673",
     "size": 6094
   },
   "tests/rc10/paths.json": {
@@ -665,13 +670,13 @@
     "size": 294
   },
   "tests/rc10/pwa-saved.js": {
-    "mtime_ns": 1794344340214179460,
-    "sha256": "a0d54ae74e2bd8f428a6d4bb2e54cd16a43eeadfcc9ba9a4a4d61fe7d1d42afd",
-    "size": 14250
+    "mtime_ns": 1794851396892467582,
+    "sha256": "d358bb647d4f3641f5f64f9ac0010ab14b27f94244bec0eb04f91d67564badc9",
+    "size": 14791
   },
   "tests/rc10/qa089-burst.js": {
-    "mtime_ns": 1794342836572100256,
-    "sha256": "cb235ffb20ccbaa6f97db42c6bc4926a4aa500997056e8f122b468f0d5f44227",
+    "mtime_ns": 1794842098530192737,
+    "sha256": "633980624a4c8aff3dfa4bd7f2417e88580d6df4485a08f8eedd1224a4007a4b",
     "size": 5097
   },
   "tests/rc10/saved-quota.js": {
@@ -749,10 +754,25 @@
     "sha256": "a5ef540d5116998c7e83a61c8844226acea2ec3a7b6cb6c79f441582e69a6840",
     "size": 10070
   },
+  "tests/rc10/scope-v728.py": {
+    "mtime_ns": 1794843552114739998,
+    "sha256": "521a02454f4a92c9866fa8bee8138e1db80fcf347b341e1d3abad6f365dcd410",
+    "size": 14943
+  },
   "tests/rc10/upgrade-server.py": {
     "mtime_ns": 1794241303657679545,
     "sha256": "849cbcadf9c41b8234866bdaf2e42505e925d7fa8fa6de66b38a7ece9dba1e8e",
     "size": 1148
+  },
+  "tests/rc21/rc21.js": {
+    "mtime_ns": 1794843552110739990,
+    "sha256": "6b8140a0fcf5e34babc00537f811c2994a63ab623bb42434e029097423dcb54b",
+    "size": 18064
+  },
+  "tests/rc21/ready-inject.js": {
+    "mtime_ns": 1794842414039880554,
+    "sha256": "3b6f622633c1fb21e9ca0ddb62e031c816b35da19db733af49e1e6d05803dc6b",
+    "size": 6985
   },
   "tests/rc6/README.md": {
     "mtime_ns": 1794081665133267692,
@@ -1225,9 +1245,9 @@
     "size": 2185
   },
   "tests/rc8/evidence-defaults.js": {
-    "mtime_ns": 1794083474030065575,
-    "sha256": "019734d63145e42a3ae2f7250ab428e0b81dd165a5fd7a16692f1a443c10eab1",
-    "size": 2613
+    "mtime_ns": 1794842065002506477,
+    "sha256": "74fdfa95647e4d415e7220bef1ae7afee85529c06d10aca859bc9411ae938048",
+    "size": 2619
   },
   "tests/rc8/evidence-i01-i03/backups/PLAN.md": {
     "mtime_ns": 1794083789821283310,
@@ -1550,9 +1570,9 @@
     "size": 72138
   },
   "tests/rc8/main.js": {
-    "mtime_ns": 1794083407238086138,
-    "sha256": "f73ea39ae9ca691ec646e7897a99b68cf83d3ac3e81ba515f6a9011d13efaf10",
-    "size": 13095
+    "mtime_ns": 1794842062274530433,
+    "sha256": "e1e19dc1acbbd869d654de01bd13a37e518417b6a80b5371a03feba37b1072ca",
+    "size": 13198
   },
   "tests/rc8/pwa-defaults.js": {
     "mtime_ns": 1794084494611282647,
@@ -1605,9 +1625,9 @@
     "size": 1863
   },
   "tests/rc9/d45-features.js": {
-    "mtime_ns": 1794086483460157225,
-    "sha256": "4a99cb601ef8270098f0222472c426099f1aeca916402d6aeea47e681330e9b3",
-    "size": 15728
+    "mtime_ns": 1794842062274530433,
+    "sha256": "7266c73344fcdbcca6d1389e78f9b495dbdfc58a67c88d2a82bded72c0c6057c",
+    "size": 15831
   },
   "tests/rc9/digest.js": {
     "mtime_ns": 1794085142458510125,
@@ -2100,9 +2120,9 @@
     "size": 2315
   },
   "tests/rc9/focused-features.js": {
-    "mtime_ns": 1794256799457317410,
-    "sha256": "35114d18df61c9b11ea46edb7d38147142f2eb0751e83e8ec992e139b680f5ee",
-    "size": 13723
+    "mtime_ns": 1794842062274530433,
+    "sha256": "d45e8c41d4dece00d22c6574a181aaa55a0551151c15616c9b152f30f44bc37c",
+    "size": 13826
   },
   "tests/rc9/header-unsupported.js": {
     "mtime_ns": 1794086200517597449,

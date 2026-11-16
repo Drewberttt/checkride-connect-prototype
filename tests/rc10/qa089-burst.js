@@ -94,7 +94,7 @@ async function oneRun(type, name, kind) {
       check(name + " " + kind + " no external requests", ext.length === 0, ext.slice(0, 5));
     }
   }
-  const summary = { pass, fail, results, browsers: QA_BROWSERS, runs: RUNS, sw: "cc-proto-v7.27.0" };
+  const summary = { pass, fail, results, browsers: QA_BROWSERS, runs: RUNS, sw: "cc-proto-v7.28.0" };
   fs.writeFileSync(path.join(OUT, "qa089-burst.json"), JSON.stringify(summary, null, 2));
   console.log("QA-089 BURST " + pass + " passed, " + fail + " failed");
   process.exit(fail ? 1 : 0);

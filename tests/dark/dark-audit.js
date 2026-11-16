@@ -13,6 +13,7 @@ fs.mkdirSync(OUT, { recursive: true });
 fs.mkdirSync(SH, { recursive: true });
 const BASE = process.env.BASE_URL || "http://127.0.0.1:8020/";
 const { chromium, firefox } = require(process.env.PLAYWRIGHT_MODULE || "/workspace/checkride-test-tools/node_modules/playwright");
+const { injectReadyState } = require("../rc21/ready-inject");
 
 const STATIC_ROUTES = [
   "#/", "#/find", "#/login", "#/signup", "#/home", "#/onboarding", "#/onboarding?step=2",
@@ -625,6 +626,15 @@ async function screenshotLogo(page, label) {
     { id: "after:pass", hash: "#/after/pass", expect: {} },
     { id: "after:inc", hash: "#/after/inc", expect: {} },
     { id: "after:dis", hash: "#/after/dis", expect: {} },
+    { id: "ready:not_started", hash: "#/home", readyState: "not_started", expect: {} },
+    { id: "ready:progress", hash: "#/home", readyState: "progress", expect: {} },
+    { id: "ready:review", hash: "#/home", readyState: "review", expect: {} },
+    { id: "ready:ready", hash: "#/home", readyState: "ready", expect: {} },
+    { id: "ready:due", hash: "#/home", readyState: "due", expect: {} },
+    { id: "ready:past", hash: "#/home", readyState: "past", expect: {} },
+    { id: "ready:passed", hash: "#/home", readyState: "passed", expect: {} },
+    { id: "ready:review-list", hash: "#/readiness", readyState: "review", expect: {} },
+    { id: "ready:ready-list", hash: "#/readiness", readyState: "ready", expect: {} },
   ];
 
   const hard = scanHardcoded();
@@ -741,6 +751,12 @@ async function screenshotLogo(page, label) {
         await gotoAudit(page, "#/");
         await injectWaitN1(page);
       }
+      if (sp.readyState) {
+        await gotoAudit(page, "#/");
+        await injectReadyState(page, sp.readyState);
+        await page.reload();
+        await waitReady(page);
+      }
       if (sp.role === "dpe" || sp.days) {
         await gotoAudit(page, "#/");
         await page.evaluate((role) => {
@@ -759,7 +775,7 @@ async function screenshotLogo(page, label) {
       }
       const audit = await safeAudit(page, sp.hash);
       record(bname, width, modeId, sp.id, sp.hash, audit);
-      if (takeShots && /wait:|fresh:|after:/.test(sp.id) && width === 360) {
+      if (takeShots && /wait:|fresh:|after:|ready:/.test(sp.id) && width === 360) {
         await page.screenshot({ path: path.join(SH, `${bname}-${width}-${modeId}-${sp.id.replace(/[:]/g, "_")}.png`), fullPage: false });
       }
     }

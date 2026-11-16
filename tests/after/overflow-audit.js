@@ -8,6 +8,7 @@
 const fs = require("fs");
 const path = require("path");
 const { chromium, firefox } = require(process.env.PLAYWRIGHT_MODULE || "/workspace/checkride-test-tools/node_modules/playwright");
+const { injectReadyState, READY_STATES } = require("../rc21/ready-inject");
 const OUT = process.env.OUT, SH = process.env.SHOTS;
 if (!OUT || !SH) throw Error("OUT/SHOTS required");
 fs.mkdirSync(OUT, { recursive: true }); fs.mkdirSync(SH, { recursive: true });
@@ -78,6 +79,28 @@ const measure = () => {
         if (m.overflow) {
           const safe = route.replace(/[^a-z0-9]+/gi, "_").slice(0, 80);
           await page.screenshot({ path: path.join(SH, `${bname}-overflow-${w}-${safe}.png`), fullPage: true }).catch(() => {});
+        }
+        for (const st of READY_STATES) {
+          await page.goto(BASE + "?demo=promo#/");
+          await page.waitForFunction(() => window.CC_ELIG).catch(() => {});
+          await injectReadyState(page, st);
+          await page.reload();
+          await page.waitForFunction(() => window.CC_ELIG).catch(() => {});
+          await page.goto(BASE + "?demo=promo#/home");
+          await page.waitForSelector(".page, #app, body", { timeout: 8000 }).catch(() => {});
+          await page.waitForTimeout(80);
+          const mReady = await page.evaluate(measure);
+          check(`${bname} ${w}px #/home ready:${st} no h-overflow`, !mReady.overflow, mReady);
+          if (mReady.overflow) {
+            await page.screenshot({ path: path.join(SH, `${bname}-overflow-${w}-home-ready-${st}.png`), fullPage: true }).catch(() => {});
+          }
+          if (st === "review" || st === "ready") {
+            await page.goto(BASE + "?demo=promo#/readiness");
+            await page.waitForSelector(".page, #app, body", { timeout: 8000 }).catch(() => {});
+            await page.waitForTimeout(80);
+            const mR = await page.evaluate(measure);
+            check(`${bname} ${w}px #/readiness ready:${st} no h-overflow`, !mR.overflow, mR);
+          }
         }
       }
       if (w === 360) {

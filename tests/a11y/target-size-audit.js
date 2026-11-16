@@ -16,6 +16,7 @@ fs.mkdirSync(OUT, { recursive: true });
 if (SH) fs.mkdirSync(SH, { recursive: true });
 const BASE = process.env.BASE_URL || "http://127.0.0.1:8020/";
 const { chromium, firefox } = require(process.env.PLAYWRIGHT_MODULE || "/workspace/checkride-test-tools/node_modules/playwright");
+const { injectReadyState } = require("../rc21/ready-inject");
 
 const STATIC_ROUTES = [
   "#/", "#/find", "#/login", "#/signup", "#/home", "#/onboarding", "#/onboarding?step=2",
@@ -54,6 +55,15 @@ const SPECIAL = [
   { id: "after:pass", hash: "#/after/pass" },
   { id: "after:inc", hash: "#/after/inc" },
   { id: "after:dis", hash: "#/after/dis" },
+  { id: "ready:not_started", hash: "#/home", readyState: "not_started" },
+  { id: "ready:progress", hash: "#/home", readyState: "progress" },
+  { id: "ready:review", hash: "#/home", readyState: "review" },
+  { id: "ready:ready", hash: "#/home", readyState: "ready" },
+  { id: "ready:due", hash: "#/home", readyState: "due" },
+  { id: "ready:past", hash: "#/home", readyState: "past" },
+  { id: "ready:passed", hash: "#/home", readyState: "passed" },
+  { id: "ready:review-list", hash: "#/readiness", readyState: "review" },
+  { id: "ready:ready-list", hash: "#/readiness", readyState: "ready" },
 ];
 
 function measureFn() {
@@ -308,6 +318,12 @@ async function seedKnownOffenders(page) {
           if (sp.injectN1) {
             await gotoAudit(page, "#/");
             await injectWaitN1(page);
+          }
+          if (sp.readyState) {
+            await gotoAudit(page, "#/");
+            await injectReadyState(page, sp.readyState);
+            await page.reload();
+            await waitReady(page);
           }
           if (sp.role || sp.days) {
             await gotoAudit(page, "#/");

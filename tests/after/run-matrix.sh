@@ -4,9 +4,11 @@ set -uo pipefail
 export PYTHONDONTWRITEBYTECODE=1
 ROOT=/workspace/checkride-v4
 TOOLS=/workspace/checkride-test-tools
+EVIDENCE_ROOT=/workspace/checkride-pm/qa/evidence
 STAMP=${STAMP:-$(date +%Y%m%d-%H%M%S)}
-OUT=${OUT:-$TOOLS/evidence/after-entry-full-$STAMP}
-SHOTS=${SHOTS:-/workspace/checkride-connect-shots/after-entry-full-$STAMP}
+# Official runs write only to a fresh rc21-* evidence dir (never qa/harness/results or an existing evidence dir).
+OUT=${OUT:-$EVIDENCE_ROOT/rc21-matrix-$STAMP}
+SHOTS=${SHOTS:-/workspace/checkride-connect-shots/rc21-matrix-$STAMP}
 export CC_APP=$ROOT
 export OUT SHOTS
 export BASE_URL=http://127.0.0.1:8020/
@@ -19,8 +21,7 @@ export PYTHONPATH=$ROOT/tests/rc6:$ROOT/tests/rc7${PYTHONPATH:+:$PYTHONPATH}
 # Guard (rc20): refuse an OUT or SHOTS path that contains an older rc name (rc1–rc19)
 # or that points inside an already-existing evidence directory other than this run's OUT.
 # This prevents inheriting SHOTS from a prior matrix (the rc19-evidence overwrite incident).
-CURRENT_RC=20
-EVIDENCE_ROOT=/workspace/checkride-pm/qa/evidence
+CURRENT_RC=21
 matrix_path_guard() {
   local label="$1"
   local raw="$2"
@@ -34,6 +35,28 @@ older = re.search(r"rc([1-9]|1[0-9])([^0-9]|$)", abs_path)
 if older:
     print(f"run-matrix: refusing {label}={abs_path} (path contains an older rc name; rc1–rc{current_rc-1} evidence and trees are frozen)", file=sys.stderr)
     sys.exit(2)
+norm = abs_path.replace("\\", "/")
+if "/qa/harness/results" in norm or norm.rstrip("/").endswith("/qa/harness/results"):
+    print(f"run-matrix: refusing {label}={abs_path} (QA harness results are off-limits; write only to a fresh rc{current_rc}-* evidence dir)", file=sys.stderr)
+    sys.exit(2)
+# OUT and SHOTS must live in a directory named rc{current}-**.
+base = os.path.basename(abs_path.rstrip(os.sep))
+# If this is a nested path (OUT/suite), use the evidence run dir name.
+if label == "OUT":
+    run_name = base
+    if not re.match(rf"^rc{current_rc}-", run_name):
+        print(f"run-matrix: refusing {label}={abs_path} (must be a fresh rc{current_rc}-* evidence dir)", file=sys.stderr)
+        sys.exit(2)
+    if os.path.isdir(abs_path) and os.listdir(abs_path):
+        print(f"run-matrix: refusing {label}={abs_path} (directory already exists; use a fresh rc{current_rc}-* evidence dir)", file=sys.stderr)
+        sys.exit(2)
+elif label == "SHOTS":
+    if not re.search(rf"rc{current_rc}-", base) and not re.search(rf"/rc{current_rc}-", norm + "/"):
+        print(f"run-matrix: refusing {label}={abs_path} (must be a fresh rc{current_rc}-* shots dir)", file=sys.stderr)
+        sys.exit(2)
+    if os.path.isdir(abs_path) and os.listdir(abs_path):
+        print(f"run-matrix: refusing {label}={abs_path} (directory already exists; use a fresh rc{current_rc}-* shots dir)", file=sys.stderr)
+        sys.exit(2)
 # Under the evidence root, the first path component is the evidence run dir.
 # Allow only paths inside this run's OUT (which may not exist yet). Refuse a path
 # that already lives inside some other evidence directory.
@@ -134,13 +157,17 @@ run_suite saved-booleans node "$ROOT/tests/rc7/saved-booleans-browsers.js"
 wait_suites
 
 run_suite native-browsers node "$ROOT/tests/rc7/native-browsers.js"
-run_suite pwa-saved env QA_BROWSERS=chromium,firefox,webkit node "$ROOT/tests/rc10/pwa-saved.js"
 run_suite logo-qa085 node "$ROOT/tests/rc10/logo-qa085.js"
+wait_suites
+
+# Isolate the PWA upgrade lane (v7.13→v7.28, 3 browsers). Running it with other
+# Playwright farms caused a mid-run waitForLoadState timeout in rc21-matrix-20261116-154002.
+run_suite pwa-saved env QA_BROWSERS=chromium,firefox,webkit node "$ROOT/tests/rc10/pwa-saved.js"
 wait_suites
 
 run_suite boundaries bash -c "cd \"$ROOT/tests/rc6\" && python3 boundaries.py"
 run_suite precision-parity python3 "$ROOT/tests/rc7/precision-parity.py"
-run_suite scope python3 "$ROOT/tests/rc10/scope-v727.py"
+run_suite scope python3 "$ROOT/tests/rc10/scope-v728.py"
 wait_suites
 
 # Also run D45-aligned focused-features (optional honesty lane; not in 4391 sum historically as "features"=d45)
@@ -149,11 +176,22 @@ run_suite onboarding node "$ROOT/tests/onboarding/onboarding.js"
 run_suite credit-parity node "$ROOT/tests/after/credit-parity.js"
 run_suite after-checkride node "$ROOT/tests/after/after-checkride.js"
 run_suite after-entry node "$ROOT/tests/after/after-entry.js"
-run_suite overflow-audit node "$ROOT/tests/after/overflow-audit.js"
+run_suite rc21 node "$ROOT/tests/rc21/rc21.js"
 run_suite dpe-week node "$ROOT/tests/after/dpe-week.js"
 run_suite wait-time node "$ROOT/tests/after/wait-time.js"
 run_suite ics-unit node "$ROOT/tests/ics/ics-test.js"
 run_suite cal-ui node "$ROOT/tests/ics/cal-ui.js"
+wait_suites
+
+# Overflow now walks every ready-card state (5206 checks, ~30 min). Isolate it so it
+# cannot starve sibling Playwright suites or get a mid-run waitForFunction timeout
+# (rc21-matrix-20261116-154002 died at 1008/5206 under the shared after-wave).
+run_suite overflow-audit node "$ROOT/tests/after/overflow-audit.js"
+wait_suites
+
+# QA-089 burst isolated: the same contended after-wave produced a one-off Firefox
+# SW intercept error (35/1) that is a load flake, not a v7.28.0 fetch-path change
+# (sw.js vs rc20 differs only in the VERSION pin).
 run_suite qa089-burst node "$ROOT/tests/rc10/qa089-burst.js"
 wait_suites
 
@@ -169,7 +207,7 @@ OUT=Path(os.environ['OUT'])
 suites=[]
 pass_sum=fail_sum=0
 # Parse each suite dir for pass/fail from json or log
-order=['gate','evidence-defaults','header','digest','features','legacy-place','raw-hours','signup-a11y','saved','saved-quota','text-precision','settled-pages','saved-booleans','native-browsers','pwa-saved','logo-qa085','boundaries','precision-parity','scope','focused-features','onboarding','credit-parity','after-checkride','after-entry','overflow-audit','dpe-week','wait-time','ics-unit','cal-ui','qa089-burst','dark-audit','target-size-audit']
+order=['gate','evidence-defaults','header','digest','features','legacy-place','raw-hours','signup-a11y','saved','saved-quota','text-precision','settled-pages','saved-booleans','native-browsers','pwa-saved','logo-qa085','boundaries','precision-parity','scope','focused-features','onboarding','credit-parity','after-checkride','after-entry','rc21','overflow-audit','dpe-week','wait-time','ics-unit','cal-ui','qa089-burst','dark-audit','target-size-audit']
 for name in order:
     d=OUT/name
     if not d.exists(): continue
@@ -225,7 +263,7 @@ for name in order:
     if name not in ('focused-features','onboarding','credit-parity','after-checkride','after-entry','overflow-audit','dark-audit','target-size-audit'):
         pass_sum+=p; fail_sum+=f
 
-summary={'OUT':str(OUT),'SHOTS':os.environ.get('SHOTS'),'sw':'cc-proto-v7.27.0','suites':suites,
+summary={'OUT':str(OUT),'SHOTS':os.environ.get('SHOTS'),'sw':'cc-proto-v7.28.0','suites':suites,
          'pass_sum_core':pass_sum,'fail_sum_core':fail_sum,
          'pass_sum_all':sum(s['pass'] for s in suites),'fail_sum_all':sum(s['fail'] for s in suites)}
 (OUT/'matrix-summary.json').write_text(json.dumps(summary,indent=2))

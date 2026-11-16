@@ -1788,3 +1788,26 @@ body.is-onboarding .land-strip { display: none; }
 .after-sources-helper { margin: .35rem 0 .5rem; color: var(--muted); }
 .after-sources-list { margin: 0; padding-left: 1.1rem; }
 .after-sources-list li { margin: .3rem 0; font-size: .85rem; color: var(--muted); }
+
+/* rc21 D53 Checkride-ready Home card + F03 Home after-entry */
+.ready-card { display: block; color: inherit; }
+.ready-card .ready-headline { margin: .15rem 0 .35rem; font-size: 1.25rem; }
+.ready-card .ready-cert { margin: 0; font-weight: 600; }
+.ready-card .ready-progress { margin: .5rem 0; }
+.ready-card .seg9 > i { background: var(--border, var(--surface-inset, var(--surface))); }
+.ready-card .seg9 > i.on { background: var(--accent); }
+.ready-tick { display: flex; align-items: flex-start; gap: .6rem; min-height: 44px; margin: .6rem 0; }
+.ready-tick input { width: 24px; height: 24px; min-width: 24px; min-height: 24px; margin-top: .35rem; flex: none; }
+.ready-tick, .ready-card .btn, .ready-card a.btn, .after-next .btn, .home-v3 .after-entry-actions .btn { min-height: 44px; }
+.ready-flag { margin: .6rem 0; }
+.home-v3 .after-entry { margin: 0 0 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius, 12px); background: var(--surface); }
+.home-v3 .after-entry-actions .btn { min-height: 44px; min-width: 44px; }
+.ready-journey { display: inline-block; margin-top: .5rem; min-height: 44px; line-height: 44px; }
+.after-next { margin: 1rem 0 0; }
+.after-next .btn { min-height: 44px; }
+.ready-tick-cleared { margin: .4rem 0; }
+@media (prefers-reduced-motion: reduce) {
+  .ready-card .seg9 > i, .ready-card .ready-progress, .ready-card * {
+    transition: none !important; animation: none !important;
+  }
+}
